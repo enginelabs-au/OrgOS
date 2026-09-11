@@ -20,12 +20,13 @@
 1. `Task` cloud after push — 0 remotes.
 2. Retry — same.
 3. `move_agent_to_root` — hook denied.
+4. 2026-09-11 after `6306a6c` on `origin/main`: Cloud failed with `No GitHub access token found with access to repository enginelabs-au/orgos` (cloud subagent `bc-51c02bcc-5917-412e-b24c-1ec765576ce3`).
 
 ## Next actions
 
-- Continue phase 1 on this workstation (D-07 venue deviation).
-- Owner may launch a Cloud agent from the Cursor Cloud UI on `enginelabs-au/OrgOS` `main` if a second venue is still wanted.
+- T2-1 planning is local: `docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/phase-2-t2-1-plan.md`.
+- Owner: grant Cursor Cloud a GitHub token that can read `enginelabs-au/OrgOS`, then relaunch a Cloud agent on `main`.
 
 ## Resolution criteria
 
-Cloud Task starts with `found 1` remote, **or** owner accepts local implementation as the phase-1 venue (this file moves to `blockers-fixed/` after G1 records the deviation).
+Cloud Task starts with repo access, **or** owner accepts local planning/implementation as the phase-2 venue (move this file to `blockers-fixed/` after that is recorded).

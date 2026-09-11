@@ -6,7 +6,7 @@
 
 ## Current Status
 
-- Phase 1 G1 still **CONDITIONAL** (H-6 accepted via D-09; live Compose and packaged Tauri still open). Phase 2 plan **active**. T2-1 not implemented.
+- Phase 1 G1 still **CONDITIONAL** (H-6 accepted via D-09; live Compose and packaged Tauri still open). Phase 2 plan **active**. T2-1 plan written locally; Cloud blocked on GitHub token.
 
 ## Project Phase
 
@@ -85,7 +85,7 @@
 
 ## Next Actions
 
-1. Cloud or local T2-1 spike (SP-1…SP-7) per charter.
+1. Execute T2-1 only after Hermes pin (H-5) exists; plan is `phase-2-t2-1-plan.md`.
 2. Owner: `npx vercel login`, move `enginelabs.com.au` to `orgos`, delete confirmed extras.
 3. Owner when ready: H-4, H-5, GitHub App, model key names.
 

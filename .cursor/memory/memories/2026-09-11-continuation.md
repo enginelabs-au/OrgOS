@@ -37,3 +37,8 @@
 - `apps/web` is the single public website. Root `vercel.json` builds it. Docker unavailable; Vercel CLI has no token so extras were not deleted. Runbook: `/memory/runbooks/vercel-orgos-single-site.md`.
 - Phase 2 plan set `active`. T2-1 charter written. Cloud launch still may fail (0 remotes).
 
+## After 6306a6c
+
+- Push `6306a6c` as Cursor Agent `cursoragent@cursor.com`. Vercel `orgos` production READY (`dpl_5BkY3jyEqNg3V11bfXcBzBZ2AkpD`). Dashboard URLs are SSO-gated; HTML 200 via Vercel MCP.
+- Cloud Task failed: no GitHub token for `enginelabs-au/orgos`. T2-1 plan written locally: `phase-2-t2-1-plan.md`.
+
