@@ -1,0 +1,7 @@
+# Image tags and digests for the development Compose stack (NFR-10).
+# Digests are filled after a successful docker pull. Tags are D-07 pins.
+
+postgres:15=postgres:15
+caddy=caddy:2
+engine-labs-api=local
+engine-labs-worker=local

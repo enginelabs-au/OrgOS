@@ -19,4 +19,5 @@ Start or resume the complete product lifecycle with `/launch-pipeline`; its deta
 - Workstream: `workstreams/20260910-engine-labs-company-os/manifest.md`
 - Product documents (phase 0 outputs): `product.md`, `capabilities.md`, `architecture.md`, `ui-blueprint.md` (spec) plus `ui-blueprint/` (pinned `8a843bd` app snapshot, captures, `SOURCE.md`), `roadmap.md`, `verification.md`, `policies/`
 - Hey Engine (PRD-E.13): persistent assistant control + wake phrase; R1 ships the control and an honest unavailable state; runtime and wake word are later phases
-- Decisions: `decisions/` — phase 0: D-01 `2026-09-10-monorepo-layout.md`, D-02 `2026-09-10-registry-schema.md`, D-03 `2026-09-10-authority-model.md`, D-04 `2026-09-10-hermes-adapter-contract.md`, D-05 `2026-09-10-release-1-scope.md`, D-06 `2026-09-10-desktop-tabs-and-tokens.md` (all `proposed`)
+- Decisions: `decisions/` — D-01…D-06 (`proposed`); D-07 `2026-09-11-tooling-and-pins.md`; D-08 `2026-09-11-worker-data-access.md`
+- Next plan (generated after G1): `plans/phase_2_development_loop_plan.md`

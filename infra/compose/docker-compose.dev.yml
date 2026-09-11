@@ -1,0 +1,8 @@
+# Development overrides. Still only the proxy publishes a host port (F-SEC-02).
+services:
+  api:
+    environment:
+      ENGINE_USAGE_EMIT: "0"
+  worker:
+    environment:
+      ENGINE_WORKER_CONFIG: /srv/config/toolsets.yaml

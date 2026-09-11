@@ -1,0 +1,12 @@
+{
+  "identifier": "default",
+  "description": "Minimal Engine Labs desktop capability",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    {
+      "identifier": "shell:allow-open",
+      "allow": [{ "url": "https://*" }]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+# Product CI (T1-17). Triggers both default-branch names.
+# H-2: pin Actions by SHA — tags recorded; owner SHA pin queued.
+name: product-ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: astral-sh/setup-uv@v4
+      - name: Product checks
+        run: bash scripts/ci.sh

@@ -1,0 +1,18 @@
+Engine Labs (OrgOS)
+Copyright 2026 Engine Labs
+
+This product includes first-party code under LICENSE (proprietary).
+
+Third-party notices (phase 1):
+
+- React, React DOM — MIT (Meta Platforms)
+- Vite — MIT
+- FastAPI — MIT
+- Pydantic — MIT
+- DBOS Python — see the installed package licence
+- Caddy — Apache-2.0
+- Inter font — OFL-1.1 (rsms/inter)
+- JetBrains Mono — OFL-1.1 (JetBrains)
+
+A generated inventory is written to infra/licences/ when `scripts/ci.sh` runs
+the licence-inventory step.

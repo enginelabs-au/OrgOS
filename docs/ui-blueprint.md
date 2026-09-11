@@ -521,7 +521,7 @@ Also record: computed font-family on body (expect Inter fallback since fonts are
 | D-11 | Default theme "system" (ref hard-codes light) | preference | charter §5 open question | Owner preference |
 | OQ-U1 | Should "Board" (kanban) ship in R1 Work? Proposal: no (list + detail only) | scope | R1 loop does not need it | Owner/PL at phase 1 plan |
 | OQ-U2 | Memory search/inspect in R1 (PRD-F.3) without a dedicated view: proposal = via assistant + work-item Evidence section; Memory manager view R3 | scope | PRD-A.15 vs F.3 timing | PL reconciliation T0-12 |
-| OQ-U3 | Icons: keep inline `icons.jsx` port vs `lucide-react` | technical | identical glyphs; bundle/typing trade-off | SE decides, record |
-| OQ-U4 | Fonts: Inter and JetBrains Mono must be bundled for offline desktop; licence inventory entry (PRD-G.9) | technical | not bundled in ref | SE phase 1 |
+| OQ-U3 | Icons: keep inline `icons.jsx` port vs `lucide-react` | technical | identical glyphs; bundle/typing trade-off | SE: inline port in `packages/ui/src/icons.tsx` (D-07) |
+| OQ-U4 | Fonts: Inter and JetBrains Mono must be bundled for offline desktop; licence inventory entry (PRD-G.9) | technical | not bundled in ref | SE: OFL licence files + system/`local()` fallback (`apps/desktop/public/fonts/`); woff2 binaries not vendored in phase 1 |
 
 Material aesthetic departures requiring an owner ask before implementation (NFR-3): none beyond D-3 (contrast token) and D-11 (default theme), both minor and reversible.

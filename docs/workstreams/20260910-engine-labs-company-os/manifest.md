@@ -3,14 +3,14 @@ schema_version: 1
 task_id: 20260910-engine-labs-company-os
 title: Engine Labs — company operating system, first release lifecycle
 source_request: docs/Company_Agent_System_Blueprint.md (complete product intake) via /launch-pipeline
-status: phase_1_planned
+status: phase_1_g1_conditional
 risk_tier: tier_3
 created_at: 2026-09-10T15:35:00Z
-updated_at: 2026-09-10T18:45:00Z
-revision: 3
+updated_at: 2026-09-11T04:30:00Z
+revision: 4
 owner: user-operator (founder)
 active_role: orchestrating-lead
-current_gate: phase_1 entry (docs/plans/phase_1_foundation_plan.md §3) → G1 Foundation exit
+current_gate: G1 CONDITIONAL (2026-09-11) → phase 2 plan written; do not start T2-1 until lead activates it
 ---
 
 # Workstream Manifest: Engine Labs — company operating system

@@ -1,0 +1,11 @@
+ENGINE LABS PROPRIETARY LICENCE
+
+Copyright (c) 2026 Engine Labs. All rights reserved.
+
+This repository's first-party source is licensed under the Engine Labs
+proprietary licence (LIC-01). You may not use, copy, modify, merge, publish,
+distribute, sublicense, or sell copies of the Software except as permitted in
+writing by Engine Labs.
+
+Third-party components remain under their own licences, listed in NOTICE and
+in `infra/licences/` when generated.

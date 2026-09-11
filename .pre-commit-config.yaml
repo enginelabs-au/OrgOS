@@ -1,0 +1,7 @@
+# Secret scan (T1-17). Tool chosen: detect-secrets (local, no global install).
+repos:
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]

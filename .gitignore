@@ -50,3 +50,10 @@ src-tauri/gen/schemas/
 *.pem
 *.key
 *.p12
+*.pfx
+credentials.json
+secrets.json
+.netrc
+.npmrc
+.pypirc
+id_rsa*

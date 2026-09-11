@@ -1,0 +1,17 @@
+# AUTH-25 / F-SEC-01 — fail-closed. Do not enable a side-effecting toolset
+# until interception_verified is true and a matching artefact exists.
+interception_verified: false
+interception_artefact:
+  path: ""
+  sha256: ""
+side_effecting_toolsets:
+  terminal:
+    enabled: false
+  browser:
+    enabled: false
+  github:
+    enabled: false
+  files_write:
+    enabled: false
+  email_send:
+    enabled: false

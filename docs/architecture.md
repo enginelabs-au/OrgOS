@@ -220,9 +220,9 @@ The adapter in `services/worker` is the only code that speaks to Hermes. It expo
 
 | Service | Image (digest pinned in `infra/digests.lock`, NFR-10) | Network | Ports | Volumes |
 |---|---|---|---|---|
-| `proxy` | Caddy or Traefik (choice in phase 1) | `edge`, `app` | 443 (public), 80 → 443 | certs |
+| `proxy` | Caddy (D-07) | `edge`, `app` | 443 (public), 80 → 443 | certs |
 | `api` | `services/api` image | `app`, `data`, `worker` | internal 8000 | none |
-| `worker` | `services/worker` image | `worker`, `data` (read-only reference for receipts via API — `proposal`: worker has **no** DB access; all persistence via API) | none published | worktrees volume (ephemeral) |
+| `worker` | `services/worker` image | `worker` only (D-08: never on `data`; all persistence via API) | none published | worktrees volume (ephemeral) |
 | `hermes` | pinned Hermes gateway image/build (`HERMES_VERSION_PIN`) | `worker` only | 8642 bound to service network only | hermes profile volume (config, no secrets baked) |
 | Supabase stack (`db`, `auth`, `rest`, `storage`, `meta`, `studio`, `kong`/`envoy`, `supavisor`, …) | supabase images per [SUPA-DOCKER] | `data` (+ `edge` for Auth callbacks only) | Studio/8000 **not** public; SSH tunnel | `volumes/db/data`, `volumes/storage` |
 | `backup` | alpine + `pg_dump` + `age`/`gpg` + `rclone` | `data`, egress to backup target | none | read-only mounts of storage volume |
@@ -255,9 +255,9 @@ Names only; registry of record is `docs/plans/phase_0_foundations_plan.md` §16.
 | Item | Owner | Phase |
 |---|---|---|
 | Choose tool-interception mechanism against the pinned Hermes version (hook vs scoped tool adapters vs restricted toolsets + MCP) | SE (spike), Security review | 2 |
-| Confirm `packages/ui` as a fifth monorepo member (ui-blueprint §F) — recorded in D-01 as included | Lead / PL | 1 plan |
-| Proxy choice (Caddy vs Traefik), Postgres major version, Supabase image digests | SE | 1 |
-| Worker DB access: none (all via API) vs read-only — `proposal` none | Security | 1 |
-| Tauri capabilities file content (`core:*` minimum, `shell:allow-open` for external links, updater, store/keychain plugin) | SE, Security | 1 |
-| Retention job design for conversations/logs and Hermes session deletion alignment | SE | 1–2 |
+| Confirm `packages/ui` as a fifth monorepo member (ui-blueprint §F) — recorded in D-01 as included | Lead / PL | 1 — done (`packages/ui` exists) |
+| Proxy choice (Caddy vs Traefik), Postgres major version, Supabase image digests | SE | 1 — Caddy + Postgres 15 (D-07); digests skeleton in `infra/digests.lock` |
+| Worker DB access: none (all via API) vs read-only — `proposal` none | Security | 1 — D-08 `proposed` (worker on `worker` only) |
+| Tauri capabilities file content (`core:*` minimum, `shell:allow-open` for external links, updater, store/keychain plugin) | SE, Security | 1 — `apps/desktop/src-tauri/capabilities/` reviewed at G1 CONDITIONAL (packaged build not run) |
+| Retention job design for conversations/logs and Hermes session deletion alignment | SE | 1–2 — Settings shows 365/30/30/until-superseded; Hermes deletion deferred to phase 2 |
 | Droplet sizing after NFR-6 measurements | Owner (spend) | 3 |

@@ -1,0 +1,25 @@
+/* Local / system fonts only. No Google Fonts or other network font URLs. */
+@font-face {
+  font-family: "Inter";
+  src: local("Inter"), local("Inter Variable");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: local("JetBrains Mono"), local("JetBrainsMono");
+  font-display: swap;
+}
+
+:root {
+  --el-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --el-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--el-font-sans);
+}

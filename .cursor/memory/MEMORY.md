@@ -46,6 +46,11 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Runbooks: `/memory/runbooks/`
 - Agent workspace layout: `/memory/runbooks/agent-workspace.md`
 - Bootstrap procedure: `/memory/runbooks/agent-config-bootstrap.md`
+- Tooling pins (D-07): `docs/decisions/2026-09-11-tooling-and-pins.md`
+- Worker data access (D-08): `docs/decisions/2026-09-11-worker-data-access.md`
+- Cloud launch blocker: `/memory/blockers/cursor-cloud-launch.md`
+- Dev environment: `/memory/runbooks/engine-labs-dev-environment.md`
+- Phase 2 plan (not started): `docs/plans/phase_2_development_loop_plan.md`
 
 ## Existing workflow references
 

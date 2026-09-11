@@ -1,8 +1,8 @@
 ---
 plan: phase_1_foundation
-status: active
+status: complete_conditional
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner: lead-agent
 source_phase: phase_0_foundations
 predecessor_plan: docs/plans/phase_0_foundations_plan.md
@@ -294,7 +294,11 @@ Phase 1 is local and uncommitted unless the owner decides otherwise. Rollback: `
 
 ## 20. Completion evidence
 
-To be appended as tasks complete (commands, exit codes, file paths, screenshots, handoff verdicts).
+- 2026-09-11T04:08:00Z preflight READY; Cloud Task launch failed (0 remotes); local venue (D-07).
+- 2026-09-11T04:22Z `bash scripts/ci.sh` exit 0 — desktop 2, ui 12+contrast, contracts 13, api 21, worker 6, compose assertions.
+- Hey Engine: `packages/ui/src/HeyEngineButton.tsx`.
+- Role phase-1 handoffs: all six CONDITIONAL under `docs/workstreams/20260910-engine-labs-company-os/<role>/phase-1-handoff.md`.
+- Next plan: `docs/plans/phase_2_development_loop_plan.md` (not implemented).
 
 ## 21. Deviations and follow-ups
 
