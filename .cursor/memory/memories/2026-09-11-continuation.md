@@ -26,3 +26,7 @@
 - Six phase-1 handoffs CONDITIONAL. Registry 12 `configured`, 0 `working`.
 - `docs/plans/phase_2_development_loop_plan.md` generated. Phase 08 not implemented.
 
+## Branch
+
+- No `master` locally or on GitHub. Default is `main`. Pushed phase-1 tree as `e405181`.
+

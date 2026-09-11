@@ -36,8 +36,9 @@
 
 ## Owner Decision
 
-- Blocking for a clean G1 PASS (not for generating phase 2): H-6.
-- Phase 2 live loop: H-4, H-5, GitHub App, model key names.
+- Default branch is `main` (`e405181` on origin). No `master` ref local or remote.
+- Blocking for a clean G1 PASS (not for starting T2-1): H-6 (ratify D-01…D-08).
+- Phase 2 live Hermes/GitHub loop (after T2-1 spike): H-4, H-5, GitHub App, model key names.
 
 ## Active Instructions
 
