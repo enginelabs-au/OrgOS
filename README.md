@@ -1,4 +1,4 @@
-# Engine Labs (OrgOS)
+# Engine Labs (Papership)
 
 Operator-led company operating system. Start with `/launch-pipeline`.
 

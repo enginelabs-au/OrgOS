@@ -4,8 +4,10 @@ Store durable user-specific instructions and preferences here. Add new durable i
 
 ## Standing directives
 
-- The product in this repository is **OrgOS**. Engine Labs is the company. `www.enginelabs.com.au` is a separate Engine Labs marketing/services site and must never be replaced, redirected, or have its Vercel project (`enginelabs-au-site`) edited from this workstream.
-- The OrgOS product UI is the `docs/ui-blueprint` `/cc-org-dash` tree. Do not invent a substitute marketing landing in its place.
+- The product in this repository is **Papership**. Engine Labs is the company. `www.enginelabs.com.au` is a separate Engine Labs marketing/services site and must never be replaced, redirected, or have its Vercel project (`enginelabs-au-site`) edited from this workstream.
+- Data responsibility (D-12, D-14): Papership/Engine Labs does not own user content. Keep only generic anonymous usage. Users own their data (self-host store; delete or request deletion). Integrations handle data under their own terms. Side-effect receipts stay until the user deletes them. Never paste secrets into chat.
+- The Papership product UI is `docs/ui-blueprint/blueprint-2` mounted at `/cc-org-dash`. Do not invent a substitute marketing landing in its place. Do not hybridise it with blueprint-1.
+- Brand (D-13, D-20, D-21, revisable): prism-head icon is **app icon and browser tab only** — never inside the product UI. Blue primary, rainbow accent-only, fractured purple secondary. Chrome is blueprint-2 exactly (cream canvas, purple nav field, three-way theme cycle, docked Hey Engine). Product fixtures stay Papership/blueprint — no invented revenue or prices.
 - Preserve the user's operational intent and all materially relevant requirements when improving instructions or files.
 - Prefer direct execution over asking the user to perform agent-capable work.
 - Operate autonomously unless blocked by credentials, permissions, a consequential design decision, destructive risk, or a material safety/security/privacy concern.

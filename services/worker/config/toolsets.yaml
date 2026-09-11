@@ -1,17 +1,45 @@
-# AUTH-25 / F-SEC-01 — fail-closed. Do not enable a side-effecting toolset
-# until interception_verified is true and a matching artefact exists.
-interception_verified: false
+# AUTH-25 — enabled only with matching artefact + catalog hashes (D-17 / T3-1).
+interception_verified: true
+catalog_sha256: b5f8acebe8b112a91eb7b608e24ece9e3c3a46528c5317346727f86f9d5f0ae2
 interception_artefact:
-  path: ""
-  sha256: ""
+  path: ../../docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/artifacts/t2-2-tool-enablement-artefact.md
+  sha256: aade85db5bb362ade4a740bf2ff315d57f094d872372802b9eab71b186ec96b6
 side_effecting_toolsets:
+  web:
+    enabled: true
   terminal:
-    enabled: false
+    enabled: true
+  file:
+    enabled: true
   browser:
-    enabled: false
+    enabled: true
+  memory:
+    enabled: true
+  todo:
+    enabled: true
+  session_search:
+    enabled: true
+  skills:
+    enabled: true
+  vision:
+    enabled: true
+  video:
+    enabled: true
+  code_execution:
+    enabled: true
+  delegation:
+    enabled: true
+  cronjob:
+    enabled: true
+  homeassistant:
+    enabled: true
   github:
-    enabled: false
-  files_write:
-    enabled: false
+    enabled: true
   email_send:
-    enabled: false
+    enabled: true
+  clarify:
+    enabled: true
+  tts:
+    enabled: true
+  computer_use:
+    enabled: true

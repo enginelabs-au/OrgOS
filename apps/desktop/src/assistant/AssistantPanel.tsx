@@ -1,11 +1,13 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge, Btn, F, useEscape, useFocusTrap, type Theme } from "@engine-labs/ui";
+import { apiConfigured, apiFetch, plainError } from "../api/client";
 
 const MODES = ["Ask", "Analyse", "Plan", "Draft", "Execute", "Review", "Automate"] as const;
 
+type Message = { id?: string; role: string; content: string };
+
 /**
- * Assistant chrome only (AUTH-28). Honest unavailable — never invents text.
- * Closed panel is not rendered so it is out of tab order (F-S7).
+ * Backend-mediated assistant. Never invents a model reply.
  */
 export function AssistantPanel({
   T,
@@ -19,9 +21,63 @@ export function AssistantPanel({
   topOffsetPx?: number;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [draft, setDraft] = useState("");
+  const [status, setStatus] = useState("Opening…");
+  const [busy, setBusy] = useState(false);
   useFocusTrap(panelRef, open);
   useEscape(onClose, open);
+
+  useEffect(() => {
+    if (!open) return;
+    if (!apiConfigured()) {
+      setStatus("The API address is not configured.");
+      return;
+    }
+    let cancelled = false;
+    void (async () => {
+      try {
+        const created = await apiFetch<{ id: string }>("/assistant/sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "Hey Engine", mode: "Ask" }),
+        });
+        if (cancelled) return;
+        setSessionId(created.id);
+        const detail = await apiFetch<{ messages?: Message[] }>(`/assistant/sessions/${created.id}`);
+        if (cancelled) return;
+        setMessages(detail.messages ?? []);
+        setStatus("Messages are saved in Papership. Hermes runs only when its API server is up.");
+      } catch (err) {
+        if (!cancelled) setStatus(plainError(err instanceof Error ? err.message : "Could not open a session."));
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
+
   if (!open) return null;
+
+  const send = async () => {
+    const text = draft.trim();
+    if (!text || !sessionId || busy) return;
+    setBusy(true);
+    try {
+      const turn = await apiFetch<{ user: Message; reply: Message }>("/assistant/sessions/" + sessionId + "/turns", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: text }),
+      });
+      setMessages((prev) => [...prev, turn.user, turn.reply]);
+      setDraft("");
+    } catch (err) {
+      setStatus(plainError(err instanceof Error ? err.message : "Could not send."));
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <aside
@@ -56,15 +112,15 @@ export function AssistantPanel({
           alignItems: "center",
         }}
       >
-        <strong style={{ color: T.t1, fontSize: 14 }}>Assistant</strong>
+        <strong style={{ color: T.t1, fontSize: 14 }}>Hey Engine</strong>
         <Btn T={T} variant="ghost" small onClick={onClose}>
           Close
         </Btn>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, padding: 12 }}>
         {MODES.map((mode) => (
-          <Badge key={mode} T={T}>
-            {mode}
+          <Badge key={mode} T={T} color={mode === "Automate" ? T.t3 : undefined}>
+            {mode === "Automate" ? "Automate · later" : mode}
           </Badge>
         ))}
       </div>
@@ -74,25 +130,52 @@ export function AssistantPanel({
         </Badge>
       </div>
       <div style={{ padding: "0 12px 12px", color: T.t2, fontSize: 12 }}>
-        Allowance: remaining run budget is shown when the API provides it. Amounts are not priced here.
+        {status} Closing this panel does not cancel cloud work.
       </div>
-      <div
-        style={{
-          margin: 12,
-          padding: 16,
-          borderRadius: 10,
-          background: T.raised,
-          border: `1px solid ${T.border}`,
-          color: T.t1,
-          fontSize: 13,
-          lineHeight: 1.55,
-        }}
-      >
-        <strong>unavailable</strong>
-        <p style={{ margin: "8px 0 0", color: T.t2 }}>
-          The assistant is not connected (AUTH-28). OrgOS will not invent an answer. Hey Engine only opens this
-          panel.
-        </p>
+      <div style={{ flex: 1, overflow: "auto", padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+        {messages.map((msg) => (
+          <div
+            key={msg.id || msg.content}
+            style={{
+              padding: 10,
+              borderRadius: 10,
+              background: msg.role === "user" ? T.accentBg : T.raised,
+              color: T.t1,
+              fontSize: 13,
+              lineHeight: 1.5,
+            }}
+          >
+            <strong style={{ fontSize: 11, color: T.t3 }}>{msg.role}</strong>
+            <div>{msg.content}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding: 12, borderTop: `1px solid ${T.border}`, display: "flex", gap: 8 }}>
+        <input
+          aria-label="Ask Hey Engine"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              void send();
+            }
+          }}
+          placeholder="What would you like to do?"
+          style={{
+            flex: 1,
+            minHeight: 36,
+            borderRadius: 8,
+            border: `1px solid ${T.border}`,
+            background: T.canvas,
+            color: T.t1,
+            padding: "0 10px",
+            fontFamily: F.sans,
+          }}
+        />
+        <Btn T={T} variant="primary" small onClick={() => void send()} disabled={busy || !sessionId}>
+          Send
+        </Btn>
       </div>
     </aside>
   );

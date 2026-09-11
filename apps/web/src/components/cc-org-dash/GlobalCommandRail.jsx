@@ -52,8 +52,10 @@ export default function GlobalCommandRail({ T, isOpen, onToggle, onSelectDetail,
         flexShrink: 0,
         transition: isMobile ? undefined : "width 0.22s cubic-bezier(0.4, 0, 0.2, 1)",
         background: T.raised,
-        border: `1px solid ${T.borderMuted ?? T.border}`,
-        borderRadius: 12,
+        border: "none",
+        borderRight: isMobile ? "none" : `1px solid ${T.border}`,
+        borderBottom: isMobile ? `1px solid ${T.border}` : "none",
+        borderRadius: 0,
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -80,8 +82,8 @@ export default function GlobalCommandRail({ T, isOpen, onToggle, onSelectDetail,
               borderBottom: `1px solid ${T.borderMuted ?? T.border}`,
             }}
           >
-            <div style={{ color: T.t1, fontSize: 13, fontWeight: 700, letterSpacing: "-0.02em", fontFamily: F.sans }}>Company command</div>
-            <div style={{ color: T.t3, fontSize: 11, fontWeight: 500, marginTop: 4 }}>Portfolio · ops · risk</div>
+            <div style={{ color: T.t1, fontSize: 12, fontWeight: 700, letterSpacing: "0.02em", fontFamily: F.sans }}>Company</div>
+            <div style={{ color: T.t3, fontSize: 11, fontWeight: 500, marginTop: 2 }}>Health · work · decisions</div>
           </div>
           <div
             style={{

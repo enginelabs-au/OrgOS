@@ -94,6 +94,72 @@ def test_effective_grants_are_intersection(
     assert response.json()["effective"] == ["run.start"]
 
 
+def test_voided_approval_blocks_job_step(
+    client: TestClient, founder_headers: dict[str, str]
+) -> None:
+    created = client.post(
+        "/approvals",
+        json={
+            "approval_class": "approval.export",
+            "requester_id": "principal-unpriv",
+            "target_id": "act-v14-3",
+            "target_version": "v1",
+        },
+        headers=founder_headers,
+    )
+    assert created.status_code == 200
+    job = client.post("/jobs", json={"purpose": "v14-3"}, headers=founder_headers)
+    assert job.status_code == 202
+    blocked = client.post(
+        f"/jobs/{job.json()['id']}/steps",
+        json={
+            "step_name": "external.write",
+            "idempotency_key": "v14-3:stale",
+            "target_id": "act-v14-3",
+            "target_version": "v0",
+        },
+        headers=founder_headers,
+    )
+    assert blocked.status_code == 403
+    assert "approval" in blocked.json()["detail"]
+    live = client.post(
+        f"/jobs/{job.json()['id']}/steps",
+        json={
+            "step_name": "external.write",
+            "idempotency_key": "v14-3:live",
+            "target_id": "act-v14-3",
+            "target_version": "v1",
+        },
+        headers=founder_headers,
+    )
+    assert live.status_code == 200
+
+
+def test_revoked_grant_blocks_queued_job_step(
+    client: TestClient, founder_headers: dict[str, str], unpriv_headers: dict[str, str]
+) -> None:
+    granted = client.post(
+        "/grants",
+        json={"principal_id": "principal-unpriv", "grant_class": "run.start"},
+        headers=founder_headers,
+    )
+    assert granted.status_code == 200
+    job = client.post("/jobs", json={"purpose": "v14-3-revoke"}, headers=unpriv_headers)
+    assert job.status_code == 202
+    revoked = client.post(
+        "/grants/revoke",
+        json={"principal_id": "principal-unpriv", "grant_class": "run.start"},
+        headers=founder_headers,
+    )
+    assert revoked.status_code == 200
+    denied = client.post(
+        f"/jobs/{job.json()['id']}/steps",
+        json={"step_name": "after-revoke", "idempotency_key": "v14-3:revoked"},
+        headers=unpriv_headers,
+    )
+    assert denied.status_code == 403
+
+
 def test_reauth_required_for_destructive(client: TestClient, founder_headers: dict[str, str]) -> None:
     denied = client.post("/admin/destructive", headers=founder_headers)
     assert denied.status_code == 401

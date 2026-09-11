@@ -1,6 +1,6 @@
 # T2-1 plan: interception spike SP-1…SP-7
 
-Status: `planned` (Cloud venue blocked; written locally 2026-09-11).  
+Status: `implemented` (2026-09-11). Mechanism D-16. `interception_verified` still false.  
 Source: Security phase-0 handoff §9.  
 Charter: `phase-2-t2-1-charter.md`.  
 Do not enable `side_effecting_toolsets` until Security re-review of this spike.
@@ -45,4 +45,4 @@ Hermes install, GitHub App, Hey Engine runtime, usage emit, enabling any toolset
 
 ## Cloud venue
 
-`Task(environment=cloud)` failed 2026-09-11: no GitHub access token for `enginelabs-au/OrgOS`. Owner: grant Cursor Cloud GitHub access to that org/repo, then relaunch. Local planning is this file.
+`Task(environment=cloud)` failed 2026-09-11: no GitHub access token for `enginelabs-au/Papership`. Owner: grant Cursor Cloud GitHub access to that org/repo, then relaunch. Local planning is this file.

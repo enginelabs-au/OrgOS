@@ -1,4 +1,4 @@
-"""Worker process: validate fail-closed config, then idle. No Hermes client."""
+"""Worker process: validate AUTH-25 artefact, then idle until jobs arrive."""
 
 from __future__ import annotations
 

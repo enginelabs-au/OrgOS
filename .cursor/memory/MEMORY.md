@@ -12,8 +12,10 @@
 - Treat prompts and role identities as guidance, not production authorization; deterministic policy and external access controls govern sensitive actions.
 - Never store passwords, tokens, private keys, or secret values in agent markdown, plans, memories, logs, or templates.
 - Capability registry status discipline (D-02 item 5): a `docs/capabilities.md` row moves from `planned` only when its evidence column cites a verified artifact; the lead, not an implementing role, changes status.
-- Product identity (D-10): OrgOS is the product; Engine Labs is the company; `www.enginelabs.com.au` is a separate site and must not be changed from this repo.
-- Agent tool boundary (AUTH-25, D-03, D-S1): the Hermes worker bearer key is transport-only; the OrgOS API owns every approval record; side-effecting toolsets stay disabled until spike SP-1…SP-7 verifies interception; the worker refuses to start if `interception_verified` is false.
+- Product identity (D-20): Papership is the product; Engine Labs is the company; `www.enginelabs.com.au` is a separate site and must not be changed from this repo. D-10 is historical (former display name OrgOS). Live slugs `orgos` / `OrgOS` remain on GitHub, Vercel, and `~/.config/orgos/` until the owner renames those providers.
+- Product UI (D-21): live web chrome is `docs/ui-blueprint/blueprint-2` exactly (cream canvas, purple field, light/dark/dimmed, docked Hey Engine). Prism-head mark is app/tab icon only — never inside the product UI. D-15 is historical for the prior hybrid/overlay shell. Fixtures are Papership/blueprint only (no invented revenue or prices).
+- Agent tool boundary (AUTH-25, D-03, D-S1, D-17): Owner authorized the documented Hermes catalog. Unknown tools denied. Write = receipt; external = Papership approval. Private/metadata egress denied. Worker may hold `HERMES_API_SERVER_KEY` (transport only; Hermes secret-scoped key, not yaml/EnvironmentFile copy). AUTH-25 startup verified 2026-09-11. Hermes HTTP API listens on VPS `127.0.0.1:8642`. Worker `api_server` is proven by capabilities 401/`run_submission`, never HEAD 405. Live `accepted` is allowed only for catalogued **read** `tool=` after intercept (Security live-tools CONDITIONAL 2026-09-11). Live `start_run` without `tool=` is refused. D-16 “keep disabled” is superseded for catalog enablement.
+- R1 V18-5 **APPROVE** recorded 2026-09-11 (`delivery/owner-handoff.md`). Live PR https://github.com/enginelabs-au/OrgOS/pull/1. Phase 4 plan is active.
 - Usage measurement (Growth GM-1…12): first-party, in-tenant, identifier/enum payloads only; every threshold without data is labelled `first-baseline`; no prices in any UI or document before the R4 owner decisions (CA-10).
 
 ## Memory role
@@ -50,12 +52,28 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Tooling pins (D-07): `docs/decisions/2026-09-11-tooling-and-pins.md`
 - Worker data access (D-08): `docs/decisions/2026-09-11-worker-data-access.md`
 - Owner H-6 ratification (D-09): `docs/decisions/2026-09-11-owner-ratification-h6.md`
-- Cloud launch blocker: `/memory/blockers/cursor-cloud-launch.md`
+- Cloud launch (fixed): `/memory/blockers-fixed/cursor-cloud-launch.md`
+- Hermes tunnel: `/memory/runbooks/orgos-hermes-tunnel.md`
+- GitHub App / model key: `docs/handover/github-app-and-model-key.md`
 - Dev environment: `/memory/runbooks/engine-labs-dev-environment.md`
 - Single Vercel site (`orgos` only; never Engine Labs marketing): `/memory/runbooks/vercel-orgos-single-site.md`
-- Product identity (D-10): `docs/decisions/2026-09-11-orgos-product-identity.md`
+- Product identity (D-10 historical): `docs/decisions/2026-09-11-orgos-product-identity.md`
+- Product name (D-20): `docs/decisions/2026-09-12-papership-product-name.md`
+- Product UI (D-21): `docs/decisions/2026-09-12-blueprint-2-product-ui.md`
+- Prism brand (D-13): `docs/decisions/2026-09-11-orgos-prism-brand.md`
+- Data responsibility (D-12): `docs/decisions/2026-09-11-data-responsibility-integrations.md`
+- User-owned data (D-14): `docs/decisions/2026-09-11-user-owned-data.md`
+- H-4 / H-5 (D-11): `docs/decisions/2026-09-11-h4-h5-provider-and-hermes-licence.md`
+- Interception (D-16): `docs/decisions/2026-09-11-interception-mechanism.md`
+- Tool enablement (D-17): `docs/decisions/2026-09-11-tool-enablement.md`
+- Wake-word spec (D-18): `docs/decisions/2026-09-11-wake-word-spike.md`
 - Phase 2 owner actions: `docs/handover/phase-2-owner-actions.md`
-- Phase 2 plan (active): `docs/plans/phase_2_development_loop_plan.md`
+- Phase 2 plan (complete_conditional): `docs/plans/phase_2_development_loop_plan.md`
+- Phase 3 plan (complete; G3 PASS-with-residuals): `docs/plans/phase_3_release_verification_plan.md`
+- Owner handoff (V18-5 APPROVE): `docs/workstreams/20260910-engine-labs-company-os/delivery/owner-handoff.md`
+- R1 checklist: `docs/plans/final_implementation_checklist.md`
+- Phase 4 plan (written, not implemented): `docs/plans/phase_4_collaboration_connections_plan.md`
+- D-19 (R2 planning from G3 CONDITIONAL; Phase 3 later closed): `docs/decisions/2026-09-11-phase-4-planning-from-g3.md`
 
 ## Existing workflow references
 

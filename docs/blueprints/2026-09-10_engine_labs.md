@@ -30,7 +30,7 @@ Two decisions govern the release plan:
 
 Performed on 2026-09-10 by the orchestrating lead (read-only):
 
-- Repository intake: full read of `docs/Company_Agent_System_Blueprint.md`; inspection of the UI reference [enginelabs-au/OrgOS](https://github.com/enginelabs-au/OrgOS) at commit `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` via GitHub MCP (`package.json`, `README.md`, `src/App.jsx`, `src/pages/`, `src/components/cc-org-dash/`, `src/lib/AuthContext.jsx`, `src/api/entities.js`).
+- Repository intake: full read of `docs/Company_Agent_System_Blueprint.md`; inspection of the UI reference [enginelabs-au/Papership](https://github.com/enginelabs-au/OrgOS) at commit `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` via GitHub MCP (`package.json`, `README.md`, `src/App.jsx`, `src/pages/`, `src/components/cc-org-dash/`, `src/lib/AuthContext.jsx`, `src/api/entities.js`).
 - Primary documentation: Hermes Agent API server ([docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/api-server)), DBOS Python programming guide ([docs](https://docs.dbos.dev/python/programming-guide)), Tauri 2 overview ([docs](https://v2.tauri.app/start/)).
 - Market scan: two web searches (agent company-OS platforms for founders; founder pain points around approvals, audit, and access sprawl) yielding six third-party comparison/analysis sources and the Paperclip repository README.
 
@@ -84,7 +84,7 @@ The intake's action lifecycle (retrieve authorised context → typed action → 
 | # | Riskiest assumption | Experiment | Pass threshold | Phase |
 |---|---|---|---|---|
 | V1 | The Hermes runtime can be governed behind an adapter without forking it | Compatibility spike against the pinned Hermes version: runs API, SSE events, idempotency keys, stop, approval endpoint, session ownership, tool interception | All seven behaviours demonstrated with contract tests; no private-API dependency | 0 → 1 |
-| V2 | OrgOS `/cc-org-dash` can become the Tauri desktop shell without visual regression | Run reference at pinned commit; capture states; load the same route inside Tauri 2 | Route loads and refreshes in the packaged app; screenshots match reference at matching viewport/theme | 0 → 1 |
+| V2 | Papership `/cc-org-dash` can become the Tauri desktop shell without visual regression | Run reference at pinned commit; capture states; load the same route inside Tauri 2 | Route loads and refreshes in the packaged app; screenshots match reference at matching viewport/theme | 0 → 1 |
 | V3 | Durable jobs survive desktop disconnect and worker restart without duplicate external effects | Kill worker/desktop before and after a write to the founder repository | Zero duplicated effects across 20 interruption trials; recovery reconciles source state before retry | 2 |
 | V4 | The governed loop is faster and safer than the founder's current IDE-agent workflow | Complete three real Engine Labs changes through the loop; measure operator interventions, context switches, wall time, cost per completed outcome | ≥1 change fully reviewed with linked evidence; intervention count and cost recorded as baseline (no target yet — first measurement) | 2 |
 | V5 | Founder can operate the product without seeing prompts, schemas, or runtime config | Usability pass over the seven core views with the Founder seat | All routine tasks completable without technical traces | 3 |
@@ -107,7 +107,7 @@ The PRD is materialized in `docs/product.md` (phase 0) from the intake and the `
 
 ## 9. MVP scope and non-goals
 
-**Release 1 (required):** blueprint phases 07 and 08 — desktop shell from OrgOS reference; cloud API and data boundary; identity and owner seat; grant checks; capability registry; work ledger; job persistence; streamed status; secure desktop connection; pinned Hermes runtime behind the adapter; repository binding; the complete development loop with review evidence and release proposal; `GlobalAgentPanel` wired to backend-mediated sessions; contract tests at runtime, source-control, and action boundaries; usage measurement and lifecycle hooks in skeletal form.
+**Release 1 (required):** blueprint phases 07 and 08 — desktop shell from Papership reference; cloud API and data boundary; identity and owner seat; grant checks; capability registry; work ledger; job persistence; streamed status; secure desktop connection; pinned Hermes runtime behind the adapter; repository binding; the complete development loop with review evidence and release proposal; `GlobalAgentPanel` wired to backend-mediated sessions; contract tests at runtime, source-control, and action boundaries; usage measurement and lifecycle hooks in skeletal form.
 
 **Required later (planned, visible):** phases 09–12 — seats, guests, delegated administration, communication connectors, provisioning-to-handover; domain modules, managed memory, schedules, adaptive views; customer deployment automation, tiers in test mode, backup/restore, offboarding, erasure; SDK, catalogue, iOS/Android.
 
@@ -120,7 +120,7 @@ Initial stack per intake, confirmed feasible against primary documentation (deta
 | Layer | Choice | Confirmation |
 |---|---|---|
 | Desktop | Tauri 2 + React + TypeScript + Vite; macOS first | Tauri 2 targets desktop and mobile with any HTML/JS frontend, uses the system webview, and is security-audited per release ([docs](https://v2.tauri.app/start/)) |
-| UI | OrgOS `/cc-org-dash` shell and `src/components/cc-org-dash/*` migrated incrementally from JSX to TS | Reference is Vite 6 / React 18 / Tailwind 3.4 / Radix; typecheck currently runs `tsc -p jsconfig.json`; no TS sources yet |
+| UI | Papership `/cc-org-dash` shell and `src/components/cc-org-dash/*` migrated incrementally from JSX to TS | Reference is Vite 6 / React 18 / Tailwind 3.4 / Radix; typecheck currently runs `tsc -p jsconfig.json`; no TS sources yet |
 | API | Python FastAPI, typed models, OpenAPI-generated client, streamed run events | Standard |
 | Durable workflows | DBOS with PostgreSQL: checkpointed workflows/steps, queues, `DBOS.sleep`, recovery from last completed step | DBOS recommends Postgres in production via `DBOS_SYSTEM_DATABASE_URL`; FastAPI integration is first-class ([docs](https://docs.dbos.dev/python/programming-guide)) |
 | Data/identity | Self-hosted Supabase (PostgreSQL, Auth, Storage) on the customer VPS | Intake requirement; compatibility spike in phase 0/1 |
@@ -184,7 +184,7 @@ The `growth-marketing-subagent` refines positioning, the measurement taxonomy (t
 | Risk | Signal | Response |
 |---|---|---|
 | Hermes cannot be governed without private APIs or a fork | V1 fails on tool interception or session ownership | Keep the adapter boundary; evaluate a thinner runtime behind the same contract; do not proceed to phase 2 until resolved |
-| OrgOS reference does not survive Tauri packaging or TS migration cleanly | V2 fails | Preserve visual language, rebuild affected screens with the same primitives; record departures in `docs/ui-blueprint.md` |
+| Papership reference does not survive Tauri packaging or TS migration cleanly | V2 fails | Preserve visual language, rebuild affected screens with the same primitives; record departures in `docs/ui-blueprint.md` |
 | Duplicate external effects under interruption | V3 fails | Block release; strengthen receipts and reconciliation before any connector work |
 | Scope pull toward 43 domains before the loop works | Registry rows moving to `working` without demonstrated workflows | Registry status discipline; PL gate rejects unsupported status |
 | Single-droplet footprint too small | V6 fails | Size up before pilot; document cost; do not pre-optimise before measurement |

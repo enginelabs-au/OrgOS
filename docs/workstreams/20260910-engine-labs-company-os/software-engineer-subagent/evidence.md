@@ -41,7 +41,7 @@ One record per material claim. No secret values. Environment for every record un
 ## EV-S03 — Reference clone at pinned commit
 
 - Requirement ID: T0-8 item c; phase 0 plan §6 task 3; NFR-3 (fidelity baseline)
-- Claim: `enginelabs-au/OrgOS` is cloned into `.reference/orgos` at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` (single commit "Initial OrgOS import.", 2026-09-10T23:07:59+10:00) and is git-ignored by the parent repository.
+- Claim: `enginelabs-au/Papership` is cloned into `.reference/orgos` at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` (single commit "Initial Papership import.", 2026-09-10T23:07:59+10:00) and is git-ignored by the parent repository.
 - Evidence state: `VERIFIED`
 - Method: `git clone` + `git checkout <sha>` + `git rev-parse HEAD`; file inventory hashed
 - Exact command or tool: `git clone https://github.com/enginelabs-au/OrgOS .reference/orgos && git -C .reference/orgos checkout 8a843bd6429faf1ace5a9eb6dcfb7440703d34c4 && git -C .reference/orgos rev-parse HEAD`; `shasum -a 256` over `src/pages/cc-org-dash.jsx` and `src/components/cc-org-dash/*`
@@ -129,7 +129,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `PARTIAL` (server verified; captures UNVERIFIED)
 - Method: background managed shell; `curl -sI`; `GetDynamicTools` discovery then `browser_navigate` attempts
 - Exact command or tool: `cd .reference/orgos && exec npm run dev -- --port 5173 --strictPort --host 127.0.0.1` (managed background shell 157409, PID 86187); `curl -sI http://127.0.0.1:5173/cc-org-dash`; `cursor-ide-browser.browser_tabs {action:list}`, `browser_navigate` ×5
-- Artifact, path, source, or stable reference: `docs/ui-blueprint.md` §0.4 (capture index 0/52, attempt log, seeding script, restart instructions); dev-server log `/Users/camdouglas/.cursor/projects/Users-camdouglas-OrgOS/terminals/157409.txt`; `docs/ui-blueprint/` (empty — 0 files)
+- Artifact, path, source, or stable reference: `docs/ui-blueprint.md` §0.4 (capture index 0/52, attempt log, seeding script, restart instructions); dev-server log `/Users/camdouglas/.cursor/projects/Users-camdouglas-Papership/terminals/157409.txt`; `docs/ui-blueprint/` (empty — 0 files)
 - Sanitized result and exit status: `HTTP/1.1 200 OK` (re-confirmed 2026-09-10T16:58Z, process elapsed 16:01); module probes `/src/pages/cc-org-dash.jsx` 200; browser attempts failed with "No browser tab available" / "Browser view not found: c07e4f" (5 attempts, within the ≤4-justified-attempts rule after the first discovery call; stopped per policy).
 - Timestamp: 2026-09-10T16:30Z–16:45Z; re-check 2026-09-10T16:58Z
 - Environment: as header; first `nohup npm run dev &` attempt died with the shell — replaced by the managed background job.

@@ -409,6 +409,36 @@ Prefer built-in project scripts and official tooling over improvised alternative
 
 ---
 
+### Tool: Local Papership API and Hermes tunnel
+
+**Category**
+
+- service / infrastructure / terminal
+
+**Purpose**
+
+- Run the least local processes needed for Papership: one API (`scripts/dev-local.sh`) and one SSH tunnel (`scripts/hermes-tunnel.sh`) to the existing Hermes serve on Host `hermes-vps` (`127.0.0.1:9119`). No Redis. No second Hermes process.
+
+**When to use**
+
+- Local platform or desktop work that needs `/health` or later (after T2-1) a Hermes hop. Health-only until interception is verified.
+
+**How to access**
+
+- `bash scripts/hermes-tunnel.sh` then `bash scripts/dev-local.sh`. Probe `http://127.0.0.1:8000/health`. Hermes HTTP API is `:8642` (HEAD `/health` 405 = reachable; GET may hang). `hermes serve` on `:9119` is the login UI. SSH config Host `hermes-vps` is sufficient; do not read the client-agents `.env`.
+
+**Constraints**
+
+- Do not copy VPS `auth.json` or start a second `hermes serve`. Side-effecting toolsets stay disabled. Do not store secret values in the repo.
+
+**Related files**
+
+- `/memory/runbooks/orgos-hermes-tunnel.md`
+- `scripts/hermes-tunnel.sh`
+- `scripts/dev-local.sh`
+
+---
+
 ### Tool: Agent policy hooks and security review
 
 **Category**

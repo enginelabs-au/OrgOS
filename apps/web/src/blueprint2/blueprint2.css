@@ -1,0 +1,144 @@
+/* Blueprint-2 tokens — exact copy of docs/ui-blueprint/blueprint-2/OrgOS.dc.html */
+.bp2-root {
+  --canvas: #faf8f4;
+  --surface: #ffffff;
+  --raised: #f1eee6;
+  --t1: #1a1224;
+  --t2: #63738a;
+  --t3: #617083;
+  --line: rgba(26, 18, 36, 0.11);
+  --line2: rgba(26, 18, 36, 0.06);
+  --hover: rgba(26, 18, 36, 0.04);
+  --wash: linear-gradient(180deg, #f7f4ee, #f3efe6, #faf8f4);
+  --navfield: #6d28d9;
+  --navfield2: #5b21b6;
+  --navink: #efe7ff;
+  --navink2: #c4b5fd;
+  --blue: #2563eb;
+  --blue-h: #1d4ed8;
+  --blue-soft: rgba(37, 99, 235, 0.1);
+  --green: #059669;
+  --red: #e11d48;
+  --amber: #d97706;
+  --green-soft: rgba(5, 150, 105, 0.1);
+  --red-soft: rgba(225, 29, 72, 0.08);
+  --amber-soft: rgba(217, 119, 6, 0.1);
+  --shadow: 0 1px 2px rgba(26, 18, 36, 0.05), 0 8px 24px rgba(26, 18, 36, 0.07);
+  --shadow-lg: 0 24px 64px rgba(26, 18, 36, 0.18);
+  height: 100dvh;
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+  background: var(--canvas);
+  color: var(--t1);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bp2-root[data-theme="dark"] {
+  --canvas: #0b0614;
+  --surface: #16101f;
+  --raised: #1c1528;
+  --t1: #f2eef8;
+  --t2: #9fb0cc;
+  --t3: #a9b8d2;
+  --line: rgba(242, 238, 248, 0.12);
+  --line2: rgba(242, 238, 248, 0.07);
+  --hover: rgba(242, 238, 248, 0.05);
+  --wash: linear-gradient(180deg, #0b0614, #12081e, #0a0e22);
+  --navfield: #16082e;
+  --navfield2: #1d0b3a;
+  --navink: #f2eef8;
+  --navink2: #b9a6e6;
+  --blue: #3b82f6;
+  --blue-h: #60a5fa;
+  --blue-soft: rgba(59, 130, 246, 0.16);
+  --green: #4ade80;
+  --red: #fb7185;
+  --amber: #fbbf24;
+  --green-soft: rgba(74, 222, 128, 0.13);
+  --red-soft: rgba(251, 113, 133, 0.12);
+  --amber-soft: rgba(251, 191, 36, 0.13);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+.bp2-root[data-theme="dimmed"] {
+  --canvas: #1e2438;
+  --surface: #232840;
+  --raised: #2a3050;
+  --t1: #eef1fa;
+  --t2: #a6b2cf;
+  --t3: #b3bed8;
+  --line: rgba(238, 241, 250, 0.12);
+  --line2: rgba(238, 241, 250, 0.07);
+  --hover: rgba(238, 241, 250, 0.05);
+  --wash: linear-gradient(180deg, #1e2438, #222842, #1e2438);
+  --navfield: #181d2e;
+  --navfield2: #202641;
+  --navink: #eef1fa;
+  --navink2: #b6c1dd;
+  --blue: #3b82f6;
+  --blue-h: #60a5fa;
+  --blue-soft: rgba(59, 130, 246, 0.16);
+  --green: #4ade80;
+  --red: #fb7185;
+  --amber: #fbbf24;
+  --green-soft: rgba(74, 222, 128, 0.13);
+  --red-soft: rgba(251, 113, 133, 0.12);
+  --amber-soft: rgba(251, 191, 36, 0.13);
+}
+
+.bp2-root a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.bp2-root a:hover {
+  color: var(--blue-h);
+  text-decoration: underline;
+}
+.bp2-root * {
+  box-sizing: border-box;
+}
+
+@keyframes ogblink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes ogcaret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp2-root * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.bp2-root ::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.bp2-root ::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 6px;
+}
+.bp2-root ::-webkit-scrollbar-track {
+  background: transparent;
+}

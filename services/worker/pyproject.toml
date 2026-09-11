@@ -1,7 +1,7 @@
 [project]
 name = "engine-labs-worker"
 version = "0.1.0"
-description = "Engine Labs worker skeleton (no Hermes client)"
+description = "Engine Labs worker + Hermes adapter"
 requires-python = ">=3.11"
 license = { text = "SEE LICENSE IN LICENSE" }
 dependencies = [

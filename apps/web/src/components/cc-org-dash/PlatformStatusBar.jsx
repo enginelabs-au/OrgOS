@@ -28,12 +28,12 @@ export const SIGNAL_LABELS = {
 };
 
 const EVENT_TEMPLATES = [
-  { kind: "auth", verbs: ["signed in", "signed out"], actors: ["Jordan K.", "Priya S.", "Alex M.", "Sam T."] },
-  { kind: "org", verbs: ["updated team roster", "changed billing contact", "edited workspace policy"], actors: ["Admin", "Finance Ops"] },
-  { kind: "file", verbs: ["uploaded", "downloaded", "shared"], actors: ["Q4-plan.pdf", "schema.sql", "logo-pack.zip", "export.csv"] },
-  { kind: "data", verbs: ["ran sync job", "refreshed warehouse"], actors: ["nightly-etl", "crm-bridge"] },
-  { kind: "integration", verbs: ["connected", "reauthorized"], actors: ["Slack", "Salesforce", "GitHub"] },
-  { kind: "security", verbs: ["API key rotated", "MFA enrollment"], actors: ["production", "staging"] },
+  { kind: "auth", verbs: ["signed in", "signed out"], actors: ["Cam D.", "Hey Engine", "Loop runner"] },
+  { kind: "org", verbs: ["updated grant class", "recorded a decision", "edited workspace policy"], actors: ["Founder", "Project Lead"] },
+  { kind: "file", verbs: ["uploaded", "downloaded", "shared"], actors: ["phase_2_plan.md", "blueprint.md", "orgos-icon.png"] },
+  { kind: "data", verbs: ["ran sync job", "refreshed warehouse"], actors: ["usage-emit", "ledger"] },
+  { kind: "integration", verbs: ["connected", "reauthorized"], actors: ["Hermes", "GitHub App", "Vercel orgos"] },
+  { kind: "security", verbs: ["API key rotated", "MFA enrollment"], actors: ["local-dev", "founder-seat"] },
 ];
 
 function signalKeyForTemplate(kind, verb, message) {
@@ -181,18 +181,18 @@ export default function PlatformStatusBar({ T }) {
       kind: ["auth", "file", "org", "data"][i % 4],
       signalKey: SEED_SIGNALS[i],
       message: [
-        "Jordan K. signed in",
-        "uploaded Q4-plan.pdf",
-        "Admin: updated team roster",
-        "nightly-etl completed",
-        "Priya S. signed out",
-        "shared export.csv",
-        "Finance Ops: changed billing contact",
-        "refreshed warehouse · crm-bridge",
-        "Alex M. signed in",
-        "downloaded schema.sql",
-        "Slack reauthorized",
-        "API key rotated · production",
+        "Cam D. signed in",
+        "uploaded phase_2_plan.md",
+        "Founder: recorded a decision",
+        "usage-emit completed",
+        "Hey Engine signed out",
+        "shared blueprint.md",
+        "Project Lead: updated grant class",
+        "refreshed ledger · usage-emit",
+        "Loop runner signed in",
+        "downloaded architecture.md",
+        "GitHub App reauthorized",
+        "API key rotated · local-dev",
       ][i],
     }));
   });

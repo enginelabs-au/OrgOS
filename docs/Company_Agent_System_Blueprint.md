@@ -34,7 +34,7 @@ Treat phases 01–18 below as ordered blueprint requirements, not eighteen pre-g
 
 Inspect existing code, dependencies and supplied designs before changing them. Select maintained, compatible technologies and verify uncertain claims against primary documentation. Record material decisions under `docs/decisions/`. After bootstrap, generate the evidence-based strategy assessment at `docs/blueprints/YYYY-MM-DD_engine_labs.md` using STRATEGY.md's structure, linking this intake and approved decisions. Preserve the full domain registry; assess the initial development workflow, alternatives, value hypothesis, validation thresholds and later commercial expansion without silently changing the product's direction.
 
-Use [enginelabs-au/OrgOS](https://github.com/enginelabs-au/OrgOS) as the authoritative UI reference, starting from main at commit [8a843bd6429faf1ace5a9eb6dcfb7440703d34c4](https://github.com/enginelabs-au/OrgOS/tree/8a843bd6429faf1ace5a9eb6dcfb7440703d34c4). Inspect source before Build; after bootstrap, install from the committed lockfile, run the reference UI and capture its states. Record the commit, files, launch commands and screenshots in `docs/ui-blueprint.md`. Record deliberate reference updates instead of silently following main.
+Use [enginelabs-au/Papership](https://github.com/enginelabs-au/OrgOS) as the authoritative UI reference, starting from main at commit [8a843bd6429faf1ace5a9eb6dcfb7440703d34c4](https://github.com/enginelabs-au/OrgOS/tree/8a843bd6429faf1ace5a9eb6dcfb7440703d34c4). Inspect source before Build; after bootstrap, install from the committed lockfile, run the reference UI and capture its states. Record the commit, files, launch commands and screenshots in `docs/ui-blueprint.md`. Record deliberate reference updates instead of silently following main.
 
 Index this intake and generated product, capability, architecture, UI, policy, roadmap and verification documents from `docs/README.md`, the manifest and `.cursor/STATE.md`. After substantive work, reconcile the active plan, role/gate, predecessor handoff, blockers and next action; append evidence to `.cursor/memory/memories/YYYY-MM-DD-continuation.md` and keep durable links in `.cursor/memory/MEMORY.md`. Resume from that evidence without repeating completed planning or asking answered questions.
 
@@ -113,7 +113,7 @@ Define acceptance at two levels: a working first development loop, then increasi
 
 ### Phase 03 — Plan the member experience and authority model
 
-Design the Engine Labs desktop experience from OrgOS' active `/cc-org-dash` route: `src/App.jsx` routes the root there and `src/pages/cc-org-dash.jsx` assembles the shell. Treat `src/pages/Dashboard.jsx` and `src/pages/Dashboard_new.jsx` as secondary references unless the baseline is explicitly changed. Preserve the active shell's visual language and interaction patterns; replace prototype branding with Engine Labs.
+Design the Engine Labs desktop experience from Papership' active `/cc-org-dash` route: `src/App.jsx` routes the root there and `src/pages/cc-org-dash.jsx` assembles the shell. Treat `src/pages/Dashboard.jsx` and `src/pages/Dashboard_new.jsx` as secondary references unless the baseline is explicitly changed. Preserve the active shell's visual language and interaction patterns; replace prototype branding with Engine Labs.
 
 Map the following reference components under `src/components/cc-org-dash/` into the design specification:
 
@@ -127,7 +127,7 @@ Map the following reference components under `src/components/cc-org-dash/` into 
 
 Preserve the defined THEMES, Inter/JetBrains Mono typography, spacing, primary tabs, command rail, assistant panel and overlay behaviour. Use `src/index.css` and `src/components/ui/` as supporting sources; preserve the bespoke screen primitives when adapting reusable components. Capture responsive and interaction states before proposing changes.
 
-Fit system health, active priorities, running work, required decisions and a universal assistant asking “What would you like to do?” into the OrgOS layout. Map existing screens and components to these requirements before adding new ones. Extend missing views using the same design system. Provide role-appropriate detail without exposing prompts, API schemas or runtime configuration to normal operators.
+Fit system health, active priorities, running work, required decisions and a universal assistant asking “What would you like to do?” into the Papership layout. Map existing screens and components to these requirements before adding new ones. Extend missing views using the same design system. Provide role-appropriate detail without exposing prompts, API schemas or runtime configuration to normal operators.
 
 Provide three initial seat templates:
 
@@ -151,7 +151,7 @@ Adapt layout, visible capabilities and information density to explicit intent, r
 
 Learn preferences within the member's scope with settings to inspect, disable and reset personalisation. Optimise task completion and error reduction. Develop new components or shared behaviour through the normal code review and release process.
 
-Produce a design specification for the home, work item, assistant, agent run, connection setup, memory manager and permissions editor, with each view mapped to OrgOS components or a documented extension. Record reusable code, required adaptations and material departures in docs/ui-blueprint.md. Ask about material aesthetic departures before implementing them. Preserve the product's permission, accessibility and cloud-execution requirements when adapting reference interactions.
+Produce a design specification for the home, work item, assistant, agent run, connection setup, memory manager and permissions editor, with each view mapped to Papership components or a documented extension. Record reusable code, required adaptations and material departures in docs/ui-blueprint.md. Ask about material aesthetic departures before implementing them. Preserve the product's permission, accessibility and cloud-execution requirements when adapting reference interactions.
 
 ### Phase 04 — Plan cloud architecture and connections
 
@@ -170,7 +170,7 @@ Use this initial stack, preserving suitable existing repository choices where re
 | Deployment | Docker Compose on a dedicated DigitalOcean Droplet per customer initially; reproducible, provider-portable infrastructure configuration |
 | Operations | Structured logs, run traces, health checks, cost metrics, alerting, encrypted backups and tested restore procedures |
 
-Reuse OrgOS' React/Vite frontend, Tailwind styles and compatible Radix/shadcn components. Migrate its JavaScript/JSX incrementally to TypeScript within the desktop stack, preserving appearance and behaviour. Validate dependency compatibility and desktop routing before changing versions or packaging.
+Reuse Papership' React/Vite frontend, Tailwind styles and compatible Radix/shadcn components. Migrate its JavaScript/JSX incrementally to TypeScript within the desktop stack, preserving appearance and behaviour. Validate dependency compatibility and desktop routing before changing versions or packaging.
 
 Replace the shell's browser-stored prototype session and `src/lib/AuthContext.jsx` development authentication with real identity and server-enforced grants. Replace `src/api/entities.js` localStorage records with the cloud API; retain only permitted local preferences/cache. Isolate fixtures from `src/components/cc-org-dash/data.jsx`, synthetic charts and simulated agent responses as labelled demo data. Map each screen to authenticated contracts and real loading, empty, failure and permission states. Do not count reference screens or sample data as implemented capabilities.
 
@@ -305,7 +305,7 @@ Use `docs/verification.md` as an index to requirement IDs, release revision, con
 
 Read the accepted active plan, manifest, role charter and predecessor handoffs. Require successful bootstrap and verified phase-zero completion before starting this implementation phase. Scaffold the smallest coherent repository: desktop/UI, API, agent adapter boundary, shared contracts and deployment configuration. Preserve useful existing code and the installed launch protocol.
 
-Adapt `src/pages/cc-org-dash.jsx` and its component tree into the desktop shell from the recorded OrgOS reference. Reuse its UI components, design tokens and assets. Validate route loading and refresh in the packaged desktop app. Connect the interface to Engine Labs contracts and real states, replacing reference fixtures through the planned data adapters.
+Adapt `src/pages/cc-org-dash.jsx` and its component tree into the desktop shell from the recorded Papership reference. Reuse its UI components, design tokens and assets. Validate route loading and refresh in the packaged desktop app. Connect the interface to Engine Labs contracts and real states, replacing reference fixtures through the planned data adapters.
 
 Implement the cloud data boundary, identity, owner seat, grant checks, capability registry, work ledger, source references, job persistence, streamed status and secure desktop connection. Provide a seeded development environment and ordinary-language empty/error states.
 
@@ -337,7 +337,7 @@ Expand memory management, schedules and specialist agents with source-aware retr
 
 Maintain domain-independent capabilities, provider-specific adapters and explicit upgrade/uninstall behaviour. Keep unconfigured functions discoverable without crowding daily work.
 
-Build new domain views and adaptive layouts from the OrgOS-derived component registry. Preserve the accepted visual baseline as capabilities expand.
+Build new domain views and adaptive layouts from the Papership-derived component registry. Preserve the accepted visual baseline as capabilities expand.
 
 ### Phase 11 — Build commercial delivery
 
@@ -351,7 +351,7 @@ Measure capacity and cost under realistic work, browser and agent concurrency. E
 
 Expand remaining market domains through capabilities, connectors and domain modules. Prepare stable extension contracts, fixtures and compatibility checks; publish only through the authorised release process. Allow authorised roles to configure declarative extensions within their grants; review executable extensions before activation.
 
-Build iOS and Android clients against the same authenticated cloud API and reusable interface contracts. Adapt the OrgOS visual language to mobile navigation, notifications, secure authentication and explicit offline behaviour. Preserve cloud execution and authorisation across devices.
+Build iOS and Android clients against the same authenticated cloud API and reusable interface contracts. Adapt the Papership visual language to mobile navigation, notifications, secure authentication and explicit offline behaviour. Preserve cloud execution and authorisation across devices.
 
 Maintain the complete capability registry, migration paths, operational runbooks and phase evidence as the product evolves.
 
@@ -391,7 +391,7 @@ Compare implemented screens and interaction states with the recorded `/cc-org-da
 
 Check keyboard navigation, focus, accessible labels, contrast, responsive layout and readable empty/error states. Confirm an operator can complete routine work without technical traces or special prompting. Compare results across the Founder, Project Lead and Operator scopes that are enabled.
 
-For adaptive views, verify stable navigation and critical controls, permitted data access, valid component schemas, pinning, undo and fallback. Compare completion time and errors with fixed views. Confirm adaptations remain within the OrgOS-derived design system and flag material aesthetic decisions for the owner.
+For adaptive views, verify stable navigation and critical controls, permitted data access, valid component schemas, pinning, undo and fallback. Compare completion time and errors with fixed views. Confirm adaptations remain within the Papership-derived design system and flag material aesthetic decisions for the owner.
 
 ### Phase 17 — Verify usage, deployment and commercial operations
 

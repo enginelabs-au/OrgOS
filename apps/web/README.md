@@ -1,4 +1,4 @@
-# OrgOS
+# Papership
 
 Local-first dashboard UI (cc-org-dash shell, roster/reporting views, and related screens).
 

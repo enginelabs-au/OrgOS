@@ -26,10 +26,10 @@ def validate_startup(config: dict[str, Any], *, root: Path | None = None) -> Non
     verified = bool(config.get("interception_verified"))
     artefact = config.get("interception_artefact") or {}
     toolsets = config.get("side_effecting_toolsets") or {}
-    enabled = [name for name, spec in toolsets.items() if spec and spec.get("enabled")]
+    enabled = [name for name, spec in toolsets.items() if spec and spec.get("enabled") is True]
     if not enabled:
         return
-    if not verified:
+    if verified is not True:
         raise StartupPolicyError(
             f"side-effecting toolset(s) enabled ({', '.join(enabled)}) but interception_verified is false"
         )
@@ -45,6 +45,16 @@ def validate_startup(config: dict[str, Any], *, root: Path | None = None) -> Non
     digest = hashlib.sha256(full.read_bytes()).hexdigest()
     if digest != expected:
         raise StartupPolicyError("interception artefact hash mismatch")
+    expected_catalog = (config.get("catalog_sha256") or "").lower()
+    if not expected_catalog:
+        raise StartupPolicyError("enabled side-effecting toolset requires catalog_sha256")
+    base = root if root is not None else Path.cwd()
+    catalog_file = base / "policy_hooks" / "catalog.py"
+    if not catalog_file.is_file():
+        raise StartupPolicyError(f"catalog missing: {catalog_file}")
+    catalog_digest = hashlib.sha256(catalog_file.read_bytes()).hexdigest()
+    if catalog_digest != expected_catalog:
+        raise StartupPolicyError("catalog hash mismatch")
 
 
 def validate_default(config_path: str | None = None) -> None:

@@ -8,7 +8,7 @@ Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`.
 
 ## Context
 
-The OrgOS `/cc-org-dash` reference (pinned `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`) has eight primary tabs (Dashboard, Work, Inbox, People, Data, Files, Integrations, Settings, plus a hidden `account` tab) and styles every shell component inline from a `THEMES` object with `light`/`dark`/`dimmed` variants of 40 keys each. SE verification found 0 `className` usages and 0 CSS-variable reads in any shell file; only `react`/`react-dom` are imported (EV-S07). The intake requires the desktop to preserve the OrgOS design language while the R1 scope (D-05) covers only the development loop, so the tab set must match what is actually available and honest (`unavailable` rows visible, no simulated controls — AUTH-28).
+The Papership `/cc-org-dash` reference (pinned `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`) has eight primary tabs (Dashboard, Work, Inbox, People, Data, Files, Integrations, Settings, plus a hidden `account` tab) and styles every shell component inline from a `THEMES` object with `light`/`dark`/`dimmed` variants of 40 keys each. SE verification found 0 `className` usages and 0 CSS-variable reads in any shell file; only `react`/`react-dom` are imported (EV-S07). The intake requires the desktop to preserve the Papership design language while the R1 scope (D-05) covers only the development loop, so the tab set must match what is actually available and honest (`unavailable` rows visible, no simulated controls — AUTH-28).
 
 ## Decision
 

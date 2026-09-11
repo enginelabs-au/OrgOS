@@ -102,7 +102,9 @@ export type WorkItem = {
   id: string;
   title?: string;
   status?: string;
+  stage?: string;
   evidence?: Array<{ id?: string; summary?: string }>;
+  loop?: Array<{ stage?: string; evidence?: string }>;
 };
 
 export type JobRecord = {

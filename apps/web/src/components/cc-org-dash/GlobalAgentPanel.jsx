@@ -20,7 +20,7 @@ function newSession(id, title) {
     messages: [
       {
         role: "assistant",
-        text: "I'm your platform agent — ask across projects, inbox, people, and integrations. Open another tab for a parallel thread.",
+        text: "Hey Engine. I stay on the Papership API — I will not call Hermes write tools until T2-1 passes. Ask about the loop, grants, or the GitHub App.",
       },
     ],
     input: "",
@@ -66,7 +66,7 @@ export default function GlobalAgentPanel({ T, open, onClose, isMobile, topOffset
         { role: "user", text: t },
         {
           role: "assistant",
-          text: `[Demo] Using ${model} @ ${temperature.toFixed(2)} · ${scope} · ${sources.join(", ")}. Add an API key in Settings → AI for live replies.`,
+          text: `[Stub] Models go through Hermes after T2-1. Scope ${scope}. This panel is not a live session yet.`,
         },
       ],
     }));

@@ -14,6 +14,10 @@ from fastapi.responses import JSONResponse, StreamingResponse
 
 from app.auth import AuthContext, auth_dep, require_reauth
 from app.config import load_settings
+from app.github_app import GithubError, installation_permissions, list_pulls, open_pull, probe_github
+from app.github_grants import intersect_repo_grants, may_open_pull
+from app.hermes_health import probe_hermes
+from app.loop import LOOP_STAGES
 from app.grants import effective_grants
 from app.logging_util import TraceMiddleware, configure_logging
 from app.store import Store, StoreError
@@ -31,7 +35,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
     store = Store(settings.store_path)
     store.seed_founder()
 
-    app = FastAPI(title="OrgOS API", version="0.1.0")
+    app = FastAPI(title="Papership API", version="0.1.0")
     app.state.settings = settings
     app.state.store = store
     app.add_middleware(TraceMiddleware, logger=logger)
@@ -40,17 +44,30 @@ def create_app(store_path: str | None = None) -> FastAPI:
     async def store_error(_request: Request, exc: StoreError) -> JSONResponse:
         return JSONResponse({"detail": str(exc)}, status_code=exc.status_code)
 
+    @app.exception_handler(GithubError)
+    async def github_error(_request: Request, exc: GithubError) -> JSONResponse:
+        return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
+
     @app.get("/health")
     def health() -> dict[str, Any]:
         db = store.health_db()
         dbos = "ok" if db == "ok" else "error"
+        hermes = probe_hermes(settings.hermes_api_base_url)
+        github = probe_github(
+            settings.github_app_id,
+            settings.github_installation_id,
+            settings.github_private_key_path,
+            live=not settings.test_hooks,
+        )
         return {
             "status": "ok" if db == "ok" else "degraded",
             "db": db,
             "dbos": dbos,
             "worker_config": "ok",
-            "hermes": "not_configured",
-            "github": "not_configured",
+            "hermes": hermes,
+            "hermes_pin": settings.hermes_version_pin,
+            "usage_emit": settings.usage_emit,
+            "github": github,
         }
 
     @app.get("/registry")
@@ -59,14 +76,40 @@ def create_app(store_path: str | None = None) -> FastAPI:
         return {
             "items": items,
             "count": len(items),
-            "hermes_side_effecting_tools": "unavailable",
+            "hermes_side_effecting_tools": "catalogued",
+            "loop_stages": list(LOOP_STAGES),
         }
+
+    @app.get("/seats/templates")
+    def seat_templates(_ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_seat_templates()}
+
+    @app.post("/members/invites")
+    def create_member_invite(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return store.create_invite(
+            actor_id=ctx.principal_id,
+            tenant_id=ctx.tenant_id,
+            template=str(body.get("template") or ""),
+            label=str(body.get("label") or ""),
+        )
 
     @app.post("/grants")
     def create_grant(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         if not store.has_grant(ctx.principal_id, "org.admin"):
             raise HTTPException(status_code=403, detail="denied")
         return store.add_grant(body["principal_id"], body["grant_class"], ctx.tenant_id)
+
+    @app.post("/grants/revoke")
+    def revoke_grant(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return {
+            "revoked": store.revoke_grant(body["principal_id"], body["grant_class"]),
+            "principal_id": body["principal_id"],
+            "grant_class": body["grant_class"],
+        }
 
     @app.post("/entitlements")
     def create_entitlement(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
@@ -121,6 +164,21 @@ def create_app(store_path: str | None = None) -> FastAPI:
     @app.get("/work-items")
     def get_work_items(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         return {"items": store.list_visible("work_items", ctx.principal_id)}
+
+    @app.get("/work-items/{work_item_id}")
+    def get_work_item(work_item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.get_work_item(ctx.principal_id, work_item_id)
+
+    @app.post("/work-items/{work_item_id}/stage")
+    def post_work_item_stage(
+        work_item_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)
+    ) -> dict[str, Any]:
+        return store.advance_stage(
+            ctx.principal_id,
+            work_item_id,
+            str(body.get("stage") or ""),
+            body.get("evidence"),
+        )
 
     @app.post("/assignments")
     def post_assignment(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
@@ -190,7 +248,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
         # persist-before-202: job is on disk before this response is built
         if settings.test_hooks and os.environ.get("ENGINE_TEST_CRASH_AFTER_PERSIST") == "1":
             raise RuntimeError("crash after persist")
-        store.start_job(job["id"])
+        store.start_job(job["id"], ctx.principal_id)
         if body.get("purpose", "dev.long_step") == "dev.long_step":
             store.add_receipt(job["id"], "long_step", body.get("idempotency_key") or f"{job['id']}:long_step")
             store.complete_job(job["id"])
@@ -215,6 +273,9 @@ def create_app(store_path: str | None = None) -> FastAPI:
             ctx.principal_id, "org.admin"
         ):
             raise HTTPException(status_code=403, detail="denied")
+        if body.get("target_id"):
+            store.require_live_approval(str(body["target_id"]), str(body.get("target_version") or "1"))
+            store.void_approval_if_changed(str(body["target_id"]), str(body.get("target_version") or "1"))
         return store.add_receipt(job_id, body["step_name"], body["idempotency_key"])
 
     @app.get("/jobs/{job_id}/events")
@@ -255,6 +316,153 @@ def create_app(store_path: str | None = None) -> FastAPI:
     def destructive(ctx: AuthContext = Depends(auth_dep)) -> dict[str, str]:
         require_reauth(ctx)
         return {"status": "ok"}
+
+    @app.get("/github/pulls")
+    def github_list_pulls(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return list_pulls(
+            settings.github_app_id,
+            settings.github_installation_id,
+            settings.github_private_key_path,
+            owner=settings.github_owner,
+            repo=settings.github_repo,
+        )
+
+    @app.get("/github/grants")
+    def github_grant_intersection(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        orgos = {
+            row["grant_class"]
+            for row in store.conn.execute(
+                "SELECT grant_class FROM grants WHERE principal_id=?",
+                (ctx.principal_id,),
+            ).fetchall()
+        }
+        perms = installation_permissions(
+            settings.github_app_id,
+            settings.github_installation_id,
+            settings.github_private_key_path,
+        )
+        effective = sorted(intersect_repo_grants(orgos, perms))
+        return {
+            "orgos": sorted(g for g in orgos if g.startswith("repo.")),
+            "installation": perms,
+            "effective": effective,
+        }
+
+    @app.post("/assistant/sessions")
+    def create_assistant_session(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.create_conversation(ctx.principal_id, str(body.get("title") or "Hey Engine"), str(body.get("mode") or "Ask"))
+
+    @app.get("/assistant/sessions")
+    def list_assistant_sessions(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_conversations(ctx.principal_id)}
+
+    @app.get("/assistant/sessions/{session_id}")
+    def get_assistant_session(session_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {
+            "id": session_id,
+            "messages": store.list_messages(ctx.principal_id, session_id),
+        }
+
+    @app.post("/assistant/sessions/{session_id}/turns")
+    def post_assistant_turn(
+        session_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)
+    ) -> dict[str, Any]:
+        text = str(body.get("content") or "").strip()
+        if not text:
+            raise HTTPException(status_code=400, detail="content is required")
+        user_msg = store.add_message(ctx.principal_id, session_id, "user", text)
+        job = store.persist_job(ctx.principal_id, "assistant.turn")
+        hermes = probe_hermes(settings.hermes_api_base_url)
+        if hermes != "reachable":
+            assistant = store.add_message(
+                ctx.principal_id,
+                session_id,
+                "system",
+                "Hermes API server is not reachable. Your message is saved. Closing this panel will not discard it.",
+            )
+            store.add_receipt(job["id"], "assistant.blocked_runtime", f"{job['id']}:blocked")
+            runtime = {"status": "blocked_runtime", "hermes": hermes}
+        else:
+            assistant = store.add_message(
+                ctx.principal_id,
+                session_id,
+                "system",
+                "Message saved. The worker starts a Hermes run when the API server (not the login UI) is listening.",
+            )
+            store.add_receipt(job["id"], "assistant.queued", f"{job['id']}:queued")
+            runtime = {"status": "queued", "hermes": hermes}
+        return {"user": user_msg, "reply": assistant, "job": job, "runtime": runtime}
+
+    @app.post("/runs")
+    def post_run(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> JSONResponse:
+        job = store.persist_job(ctx.principal_id, str(body.get("purpose") or "run"))
+        store.add_receipt(job["id"], "run.persist", str(body.get("idempotency_key") or f"{job['id']}:start"))
+        hermes = probe_hermes(settings.hermes_api_base_url)
+        runtime = {
+            "status": "queued" if hermes == "reachable" else "blocked_runtime",
+            "hermes": hermes,
+        }
+        return JSONResponse({"job": job, "runtime": runtime}, status_code=202)
+
+    @app.post("/github/pulls")
+    def github_open_pull(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin") and not store.has_grant(
+            ctx.principal_id, "repo.change"
+        ):
+            raise HTTPException(status_code=403, detail="denied")
+        dry_run = body.get("dry_run", True)
+        if dry_run is False or dry_run == "false":
+            require_reauth(ctx)
+            dry = False
+            configured = bool(
+                (settings.github_app_id or "").strip()
+                and (settings.github_installation_id or "").strip()
+                and (settings.github_private_key_path or "").strip()
+            )
+            if configured:
+                orgos = {
+                    row["grant_class"]
+                    for row in store.conn.execute(
+                        "SELECT grant_class FROM grants WHERE principal_id=?",
+                        (ctx.principal_id,),
+                    ).fetchall()
+                }
+                perms = installation_permissions(
+                    settings.github_app_id,
+                    settings.github_installation_id,
+                    settings.github_private_key_path,
+                )
+                if not perms:
+                    raise HTTPException(
+                        status_code=403,
+                        detail="installation permissions are empty; refuse live open",
+                    )
+                if not may_open_pull(orgos, perms):
+                    raise HTTPException(
+                        status_code=403,
+                        detail="repo.change is not in the installation intersection",
+                    )
+        else:
+            dry = True
+        result = open_pull(
+            settings.github_app_id,
+            settings.github_installation_id,
+            settings.github_private_key_path,
+            owner=str(body.get("owner") or settings.github_owner),
+            repo=str(body.get("repo") or settings.github_repo),
+            title=str(body.get("title") or ""),
+            body=str(body.get("body") or ""),
+            head=str(body.get("head") or ""),
+            base=str(body.get("base") or "main"),
+            dry_run=dry,
+        )
+        store.append_audit(
+            ctx.principal_id,
+            "github.pull.plan" if dry else "github.pull.open",
+            "repo",
+            f"{result.get('planned', {}).get('owner', '')}/{result.get('planned', {}).get('repo', '')}",
+        )
+        return result
 
     return app
 

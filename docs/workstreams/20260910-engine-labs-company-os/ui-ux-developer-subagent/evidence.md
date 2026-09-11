@@ -15,9 +15,9 @@ Produced read-only by the role on 2026-09-10 (UTC); materialized by the orchestr
 - Requirement ID: REQ-03; charter §9 (inventory with file paths); PRD-A.15
 - Claim: All 20 files under `src/components/cc-org-dash/`, the shell page, `src/App.jsx`, `src/index.css`, `tailwind.config.js`, and `package.json` at SHA `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` were read; screens, panels, rails, 19 primitive exports, 63 icons, 3 themes × 40 tokens, and 13 sample-data exports are inventoried in ui-blueprint §A.
 - Evidence state: `VERIFIED`
-- Method: GitHub MCP `get_file_contents` (namespace `plugin-github-github`, owner `enginelabs-au`, repo `OrgOS`, `sha` pinned) — directory listing (20 entries with sizes) then one call per file; `InboxScreen.jsx` (51 515 B) returned to a tool file and was skimmed via `rg`/python for imports, state, subnav and the canned reply.
+- Method: GitHub MCP `get_file_contents` (namespace `plugin-github-github`, owner `enginelabs-au`, repo `Papership`, `sha` pinned) — directory listing (20 entries with sizes) then one call per file; `InboxScreen.jsx` (51 515 B) returned to a tool file and was skimmed via `rg`/python for imports, state, subnav and the canned reply.
 - Exact command or tool: `get_file_contents {path:"src/components/cc-org-dash", fields:[name,size,type]}`; 24 further `get_file_contents` calls; `rg -o …` on the tool output file; python line extraction of L1–12, L38–39, L216–251.
-- Artifact, path, source, or stable reference: `repo://enginelabs-au/OrgOS/sha/8a843bd6…/contents/...` blob SHAs recorded by the tool (e.g. primitives `dbf2fee…`, cc-org-dash `c45da10…`, GlobalAgentPanel `f4a3ebd…`, data `fa56298…`).
+- Artifact, path, source, or stable reference: `repo://enginelabs-au/Papership/sha/8a843bd6…/contents/...` blob SHAs recorded by the tool (e.g. primitives `dbf2fee…`, cc-org-dash `c45da10…`, GlobalAgentPanel `f4a3ebd…`, data `fa56298…`).
 - Sanitized result and exit status: all reads succeeded; directory listing = 20 files, sizes 541–51 515 B.
 - Timestamp: 2026-09-10T16:05Z–16:18Z
 - Environment: read-only sandbox; MCP read tools only.

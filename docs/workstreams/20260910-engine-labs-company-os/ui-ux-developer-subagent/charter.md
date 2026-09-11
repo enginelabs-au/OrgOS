@@ -15,14 +15,14 @@ predecessor_handoff: docs/workstreams/20260910-engine-labs-company-os/product-ma
 
 ### Mission
 
-Specify the release-1 member experience of Engine Labs derived from the OrgOS `/cc-org-dash` shell at the pinned commit: the seven core views (home, work item, assistant, agent run, connection setup, memory manager, permissions editor), seat-specific flows for the Founder seat with Project Lead/Operator variants noted, adaptive-view rules, accessibility and responsive states, and a component-migration map from the reference's JSX components to the Tauri/TypeScript desktop — so engineering can implement without inventing UX and security can review what is exposed to whom.
+Specify the release-1 member experience of Engine Labs derived from the Papership `/cc-org-dash` shell at the pinned commit: the seven core views (home, work item, assistant, agent run, connection setup, memory manager, permissions editor), seat-specific flows for the Founder seat with Project Lead/Operator variants noted, adaptive-view rules, accessibility and responsive states, and a component-migration map from the reference's JSX components to the Tauri/TypeScript desktop — so engineering can implement without inventing UX and security can review what is exposed to whom.
 
 ## 2. Inherited request and evidence
 
 - Workstream manifest: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`
 - Active plan: `docs/plans/phase_0_foundations_plan.md` (T0-7)
 - Predecessor handoff: PM handoff (PRD IDs, seat templates, release-1 acceptance)
-- Reference: `enginelabs-au/OrgOS` @ `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` — `src/App.jsx`, `src/pages/cc-org-dash.jsx`, `src/components/cc-org-dash/*` (20 files), `src/index.css`, `tailwind.config.js`, `components.json`
+- Reference: `enginelabs-au/Papership` @ `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` — `src/App.jsx`, `src/pages/cc-org-dash.jsx`, `src/components/cc-org-dash/*` (20 files), `src/index.css`, `tailwind.config.js`, `components.json`
 - Intake sections: "Member experience and authority model", "Design specification", "Adaptive views", `docs/ui-blueprint.md` requirement
 - Blueprint §8 PRD-A/PRD-D, §10 desktop layer
 

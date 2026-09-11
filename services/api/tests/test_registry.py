@@ -10,7 +10,7 @@ def test_registry_returns_43_rows(client: TestClient, founder_headers: dict[str,
     assert body["count"] == 43
     ids = [row["capability_id"] for row in body["items"]]
     assert ids == CAPABILITY_IDS
-    assert body["hermes_side_effecting_tools"] == "unavailable"
+    assert body["hermes_side_effecting_tools"] == "catalogued"
     for row in body["items"]:
         if row.get("hermes_side_effecting_tool"):
             assert row["implementation_status"] == "unavailable"

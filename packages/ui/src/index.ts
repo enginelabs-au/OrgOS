@@ -35,7 +35,9 @@ export {
 } from "./primitives";
 
 export * from "./icons";
+export { PRODUCT } from "./brand";
 export { HeyEngineButton } from "./HeyEngineButton";
+export { ThemeToggle } from "./ThemeToggle";
 export {
   getFocusable,
   cycleFocus,

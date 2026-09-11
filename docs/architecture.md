@@ -34,7 +34,7 @@ Documentation sources (fetch date 2026-09-10):
 ```mermaid
 flowchart LR
   subgraph Desktop["Founder workstation — Tauri 2 desktop (apps/desktop)"]
-    UI["React 18 + TypeScript + Vite shell<br/>(OrgOS cc-org-dash port, THEMES tokens)"]
+    UI["React 18 + TypeScript + Vite shell<br/>(Papership cc-org-dash port, THEMES tokens)"]
     TauriCore["Tauri core (Rust)<br/>capabilities allowlist, keychain token store,<br/>signed updater, shell.open for external links"]
     UI <--> TauriCore
   end
@@ -90,8 +90,8 @@ Reading the diagram: the desktop talks only to the Engine Labs API (PRD-B.5); th
 
 | Component | Path (D-01) | Technology | Responsibilities (release 1) | Not responsible for |
 |---|---|---|---|---|
-| OrgOS web UI | `apps/web` | Vite 6 + React (blueprint `/cc-org-dash`) | OrgOS product UI on Vercel project `orgos`. Not the Engine Labs marketing site. | `enginelabs.com.au`, Engine Labs Control Centre, collecting marketing briefs |
-| Desktop shell | `apps/desktop` | Tauri 2 (Rust core) + React 18 + TypeScript + Vite | OrgOS-derived shell (ui-blueprint §F), sign-in, views Home/Work/Runs/Connections/Settings, SSE client, keychain-stored token, signed updates, external-link handoff | Any provider credential, business logic, permission decisions, direct DB/filesystem access from generated views (PRD-D.13) |
+| Papership web UI | `apps/web` | Vite 6 + React (blueprint `/cc-org-dash`) | Papership product UI on Vercel project `orgos`. Not the Engine Labs marketing site. | `enginelabs.com.au`, Engine Labs Control Centre, collecting marketing briefs |
+| Desktop shell | `apps/desktop` | Tauri 2 (Rust core) + React 18 + TypeScript + Vite | Papership-derived shell (ui-blueprint §F), sign-in, views Home/Work/Runs/Connections/Settings, SSE client, keychain-stored token, signed updates, external-link handoff | Any provider credential, business logic, permission decisions, direct DB/filesystem access from generated views (PRD-D.13) |
 | API | `services/api` | Python 3.11+, FastAPI, Pydantic models, DBOS (Python) | Authn (verify Supabase JWT), authz/grants, ledger, registry, audit/receipts, action lifecycle, approvals, budget reservation, job persistence and dispatch (DBOS), run event fan-out (SSE), notifications, usage ledger, health composite | Executing agent tools, storing provider keys, talking to GitHub directly (delegated to action service adapters inside API with scoped token) |
 | Worker | `services/worker` | Python 3.11+ adapter process + pinned Hermes gateway container + execution sandbox | Typed operations over the Hermes API (§8), idempotent run creation, event relay, stop/approval, usage capture, tool interception callbacks to the action service, isolated worktrees | Deciding permissions; holding production deployment credentials; scheduling on its own authority (PRD-E.5) |
 | Contracts | `packages/contracts` | OpenAPI (generated from FastAPI) → TypeScript client + zod schemas; shared event and view-definition schemas | Single typed contract between desktop and API; run/notification event schema; registry row schema (D-02) | Runtime code |
@@ -120,7 +120,7 @@ Consistent with manifest §10 and phase plan §7. Rationale, alternatives and co
 │   ├── compose/          # docker-compose.yml + overrides (dev, prod), .env.example (names only)
 │   ├── backup/           # backup/restore scripts and runbook
 │   └── digests.lock      # pinned image digests (NFR-10)
-├── .reference/orgos/     # pinned OrgOS clone (git-ignored; phase 0)
+├── .reference/orgos/     # pinned Papership clone (git-ignored; phase 0)
 └── .gitignore
 ```
 
@@ -197,7 +197,7 @@ The adapter in `services/worker` is the only code that speaks to Hermes. It expo
 | Sessions / conversations | `create_session()`, `list_messages()`, `fork_session()`, `delete_session()`, `chat_stream()` | `/api/sessions` (list/create/read/patch/delete/messages/fork/chat/chat/stream with events `assistant.delta`, `tool.started`, `tool.completed`, `run.completed`); turn leases serialise concurrent writers; `X-Hermes-Session-Id`, `X-Hermes-Session-Key` (≤256 chars, no control chars) | One Hermes session per Engine Labs Conversation; session key derived from tenant + principal (PRD-E.12); Engine Labs stores its own message copy (PRD-E.10) | Two-principal isolation test; restart-persistence test |
 | Scheduling / jobs | `list_jobs()` (read-only in R1) | `/api/jobs` CRUD, pause, resume, run | Engine Labs DBOS owns schedules; Hermes jobs are **not** created independently in R1 (PRD-E.5); the adapter can list to detect drift | Drift test: zero Hermes jobs unless mapped |
 | Toolsets / skills inventory | `list_toolsets()`, `list_skills()` | `GET /v1/toolsets` (`enabled`, `configured`, `tools[]`), `GET /v1/skills` | Feeds the Hermes capability inventory (`docs/capabilities.md` §5); side-effecting tools identified for interception | Inventory snapshot test |
-| Tool interception | policy hook / scoped tool adapter (mechanism chosen in phase 2 spike) | Documented: tool progress events; browser-extension control has a capability allowlist; per-request `model`/`provider`/`model_options` | Side-effecting tools must route through the action service (PRD-E.10); if the pinned version offers no supported hook, restrict toolsets and provide Engine Labs tools via MCP/tool adapters — **open item for the spike** | Bypass attempt refused |
+| Tool interception | catalog allowlist + risk class + Papership receipts/approvals (D-17) | Documented API-server `run_approval` exists upstream; pin may still be `hermes serve` | Unknown tools denied. Catalogued tools enabled with artefact hash. Private/metadata egress denied. Git effects prefer Papership API ∩ installation | `test_interception.py`, `test_approvals.py`, `test_runtime.py` |
 | Usage | `usage_from_run()` | `usage.input_tokens/output_tokens/total_tokens` on run status and responses; `subagent.complete` tokens/cost | UsageEvent per run and per child; dedupe by (run_id, child_session_id) (PRD-G.3) | Double-event test |
 | Auth and network | — | Bearer `API_SERVER_KEY` required for every deployment; CORS off by default; `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`; multi-profile keys bound per `/p/<profile>/` prefix (breaking change July 2026) | Hermes bound to the worker network; no browser calls Hermes (no CORS); one profile per tenant with its own key | Network policy test |
 | Concurrency | — | `max_concurrent_runs` (default 10; HTTP 429 when reached) | Engine Labs queue (DBOS) throttles below the cap; 429 → backoff, not failure | Cap test |
@@ -256,7 +256,7 @@ Names only; registry of record is `docs/plans/phase_0_foundations_plan.md` §16.
 
 | Item | Owner | Phase |
 |---|---|---|
-| Choose tool-interception mechanism against the pinned Hermes version (hook vs scoped tool adapters vs restricted toolsets + MCP) | SE (spike), Security review | 2 |
+| Choose tool-interception mechanism against the pinned Hermes version (hook vs scoped tool adapters vs restricted toolsets + MCP) | SE (spike), Security review | 2 — D-16: restricted toolsets; hook not on this pin |
 | Confirm `packages/ui` as a fifth monorepo member (ui-blueprint §F) — recorded in D-01 as included | Lead / PL | 1 — done (`packages/ui` exists) |
 | Proxy choice (Caddy vs Traefik), Postgres major version, Supabase image digests | SE | 1 — Caddy + Postgres 15 (D-07); digests skeleton in `infra/digests.lock` |
 | Worker DB access: none (all via API) vs read-only — `proposal` none | Security | 1 — D-08 `proposed` (worker on `worker` only) |

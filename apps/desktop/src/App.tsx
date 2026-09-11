@@ -9,6 +9,7 @@ import {
   PrimaryNavTabs,
   SettingsIcon,
   THEMES,
+  ThemeToggle,
   useViewport,
   Zap,
   type ThemeKey,
@@ -26,7 +27,7 @@ import { SettingsView } from "./views/SettingsView";
 import { WorkView } from "./views/WorkView";
 
 const TABS = [
-  { id: "home", label: "Home", icon: <Home size={16} /> },
+  { id: "home", label: "Today", icon: <Home size={16} /> },
   { id: "work", label: "Work", icon: <Briefcase size={16} /> },
   { id: "runs", label: "Runs", icon: <Zap size={16} /> },
   { id: "connections", label: "Connections", icon: <Plug size={16} /> },
@@ -61,7 +62,7 @@ export default function App() {
   if (!ready) {
     return (
       <div style={{ minHeight: "100vh", background: T.canvas, color: T.t2, fontFamily: F.sans, padding: 24 }}>
-        Starting OrgOS…
+        Starting Papership…
       </div>
     );
   }
@@ -72,12 +73,17 @@ export default function App() {
 
   return (
     <div className={styles.shell} style={{ background: T.pageGradient, color: T.t1, fontFamily: F.sans }}>
-      <header className={styles.top} style={{ background: T.nav, borderBottom: `1px solid ${T.border}` }}>
+      <header className={styles.top} style={{ background: T.navField ?? T.nav, borderBottom: "1px solid rgba(0,0,0,.25)" }}>
         <Btn T={T} variant="ghost" small onClick={() => setRailOpen((v) => !v)}>
           {railOpen ? "Hide rail" : "Show rail"}
         </Btn>
         <Wordmark T={T} />
         <div className={styles.spacer} />
+        <ThemeToggle
+          T={T}
+          themeKey={themeKey}
+          onToggle={() => setThemeKey((k) => (k === "light" ? "dark" : "light"))}
+        />
         <HeyEngineButton T={T} onOpenAssistant={openAssistant} />
         <Btn T={T} variant="ghost" small onClick={() => void signOut()}>
           Sign out

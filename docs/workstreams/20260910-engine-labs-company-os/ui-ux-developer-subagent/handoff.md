@@ -14,7 +14,7 @@ downstream_role: software-engineer-subagent
 
 ## 1. Outcome
 
-Delivered the release-1 experience specification for Engine Labs derived from the OrgOS `/cc-org-dash` shell at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`, materialized by the lead at `docs/ui-blueprint.md` (§0–§H): a cited reference inventory (shell, 11 screens, 6 global panels/rails/hooks, 19 primitives, 63 icons, 3 themes × 40 tokens, 13 fixture exports, css/tailwind relationship); specifications for the seven views with layout mapped to reference components, actions, data, an eight-state matrix, Founder/Project Lead/Operator visibility and accessibility criteria; navigation and global-surface rules including where run progress and approvals surface and PRD-E.4 close-vs-cancel semantics; adaptive-view constraints and preview/apply/revert flow; global accessibility and macOS window behaviour; a 21-file keep/adapt/replace/drop migration map with JSX→TSX and dependency implications; a 52-state capture plan; and 11 departures plus 4 open questions. The charter §1 objective is met. Verdict is `CONDITIONAL` because bounded, non-blocking items remain (OQ-5 confirmation, contrast token D-3 and default-theme D-11 owner acknowledgements, and runtime capture/contrast verification assigned to SE).
+Delivered the release-1 experience specification for Engine Labs derived from the Papership `/cc-org-dash` shell at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`, materialized by the lead at `docs/ui-blueprint.md` (§0–§H): a cited reference inventory (shell, 11 screens, 6 global panels/rails/hooks, 19 primitives, 63 icons, 3 themes × 40 tokens, 13 fixture exports, css/tailwind relationship); specifications for the seven views with layout mapped to reference components, actions, data, an eight-state matrix, Founder/Project Lead/Operator visibility and accessibility criteria; navigation and global-surface rules including where run progress and approvals surface and PRD-E.4 close-vs-cancel semantics; adaptive-view constraints and preview/apply/revert flow; global accessibility and macOS window behaviour; a 21-file keep/adapt/replace/drop migration map with JSX→TSX and dependency implications; a 52-state capture plan; and 11 departures plus 4 open questions. The charter §1 objective is met. Verdict is `CONDITIONAL` because bounded, non-blocking items remain (OQ-5 confirmation, contrast token D-3 and default-theme D-11 owner acknowledgements, and runtime capture/contrast verification assigned to SE).
 
 ## 2. Scope completed and not completed
 
@@ -38,7 +38,7 @@ Not completed / out of scope by charter: visual redesign; implementation; backen
 
 | Requirement ID | Result | Evidence |
 |---|---|---|
-| REQ-03 (member experience: OrgOS-derived shell, seven-view design spec, seats, adaptive views, `docs/ui-blueprint.md`) | met (spec) — §A–§H | EV-U01, U02, U03, U05, U11 |
+| REQ-03 (member experience: Papership-derived shell, seven-view design spec, seats, adaptive views, `docs/ui-blueprint.md`) | met (spec) — §A–§H | EV-U01, U02, U03, U05, U11 |
 | PRD-A.13 Home five regions | met — §B.1 | EV-U02, U05 |
 | PRD-A.14 no prompts/schemas/runtime config for operators | met — §B.3 footer removal, §B.4, seat rows | EV-U11 |
 | PRD-A.15 seven views mapped or documented extension | met — §B, §F | EV-U02, U03 |

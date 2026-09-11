@@ -98,8 +98,8 @@ None. No prior gate exists to invalidate. If the owner overturns AS-5/AS-6/AS-7,
 ## 11. Downstream instructions
 
 - Next role: `ui-ux-developer-subagent`
-- Required inputs: `docs/product.md` — PRD-A.10–A.17 (views, adaptive rules, home content, states, exposure limits), §5.1 seat templates and PRD-D.7/D.13, PRD-B.5–B.6 (assistant and agent-run view content), PRD-E.4 (close vs cancel, reconnect), PRD-G.6 (allowance/estimated cost display), §9 R1-ACC-1..3, 7, 8, NFR-2, NFR-3; this handoff; the OrgOS reference at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`.
-- Constraints that remain binding: do not add views beyond the seven without a documented extension; do not change release buckets, PRD IDs, or acceptance wording; treat the OQ-5 proposal (R1 = home, work item, assistant, agent run, minimal permissions editor) as working scope until the owner answers; no prompts/schemas/runtime configuration in Operator-facing designs; preserve OrgOS THEMES/typography/shell per NFR-3; every screen must specify loading/empty/failure/permission states (PRD-A.16).
+- Required inputs: `docs/product.md` — PRD-A.10–A.17 (views, adaptive rules, home content, states, exposure limits), §5.1 seat templates and PRD-D.7/D.13, PRD-B.5–B.6 (assistant and agent-run view content), PRD-E.4 (close vs cancel, reconnect), PRD-G.6 (allowance/estimated cost display), §9 R1-ACC-1..3, 7, 8, NFR-2, NFR-3; this handoff; the Papership reference at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`.
+- Constraints that remain binding: do not add views beyond the seven without a documented extension; do not change release buckets, PRD IDs, or acceptance wording; treat the OQ-5 proposal (R1 = home, work item, assistant, agent run, minimal permissions editor) as working scope until the owner answers; no prompts/schemas/runtime configuration in Operator-facing designs; preserve Papership THEMES/typography/shell per NFR-3; every screen must specify loading/empty/failure/permission states (PRD-A.16).
 - Checks that must be repeated: none from this role; UI/UX must map each specified view back to a PRD ID.
 
 ## 12. Human actions and production approvals

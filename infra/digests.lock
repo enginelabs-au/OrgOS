@@ -5,3 +5,4 @@ postgres:15=postgres:15
 caddy=caddy:2
 engine-labs-api=local
 engine-labs-worker=local
+hermes-agent=v0.21.1@git:20f7ef4d

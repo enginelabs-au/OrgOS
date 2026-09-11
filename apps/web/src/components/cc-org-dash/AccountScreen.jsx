@@ -119,9 +119,9 @@ export default function AccountScreen({ T, setTab, isMobile }) {
     >
       <div style={{ padding: "14px 14px 12px", borderBottom: `1px solid ${T.border}`, background: T.raised }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <Avi name="EcoAdmin" size={40} />
+          <Avi name="Cam Douglas" size={40} />
           <div style={{ minWidth: 0 }}>
-            <div style={{ color: T.t1, fontSize: 14, fontWeight: 600, lineHeight: 1.25 }}>EcoAdmin</div>
+            <div style={{ color: T.t1, fontSize: 14, fontWeight: 600, lineHeight: 1.25 }}>Cam Douglas</div>
             <div style={{ color: T.t3, fontSize: 11, marginTop: 2 }}>Your workspace account</div>
           </div>
         </div>
@@ -215,7 +215,7 @@ export default function AccountScreen({ T, setTab, isMobile }) {
         <div>
           <h2 style={{ color: T.t1, fontSize: 20, fontWeight: 600, margin: 0, letterSpacing: "-0.02em" }}>Public profile</h2>
           <p style={{ color: T.t3, fontSize: 13, margin: "6px 0 0", maxWidth: 520 }}>
-            This information appears on your profile and across cc-org-dash where your name is shown.
+            This information appears on your profile and across Papership where your name is shown.
           </p>
         </div>
         <Btn T={T} variant="default" small>
@@ -246,7 +246,7 @@ export default function AccountScreen({ T, setTab, isMobile }) {
                 justifyContent: "center",
               }}
             >
-              <Avi name="EcoAdmin" size={94} />
+              <Avi name="Cam Douglas" size={94} />
             </div>
           </div>
         </div>
@@ -269,7 +269,7 @@ export default function AccountScreen({ T, setTab, isMobile }) {
             <label style={{ color: T.t1, fontSize: 13, fontWeight: 600 }}>Name</label>
             <InfoHint T={T} text="Your display name across the workspace." />
           </div>
-          <Input T={T} defaultValue="EcoAdmin" />
+          <Input T={T} defaultValue="Cam Douglas" />
         </div>
 
         <div>
@@ -280,7 +280,7 @@ export default function AccountScreen({ T, setTab, isMobile }) {
           <TextArea
             T={T}
             rows={4}
-            defaultValue="Thanks for visiting — I coordinate operations and AI workflows for cc-org-dash. Reach out via Inbox for fastest response."
+            defaultValue="Founder of Engine Labs. Papership is the product. Ask via Inbox or Hey Engine — I do not take ownership of your content."
           />
         </div>
 
@@ -338,7 +338,7 @@ export default function AccountScreen({ T, setTab, isMobile }) {
           <div style={{ color: T.t1, fontSize: 14, fontWeight: 600, marginBottom: 10 }}>Public email</div>
           <p style={{ color: T.t3, fontSize: 12, margin: "0 0 8px" }}>Choose which verified email is visible on your profile.</p>
           <Select T={T} style={{ width: "100%", maxWidth: 420 }}>
-            <option>admin@cc-org-dash.io</option>
+            <option>founder@enginelabs.com.au</option>
             <option>Hide email</option>
           </Select>
         </div>
@@ -348,7 +348,7 @@ export default function AccountScreen({ T, setTab, isMobile }) {
             <label style={{ color: T.t1, fontSize: 13, fontWeight: 600 }}>Bio</label>
             <InfoHint T={T} text="Short description for your profile page." />
           </div>
-          <TextArea T={T} rows={3} defaultValue="Administrator · cc-org-dash Global" />
+          <TextArea T={T} rows={3} defaultValue="Founder · Engine Labs / Papership" />
         </div>
       </div>
 
@@ -407,9 +407,9 @@ export default function AccountScreen({ T, setTab, isMobile }) {
               fontFamily: F.mono,
             }}
           >
-            cc-org-dash.io/u/
+            papership.enginelabs.com.au/u/
           </span>
-          <Input T={T} defaultValue="ecoadmin" style={{ borderRadius: "0 6px 6px 0", flex: 1, minWidth: 120 }} />
+          <Input T={T} defaultValue="cam" style={{ borderRadius: "0 6px 6px 0", flex: 1, minWidth: 120 }} />
         </div>
       </Field>
       <div style={{ marginTop: 20 }}>

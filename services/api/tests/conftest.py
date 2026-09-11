@@ -21,6 +21,11 @@ def env_jwt(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("ENGINE_JWT_AUDIENCE", AUDIENCE)
     monkeypatch.setenv("ENGINE_USAGE_EMIT", "0")
     monkeypatch.setenv("ENGINE_TEST_HOOKS", "1")
+    monkeypatch.delenv("HERMES_API_BASE_URL", raising=False)
+    monkeypatch.delenv("GITHUB_APP_ID", raising=False)
+    monkeypatch.delenv("GITHUB_APP_INSTALLATION_ID", raising=False)
+    monkeypatch.delenv("GITHUB_APP_PRIVATE_KEY", raising=False)
+    monkeypatch.delenv("GITHUB_APP_PRIVATE_KEY_PATH", raising=False)
 
 
 def make_token(

@@ -39,14 +39,14 @@ Rules that govern this document:
 | 05 | Plan agents, memory, lifecycle and commercial controls | `phase_0_foundations_plan.md` (T0-6, T0-9, T0-10) | R1 | complete — `docs/policies/{memory-governance,data-residency-and-retention,erasure-and-offboarding,licensing}.md`; §3–§4 below; Growth CONDITIONAL |
 | 06 | Plan release scope, dependencies and acceptance gates | `phase_0_foundations_plan.md` (T0-11 this roadmap; T0-12 PL gate; T0-13) | R1 | complete — this document; PL gate CONDITIONAL 2026-09-10T18:22Z; T0-13 reconciled |
 | 07 | Build the foundation | `docs/plans/phase_1_foundation_plan.md` | R1 | G1 CONDITIONAL 2026-09-11 — local venue; see phase-1 PL handoff |
-| 08 | Build the development loop | `docs/plans/phase_2_development_loop_plan.md` | R1 | active — plan activated 2026-09-11; start at T2-1 spike |
-| 13 | Verify functional and domain coverage | `docs/plans/phase_3_release_verification_plan.md` | R1 (re-run each release) | not started |
-| 14 | Verify authority, memory and data lifecycle | `phase_3_release_verification_plan.md` | R1 (re-run each release) | not started |
-| 15 | Verify integrations, recovery and backups | `phase_3_release_verification_plan.md` | R1 (re-run each release) | not started |
-| 16 | Verify the desktop and adaptive experience | `phase_3_release_verification_plan.md` | R1 (adaptive views R3) | not started |
-| 17 | Verify usage, deployment and commercial operations | `phase_3_release_verification_plan.md` | R1 (usage measurement); R4 (commercial) | not started |
-| 18 | Verify release readiness and complete the owner handoff | `phase_3_release_verification_plan.md` + `docs/plans/final_implementation_checklist.md` | R1 (repeated per release) | not started |
-| 09 | Build collaboration and connections | `docs/plans/phase_4_collaboration_connections_plan.md` | R2 (`proposal`) | not started — generated only after R1 closure and owner approval |
+| 08 | Build the development loop | `docs/plans/phase_2_development_loop_plan.md` | R1 | G2 CONDITIONAL 2026-09-11 — catalog enabled (D-17); live ACC-6 deferred |
+| 13 | Verify functional and domain coverage | `docs/plans/phase_3_release_verification_plan.md` | R1 (re-run each release) | G3 PASS-with-residuals 2026-09-11 — see `docs/verification.md` r3 |
+| 14 | Verify authority, memory and data lifecycle | `phase_3_release_verification_plan.md` | R1 (re-run each release) | G3 closed — V14-3 VERIFIED; remaining PARTIAL/N/A |
+| 15 | Verify integrations, recovery and backups | `phase_3_release_verification_plan.md` | R1 (re-run each release) | G3 closed — live `accepted` N/A; V15-2 N/A |
+| 16 | Verify the desktop and adaptive experience | `phase_3_release_verification_plan.md` | R1 (adaptive views R3) | G3 closed — V16 PARTIAL |
+| 17 | Verify usage, deployment and commercial operations | `phase_3_release_verification_plan.md` | R1 (usage measurement); R4 (commercial) | G3 closed — emit off; first-baseline not_captured |
+| 18 | Verify release readiness and complete the owner handoff | `phase_3_release_verification_plan.md` + `docs/plans/final_implementation_checklist.md` | R1 (repeated per release) | G3 closed — V18-5 waiting owner |
+| 09 | Build collaboration and connections | `docs/plans/phase_4_collaboration_connections_plan.md` | R2 (`proposal`) | plan written 2026-09-11 (D-19 from G3 CONDITIONAL); not implemented |
 | 10 | Expand company operations | `docs/plans/phase_5_company_operations_plan.md` | R3 (`proposal`) | not started |
 | 11 | Build commercial delivery | `docs/plans/phase_6_commercial_delivery_plan.md` | R4 (`proposal`) | not started — commercial gate CA-1…CA-10 (§4) |
 | 12 | Expand the ecosystem and mobile clients | `docs/plans/phase_7_ecosystem_mobile_plan.md` | R4 (`proposal`) | not started |

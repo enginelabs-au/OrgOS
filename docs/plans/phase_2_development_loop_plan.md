@@ -1,6 +1,6 @@
 ---
 plan: phase_2_development_loop
-status: active
+status: complete_conditional
 created: 2026-09-11
 updated: 2026-09-11
 owner: lead-agent
@@ -15,7 +15,7 @@ risk_tier: tier_3
 
 # Phase 2: Development loop — Engine Labs
 
-Generated after G1 CONDITIONAL (2026-09-11). Activated 2026-09-11 by owner request. **Start at T2-1 (SP-1…SP-7) only. Do not enable side-effecting Hermes tools until Security re-review.** OrgOS web UI is `apps/web` from `docs/ui-blueprint`. Do not treat Engine Labs marketing as this product.
+Generated after G1 CONDITIONAL (2026-09-11). Activated 2026-09-11 by owner request. **Start at T2-1 (SP-1…SP-7) only. Do not enable side-effecting Hermes tools until Security re-review.** Papership web UI is `apps/web` from `docs/ui-blueprint`. Do not treat Engine Labs marketing as this product.
 
 ## 1. Objective
 
@@ -30,14 +30,14 @@ Phase 1 delivered the substrate (identity, grants, ledger, jobs, desktop shell, 
 - G1 CONDITIONAL: `bash scripts/ci.sh` exit 0; 12 registry rows `configured`; 0 `working`.
 - Worker refuse-to-start if a side-effecting toolset is enabled without artefact+hash (AUTH-25).
 - Usage emit off until owner accepts F-G1.
-- Owner still must supply: Hermes licence (H-5), provider terms (H-4), `HERMES_VERSION_PIN` value (env only), GitHub App, `MODEL_PROVIDER_API_KEY` name in allowlist after registry update.
+- Owner supplied H-4/H-5 (D-11): OpenRouter terms accepted; Hermes v0.21.1 commercial self-host accepted; pin `v0.21.1`. GitHub App values still owner-created (T2-3). No `MODEL_PROVIDER_API_KEY` in Papership.
 - Venue: local or Cloud UI; Cloud Task from the prior Mac session failed (blocker may persist).
 
 ## 4. Scope
 
 - SP-1…SP-7 interception spike + Security re-review (first tasks).
 - Pin Hermes; adapter implements D-04 operations; no browser calls Hermes.
-- GitHub App: `repo.branch` / `repo.change` / `repo.check` / `repo.release` intersection with installation scopes (AUTH-12).
+- GitHub App: `repo.branch` / `repo.change` / `repo.check` / `repo.release` intersection with installation scopes (AUTH-12). Plan/open client is already on the API (`GET`/`POST /github/pulls`, dry-run default). Live open still opt-in after T2-1.
 - Loop stages as ledger transitions with timestamps.
 - Isolated branches/worktrees; checks; review evidence; release **proposal** only (execute_release remains designated authority).
 - `GlobalAgentPanel` / Hey Engine: authenticated API sessions; honest errors; user-equivalent actions under AUTH-07; **no** grant bypass via voice/button.
@@ -84,48 +84,48 @@ Update architecture §7 with chosen interception; capabilities statuses (lead); 
 
 ## 12. Ordered implementation tasks
 
-**T2-1 SP-1…SP-7 interception spike** — prove Engine Labs API owns every side effect; worker cannot bypass; artefact+hash path. Deps: G1. Validation: Security re-review PASS/CONDITIONAL. State: `pending`.
+**T2-1 SP-1…SP-7 interception spike** — State: `implemented` (D-16 then D-17). Security T2-1 CONDITIONAL.
 
-**T2-2 Hermes pin + adapter** — implement D-04 ops against pinned version; health; idempotent start_run. Deps: T2-1. Validation: contract tests vs pin.
+**T2-2 Hermes pin + adapter** — State: `implemented`. D-04 client + `start_run`; `blocked_runtime` without API server. Security T2-2 CONDITIONAL ([re-review](25fe9df8-506d-44a6-92ef-3abfd466e5eb)).
 
-**T2-3 GitHub App binding** — repository reference → installation; grant intersection. Deps: T2-2; owner App. Validation: AUTH-12 tests.
+**T2-3 GitHub App binding** — State: `implemented` (unit AUTH-12 intersection). Live open still opt-in + reauth.
 
-**T2-4 Loop ledger stages** — 11 PRD-B.1 stages with timestamps and evidence links. Deps: T2-3.
+**T2-4 Loop ledger stages** — State: `implemented` (`POST /work-items/{id}/stage`, 11 stages).
 
-**T2-5 Isolated change + checks** — worktrees, branch, PR, checks, release proposal (no execute). Deps: T2-4.
+**T2-5 Isolated change + checks** — State: `partial`. Dry-run PR client exists; live isolated change not demonstrated.
 
-**T2-6 Assistant / Hey Engine runtime** — sessions via API; no fake replies; user-equivalent tools after T2-1. Deps: T2-2.
+**T2-6 Assistant / Hey Engine runtime** — State: `implemented`. Sessions persisted; no invented model replies.
 
-**T2-7 Wake-word spike (specify)** — entitlement + architecture note; do not ship. Deps: T2-6.
+**T2-7 Wake-word spike (specify)** — State: `implemented` (`docs/decisions/2026-09-11-wake-word-spike.md`). Not shipped.
 
-**T2-8 Interruption / idempotency trials** — V15-3, R1-ACC-5 at runtime boundary. Deps: T2-5.
+**T2-8 Interruption / idempotency trials** — State: `partial`. Persist-before-202 and receipt uniqueness unit-tested; live Hermes kill trial not run.
 
-**T2-9 Usage emit (if F-G1 accepted)** — flag on for identifier/enum only. Deps: owner + Security.
+**T2-9 Usage emit (if F-G1 accepted)** — State: `deferred`. Flag remains off.
 
-**T2-10 Role gates + G2** — SE, Security, UI/UX, PM, Growth, PL.
+**T2-10 Role gates + G2** — SE CONDITIONAL; Security T2-2 CONDITIONAL; UI/UX skipped (no new chrome); PM skipped (R1-ACC-6 not live); Growth skipped (no emit); PL CONDITIONAL G2.
 
-**T2-11 Reconciliation** — generate `docs/plans/phase_3_release_verification_plan.md` only.
+**T2-11 Reconciliation** — State: `implemented`. `docs/plans/phase_3_release_verification_plan.md`.
 
 ## 13. Adaptive role and delegation map
 
 | Role ID | Required or skipped | Reason | Predecessor | Owned paths | Gate evidence | Status |
 |---|---|---|---|---|---|---|
-| software-engineer-subagent | required | T2-1…T2-9 | this plan | apps/services/packages/infra as assigned | phase-2-handoff | pending |
-| security-engineer-subagent | required | SP re-review; F-SEC-01 | SE spike | none (lead materializes) | phase-2-handoff | pending |
-| ui-ux-developer-subagent | required | assistant live states | SE T2-6 | none | phase-2-handoff | pending |
-| product-manager-subagent | required | R1-ACC-6…9 | Security | none | phase-2-handoff | pending |
-| growth-marketing-subagent | required | usage emit / no prices | PM | none | phase-2-handoff | pending |
-| project-lead-subagent | required | G2 | Growth | none | phase-2-handoff | pending |
+| software-engineer-subagent | required | T2-1…T2-8 | this plan | apps/services/packages | phase-2-handoff.md | CONDITIONAL |
+| security-engineer-subagent | required | D-17 re-review | SE | none | phase-2-t2-2-handoff.md | CONDITIONAL |
+| ui-ux-developer-subagent | skipped | No new chrome; Hey Engine uses existing panel | T2-6 | none | skip — assistant copy only | skipped |
+| product-manager-subagent | skipped | Live R1-ACC-6 not demonstrated; carried to phase 3 | Security | none | skip | skipped |
+| growth-marketing-subagent | skipped | Usage emit still off; no prices added | PM | none | skip | skipped |
+| project-lead-subagent | required | G2 CONDITIONAL + phase 3 prompt | Security | none | this plan §20 | CONDITIONAL |
 
 ## 14. Test and validation matrix
 
 | Requirement | Method | Evidence | Status |
 |---|---|---|---|
-| SP-1…SP-7 | spike + Security | handoff | pending |
-| R1-ACC-6 | one real change | work item + PR | pending |
-| V15-3 | kill/restart | logs | pending |
-| AUTH-12 | grant ∩ installation | pytest | pending |
-| AUTH-07 | assistant ≤ user grants | pytest | pending |
+| SP-1…SP-7 | spike + Security | T2-1/T2-2 handoffs | CONDITIONAL |
+| R1-ACC-6 | one real change | work item + PR | pending — phase 3 |
+| V15-3 | kill/restart | unit persist/receipt | PARTIAL |
+| AUTH-12 | grant ∩ installation | `test_github_grants.py` | PARTIAL (empty perms fail-open) |
+| AUTH-07 | assistant ≤ user grants | session 403 unpriv | PARTIAL |
 
 ## 15. Security, privacy, reliability, accessibility, and performance checks
 
@@ -139,9 +139,9 @@ Names only. Phase-2 rows become `wired` when added to `.env.example` and allowli
 
 | Action | Why agent cannot | Earliest | Blocking now? |
 |---|---|---|---|
-| H-4 provider terms | legal | T2-2 | no (blocks real content) |
-| H-5 Hermes licence | legal | T2-2 | no |
-| GitHub App + model key | owner account | T2-3 | no for spike; yes for live loop |
+| H-4 provider terms | recorded D-11 | T2-2 | no |
+| H-5 Hermes licence | recorded D-11 | T2-2 | no |
+| GitHub App create/install | owner dashboard | T2-3 | no for spike; yes for live git loop |
 | H-6 ratify D-01…D-08 | owner | G2 exit | no for T2-1 |
 | Wake-word vendor | spend/privacy | later | no |
 
@@ -155,11 +155,15 @@ SP-1…SP-7 passed Security; one real loop change with receipts; zero duplicate 
 
 ## 20. Completion evidence
 
-To be appended.
+- 2026-09-11 owner authorized maximum catalogued tools with policy (D-17).
+- Worker 24 passed; API 41 passed.
+- Security T2-2 CONDITIONAL ([re-review](25fe9df8-506d-44a6-92ef-3abfd466e5eb)).
+- G2 **CONDITIONAL**: loop substrate implemented; live Hermes run and live ACC-6 deferred to phase 3.
+- Next plan written.
 
 ## 21. Deviations and follow-ups
 
-Inherited: Cloud launch blocker; DBOS not imported in phase 1; fonts without woff2.
+D-16 “keep disabled” superseded by D-17. Live API server still missing. T2-9 emit off. T2-5 live PR not opened. Inherited: Cloud launch; DBOS not imported.
 
 ## 22. Next Plan Generation Prompt
 

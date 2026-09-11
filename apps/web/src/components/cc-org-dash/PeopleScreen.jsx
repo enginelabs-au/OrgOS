@@ -10,8 +10,8 @@ export default function PeopleScreen({ T, isMobile }) {
 
   const subTabs = [
     { id: "people", label: "People",  icon: <Users size={16} />,    count: DB.people.length },
-    { id: "teams",  label: "Teams",   icon: <Shield size={16} />,   count: 4 },
-    { id: "invites", label: "Pending invites", icon: <Mail size={16} />, count: 2 },
+    { id: "teams",  label: "Teams",   icon: <Shield size={16} />,   count: 3 },
+    { id: "invites", label: "Pending invites", icon: <Mail size={16} />, count: 0 },
   ];
 
   return (
@@ -39,7 +39,7 @@ export default function PeopleScreen({ T, isMobile }) {
 
         {subTab === "teams" && (
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2,1fr)", gap: 12 }}>
-            {[["Engineering", 12, T.accent], ["Sales", 8, T.green], ["Operations", 5, T.amber], ["Design", 3, T.purple]].map(([name, count, color]) => (
+            {[["Engine Labs", 1, T.accent], ["Runtime", 1, T.green], ["Assistant", 1, T.purple]].map(([name, count, color]) => (
               <Surface key={name} T={T} hoverable style={{ padding: 16, cursor: "pointer" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{ width: 40, height: 40, borderRadius: 8, background: `${color}22`, color, display: "flex", alignItems: "center", justifyContent: "center" }}><Shield size={18} /></div>
@@ -54,15 +54,7 @@ export default function PeopleScreen({ T, isMobile }) {
         )}
 
         {subTab === "invites" && (
-          <Table T={T} variant="card" rows={[
-              { id: 1, email: "alex@company.io", role: "Member", sent: "2 days ago", status: "pending" },
-              { id: 2, email: "jamie@company.io", role: "Admin", sent: "5 hours ago", status: "pending" },
-            ]} cols={[
-              { key: "email", label: "Email", render: v => <span style={{ color: T.accent, fontFamily: F.mono, fontSize: 13 }}>{v}</span> },
-              { key: "role", label: "Role", muted: true },
-              { key: "sent", label: "Sent", muted: true },
-              { key: "status", label: "Status", render: v => <Badge T={T} color={T.amber}>{v}</Badge> },
-            ]} />
+          <div style={{ color: T.t2, fontSize: 13, padding: "12px 0" }}>No pending invites. Founder seat only until you add people.</div>
         )}
       </div>
 
@@ -102,7 +94,7 @@ export default function PeopleScreen({ T, isMobile }) {
       <Modal T={T} open={inviteModal} onClose={() => setInviteModal(false)} title="Invite Member">
         <Field label="Email Address" T={T}><Input T={T} type="email" placeholder="name@company.com" /></Field>
         <Field label="Role" T={T}><Select T={T} style={{ width: "100%" }}><option>Admin</option><option>Member</option><option>Viewer</option></Select></Field>
-        <Field label="Department" T={T}><Select T={T} style={{ width: "100%" }}>{["Sales", "Engineering", "Product", "Operations", "Finance", "HR"].map(d => <option key={d}>{d}</option>)}</Select></Field>
+        <Field label="Department" T={T}><Select T={T} style={{ width: "100%" }}>{["Engine Labs", "Runtime", "Assistant", "Source", "Security"].map(d => <option key={d}>{d}</option>)}</Select></Field>
         <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
           <Btn T={T} variant="default" onClick={() => setInviteModal(false)}>Cancel</Btn>
           <Btn T={T} variant="primary" onClick={() => setInviteModal(false)}>Send Invite</Btn>

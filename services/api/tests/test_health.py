@@ -9,5 +9,7 @@ def test_health_composite(client: TestClient) -> None:
     assert body["dbos"] == "ok"
     assert body["worker_config"] == "ok"
     assert body["hermes"] == "not_configured"
+    assert body["hermes_pin"] == ""
+    assert body["usage_emit"] is False
     assert body["github"] == "not_configured"
     assert "x-trace-id" in response.headers

@@ -14,7 +14,7 @@ export function HeyEngineButton({
   onOpenAssistant: () => void;
 }) {
   return (
-    <Btn T={T} variant="accent" onClick={onOpenAssistant} style={{ minHeight: 36 }}>
+    <Btn T={T} variant="rainbow" onClick={onOpenAssistant} style={{ minHeight: 36 }}>
       <Mic size={16} aria-hidden />
       Hey Engine
     </Btn>

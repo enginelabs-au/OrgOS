@@ -9,6 +9,9 @@ WORKER_ENV_ALLOWLIST = frozenset(
     {
         "ENGINE_API_BASE_URL",
         "ENGINE_WORKER_CONFIG",
+        "HERMES_API_BASE_URL",
+        "HERMES_API_SERVER_KEY",
+        "HERMES_VERSION_PIN",
         "PATH",
         "HOME",
         "USER",
@@ -25,9 +28,6 @@ FORBIDDEN = frozenset(
     {
         "DATABASE_URL",
         "DBOS_SYSTEM_DATABASE_URL",
-        "HERMES_API_BASE_URL",
-        "HERMES_API_SERVER_KEY",
-        "HERMES_VERSION_PIN",
         "MODEL_PROVIDER_API_KEY",
         "GITHUB_APP_ID",
         "GITHUB_APP_PRIVATE_KEY",

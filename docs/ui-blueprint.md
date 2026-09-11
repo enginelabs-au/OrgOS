@@ -1,6 +1,6 @@
 ---
 document: ui-blueprint
-title: Engine Labs — UI Blueprint (OrgOS `/cc-org-dash` derived)
+title: Engine Labs — UI Blueprint (Papership `/cc-org-dash` derived)
 status: specification_complete; captures_complete (SE sections filled 2026-09-10; 122 PNGs for all 52 states captured by the orchestrating lead 2026-09-10T17:15Z — see §0.4)
 revision: 3
 created: 2026-09-10
@@ -14,7 +14,7 @@ phase_plan: docs/plans/phase_0_foundations_plan.md (T0-7 spec, T0-8 capture)
 manifest: docs/workstreams/20260910-engine-labs-company-os/manifest.md
 role_handoff: docs/workstreams/20260910-engine-labs-company-os/ui-ux-developer-subagent/handoff.md
 predecessor: docs/workstreams/20260910-engine-labs-company-os/product-manager-subagent/handoff.md
-reference: enginelabs-au/OrgOS @ 8a843bd6429faf1ace5a9eb6dcfb7440703d34c4, route `/cc-org-dash` (`src/App.jsx` L10 redirects `/` here)
+reference: enginelabs-au/Papership @ 8a843bd6429faf1ace5a9eb6dcfb7440703d34c4, route `/cc-org-dash` (`src/App.jsx` L10 redirects `/` here)
 ---
 
 # Engine Labs — UI Blueprint
@@ -29,7 +29,7 @@ Completed by `software-engineer-subagent` (T0-8) on 2026-09-10 from the local cl
 
 - Clone: `git clone https://github.com/enginelabs-au/OrgOS.git .reference/orgos` (exit 0, 1 s) then `git -C .reference/orgos checkout 8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` (exit 0). `git -C .reference/orgos rev-parse HEAD` → `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` (matches the pin).
 - In-repo snapshot (2026-09-11): the same tree (no `node_modules`, no `.git`) lives under `docs/ui-blueprint/` (`src/`, `public/`, lockfile, Vite/Tailwind configs). Pin record: `docs/ui-blueprint/SOURCE.md`. Phase-1 desktop port reads this snapshot; do not run its `npm` install or `dev` server. `.reference/orgos/` remains git-ignored.
-- `git log -1 --format='%H %ad %an %s' --date=iso-strict` → `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4 2026-09-10T23:07:59+10:00 Cursor Agent Initial OrgOS import.` (single-commit repository; detached HEAD).
+- `git log -1 --format='%H %ad %an %s' --date=iso-strict` → `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4 2026-09-10T23:07:59+10:00 Cursor Agent Initial Papership import.` (single-commit repository; detached HEAD).
 - No `.nvmrc` in the reference; lockfile `package-lock.json` present; `vercel.json` present (web deployment artefact, not needed for desktop).
 
 ### §0.2 File inventory (bytes; sha256 first 16 hex; `shasum -a 256`)

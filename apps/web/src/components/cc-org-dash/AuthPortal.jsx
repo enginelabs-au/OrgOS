@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { F, THEMES } from "./primitives";
+import { PRODUCT } from "../../brand";
 import {
   User,
   Lock,
   Mail,
-  Zap,
   ChevronDown,
   Sun,
   Moon,
@@ -234,16 +234,16 @@ function PasswordField({ T, value, onChange, placeholder = "••••••�
 
 export default function AuthPortal({ T, themeKey, setTheme, onSuccess }) {
   const [view, setView] = useState("login");
-  const [email, setEmail] = useState("demo@company.co");
+  const [email, setEmail] = useState("founder@enginelabs.com.au");
   const [password, setPassword] = useState("demo");
   const [remember, setRemember] = useState(true);
-  const [firstName, setFirstName] = useState("Alex");
-  const [lastName, setLastName] = useState("Rivera");
-  const [username, setUsername] = useState("arivera");
-  const [signupEmail, setSignupEmail] = useState("alex@company.co");
+  const [firstName, setFirstName] = useState("Cam");
+  const [lastName, setLastName] = useState("Douglas");
+  const [username, setUsername] = useState("cam");
+  const [signupEmail, setSignupEmail] = useState("founder@enginelabs.com.au");
   const [signupPassword, setSignupPassword] = useState("password123");
 
-  const accent = T.purple ?? T.accent;
+  const accent = T.btnPrimary ?? T.accent;
   const cycleTheme = () => {
     const i = THEME_ORDER.indexOf(themeKey);
     setTheme(THEME_ORDER[(i + 1) % THEME_ORDER.length]);
@@ -260,7 +260,7 @@ export default function AuthPortal({ T, themeKey, setTheme, onSuccess }) {
   const submitLogin = (e) => {
     e.preventDefault();
     if (!email.trim() || !password) return;
-    finishLogin({ email: email.trim(), name: "EcoAdmin" });
+    finishLogin({ email: email.trim(), name: "Cam Douglas" });
   };
 
   const submitSignup = (e) => {
@@ -291,39 +291,26 @@ export default function AuthPortal({ T, themeKey, setTheme, onSuccess }) {
           color: T.t1,
         }}
       >
-        <div style={{ width: "100%", maxWidth: 400, flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-          <div
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: "50%",
-              background: T.purpleBg ?? `${accent}18`,
-              border: `1px solid ${T.purpleBorder ?? T.border}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 16,
-              color: accent,
-            }}
-          >
-            <Zap size={26} strokeWidth={1.75} />
+        <div style={{ width: "100%", maxWidth: 400, flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative" }}>
+          <div aria-hidden style={{ position: "absolute", inset: "-80px -40px auto", height: 220, background: "radial-gradient(900px 420px at 50% 0%,rgba(109,40,217,.16),transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ textAlign: "center", marginBottom: 18, position: "relative" }}>
+            <div style={{ fontSize: 17, fontWeight: 700, letterSpacing: "-0.02em", color: T.t1 }}>{PRODUCT.name}</div>
+            <div style={{ fontSize: 11.5, color: T.t3, marginTop: 2 }}>by {PRODUCT.company}</div>
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 22px", textAlign: "center", color: T.t1 }}>
-            Log in to OrgOS
-          </h1>
 
           <div
             style={{
               position: "relative",
               width: "100%",
-              borderRadius: 16,
+              borderRadius: 10,
               border: `1px solid ${T.border}`,
               background: T.surface,
-              boxShadow: T.shadowLg ?? T.shadowMd,
+              boxShadow: T.shadow,
               overflow: "hidden",
             }}
           >
-            <div style={{ padding: "28px 26px 26px", position: "relative", zIndex: 1 }}>
+            <div style={{ padding: "22px 20px", position: "relative", zIndex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 14, color: T.t1 }}>Sign in</div>
               <GoogleSignInButton onClick={signInWithGoogle}>Sign in with Google</GoogleSignInButton>
               <OrDivider T={T} />
 
@@ -452,25 +439,10 @@ export default function AuthPortal({ T, themeKey, setTheme, onSuccess }) {
       }}
     >
       <div style={{ width: "100%", maxWidth: 420, flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <div
-          style={{
-            width: 52,
-            height: 52,
-            borderRadius: "50%",
-            background: T.purpleBg ?? `${accent}18`,
-            border: `1px solid ${T.purpleBorder ?? T.border}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 16,
-            color: accent,
-          }}
-        >
-          <Zap size={26} strokeWidth={1.75} />
+        <div style={{ textAlign: "center", marginBottom: 18 }}>
+          <div style={{ fontSize: 17, fontWeight: 700, letterSpacing: "-0.02em", color: T.t1 }}>{PRODUCT.name}</div>
+          <div style={{ fontSize: 11.5, color: T.t3, marginTop: 2 }}>Create your account</div>
         </div>
-        <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 22px", textAlign: "center", color: T.t1 }}>
-          Create your account
-        </h1>
 
         <div
           style={{

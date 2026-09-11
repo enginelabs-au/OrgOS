@@ -17,6 +17,14 @@ API_ENV_ALLOWLIST = frozenset(
         "SUPABASE_ANON_KEY",
         "SUPABASE_JWT_SECRET",
         "ENGINE_USAGE_EMIT",
+        "HERMES_API_BASE_URL",
+        "HERMES_VERSION_PIN",
+        "GITHUB_APP_ID",
+        "GITHUB_APP_INSTALLATION_ID",
+        "GITHUB_APP_PRIVATE_KEY",
+        "GITHUB_APP_PRIVATE_KEY_PATH",
+        "GITHUB_APP_OWNER",
+        "GITHUB_APP_REPO",
         "ENGINE_STORE_PATH",
         "ENGINE_ATTACHMENT_SIGNING_KEY",
         "ENGINE_TEST_HOOKS",
@@ -36,13 +44,8 @@ API_ENV_ALLOWLIST = frozenset(
 
 PHASE2_ENV_NAMES = frozenset(
     {
-        "HERMES_API_BASE_URL",
         "HERMES_API_SERVER_KEY",
-        "HERMES_VERSION_PIN",
         "MODEL_PROVIDER_API_KEY",
-        "GITHUB_APP_ID",
-        "GITHUB_APP_PRIVATE_KEY",
-        "GITHUB_APP_INSTALLATION_ID",
         "GITHUB_APP_WEBHOOK_SECRET",
     }
 )
@@ -66,6 +69,13 @@ class Settings:
     dbos_system_database_url: str
     api_base_url: str
     supabase_url: str
+    hermes_api_base_url: str
+    hermes_version_pin: str
+    github_app_id: str
+    github_installation_id: str
+    github_private_key_path: str
+    github_owner: str
+    github_repo: str
 
 
 def _get(name: str, default: str = "") -> str:
@@ -100,6 +110,13 @@ def load_settings() -> Settings:
         dbos_system_database_url=_get("DBOS_SYSTEM_DATABASE_URL", ""),
         api_base_url=_get("ENGINE_API_BASE_URL", "http://127.0.0.1:8000"),
         supabase_url=_get("SUPABASE_URL", ""),
+        hermes_api_base_url=_get("HERMES_API_BASE_URL", ""),
+        hermes_version_pin=_get("HERMES_VERSION_PIN", ""),
+        github_app_id=_get("GITHUB_APP_ID", ""),
+        github_installation_id=_get("GITHUB_APP_INSTALLATION_ID", ""),
+        github_private_key_path=_get("GITHUB_APP_PRIVATE_KEY_PATH", "") or _get("GITHUB_APP_PRIVATE_KEY", ""),
+        github_owner=_get("GITHUB_APP_OWNER", ""),
+        github_repo=_get("GITHUB_APP_REPO", ""),
     )
 
 
@@ -113,4 +130,9 @@ def settings_public_dict(settings: Settings) -> dict[str, object]:
         "has_jwt_secret": bool(settings.jwt_secret),
         "has_database_url": bool(settings.database_url),
         "has_dbos_url": bool(settings.dbos_system_database_url),
+        "hermes_pin": settings.hermes_version_pin,
+        "has_hermes_url": bool(settings.hermes_api_base_url),
+        "has_github_app_id": bool(settings.github_app_id),
+        "has_github_key_path": bool(settings.github_private_key_path),
+        "github_repo": f"{settings.github_owner}/{settings.github_repo}".strip("/"),
     }

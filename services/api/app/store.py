@@ -34,7 +34,38 @@ FOUNDER_GRANTS = [
     "approval.erasure",
     "approval.billing",
     "approval.org.admin",
+    "repo.branch",
+    "repo.change",
+    "repo.check",
 ]
+
+PROJECT_LEAD_GRANTS = [
+    cls
+    for cls in FOUNDER_GRANTS
+    if cls
+    not in {
+        "org.admin",
+        "approval.org.admin",
+        "approval.billing",
+        "approval.erasure",
+        "approval.release",
+    }
+]
+
+OPERATOR_GRANTS = [
+    "ledger.read",
+    "run.start",
+    "records.read",
+    "search.read",
+    "notifications.read",
+    "memory.read",
+]
+
+SEAT_TEMPLATES: dict[str, list[str]] = {
+    "founder": list(FOUNDER_GRANTS),
+    "project_lead": list(PROJECT_LEAD_GRANTS),
+    "operator": list(OPERATOR_GRANTS),
+}
 
 SURFACE_GRANTS = {
     "records": "records.read",
@@ -262,6 +293,31 @@ class Store:
               target_version TEXT NOT NULL,
               status TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS loop_stage_events (
+              id TEXT PRIMARY KEY,
+              work_item_id TEXT NOT NULL,
+              tenant_id TEXT NOT NULL,
+              stage TEXT NOT NULL,
+              evidence TEXT,
+              created_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS conversations (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              principal_id TEXT NOT NULL,
+              title TEXT NOT NULL,
+              mode TEXT NOT NULL,
+              created_at TEXT NOT NULL,
+              updated_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS conversation_messages (
+              id TEXT PRIMARY KEY,
+              conversation_id TEXT NOT NULL,
+              tenant_id TEXT NOT NULL,
+              role TEXT NOT NULL,
+              content TEXT NOT NULL,
+              created_at TEXT NOT NULL
+            );
             """
         )
         self.flush()
@@ -318,6 +374,51 @@ class Store:
         self.append_audit("principal-founder", "seed", "organisation", "org-founder")
         self.flush()
 
+    def list_seat_templates(self) -> list[dict[str, Any]]:
+        return [{"id": name, "grants": list(grants)} for name, grants in SEAT_TEMPLATES.items()]
+
+    def create_invite(
+        self,
+        *,
+        actor_id: str,
+        tenant_id: str,
+        template: str,
+        label: str = "",
+    ) -> dict[str, Any]:
+        spec = SEAT_TEMPLATES.get(template)
+        if spec is None or template == "founder":
+            raise StoreError("unknown or forbidden seat template", 400)
+        actor_grants = self.grant_classes(actor_id)
+        granted = [cls for cls in spec if cls in actor_grants]
+        if not granted:
+            raise StoreError("template has no grants inside the actor set", 403)
+        principal_id = _id("principal")
+        seat_id = _id("seat")
+        self.conn.execute(
+            "INSERT INTO seats (id, tenant_id, template, principal_id) VALUES (?, ?, ?, ?)",
+            (seat_id, tenant_id, template, principal_id),
+        )
+        self.conn.execute(
+            "INSERT INTO principals (id, tenant_id, kind, seat_id, grant_version) VALUES (?, ?, ?, ?, ?)",
+            (principal_id, tenant_id, "human", seat_id, 1),
+        )
+        for cls in granted:
+            self.conn.execute(
+                "INSERT INTO grants (id, principal_id, tenant_id, grant_class, scope) VALUES (?, ?, ?, ?, ?)",
+                (_id("grant"), principal_id, tenant_id, cls, "org"),
+            )
+        self.append_audit(actor_id, "member.invite", "principal", principal_id)
+        self.flush()
+        return {
+            "status": "created",
+            "mail": "not_sent",
+            "principal_id": principal_id,
+            "seat_id": seat_id,
+            "template": template,
+            "label": label,
+            "grants": granted,
+        }
+
     def _seed_registry(self) -> None:
         if self.conn.execute("SELECT COUNT(*) AS c FROM registry").fetchone()["c"] >= 43:
             return
@@ -344,7 +445,7 @@ class Store:
                 "status_changed_at": now,
                 "status_evidence": "phase-1-seed",
                 "hermes_side_effecting_tool": hermes_tool,
-                "hermes_side_effecting_tools": "unavailable",
+                "hermes_side_effecting_tools": "catalogued",
             }
             self.conn.execute(
                 "INSERT OR REPLACE INTO registry (capability_id, domain_id, payload) VALUES (?, ?, ?)",
@@ -382,6 +483,24 @@ class Store:
         )
         self.flush()
         return {"principal_id": principal_id, "grant_class": grant_class}
+
+    def revoke_grant(self, principal_id: str, grant_class: str) -> int:
+        cur = self.conn.execute(
+            "DELETE FROM grants WHERE principal_id=? AND grant_class=?",
+            (principal_id, grant_class),
+        )
+        self.flush()
+        return cur.rowcount
+
+    def require_live_approval(self, target_id: str, target_version: str) -> dict[str, Any]:
+        row = self.conn.execute(
+            """SELECT * FROM approvals
+               WHERE target_id=? AND target_version=? AND status='approved'""",
+            (target_id, target_version),
+        ).fetchone()
+        if not row:
+            raise StoreError("approval not live", 403)
+        return self.row_to_dict(row)  # type: ignore[return-value]
 
     def add_entitlement(self, principal_id: str, feature: str, tenant_id: str) -> dict[str, Any]:
         eid = _id("ent")
@@ -506,6 +625,109 @@ class Store:
         self.flush()
         return self.row_to_dict(self.conn.execute("SELECT * FROM work_items WHERE id=?", (wid,)).fetchone())  # type: ignore[return-value]
 
+    def get_work_item(self, principal_id: str, work_item_id: str) -> dict[str, Any]:
+        if not self.has_grant(principal_id, "ledger.read") and not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: ledger", 403)
+        row = self.conn.execute("SELECT * FROM work_items WHERE id=?", (work_item_id,)).fetchone()
+        if not row:
+            raise StoreError("work item not found", 404)
+        item = self.row_to_dict(row)
+        item["loop"] = self.loop_history(work_item_id)
+        return item  # type: ignore[return-value]
+
+    def advance_stage(
+        self,
+        principal_id: str,
+        work_item_id: str,
+        stage: str,
+        evidence: str | None = None,
+    ) -> dict[str, Any]:
+        from app.loop import LOOP_STAGES, can_advance
+
+        if not self.has_grant(principal_id, "ledger.write") and not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: ledger", 403)
+        if stage not in LOOP_STAGES:
+            raise StoreError("unknown loop stage", 400)
+        current = self.conn.execute("SELECT * FROM work_items WHERE id=?", (work_item_id,)).fetchone()
+        if not current:
+            raise StoreError("work item not found", 404)
+        if not can_advance(current["stage"], stage):
+            raise StoreError("loop stage cannot move backwards", 400)
+        now = _now()
+        self.conn.execute(
+            "UPDATE work_items SET stage=?, stage_changed_at=?, updated_at=? WHERE id=?",
+            (stage, now, now, work_item_id),
+        )
+        eid = _id("stg")
+        self.conn.execute(
+            """INSERT INTO loop_stage_events (id, work_item_id, tenant_id, stage, evidence, created_at)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (eid, work_item_id, current["tenant_id"], stage, evidence or "", now),
+        )
+        self.append_audit(principal_id, "work_item.stage", "work_item", work_item_id)
+        self.flush()
+        return self.get_work_item(principal_id, work_item_id)
+
+    def loop_history(self, work_item_id: str) -> list[dict[str, Any]]:
+        rows = self.conn.execute(
+            "SELECT * FROM loop_stage_events WHERE work_item_id=? ORDER BY created_at",
+            (work_item_id,),
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    def create_conversation(self, principal_id: str, title: str, mode: str = "Ask") -> dict[str, Any]:
+        if not self.has_grant(principal_id, "run.start") and not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: run.start", 403)
+        p = self.principal(principal_id)
+        now = _now()
+        cid = _id("convo")
+        self.conn.execute(
+            """INSERT INTO conversations (id, tenant_id, principal_id, title, mode, created_at, updated_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (cid, p["tenant_id"], principal_id, title or "Hey Engine", mode or "Ask", now, now),
+        )
+        self.flush()
+        return self.row_to_dict(self.conn.execute("SELECT * FROM conversations WHERE id=?", (cid,)).fetchone())  # type: ignore[return-value]
+
+    def list_conversations(self, principal_id: str) -> list[dict[str, Any]]:
+        if not self.has_grant(principal_id, "run.start") and not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: run.start", 403)
+        p = self.principal(principal_id)
+        rows = self.conn.execute(
+            "SELECT * FROM conversations WHERE tenant_id=? AND principal_id=? ORDER BY updated_at DESC",
+            (p["tenant_id"], principal_id),
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    def add_message(self, principal_id: str, conversation_id: str, role: str, content: str) -> dict[str, Any]:
+        if not self.has_grant(principal_id, "run.start") and not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: run.start", 403)
+        convo = self.conn.execute("SELECT * FROM conversations WHERE id=?", (conversation_id,)).fetchone()
+        if not convo:
+            raise StoreError("conversation not found", 404)
+        mid = _id("msg")
+        now = _now()
+        self.conn.execute(
+            """INSERT INTO conversation_messages (id, conversation_id, tenant_id, role, content, created_at)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (mid, conversation_id, convo["tenant_id"], role, content, now),
+        )
+        self.conn.execute(
+            "UPDATE conversations SET updated_at=? WHERE id=?",
+            (now, conversation_id),
+        )
+        self.flush()
+        return {"id": mid, "conversation_id": conversation_id, "role": role, "content": content}
+
+    def list_messages(self, principal_id: str, conversation_id: str) -> list[dict[str, Any]]:
+        if not self.has_grant(principal_id, "run.start") and not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: run.start", 403)
+        rows = self.conn.execute(
+            "SELECT * FROM conversation_messages WHERE conversation_id=? ORDER BY created_at",
+            (conversation_id,),
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
     def create_assignment(self, principal_id: str, work_item_id: str, assignee: str) -> dict[str, Any]:
         if not self.has_grant(principal_id, "ledger.write") and not self.has_grant(principal_id, "org.admin"):
             raise StoreError("denied: ledger", 403)
@@ -592,7 +814,12 @@ class Store:
         self.flush()
         return {"id": jid, "run_id": rid, "status": "queued", "purpose": purpose}
 
-    def start_job(self, job_id: str) -> None:
+    def start_job(self, job_id: str, principal_id: str | None = None) -> None:
+        if principal_id:
+            if not self.has_grant(principal_id, "run.start") and not self.has_grant(
+                principal_id, "org.admin"
+            ):
+                raise StoreError("denied: run.start", 403)
         self.conn.execute(
             "UPDATE jobs SET status='running', updated_at=? WHERE id=?",
             (_now(), job_id),

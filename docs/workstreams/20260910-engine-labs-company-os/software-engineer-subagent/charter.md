@@ -22,7 +22,7 @@ Execute the phase-0 foundation checks and produce the engineering documents rele
 - Manifest; phase 0 plan (T0-8); blueprint §10–§11.
 - Predecessor handoffs: PM (registry schema, PRD IDs), UI/UX (capture plan, migration map).
 - Documentation already fetched by lead (cite, re-verify if needed): Hermes API server, DBOS Python guide, Tauri 2 overview (URLs in blueprint §2).
-- Reference: `enginelabs-au/OrgOS` @ `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`.
+- Reference: `enginelabs-au/Papership` @ `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`.
 
 ## 3. Scope, non-goals, and ownership
 

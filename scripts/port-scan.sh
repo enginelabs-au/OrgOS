@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Prove which OrgOS local ports answer. Used when Docker Compose is unavailable.
+# Prove which Papership local ports answer. Used when Docker Compose is unavailable.
 set -euo pipefail
 TARGETS="${*:-http://127.0.0.1:8000/health http://127.0.0.1:8001/health http://127.0.0.1:8080/health}"
 fail=0

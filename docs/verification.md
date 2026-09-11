@@ -1,10 +1,10 @@
 ---
 document: verification
 title: Engine Labs — Verification Index (blueprint phases 13–18 → release-1 checks)
-status: draft_phase_0
-revision: 1
+status: r1_approved
+revision: 4
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner_role: software-engineer-subagent (index skeleton, T0-8); results owned by project-lead-subagent with all roles (REQ-13..18)
 task_id: 20260910-engine-labs-company-os
 intake: docs/Company_Agent_System_Blueprint.md (Phases 13–18)
@@ -25,12 +25,12 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 
 | ID | Release-1 check | Method | Evidence type | Runs in (phase / plan) | R1 state |
 |---|---|---|---|---|---|
-| V13-1 | Every enabled capability traces requirement → registry row → implementation → configuration → acceptance check | Traceability table generated from `docs/capabilities.md` + PRD IDs + code paths | Table with links (NFR-9) | Phase 3 / `phase_3_verification_plan.md` (PL) | UNVERIFIED |
+| V13-1 | Every enabled capability traces requirement → registry row → implementation → configuration → acceptance check | Traceability table generated from `docs/capabilities.md` + PRD IDs + code paths | Table with links (NFR-9) | Phase 3 / `phase_3_verification_plan.md` (PL) | PARTIAL (`software-engineer-subagent/artifacts/t3-v13-1-traceability.md`; 12 configured, B08.01 planned, 0 working) |
 | V13-2 | Registry keeps all 43 groups; deferred rows remain `planned`; no reference screen or fixture counted | `rg -c` row count = 43; status audit; static scan for `data.jsx`/`entities.js` imports in production paths | Command output; scan report | Every phase gate; final in phase 3 | PARTIAL (phase 1: 43 rows; 12 `configured` with evidence; no `working`; desktop scan 0 fixtures) |
 | V13-3 | Launcher verification: preflight, `node --test` preflight/policy tests, `validate-agent-config.mjs`, `validate-launch.mjs`; blueprint linked from intake, phase 0, manifest, state; fresh `/launch-pipeline` reads requirements, asks only unresolved questions, preserves Build/bootstrap boundary; later invocation resumes recorded gate | Run the four commands; inspect links; two Cursor-session trials recorded separately from static checks | JSON/exit codes; session transcripts | Phase 0 (static) → phase 3 (session evidence) | PARTIAL (phase 0 validators — EV-S14; PL re-run 2026-09-10T18:17:57Z: all four pass, EV-PL01) |
-| V13-4 | Complete operator workflows with realistic scoped data, including missing information and failed dependencies | Scripted walkthrough (Founder seat) per R1-ACC-2, R1-ACC-13 | Walkthrough log + screenshots | Phase 3 | UNVERIFIED |
-| V13-5 | Development loop from request to reviewed change and release rehearsal in a test environment; links/status/artifacts refer to actual records and code version | Execute one real Engine Labs change (R1-ACC-6); verify SHA links | Work-item chain; PR; check results; release proposal record | Phase 2 (demonstration) → phase 3 (verification) | UNVERIFIED |
-| V13-6 | Unsupported integrations and untested paths reported accurately; mock/visible control never counts as connection | Registry `unavailable`/`planned` audit vs connector health | Registry diff; health log | Phase 3 | UNVERIFIED |
+| V13-4 | Complete operator workflows with realistic scoped data, including missing information and failed dependencies | Scripted walkthrough (Founder seat) per R1-ACC-2, R1-ACC-13 | Walkthrough log + screenshots | Phase 3 | PARTIAL (web Home `/cc-org-dash` 2026-09-11; Settings/Work clicks blocked by fail-closed MCP hook) |
+| V13-5 | Development loop from request to reviewed change and release rehearsal in a test environment; links/status/artifacts refer to actual records and code version | Execute one real Engine Labs change (R1-ACC-6); verify SHA links | Work-item chain; PR; check results; release proposal record | Phase 2 (demonstration) → phase 3 (verification) | PARTIAL (`test_r1_acc6_walks_all_loop_stages`; live PR https://github.com/enginelabs-au/OrgOS/pull/1 via `open_pull` `dry_run: false`; `execute_release` not run) |
+| V13-6 | Unsupported integrations and untested paths reported accurately; mock/visible control never counts as connection | Registry `unavailable`/`planned` audit vs connector health | Registry diff; health log | Phase 3 | PARTIAL (live `/health` hermes+github reachable; extra connectors stay planned; Hermes `accepted` only for catalogued read `tool=`) |
 | V13-7 | Defects routed to owning role; invalidated downstream gates recorded and replayed; blocking security findings independently re-verified | Manifest §11 remediation table review | Manifest + handoffs | Every gate | PARTIAL (process in place; no defects yet) |
 
 ## 2. Phase 14 — Authority, memory, and data lifecycle
@@ -39,7 +39,7 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 |---|---|---|---|---|---|
 | V14-1 | Isolation across pages, queries, aggregates, notifications, exports, files, agent tools, memory for a second identity / request lacking a grant (R1-ACC-4, PRD-D.5) | Authorization test suite hitting each surface with an unprivileged principal | Test output (pytest) with exit codes | Phase 1 (tests) → phase 3 | PARTIAL (`test_authz.py` five surfaces + memory; 21 API tests exit 0) |
 | V14-2 | Separate organisations, roles, project scopes, guest assignments; delegated grant ≤ delegator; billing upgrade creates no data permission | Multi-tenant fixtures; delegation tests; entitlement/permission separation test (PRD-D.6 R1 part) | Test output | Phase 1 (tenant + entitlement separation); R2 for delegation/guests | PARTIAL for R1 (delegation R2 → NOT_APPLICABLE R1) |
-| V14-3 | Revoked credentials, changed assignments, expired approvals, modified action targets → running/queued work rechecks authority (PRD-D.12, D.10) | Fault injection mid-run; approval invalidation test | Run log; audit entries | Phase 2 → phase 3 | UNVERIFIED |
+| V14-3 | Revoked credentials, changed assignments, expired approvals, modified action targets → running/queued work rechecks authority (PRD-D.12, D.10) | Fault injection mid-run; approval invalidation test | Run log; audit entries | Phase 2 → phase 3 | VERIFIED (`test_voided_approval_blocks_job_step`, `test_revoked_grant_blocks_queued_job_step`; API 47 passed) |
 | V14-4 | Setup access removed at handover (application, cloud, SSH) | Handover checklist + post-handover access test | Checklist record | R2 (PRD-D.8) | NOT_APPLICABLE R1 |
 | V14-5 | Memory: source restrictions, correction propagation, archive ownership, offboarding, export, erasure with disposable fixtures; summaries/indexes/caches follow deletion; backup/provider retention disclosed | R1: search/inspect + provenance fields + credential-exclusion scan (PRD-F.2, F.4); R3/R4: full operations and erasure | Test output; scan | Phase 1–2 (R1 subset) → R3/R4 | PARTIAL for R1 (subset) |
 
@@ -47,21 +47,21 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 
 | ID | Release-1 check | Method | Evidence type | Runs in | R1 state |
 |---|---|---|---|---|---|
-| V15-1 | Bound repository connector: actual authentication, permitted operations (four grant classes), source permissions, refresh/revocation, stale data, unsupported actions | Contract tests at the source-control boundary (PRD-B.7, R1-ACC-9) | Test output | Phase 2 | UNVERIFIED |
-| V15-2 | Webhook authentication and duplicate-event handling | GitHub check-run webhook tests (if webhooks used in R1) | Test output | Phase 2 | UNVERIFIED (may be NOT_APPLICABLE if polling only) |
-| V15-3 | Interrupt worker and network before/after a potential external write; recovery reconciles source outcome; no duplicated effects (R1-ACC-5, PRD-E.7) | Interruption harness (kill worker, drop network) around a GitHub write; Hermes `Idempotency-Key` replay assertion (architecture §7) | Interruption log; receipt reconciliation | Phase 2 → phase 3 | UNVERIFIED |
-| V15-4 | Cancellation, desktop disconnection, budget exhaustion, diagnostic limits (2 retries + 1 diagnostic), escalation when new authority needed (PRD-E.8) | Fault-injection runs | Run events; incident + escalation records | Phase 2 → phase 3 | UNVERIFIED |
+| V15-1 | Bound repository connector: actual authentication, permitted operations (four grant classes), source permissions, refresh/revocation, stale data, unsupported actions | Contract tests at the source-control boundary (PRD-B.7, R1-ACC-9) | Test output | Phase 2 | PARTIAL (live `/health` `github: reachable`; AUTH-12 empty-perms refuse; live PR #1 opened; `execute_release` not run) |
+| V15-2 | Webhook authentication and duplicate-event handling | GitHub check-run webhook tests (if webhooks used in R1) | Test output | Phase 2 | NOT_APPLICABLE R1 (no webhook receiver; list/open are on-demand) |
+| V15-3 | Interrupt worker and network before/after a potential external write; recovery reconciles source outcome; no duplicated effects (R1-ACC-5, PRD-E.7) | Interruption harness (kill worker, drop network) around a GitHub write; Hermes `Idempotency-Key` replay assertion (architecture §7) | Interruption log; receipt reconciliation | Phase 2 → phase 3 | PARTIAL (persist-before-202 + dual `/runs` unit-tested; live VPS kill/restart of a side-effecting write not run) |
+| V15-4 | Cancellation, desktop disconnection, budget exhaustion, diagnostic limits (2 retries + 1 diagnostic), escalation when new authority needed (PRD-E.8) | Fault-injection runs | Run events; incident + escalation records | Phase 2 → phase 3 | PARTIAL (`test_cancel_vs_disconnect`; budget/diagnostic live limits not run) |
 | V15-5 | Restore encrypted backup from client-controlled location into isolated environment; verify integrity, key access, permissions, external reconciliation; measure RTO/RPO vs accepted targets; snapshot inventory and retention/deletion procedures | Restore drill per architecture §11 | Drill report | Phase 3 dry run (scripts); full drill R4 | UNVERIFIED (R1 dry run), NOT_APPLICABLE (full drill) |
-| V15-6 | Runtime boundary contract tests (Hermes adapter): capabilities probe, idempotent run creation, SSE detach/reattach, stop, approval, session isolation, usage dedupe, concurrency cap | Adapter contract test suite (architecture §7 last column) | Test output vs pinned `HERMES_VERSION_PIN` | Phase 2 | UNVERIFIED |
+| V15-6 | Runtime boundary contract tests (Hermes adapter): capabilities probe, idempotent run creation, SSE detach/reattach, stop, approval, session isolation, usage dedupe, concurrency cap | Adapter contract test suite (architecture §7 last column) | Test output vs pinned `HERMES_VERSION_PIN` | Phase 2 | PARTIAL (HEAD-first probe; capabilities prove `api_server`; live `accepted` for catalogued read `memory_read` `run_ee41560dd3ee46eb9bef3fcd6615e6ba`; subscribe/job loop still idle) |
 
 ## 4. Phase 16 — Desktop and adaptive experience
 
 | ID | Release-1 check | Method | Evidence type | Runs in | R1 state |
 |---|---|---|---|---|---|
 | V16-1 | Desktop installation, sign-in, secure token handling (keychain), progress streaming, reconnect, notifications, cancellation, signed update on macOS (R1-ACC-1, 3) | Native platform run (packaged app); keychain inspection; update signature check | Screenshots; logs; `security` CLI output | Phase 1 (sign-in, streaming), phase 3 (packaged, signed) | UNVERIFIED |
-| V16-2 | Screens compared with the recorded `/cc-org-dash` reference at matching viewports/themes: layout, typography, spacing, colours, primary tabs, command rail, assistant panel, overlays, responsive behaviour; intentional departures (ui-blueprint §H) recorded; baseline refreshed only by explicit reference update | Screenshot comparison against `docs/ui-blueprint/` captures (§G plan) | Image pairs + diff notes | Phase 0 captures (complete — see §7) → phase 3 comparison | PARTIAL (reference baseline captured: 122 PNGs / 52 states, EV-S16; comparison pending phase 3) |
+| V16-2 | Screens compared with the recorded `/cc-org-dash` reference at matching viewports/themes: layout, typography, spacing, colours, primary tabs, command rail, assistant panel, overlays, responsive behaviour; intentional departures (ui-blueprint §H) recorded; baseline refreshed only by explicit reference update | Screenshot comparison against `docs/ui-blueprint/` captures (§G plan) | Image pairs + diff notes | Phase 0 captures (complete — see §7) → phase 3 comparison | PARTIAL (Home snapshot 2026-09-11; full 52-state diff not re-run) |
 | V16-3 | Production screens use real permissions, persisted records and agent events (PRD-A.16) | Static scan: no `data.jsx`/`entities.js`/localStorage fixtures in production imports; runtime check | Scan output | Phase 1 → phase 3 | PARTIAL (desktop `tests/*.test.mjs` exit 0; runtime against live API not run) |
-| V16-4 | Keyboard navigation, focus, accessible labels, contrast, responsive layout, readable empty/error states (NFR-2; ui-blueprint §E) | axe/pa11y run + manual keyboard walkthrough; contrast tool report (phase-0 computed ratios in ui-blueprint §0.6 are the baseline) | Accessibility report | Phase 1 (components) → phase 3 | PARTIAL (`packages/ui` contrast script + overlay/switch tests exit 0; no axe gallery) |
+| V16-4 | Keyboard navigation, focus, accessible labels, contrast, responsive layout, readable empty/error states (NFR-2; ui-blueprint §E) | axe/pa11y run + manual keyboard walkthrough; contrast tool report (phase-0 computed ratios in ui-blueprint §0.6 are the baseline) | Accessibility report | Phase 1 (components) → phase 3 | PARTIAL (closed Hey Engine unmounts; Work `aria-current`; no axe; Cursor browser click hook-blocked) |
 | V16-5 | Operator completes routine work without technical traces or special prompting; compare Founder/PL/Operator scopes enabled | Founder walkthrough R1; PL/Operator R2 | Walkthrough log | Phase 3 (Founder) ; R2 | PARTIAL scope |
 | V16-6 | Adaptive views: stable controls, permitted data, valid schemas, pinning, undo, fallback; completion time vs fixed views; within design system | — | — | R3 | NOT_APPLICABLE R1 |
 
@@ -69,23 +69,23 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 
 | ID | Release-1 check | Method | Evidence type | Runs in | R1 state |
 |---|---|---|---|---|---|
-| V17-1 | Usage records per run (tokens by model band, tool calls, execution time, estimated cost) and run budgets exist; operational monitoring (logs, traces, health, cost metrics) present (PRD-G.11, NFR-5, R1-ACC-12) | Ledger sample; monitoring inspection | Ledger rows; dashboards/log samples | Phase 1–2 → phase 3 | UNVERIFIED |
+| V17-1 | Usage records per run (tokens by model band, tool calls, execution time, estimated cost) and run budgets exist; operational monitoring (logs, traces, health, cost metrics) present (PRD-G.11, NFR-5, R1-ACC-12) | Ledger sample; monitoring inspection | Ledger rows; dashboards/log samples | Phase 1–2 → phase 3 | PARTIAL (schema wired; F-G1 emit on after owner close-out; identifier/enum only; no prices) |
 | V17-2 | Paid-tier checks: entitlements, model-band allowances, seat changes, reservations, graduated rates, limit enforcement, provider reconciliation in billing test mode; repeated events cannot duplicate charges | — | — | R4 (phase 11 gate) | NOT_APPLICABLE R1 (explicitly deferred; no price published, no charge — R1-ACC-12) |
 | V17-3 | Exhausted allowance pauses new chargeable work while preserving records, exports, decisions | — | — | R4 | NOT_APPLICABLE R1 |
-| V17-4 | Clean deployment, supported upgrades, migration recovery, monitoring, alerts, support-access expiry | Compose bring-up in a test environment; migration up/down; alert test | Deployment log | Phase 3 (test environment only; production is owner/CI) | UNVERIFIED |
+| V17-4 | Clean deployment, supported upgrades, migration recovery, monitoring, alerts, support-access expiry | Compose bring-up in a test environment; migration up/down; alert test | Deployment log | Phase 3 (test environment only; production is owner/CI) | PARTIAL (`docker compose -f infra/compose/docker-compose.yml config --quiet` exit 0; stack not brought up) |
 | V17-5 | Capacity and cost under realistic concurrency measured before VPS sizing (NFR-6) | Resource measurement report | Report | Phase 1 (dev) → phase 3 | UNVERIFIED |
-| V17-6 | Connectors and distributed dependencies satisfy commercial-access and licence requirements; dependency licence inventory (PRD-G.9) | Licence inventory generation (`license-checker`/`pip-licenses`) | Inventory file | Phase 1 → phase 3 | UNVERIFIED |
+| V17-6 | Connectors and distributed dependencies satisfy commercial-access and licence requirements; dependency licence inventory (PRD-G.9) | Licence inventory generation (`license-checker`/`pip-licenses`) | Inventory file | Phase 1 → phase 3 | PARTIAL (`artifacts/t3-licence-inventory.md`; no machine SPDX dump) |
 
 ## 6. Phase 18 — Release readiness and owner handoff
 
 | ID | Release-1 check | Method | Evidence type | Runs in | R1 state |
 |---|---|---|---|---|---|
-| V18-1 | Results from 13–17 consolidated against the exact release commit, configuration and enabled capability set; evidence reused only when code/deps/environment unchanged | PL reconciliation | Consolidated table with commit SHA | Phase 3 | UNVERIFIED |
-| V18-2 | All mandatory checks pass; six role verdicts reconciled; open high/critical security findings keep `BLOCKED` | Manifest §5/§11 review | Manifest | Phase 3 | UNVERIFIED |
-| V18-3 | Residual limitations, blocked scope, deferred capabilities, migration/rollback procedures, operational ownership recorded; missing credentials/policies/platform evidence never recorded as passed | Handoff document review | `delivery/owner-handoff.md` | Phase 3 | UNVERIFIED |
-| V18-4 | `docs/plans/final_implementation_checklist.md` created from template with remaining defects, env-var names and sources, human-only actions, production prerequisites | File exists and matches template | File | Phase 3 | UNVERIFIED |
-| V18-5 | Owner decision `APPROVE` / `REQUEST_CHANGES` / `DO_NOT_PROCEED` recorded (not inferred) (R1-ACC-15) | Owner response captured in handoff | Handoff record | Phase 3 closure | UNVERIFIED |
-| V18-6 | Versioned release artifacts and permitted owner/CI deployment procedure prepared; implemented/verified/ready/deployed/owner-approved states distinguished | Release notes + procedure review | Artifacts + procedure | Phase 3 | UNVERIFIED |
+| V18-1 | Results from 13–17 consolidated against the exact release commit, configuration and enabled capability set; evidence reused only when code/deps/environment unchanged | PL reconciliation | Consolidated table with commit SHA | Phase 3 | PARTIAL (this index r3 + HEAD `7d1af36`; working tree includes Phase 3 close) |
+| V18-2 | All mandatory checks pass; six role verdicts reconciled; open high/critical security findings keep `BLOCKED` | Manifest §5/§11 review | Manifest | Phase 3 | PARTIAL (no BLOCKED; Security live-tools CONDITIONAL allows catalogued-read `accepted`) |
+| V18-3 | Residual limitations, blocked scope, deferred capabilities, migration/rollback procedures, operational ownership recorded; missing credentials/policies/platform evidence never recorded as passed | Handoff document review | `delivery/owner-handoff.md` | Phase 3 | VERIFIED (`docs/workstreams/20260910-engine-labs-company-os/delivery/owner-handoff.md`) |
+| V18-4 | `docs/plans/final_implementation_checklist.md` created from template with remaining defects, env-var names and sources, human-only actions, production prerequisites | File exists and matches template | File | Phase 3 | VERIFIED (`docs/plans/final_implementation_checklist.md`) |
+| V18-5 | Owner decision `APPROVE` / `REQUEST_CHANGES` / `DO_NOT_PROCEED` recorded (not inferred) (R1-ACC-15) | Owner response captured in handoff | Handoff record | Phase 3 closure | VERIFIED (owner APPROVE 2026-09-11; `delivery/owner-handoff.md`) |
+| V18-6 | Versioned release artifacts and permitted owner/CI deployment procedure prepared; implemented/verified/ready/deployed/owner-approved states distinguished | Release notes + procedure review | Artifacts + procedure | Phase 3 | PARTIAL (handoff + checklist; not deployed) |
 
 ## 7. Phase-0 evidence index (produced so far)
 

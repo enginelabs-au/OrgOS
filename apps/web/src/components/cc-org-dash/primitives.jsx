@@ -1,4 +1,4 @@
-// Design tokens — soft layered UI with per-theme translation (cool blue light, navy-tinted darks)
+// Design tokens — prism brand (D-13): blue primary, rainbow accents, fractured purple secondary
 import { useState } from "react";
 
 export const F = {
@@ -10,23 +10,23 @@ export const F = {
 export const THEMES = {
   light: {
     name: "Light", icon: "sun",
-    pageGradient: "linear-gradient(180deg, #eef2ff 0%, #f4f7fd 42%, #fafcfe 100%)",
+    pageGradient: "linear-gradient(180deg, #f7f4ee 0%, #f3efe6 52%, #faf8f4 100%)",
     bg: "#ffffff",
-    canvas: "#f5f8fe",
+    canvas: "#faf8f4",
     surface: "#ffffff",
-    raised: "#f0f4fc",
-    hover: "#e8eef9",
-    border: "rgba(59, 130, 246, 0.14)",
-    borderMuted: "rgba(59, 130, 246, 0.09)",
-    borderHover: "rgba(59, 130, 246, 0.22)",
-    t1: "#1e293b",
-    t2: "#64748b",
-    t3: "#94a3b8",
+    raised: "#f1eee6",
+    hover: "#e8e3d8",
+    border: "rgba(26, 18, 36, 0.11)",
+    borderMuted: "rgba(26, 18, 36, 0.06)",
+    borderHover: "rgba(26, 18, 36, 0.18)",
+    t1: "#1a1224",
+    t2: "#63738a",
+    t3: "#617083",
     t4: "#a8b4c4",
-    accent: "#3b82f6",
+    accent: "#2563eb",
     accentBg: "#eff6ff",
-    accentBorder: "rgba(59, 130, 246, 0.35)",
-    accentHover: "#2563eb",
+    accentBorder: "rgba(37, 99, 235, 0.38)",
+    accentHover: "#1d4ed8",
     green: "#059669",
     greenBg: "#ecfdf5",
     greenBorder: "#6ee7b7",
@@ -36,32 +36,38 @@ export const THEMES = {
     amber: "#d97706",
     amberBg: "#fffbeb",
     amberBorder: "#fcd34d",
-    purple: "#7c3aed",
+    purple: "#5b21b6",
     purpleBg: "#f5f3ff",
     purpleBorder: "#c4b5fd",
-    nav: "#f8faff",
-    navText: "#64748b",
-    navActive: "#1e293b",
-    navHover: "#eef2ff",
-    btnPrimary: "#3b82f6",
-    btnPrimaryHover: "#2563eb",
-    shadow: "0 1px 2px rgba(15, 23, 42, 0.04)",
-    shadowSubtle: "0 2px 12px rgba(15, 23, 42, 0.05)",
-    shadowMd: "0 4px 20px rgba(15, 23, 42, 0.08)",
-    shadowLg: "0 12px 40px rgba(15, 23, 42, 0.1)",
+    nav: "#faf8f4",
+    navText: "#63738a",
+    navActive: "#1a1224",
+    navHover: "#efe8dc",
+    navField: "#6d28d9",
+    navField2: "#5b21b6",
+    navInk: "#efe7ff",
+    navInk2: "#c4b5fd",
+    btnPrimary: "#2563eb",
+    btnPrimaryHover: "#1d4ed8",
+    rainbow: "linear-gradient(135deg, #2563eb 0%, #22d3ee 22%, #4ade80 42%, #fbbf24 62%, #f472b6 82%, #a78bfa 100%)",
+    rainbowSoft: "linear-gradient(135deg, rgba(37,99,235,0.14), rgba(167,139,250,0.16))",
+    shadow: "0 1px 2px rgba(26, 18, 36, 0.05), 0 8px 24px rgba(26, 18, 36, 0.07)",
+    shadowSubtle: "0 1px 2px rgba(26, 18, 36, 0.05), 0 8px 24px rgba(26, 18, 36, 0.07)",
+    shadowMd: "0 8px 24px rgba(26, 18, 36, 0.10)",
+    shadowLg: "0 24px 64px rgba(26, 18, 36, 0.18)",
   },
   dark: {
     name: "Dark", icon: "moon",
-    pageGradient: "linear-gradient(180deg, #080c14 0%, #0c111d 38%, #0f1419 100%)",
-    bg: "#0c111d",
-    canvas: "#0e1420",
-    surface: "#121a28",
-    raised: "#182235",
-    hover: "#1f2d42",
+    pageGradient: "linear-gradient(180deg, #0b0614 0%, #12081e 48%, #0a0e22 100%)",
+    bg: "#0b0614",
+    canvas: "#0b0614",
+    surface: "#16101f",
+    raised: "#1c1528",
+    hover: "#261c38",
     border: "rgba(96, 165, 250, 0.14)",
     borderMuted: "rgba(96, 165, 250, 0.08)",
     borderHover: "rgba(96, 165, 250, 0.24)",
-    t1: "#e8eef9",
+    t1: "#f2eef8",
     t2: "#9fb0cc",
     t3: "#7c8ca8",
     t4: "#647896",
@@ -81,31 +87,37 @@ export const THEMES = {
     purple: "#c084fc",
     purpleBg: "rgba(192, 132, 252, 0.1)",
     purpleBorder: "rgba(192, 132, 252, 0.35)",
-    nav: "#121a28",
+    nav: "#100a18",
     navText: "#9fb0cc",
-    navActive: "#e8eef9",
-    navHover: "#182235",
-    btnPrimary: "#3b82f6",
+    navActive: "#f2eef8",
+    navHover: "#1c1528",
+    navField: "#16082e",
+    navField2: "#1d0b3a",
+    navInk: "#f2eef8",
+    navInk2: "#b9a6e6",
+    btnPrimary: "#2563eb",
     btnPrimaryHover: "#60a5fa",
-    shadow: "0 0 transparent",
-    shadowSubtle: "0 2px 12px rgba(0, 0, 0, 0.35)",
-    shadowMd: "0 6px 24px rgba(0, 0, 0, 0.45)",
-    shadowLg: "0 16px 48px rgba(0, 0, 0, 0.55)",
+    rainbow: "linear-gradient(135deg, #2563eb 0%, #22d3ee 22%, #4ade80 42%, #fbbf24 62%, #f472b6 82%, #a78bfa 100%)",
+    rainbowSoft: "linear-gradient(135deg, rgba(37,99,235,0.22), rgba(167,139,250,0.2))",
+    shadow: "0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45)",
+    shadowSubtle: "0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45)",
+    shadowMd: "0 8px 24px rgba(0, 0, 0, 0.5)",
+    shadowLg: "0 24px 64px rgba(0, 0, 0, 0.6)",
   },
   dimmed: {
     name: "Dimmed", icon: "palette",
-    pageGradient: "linear-gradient(180deg, #1a1d28 0%, #1e2433 45%, #222838 100%)",
-    bg: "#222838",
-    canvas: "#1e2433",
-    surface: "#262d3f",
-    raised: "#2e3750",
-    hover: "#38445e",
+    pageGradient: "linear-gradient(180deg, #24143a 0%, #1e2440 50%, #222848 100%)",
+    bg: "#222848",
+    canvas: "#1e2438",
+    surface: "#232840",
+    raised: "#343a58",
+    hover: "#3e4668",
     border: "rgba(100, 149, 237, 0.16)",
     borderMuted: "rgba(100, 149, 237, 0.1)",
     borderHover: "rgba(100, 149, 237, 0.26)",
     t1: "#dce4f0",
     t2: "#9aa8bc",
-    t3: "#7d8ba0",
+    t3: "#8795aa",
     t4: "#6b788c",
     accent: "#6b9ef5",
     accentBg: "rgba(83, 155, 245, 0.16)",
@@ -123,16 +135,22 @@ export const THEMES = {
     purple: "#b794f4",
     purpleBg: "rgba(152, 110, 226, 0.14)",
     purpleBorder: "rgba(183, 148, 244, 0.4)",
-    nav: "#262d3f",
+    nav: "#2a2448",
     navText: "#9aa8bc",
     navActive: "#dce4f0",
-    navHover: "#2e3750",
-    btnPrimary: "#539bf5",
+    navHover: "#343a58",
+    navField: "#181d2e",
+    navField2: "#202641",
+    navInk: "#eef1fa",
+    navInk2: "#b6c1dd",
+    btnPrimary: "#2563eb",
     btnPrimaryHover: "#6cb6ff",
-    shadow: "0 0 transparent",
-    shadowSubtle: "0 2px 10px rgba(0, 0, 0, 0.28)",
-    shadowMd: "0 5px 20px rgba(0, 0, 0, 0.38)",
-    shadowLg: "0 14px 40px rgba(0, 0, 0, 0.48)",
+    rainbow: "linear-gradient(135deg, #2563eb 0%, #22d3ee 22%, #4ade80 42%, #fbbf24 62%, #f472b6 82%, #a78bfa 100%)",
+    rainbowSoft: "linear-gradient(135deg, rgba(37,99,235,0.2), rgba(167,139,250,0.18))",
+    shadow: "0 1px 2px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.35)",
+    shadowSubtle: "0 1px 2px rgba(0, 0, 0, 0.28), 0 8px 24px rgba(0, 0, 0, 0.35)",
+    shadowMd: "0 8px 24px rgba(0, 0, 0, 0.4)",
+    shadowLg: "0 24px 64px rgba(0, 0, 0, 0.5)",
   },
 };
 
@@ -169,6 +187,7 @@ export function Btn({ children, onClick, variant = "default", small, disabled, T
     accent:  { bg: T.accent, hbg: T.accentHover, color: "#fff", border: `1px solid rgba(31,35,40,0.15)` },
     danger:  { bg: T.raised, hbg: T.redBg, color: T.red, border: `1px solid ${T.border}` },
     success: { bg: T.greenBg, hbg: `${T.green}22`, color: T.green, border: `1px solid ${T.greenBorder}` },
+    rainbow: { bg: T.rainbow, hbg: T.rainbow, color: "#fff", border: "1px solid transparent" },
   }[variant];
   return (
     <button onClick={onClick} disabled={disabled}
@@ -503,25 +522,29 @@ export function SectionLabel({ children, T, action }) {
 /**
  * Primary app tabs — active tab lifts with canvas fill and inverse-radius “scoops”
  * at the bottom corners (connects visually to the page below).
+ * variant "onField" sits on the purple nav field from blueprint-2.
  */
-export function PrimaryNavTabs({ T, tabs, active, onChange, isMobile, leading }) {
-  const R = 11;
+export function PrimaryNavTabs({ T, tabs, active, onChange, isMobile, leading, trailing, variant = "default" }) {
+  const R = 9;
   const fill = T.canvas;
+  const onField = variant === "onField";
+  const idle = onField ? (T.navInk2 ?? T.navText ?? T.t2) : (T.navText ?? T.t2);
+  const idleHover = onField ? (T.navInk ?? "#fff") : T.t1;
   const padX = isMobile ? 10 : 13;
-  const padY = isMobile ? 9 : 10;
 
   return (
     <div
       style={{
         display: "flex",
         alignItems: "flex-end",
-        gap: 6,
-        padding: isMobile ? "6px 8px 0" : "8px 12px 0",
+        gap: 2,
+        padding: isMobile ? "0 8px" : "0 12px",
         overflowX: "auto",
         overflowY: "hidden",
         WebkitOverflowScrolling: "touch",
         scrollbarWidth: "thin",
-        minHeight: isMobile ? 46 : 48,
+        minHeight: isMobile ? 40 : 42,
+        background: onField ? (T.navField ?? T.nav) : "transparent",
       }}
     >
       {leading != null && (
@@ -540,16 +563,17 @@ export function PrimaryNavTabs({ T, tabs, active, onChange, isMobile, leading })
             style={{
               position: "relative",
               zIndex: isActive ? 2 : 1,
-              padding: `${padY}px ${padX}px`,
+              height: isMobile ? 36 : 38,
+              padding: `0 ${padX}px`,
               display: "flex",
               alignItems: "center",
-              gap: isMobile ? 5 : 8,
+              gap: isMobile ? 6 : 7,
               background: isActive ? fill : "transparent",
               border: "none",
               borderRadius: isActive ? `${R}px ${R}px 0 0` : 0,
               marginBottom: 0,
-              color: isActive ? T.t1 : T.navText ?? T.t2,
-              fontSize: isMobile ? 13 : 14,
+              color: isActive ? T.t1 : idle,
+              fontSize: isMobile ? 12.5 : 12.5,
               fontWeight: isActive ? 600 : 500,
               cursor: "pointer",
               fontFamily: F.sans,
@@ -559,10 +583,10 @@ export function PrimaryNavTabs({ T, tabs, active, onChange, isMobile, leading })
               boxShadow: isActive ? `0 1px 0 0 ${fill}` : "none",
             }}
             onMouseEnter={(e) => {
-              if (!isActive) e.currentTarget.style.color = T.t1;
+              if (!isActive) e.currentTarget.style.color = idleHover;
             }}
             onMouseLeave={(e) => {
-              if (!isActive) e.currentTarget.style.color = T.navText ?? T.t2;
+              if (!isActive) e.currentTarget.style.color = idle;
             }}
           >
             {isActive && (
@@ -595,7 +619,7 @@ export function PrimaryNavTabs({ T, tabs, active, onChange, isMobile, leading })
                 />
               </>
             )}
-            <span style={{ display: "flex", color: isActive ? T.t2 : T.t3, position: "relative", zIndex: 1 }}>
+            <span style={{ display: "flex", color: isActive ? T.t2 : "currentColor", opacity: isActive ? 1 : 0.95, position: "relative", zIndex: 1 }}>
               {t.icon}
             </span>
             {(!isMobile || isActive) && (
@@ -604,13 +628,17 @@ export function PrimaryNavTabs({ T, tabs, active, onChange, isMobile, leading })
                 {t.badge != null && t.badge !== 0 && (
                   <span
                     style={{
-                      background: T.accent,
+                      background: isActive ? T.accent : (onField ? "rgba(255,255,255,.18)" : T.accent),
                       color: "#fff",
                       borderRadius: 99,
-                      padding: "1px 6px",
+                      padding: "1px 5px",
                       fontSize: 10,
-                      fontWeight: 700,
+                      fontWeight: 600,
+                      fontFamily: F.mono,
                       lineHeight: 1.35,
+                      minWidth: 17,
+                      justifyContent: "center",
+                      display: "inline-flex",
                     }}
                   >
                     {t.badge}
@@ -621,6 +649,14 @@ export function PrimaryNavTabs({ T, tabs, active, onChange, isMobile, leading })
           </button>
         );
       })}
+      {trailing != null && (
+        <>
+          <div style={{ flex: 1 }} />
+          <div style={{ flexShrink: 0, padding: "0 4px 8px", fontSize: 10.5, color: onField ? (T.navInk2 ?? T.t3) : T.t3, fontFamily: F.mono }}>
+            {trailing}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -713,7 +749,7 @@ export function SubNav({ T, tabs, active, onChange }) {
 }
 
 // GitHub-style breadcrumb page header
-export function PageHeader({ T, org = "cc-org-dash-global", name, description, actions, icon }) {
+export function PageHeader({ T, org = "Engine Labs", name, description, actions, icon }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, paddingBottom: 16, borderBottom: `1px solid ${T.border}`, marginBottom: 0 }}>
       <div style={{ minWidth: 0, flex: 1 }}>

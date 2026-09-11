@@ -75,7 +75,7 @@ export function Surface({
   );
 }
 
-export type BtnVariant = "primary" | "default" | "ghost" | "outline" | "accent" | "danger" | "success";
+export type BtnVariant = "primary" | "default" | "ghost" | "outline" | "accent" | "danger" | "success" | "rainbow";
 
 export function Btn({
   children,
@@ -108,6 +108,7 @@ export function Btn({
     accent: { bg: T.accent, hbg: T.accentHover, color: "#fff", border: "1px solid rgba(31,35,40,0.15)" },
     danger: { bg: T.raised, hbg: T.redBg, color: T.red, border: `1px solid ${T.border}` },
     success: { bg: T.greenBg, hbg: `${T.green}22`, color: T.green, border: `1px solid ${T.greenBorder}` },
+    rainbow: { bg: T.rainbow, hbg: T.rainbow, color: "#fff", border: "1px solid transparent" },
   }[variant];
   return (
     <button

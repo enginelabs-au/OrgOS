@@ -1,5 +1,6 @@
 import { useState, useMemo, useId } from "react";
 import { Surface, Btn, Badge, Dot, Progress, SlideOver, SectionLabel, F, SubNav } from "./primitives";
+import { PRODUCT } from "../../brand";
 import { DB } from "./data";
 import {
   BarChart3,
@@ -121,12 +122,12 @@ function DonutChart({ T, segments, size = 132 }) {
 }
 
 const TEAMS_PERF = [
-  { id: "eng", name: "Engineering", color: "#7c3aed" },
-  { id: "mkt", name: "Digital marketing", color: "#6366f1" },
-  { id: "design", name: "Product design", color: "#8b5cf6" },
+  { id: "eng", name: "Loop / runtime", color: "#2563eb" },
+  { id: "mkt", name: "Product / blueprint", color: "#5b21b6" },
+  { id: "design", name: "Founder / ops", color: "#7c3aed" },
 ];
 
-export default function HomeScreen({ T, isMobile }) {
+export default function HomeScreen({ T, isMobile, onOpenHey }) {
   const [detailProject, setDetailProject] = useState(null);
   const [subTab, setSubTab] = useState("overview");
   const [metricsRange, setMetricsRange] = useState("7d");
@@ -178,8 +179,8 @@ export default function HomeScreen({ T, isMobile }) {
 
   const subTabs = [
     { id: "overview", label: "Overview", icon: <BarChart3 size={16} /> },
-    { id: "pulse", label: "Pulse", icon: <Activity size={16} />, count: 7 },
-    { id: "starred", label: "Starred", icon: <Star size={16} />, count: 3 },
+    { id: "pulse", label: "Pulse", icon: <Activity size={16} />, count: DB.activity.length },
+    { id: "starred", label: "Starred", icon: <Star size={16} />, count: DB.projects.filter((p) => p.priority === "high").length },
     { id: "following", label: "Following", icon: <CheckCircle2 size={16} /> },
   ];
 
@@ -187,7 +188,7 @@ export default function HomeScreen({ T, isMobile }) {
     { label: "Open issues", value: String(DB.tasks.length), icon: <CheckCircle2 size={18} color={lineColor} /> },
     { label: "Active projects", value: String(DB.projects.length), icon: <GitPullRequest size={18} color={lineColor} /> },
     { label: "Integrations", value: String(DB.integrations.filter((i) => i.status === "connected").length), icon: <Activity size={18} color={lineColor} /> },
-    { label: "Due this week", value: "12", icon: <Calendar size={18} color={lineColor} /> },
+    { label: "Due this week", value: String(DB.tasks.filter((t) => t.status !== "done").length), icon: <Calendar size={18} color={lineColor} /> },
   ];
 
   return (
@@ -196,8 +197,41 @@ export default function HomeScreen({ T, isMobile }) {
         <div style={{ color: T.t2, fontSize: 13, marginBottom: 4 }}>
           {greet} · {now.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" })}
         </div>
-        <div style={{ color: T.t1, fontSize: 24, fontWeight: 600, letterSpacing: "-0.01em" }}>Dashboard</div>
+        <div style={{ color: T.t1, fontSize: 19, fontWeight: 700, letterSpacing: "-0.03em" }}>Today</div>
+        <div style={{ color: T.t2, fontSize: 12.5, marginTop: 2 }}>Here&apos;s what&apos;s happening in {PRODUCT.name} today.</div>
       </div>
+
+      <Surface T={T} style={{ padding: "14px 16px 13px", marginBottom: 16 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <button
+            type="button"
+            onClick={() => onOpenHey?.()}
+            style={{
+              flex: 1,
+              height: 36,
+              border: `1px solid ${T.border}`,
+              borderRadius: 8,
+              background: T.canvas,
+              color: T.t3,
+              padding: "0 12px",
+              font: "400 13.5px Inter,sans-serif",
+              textAlign: "left",
+              cursor: "pointer",
+            }}
+          >
+            What would you like to do?
+          </button>
+          <button
+            type="button"
+            onClick={() => onOpenHey?.()}
+            style={{ height: 36, padding: 3, border: 0, borderRadius: 8, background: T.rainbow, cursor: "pointer", display: "flex", alignItems: "center", flexShrink: 0 }}
+          >
+            <span style={{ display: "flex", alignItems: "center", height: 30, padding: "0 13px", borderRadius: 6, background: "rgba(11,6,20,.45)", color: "#fff", font: "600 12.5px Inter,sans-serif" }}>
+              Send to Hey Engine
+            </span>
+          </button>
+        </div>
+      </Surface>
 
       <SubNav T={T} tabs={subTabs} active={subTab} onChange={setSubTab} />
 
@@ -206,7 +240,7 @@ export default function HomeScreen({ T, isMobile }) {
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
           <div style={{ color: T.t1, fontSize: 14, fontWeight: 500 }}>
             <span style={{ color: T.t2, fontWeight: 400 }}>Metrics · </span>
-            track performance across the workspace
+            Phase 2 loop health — no invented revenue
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
             <span style={{ color: T.t3, fontSize: 12, marginRight: 4 }}>Range</span>

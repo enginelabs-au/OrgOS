@@ -58,15 +58,15 @@ const DOC_PAGES = {
     breadcrumb: "Key concepts",
     title: "Key concepts",
     intro:
-      "cc-org-dash is a business command center: dashboards, work tracking, files, integrations, and AI agents share one workspace model. Understanding a few ideas upfront makes the rest of the docs easier to follow.",
+      "Papership is Engine Labs' company operating system: Today, Work, Inbox, People, Files, integrations, and Hey Engine share one workspace. The company marketing site is separate.",
     callout: {
       text: "Want to ship something today? Start with Install & sign-in, then open Work → Workflows.",
       hrefPage: "install",
     },
     table: [
-      { concept: "Workspace", description: "Top-level container for people, data, and billing. Everything you see in the shell belongs to one workspace.", doc: "Workspaces & orgs" },
+      { concept: "Workspace", description: "Top-level container for people, grants, and files. Everything you see in the shell belongs to one workspace.", doc: "Workspaces & orgs" },
       { concept: "Command center", description: "The left company command rail plus global agent surface — quick navigation and AI without leaving context.", doc: "Your first workflow" },
-      { concept: "Integration", description: "A connected third-party system (CRM, Slack, GitHub) with scoped credentials and sync status.", doc: "Integrations" },
+      { concept: "Integration", description: "A connected system (Hermes, GitHub App, Vercel). That vendor handles its own data under its terms (D-12).", doc: "Integrations" },
       { concept: "Workflow", description: "A directed graph of triggers, filters, and actions that automate work across systems.", doc: "Your first workflow" },
     ],
   },
@@ -74,7 +74,7 @@ const DOC_PAGES = {
     breadcrumb: "Workspaces & orgs",
     title: "Workspaces & orgs",
     intro:
-      "A workspace maps to your organisation in cc-org-dash. Roles, SSO, and API keys are configured at this level; projects and issues live underneath.",
+      "A workspace maps to your organisation in Papership. Seats, grants, and API keys are configured here; projects and issues live underneath.",
     callout: { text: "Manage members under Settings → Team.", hrefPage: null },
     table: [
       { concept: "Org slug", description: "Used in URLs and API paths; immutable after creation in production.", doc: "CLI reference" },
@@ -104,11 +104,11 @@ const DOC_PAGES = {
   cli: {
     breadcrumb: "Developer tools",
     title: "CLI reference",
-    intro: "The cc-org-dash CLI (demo) wraps common tasks: token rotation, schema export, and workflow bundles.",
+    intro: "The Papership CLI (planned) wraps token rotation, schema export, and workflow bundles. Prefer the API until Phase 3.",
     callout: { text: "Prefer HTTP? See Webhooks for event delivery.", hrefPage: "webhooks" },
     table: [
-      { concept: "eco login", description: "Device flow against your workspace.", doc: "Install & sign-in" },
-      { concept: "eco workflows push", description: "Upload a workflow JSON bundle.", doc: "Your first workflow" },
+      { concept: "papership login", description: "Device flow against your workspace.", doc: "Install & sign-in" },
+      { concept: "papership workflows push", description: "Upload a workflow JSON bundle.", doc: "Your first workflow" },
     ],
   },
   webhooks: {
@@ -134,7 +134,7 @@ const DOC_PAGES = {
   integrations: {
     breadcrumb: "Adding context",
     title: "Integrations",
-    intro: "Browse Integrations to connect CRM, chat, code, and observability tools. Marketplace installs provision secrets automatically on Vercel-compatible setups.",
+    intro: "Phase 2 only binds GitHub. Hermes is the runtime. Other connectors stay planned. Integrations handle data under their own terms.",
     callout: { text: "Check sync status in the status bar at the bottom of the shell.", hrefPage: "key-concepts" },
     table: [
       { concept: "Connector", description: "Configuration + credentials for one vendor.", doc: "Webhooks" },
@@ -145,7 +145,6 @@ const DOC_PAGES = {
 
 export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
   const [tab, setTab] = useState("general");
-  const [openAIKey, setOpenAIKey] = useState(() => localStorage.getItem("openai_key") || "");
   const [saved, setSaved] = useState(false);
   const [upgradeModal, setUpgradeModal] = useState(false);
   const [toggles, setToggles] = useState({ critical: true, warning: true, billing: false, digest: true, deployments: false });
@@ -173,23 +172,23 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
     []
   );
 
-  const save = () => { localStorage.setItem("openai_key", openAIKey); setSaved(true); setTimeout(() => setSaved(false), 2000); };
+  const save = () => { setSaved(true); setTimeout(() => setSaved(false), 2000); };
 
   const settingsTabs = [
     { id: "general",        label: "General",        icon: <SettingsIcon size={16} /> },
     { id: "ai",             label: "AI & Agents",    icon: <Bot size={16} /> },
     { id: "notifications",  label: "Notifications",  icon: <Bell size={16} /> },
     { id: "security",       label: "Security",       icon: <Lock size={16} /> },
-    { id: "billing",        label: "Plan & Billing", icon: <CreditCard size={16} /> },
+    { id: "billing",        label: "Plan",            icon: <CreditCard size={16} /> },
     { id: "team",           label: "Team",           icon: <Users size={16} /> },
     { id: "appearance",     label: "Appearance",     icon: <Palette size={16} /> },
     { id: "docs",           label: "Docs",           icon: <BookOpen size={16} /> },
   ];
 
   const plans = [
-    { id: "starter", name: "Starter", price: "$0", features: ["5 users", "2 AI agents", "10K API calls/mo", "Basic integrations"], current: true },
-    { id: "pro", name: "Professional", price: "$49/mo", features: ["25 users", "10 AI agents", "500K API calls/mo", "All integrations", "Priority support", "Custom workflows"], highlight: true },
-    { id: "enterprise", name: "Enterprise", price: "Custom", features: ["Unlimited users", "Unlimited agents", "Unlimited API calls", "SSO + SAML", "Dedicated support", "Custom SLAs"], cta: "Contact Sales" },
+    { id: "founder", name: "Founder seat", price: "Not priced", features: ["Self-host or Engine Labs tenant", "Hermes via pin v0.21.1", "GitHub App on this repo", "Anonymous usage only"], current: true },
+    { id: "later", name: "Later seats", price: "R4 pending", features: ["Pricing is an owner decision", "No prices in-app until R4", "first-baseline until we have data"] },
+    { id: "selfhost", name: "Self-host", price: "Your store", features: ["You own the data (D-14)", "Delete or request deletion", "Integrations keep their own terms"], cta: "Docs" },
   ];
 
   return (
@@ -482,8 +481,8 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
                 <Surface T={T} style={{ padding: 24 }}>
                   <div style={{ color: T.t1, fontSize: 16, fontWeight: 600, marginBottom: 12 }}>Changelog</div>
                   {[
-                    { v: "0.4.0", date: "Apr 2026", notes: "Company command rail, workflow canvas, Linear-style work views." },
-                    { v: "0.3.0", date: "Mar 2026", notes: "Files refresh, integrations hub, dark theme polish." },
+                    { v: "0.2.0", date: "Sep 2026", notes: "Observatory chrome, Papership fixtures, GitHub PR plan/open (dry-run default)." },
+                    { v: "0.1.0", date: "Sep 2026", notes: "Phase 1 substrate — grants, ledger, jobs, /cc-org-dash shell." },
                   ].map((row) => (
                     <div key={row.v} style={{ padding: "12px 0", borderBottom: `1px solid ${T.border}` }}>
                       <div style={{ fontFamily: F.mono, fontSize: 13, fontWeight: 600, color: T.accent }}>{row.v}</div>
@@ -507,9 +506,9 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
                   gap: 8,
                   padding: "10px 16px",
                   borderRadius: 999,
-                  border: `1px solid ${T.accentBorder}`,
-                  background: T.accentBg,
-                  color: T.accent,
+                  border: "1px solid transparent",
+                  background: T.rainbow,
+                  color: "#fff",
                   fontSize: 13,
                   fontWeight: 600,
                   cursor: "pointer",
@@ -525,7 +524,7 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
 
           {tab === "general" && (
             <div style={{ maxWidth: 520 }}>
-              <Field label="Organisation Name" T={T}><Input T={T} defaultValue="cc-org-dash Global" /></Field>
+              <Field label="Organisation Name" T={T}><Input T={T} defaultValue="Engine Labs" /></Field>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                 <Field label="Timezone" T={T}><Select T={T} style={{ width: "100%" }}>{["Australia/Sydney", "UTC", "America/New_York", "Europe/London"].map(z => <option key={z}>{z}</option>)}</Select></Field>
                 <Field label="Currency" T={T}><Select T={T} style={{ width: "100%" }}>{["USD", "AUD", "EUR", "GBP"].map(c => <option key={c}>{c}</option>)}</Select></Field>
@@ -557,13 +556,13 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
 
           {tab === "ai" && (
             <div style={{ maxWidth: 520 }}>
-              <Field label="OpenAI API Key" T={T} hint="Stored in browser. Required for live agent responses.">
-                <Input T={T} type="password" value={openAIKey} onChange={e => setOpenAIKey(e.target.value)} placeholder="sk-..." />
+              <Field label="Model path" T={T} hint="Papership does not hold a provider key. Models go through the pinned Hermes runtime.">
+                <Input T={T} value="Hermes v0.21.1 → OpenRouter" readOnly />
               </Field>
               <Field label="Default Model" T={T}>
-                <Select T={T} style={{ width: "100%" }}>{["gpt-4o", "gpt-4o-mini", "claude-3.5-sonnet", "claude-3-haiku"].map(m => <option key={m}>{m}</option>)}</Select>
+                <Select T={T} style={{ width: "100%" }}>{["via Hermes (pinned)", "unavailable until T2-1"].map(m => <option key={m}>{m}</option>)}</Select>
               </Field>
-              <Field label="LangSmith Project" T={T}><Input T={T} defaultValue="cc-org-dash-production" /></Field>
+              <Field label="Usage project" T={T}><Input T={T} defaultValue="papership-anonymous-usage" /></Field>
               <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
                 <Btn T={T} variant="primary" onClick={save}>{saved ? "✓ Saved" : "Save"}</Btn>
               </div>
@@ -632,10 +631,10 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
             <div style={{ maxWidth: 560 }}>
               <Surface T={T} style={{ padding: "18px 20px", marginBottom: 16 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
-                  <div><div style={{ color: T.t1, fontSize: 15, fontWeight: 600 }}>Starter</div><div style={{ color: T.t3, fontSize: 13 }}>Free plan · Resets monthly</div></div>
-                  <Btn T={T} variant="primary" onClick={() => setUpgradeModal(true)}>Upgrade plan</Btn>
+                  <div><div style={{ color: T.t1, fontSize: 15, fontWeight: 600 }}>Founder seat</div><div style={{ color: T.t3, fontSize: 13 }}>Not priced · R4 pending</div></div>
+                  <Btn T={T} variant="primary" onClick={() => setUpgradeModal(true)}>Seat notes</Btn>
                 </div>
-                {[["API Calls", "8,420/10,000", 84], ["Users", "4/5", 80], ["AI Agents", "2/2", 100], ["Storage", "2.4 GB/5 GB", 48]].map(([l, v, p]) => (
+                {[["Loop runs (7d)", "0 · first-baseline", 8], ["Grants", "Founder + unpriv + agent", 40], ["Hermes tools", "Disabled until T2-1", 5], ["GitHub PRs", "Dry-run default", 20]].map(([l, v, p]) => (
                   <div key={l} style={{ marginBottom: 10 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
                       <span style={{ color: T.t2, fontSize: 12 }}>{l}</span>
@@ -647,14 +646,7 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
               </Surface>
               <Surface T={T} style={{ overflow: "hidden" }}>
                 <div style={{ padding: "12px 16px", borderBottom: `1px solid ${T.border}`, color: T.t1, fontSize: 14, fontWeight: 600, background: T.raised }}>Invoices</div>
-                {[["Apr 2026", "$0.00", "paid"], ["Mar 2026", "$0.00", "paid"]].map(([d, a, s]) => (
-                  <div key={d} style={{ padding: "10px 16px", borderBottom: `1px solid ${T.border}`, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13 }}>
-                    <span style={{ color: T.t2 }}>{d}</span>
-                    <span style={{ color: T.t1, fontFamily: F.mono }}>{a}</span>
-                    <Badge T={T} color={T.green}>{s}</Badge>
-                    <Btn T={T} small variant="default">Download</Btn>
-                  </div>
-                ))}
+                <div style={{ padding: "12px 16px", color: T.t2, fontSize: 13 }}>None. Prices are an owner decision (CA-10). Nothing here is a quote.</div>
               </Surface>
             </div>
           )}
@@ -677,11 +669,10 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
         </div>
       </div>
 
-      <Modal T={T} open={upgradeModal} onClose={() => setUpgradeModal(false)} title="Choose a Plan" width={640}>
+      <Modal T={T} open={upgradeModal} onClose={() => setUpgradeModal(false)} title="Seats (not priced)" width={640}>
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap: 14 }}>
           {plans.map(plan => (
-            <div key={plan.id} style={{ border: `1px solid ${plan.highlight ? T.accent : T.border}`, borderRadius: 8, padding: "18px 16px", position: "relative", background: plan.highlight ? T.accentBg : T.raised }}>
-              {plan.highlight && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: T.accent, color: "#fff", borderRadius: 99, padding: "2px 12px", fontSize: 11, fontWeight: 600, whiteSpace: "nowrap" }}>Most Popular</div>}
+            <div key={plan.id} style={{ border: `1px solid ${T.border}`, borderRadius: 8, padding: "18px 16px", position: "relative", background: T.raised }}>
               <div style={{ color: T.t1, fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{plan.name}</div>
               <div style={{ color: T.accent, fontSize: 22, fontWeight: 700, marginBottom: 14 }}>{plan.price}</div>
               {plan.features.map(f => (
@@ -690,8 +681,8 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
                   <span style={{ color: T.t2, fontSize: 12 }}>{f}</span>
                 </div>
               ))}
-              <Btn T={T} full variant={plan.current ? "default" : plan.highlight ? "primary" : "default"} style={{ marginTop: 14 }}>
-                {plan.current ? "Current Plan" : plan.cta || "Upgrade"}
+              <Btn T={T} full variant={plan.current ? "default" : "default"} style={{ marginTop: 14 }}>
+                {plan.current ? "Current Plan" : plan.cta || "Request later"}
               </Btn>
             </div>
           ))}
