@@ -39,7 +39,7 @@ Rules that govern this document:
 | 05 | Plan agents, memory, lifecycle and commercial controls | `phase_0_foundations_plan.md` (T0-6, T0-9, T0-10) | R1 | complete — `docs/policies/{memory-governance,data-residency-and-retention,erasure-and-offboarding,licensing}.md`; §3–§4 below; Growth CONDITIONAL |
 | 06 | Plan release scope, dependencies and acceptance gates | `phase_0_foundations_plan.md` (T0-11 this roadmap; T0-12 PL gate; T0-13) | R1 | complete — this document; PL gate CONDITIONAL 2026-09-10T18:22Z; T0-13 reconciled |
 | 07 | Build the foundation | `docs/plans/phase_1_foundation_plan.md` | R1 | G1 CONDITIONAL 2026-09-11 — local venue; see phase-1 PL handoff |
-| 08 | Build the development loop | `docs/plans/phase_2_development_loop_plan.md` | R1 | planned — plan generated 2026-09-11; not implemented |
+| 08 | Build the development loop | `docs/plans/phase_2_development_loop_plan.md` | R1 | active — plan activated 2026-09-11; start at T2-1 spike |
 | 13 | Verify functional and domain coverage | `docs/plans/phase_3_release_verification_plan.md` | R1 (re-run each release) | not started |
 | 14 | Verify authority, memory and data lifecycle | `phase_3_release_verification_plan.md` | R1 (re-run each release) | not started |
 | 15 | Verify integrations, recovery and backups | `phase_3_release_verification_plan.md` | R1 (re-run each release) | not started |

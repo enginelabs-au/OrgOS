@@ -1,6 +1,6 @@
 ---
 plan: phase_2_development_loop
-status: draft
+status: active
 created: 2026-09-11
 updated: 2026-09-11
 owner: lead-agent
@@ -15,7 +15,7 @@ risk_tier: tier_3
 
 # Phase 2: Development loop — Engine Labs
 
-Generated after G1 CONDITIONAL (2026-09-11). This file is documentation only. **Do not implement phase 08 until this plan is the active plan and the owner/lead starts T2-1.**
+Generated after G1 CONDITIONAL (2026-09-11). Activated 2026-09-11 by owner request. **Start at T2-1 (SP-1…SP-7) only. Do not enable side-effecting Hermes tools until Security re-review.** Public website (`apps/web`) is a G1 follow-on, not a T2-1 task.
 
 ## 1. Objective
 

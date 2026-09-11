@@ -1,0 +1,36 @@
+import assert from "node:assert/strict";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { dirname, join, relative } from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+
+const srcRoot = join(dirname(fileURLToPath(import.meta.url)), "../src");
+
+function walk(dir, acc = []) {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) walk(p, acc);
+    else if (/\.(tsx|ts|jsx|js|mjs|css)$/.test(name)) acc.push(p);
+  }
+  return acc;
+}
+
+test("public site has no prices, localStorage, or fixture auth", () => {
+  const files = walk(srcRoot);
+  const hits = [];
+  for (const file of files) {
+    const text = readFileSync(file, "utf8");
+    const rel = relative(srcRoot, file);
+    if (/A\$|AUD|price|pricing/i.test(text) && !/does not list prices/.test(text)) {
+      hits.push(`${rel}: price language`);
+    }
+    if (/localStorage\.(get|set|remove)Item/.test(text)) hits.push(`${rel}: localStorage`);
+    if (/GoogleSignIn|demo@|founder@example/.test(text)) hits.push(`${rel}: forbidden auth pattern`);
+  }
+  assert.equal(hits.length, 0, hits.join("\n"));
+});
+
+test("index.html has no external font URLs", () => {
+  const html = readFileSync(join(srcRoot, "../index.html"), "utf8");
+  assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic|fonts\.google/);
+});

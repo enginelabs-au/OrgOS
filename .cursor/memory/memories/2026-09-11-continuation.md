@@ -30,3 +30,10 @@
 
 - No `master` locally or on GitHub. Default is `main`. Pushed phase-1 tree as `e405181`.
 
+## H-6, public site, phase 2 activate
+
+- Owner asked to finish gates, keep Vercel `orgos`, combine entry points, push with Cursor anonymous email, plan phase 2 on Cloud.
+- D-09 accepts D-01…D-08 and the five policies. F-G1 emit still off. H-4/H-5/GitHub App/model keys still owner-only.
+- `apps/web` is the single public website. Root `vercel.json` builds it. Docker unavailable; Vercel CLI has no token so extras were not deleted. Runbook: `/memory/runbooks/vercel-orgos-single-site.md`.
+- Phase 2 plan set `active`. T2-1 charter written. Cloud launch still may fail (0 remotes).
+

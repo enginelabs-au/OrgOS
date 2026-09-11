@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-11 during T1-1. Owner ratification queued (phase-1 plan §17).
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`.
 
 Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`. Phase plan: `docs/plans/phase_1_foundation_plan.md` T1-1.
 

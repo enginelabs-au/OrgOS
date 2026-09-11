@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-10 by the orchestrating lead (T0-11) from `security-engineer-subagent` T0-9 output (`docs/policies/authority-model.md`, AUTH-01…AUTH-30; handoff findings F-SEC-01, F-SEC-04, F-SEC-05, decision D-S1) and `product-manager-subagent` T0-6 output (`docs/product.md` PRD-D, PRD-E). For owner ratification at the phase-0 Project Lead gate (T0-12) — Security owner action H-6. Adoption of this decision adopts `docs/policies/authority-model.md` as a normative policy.
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`. Adopts `docs/policies/authority-model.md` as a normative policy.
 
 Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`. Phase plan: `docs/plans/phase_0_foundations_plan.md` §7 ("D-03 authority model (three seats, server-side checks, source-permission intersection)").
 

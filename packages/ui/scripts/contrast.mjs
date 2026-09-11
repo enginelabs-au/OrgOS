@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Assert text tokens t1/t2/t3 meet WCAG AA (≥ 4.5:1) on canvas and surface.
- * t4 is decorative and is excluded from this assertion (decision: D-06 proposed).
+ * t4 is decorative and is excluded from this assertion (decision: D-06 accepted).
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";

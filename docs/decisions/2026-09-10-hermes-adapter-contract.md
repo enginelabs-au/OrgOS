@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-10 by `software-engineer-subagent` (T0-8) for Security review (T0-9) and owner ratification at the phase-0 Project Lead gate (T0-12). Becomes `accepted` when the phase-2 plan adopts it; any expectation invalidated by the phase-2 compatibility spike against the pinned Hermes version (`HERMES_VERSION_PIN`) reopens this record.
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`. Phase 2 may reopen this record if the Hermes pin invalidates an expectation.
 
 Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (REQ-04, REQ-08). Architecture: `docs/architecture.md` §7 (expectation table), §5 (TB-3/TB-4/TB-5). Registry: `docs/capabilities.md` §5 (Hermes inventory placeholder).
 

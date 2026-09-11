@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-10 by the orchestrating lead (T0-11) from `product-manager-subagent` T0-6 output (`docs/product.md` §3.1–§3.2) and `software-engineer-subagent` T0-8 output (`docs/capabilities.md`, 43 rows). For owner ratification at the phase-0 Project Lead gate (T0-12). Becomes `accepted` when the schema is implemented in `packages/contracts` in phase 1.
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`. Schema implemented in `packages/contracts`.
 
 Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`. Phase plan: `docs/plans/phase_0_foundations_plan.md` §7.
 

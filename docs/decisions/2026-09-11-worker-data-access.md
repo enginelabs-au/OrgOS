@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-11 (T1-4 / T1-11 / T1-18). Security confirms at the phase-1 re-review.
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`.
 
 ## Context
 

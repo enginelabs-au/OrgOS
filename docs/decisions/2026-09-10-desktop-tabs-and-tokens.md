@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-10 by the orchestrating lead (T0-11) from `ui-ux-developer-subagent` T0-7 output (`docs/ui-blueprint.md` §C, §E, §F, §H D-1; handoff §13 decision candidate) and `software-engineer-subagent` T0-8 verification (EV-S07 styling scan, EV-S08 contrast). For owner ratification at the phase-0 Project Lead gate (T0-12) together with OQ-5.
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`.
 
 Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`.
 

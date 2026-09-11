@@ -1,10 +1,10 @@
 ---
 document: architecture
 title: Engine Labs — Release-1 Architecture, Boundaries, and Runtime Adapter Contract
-status: draft_phase_0 (for security-engineer-subagent review; decisions D-01 and D-04 `proposed`)
-revision: 1
+status: draft_phase_0 (D-01 and D-04 `accepted` via D-09 / H-6 2026-09-11)
+revision: 2
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner_role: software-engineer-subagent (T0-8); boundaries reviewed by security-engineer-subagent (T0-9)
 task_id: 20260910-engine-labs-company-os
 intake: docs/Company_Agent_System_Blueprint.md (Phase 04, Phase 05, Phase 07, Phase 08)
@@ -90,6 +90,7 @@ Reading the diagram: the desktop talks only to the Engine Labs API (PRD-B.5); th
 
 | Component | Path (D-01) | Technology | Responsibilities (release 1) | Not responsible for |
 |---|---|---|---|---|
+| Public website | `apps/web` | Vite 6 + React 18 + TypeScript | Single public entry (company + OrgOS product) deployed on the `orgos` Vercel project | Auth, API, prices, Control Centre chat, collecting briefs |
 | Desktop shell | `apps/desktop` | Tauri 2 (Rust core) + React 18 + TypeScript + Vite | OrgOS-derived shell (ui-blueprint §F), sign-in, views Home/Work/Runs/Connections/Settings, SSE client, keychain-stored token, signed updates, external-link handoff | Any provider credential, business logic, permission decisions, direct DB/filesystem access from generated views (PRD-D.13) |
 | API | `services/api` | Python 3.11+, FastAPI, Pydantic models, DBOS (Python) | Authn (verify Supabase JWT), authz/grants, ledger, registry, audit/receipts, action lifecycle, approvals, budget reservation, job persistence and dispatch (DBOS), run event fan-out (SSE), notifications, usage ledger, health composite | Executing agent tools, storing provider keys, talking to GitHub directly (delegated to action service adapters inside API with scoped token) |
 | Worker | `services/worker` | Python 3.11+ adapter process + pinned Hermes gateway container + execution sandbox | Typed operations over the Hermes API (§8), idempotent run creation, event relay, stop/approval, usage capture, tool interception callbacks to the action service, isolated worktrees | Deciding permissions; holding production deployment credentials; scheduling on its own authority (PRD-E.5) |
@@ -98,7 +99,7 @@ Reading the diagram: the desktop talks only to the Engine Labs API (PRD-B.5); th
 | Infra | `infra/` | Docker Compose, env templates (names only), backup scripts, Caddy/Traefik config, digests | Reproducible single-Droplet topology (§10), backup/restore (§11), health checks | Any production execution by agents (owner/CI only) |
 | Data/identity | (Compose services under `infra/`) | Self-hosted Supabase (Auth, Postgres, Storage; PostgREST/Realtime/Studio optional) | Identity, JWT issuance, primary records, files, DBOS system DB, FTS retrieval | Application authorization (done in API; Supabase RLS is defence in depth, not the primary check) |
 
-## 3. Monorepo layout (decision D-01, `proposed`)
+## 3. Monorepo layout (decision D-01, `accepted`)
 
 Consistent with manifest §10 and phase plan §7. Rationale, alternatives and consequences are in `docs/decisions/2026-09-10-monorepo-layout.md`.
 
@@ -107,7 +108,8 @@ Consistent with manifest §10 and phase plan §7. Rationale, alternatives and co
 ├── AGENTS.md, .cursor/   # governance (protected; unchanged)
 ├── docs/                 # blueprints, plans, decisions, workstreams, product docs
 ├── apps/
-│   └── desktop/          # Tauri 2 app: src-tauri/ (Rust, capabilities/*.json), src/ (React TS), vite.config.ts
+│   ├── desktop/          # Tauri 2 app: src-tauri/ (Rust, capabilities/*.json), src/ (React TS), vite.config.ts
+│   └── web/              # Public Vite site (Vercel project `orgos`)
 ├── services/
 │   ├── api/              # FastAPI + DBOS: app/, migrations/, tests/, pyproject.toml
 │   └── worker/           # Hermes adapter: adapter/, policy_hooks/, tests/, pyproject.toml, hermes/ (pinned config, no secrets)
@@ -179,7 +181,7 @@ Ownership: `tenant` = customer organisation data environment (PRD-F.6); `native`
 | Shared telemetry / error reporting (optional) | error traces, metrics — no customer content by default | Engine Labs | scrubbed; opt-in | `SENTRY_DSN` (optional) | payload inspection required (R1-ACC-14 evidence) |
 | Desktop local cache | preferences, last-known view state, token (keychain) | member | minimal; cleared at sign-out | — | no records beyond permitted cache (intake Phase 04) |
 
-## 7. Hermes adapter contract expectations (decision D-04, `proposed`)
+## 7. Hermes adapter contract expectations (decision D-04, `accepted`)
 
 The adapter in `services/worker` is the only code that speaks to Hermes. It exposes typed operations to the API and hides the upstream API (intake Phase 04: "Keep the upstream API private. Add typed adapter operations for capabilities it does not expose."). Each row states what release 1 expects from the pinned Hermes version, the documented basis, and the phase-2 contract test that verifies it (PRD-B.7). Full decision record: `docs/decisions/2026-09-10-hermes-adapter-contract.md`.
 

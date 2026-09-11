@@ -2,14 +2,14 @@
  * Theme tokens for Engine Labs desktop.
  * Single styling source (D-06). Ported from docs/ui-blueprint primitives THEMES.
  *
- * decision: D-06 proposed
+ * decision: D-06 accepted
  * - light.t3 MUST be #617083 (AA on canvas/surface; supersedes reference #94a3b8 and UI/UX #6b7a90).
  * - t4 is decorative-only (borders of empty glyphs, unused slots). Do not use t4 for text.
  * - AA micro-adjustments (same decision): light.t2/navText #63738a (was #64748b, 4.47:1 on canvas);
  *   dimmed.t3 #8795aa (was #7d8ba0, failed surface).
  */
 
-export const TOKEN_DECISION = "D-06 proposed" as const;
+export const TOKEN_DECISION = "D-06 accepted" as const;
 
 export const F = {
   sans: "'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif",
@@ -35,7 +35,7 @@ export const THEMES = {
     t1: "#1e293b",
     t2: "#63738a",
     t3: "#617083",
-    /** Decorative only — not a text color (decision: D-06 proposed). */
+    /** Decorative only — not a text color (decision: D-06 accepted). */
     t4: "#a8b4c4",
     accent: "#3b82f6",
     accentBg: "#eff6ff",
@@ -79,7 +79,7 @@ export const THEMES = {
     t1: "#e8eef9",
     t2: "#9fb0cc",
     t3: "#7c8ca8",
-    /** Decorative only — not a text color (decision: D-06 proposed). */
+    /** Decorative only — not a text color (decision: D-06 accepted). */
     t4: "#647896",
     accent: "#60a5fa",
     accentBg: "rgba(59, 130, 246, 0.14)",
@@ -123,7 +123,7 @@ export const THEMES = {
     t1: "#dce4f0",
     t2: "#9aa8bc",
     t3: "#8795aa",
-    /** Decorative only — not a text color (decision: D-06 proposed). */
+    /** Decorative only — not a text color (decision: D-06 accepted). */
     t4: "#6b788c",
     accent: "#6b9ef5",
     accentBg: "rgba(83, 155, 245, 0.16)",

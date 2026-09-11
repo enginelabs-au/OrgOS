@@ -20,9 +20,9 @@ test("no tailwind dependency", () => {
   }
 });
 
-test("decision D-06 proposed marker and light.t3", () => {
-  assert.match(tokens, /decision:\s*D-06 proposed/);
+test("decision D-06 accepted marker and light.t3", () => {
+  assert.match(tokens, /decision:\s*D-06 accepted/);
   assert.match(tokens, /t3:\s*"#617083"/);
-  assert.match(tokens, /TOKEN_DECISION = "D-06 proposed"/);
+  assert.match(tokens, /TOKEN_DECISION = "D-06 accepted"/);
   assert.match(tokens, /Decorative only/);
 });

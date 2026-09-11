@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-10 by the orchestrating lead (T0-11) from `product-manager-subagent` T0-6 output (`docs/product.md` §4, §9) and the roadmap (`docs/roadmap.md` §2.1). For owner ratification at the phase-0 Project Lead gate (T0-12). Owner open question OQ-5 (R1 view set) and OQ-3 (phase-to-release numbering for 09–12) may amend items 3 and 6 without reopening the rest.
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`. OQ-5 and OQ-3 may still amend items 3 and 6.
 
 Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`. Phase plan: `docs/plans/phase_0_foundations_plan.md` §7 ("D-05 release-1 scope boundary (07+08 only)").
 

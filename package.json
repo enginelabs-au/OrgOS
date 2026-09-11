@@ -4,6 +4,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "workspaces": [
     "apps/desktop",
+    "apps/web",
     "packages/ui",
     "packages/contracts"
   ],

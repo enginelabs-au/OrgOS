@@ -2,7 +2,7 @@
 
 ## Status
 
-`proposed` — drafted 2026-09-10 by `software-engineer-subagent` (T0-8) for owner ratification at the phase-0 Project Lead gate (T0-12). Becomes `accepted` when recorded in the phase-1 plan; may be revised by the phase-1 Tauri/Vite/workspace compatibility spike.
+`accepted` — owner-directed H-6 ratification 2026-09-11. Record: `docs/decisions/2026-09-11-owner-ratification-h6.md`. Drafted 2026-09-10 by `software-engineer-subagent` (T0-8).
 
 Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (§10 `provisional` assumption). Phase plan: `docs/plans/phase_0_foundations_plan.md` §7. Architecture: `docs/architecture.md` §3.
 
