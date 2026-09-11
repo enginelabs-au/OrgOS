@@ -58,7 +58,7 @@ export function SignInForm({ T, onSignedIn }: { T: Theme; onSignedIn: () => void
           boxShadow: T.shadowMd,
         }}
       >
-        <div style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 700, color: T.t1, marginBottom: 4 }}>Engine Labs</div>
+        <div style={{ fontFamily: F.sans, fontSize: 15, fontWeight: 700, color: T.t1, marginBottom: 4 }}>OrgOS</div>
         <div style={{ color: T.t2, fontSize: 13, marginBottom: 20 }}>Sign in with your email and strong factor.</div>
         <Field T={T} label="Email" htmlFor="signin-email">
           <Input

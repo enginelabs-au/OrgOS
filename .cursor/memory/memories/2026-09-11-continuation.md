@@ -42,3 +42,13 @@
 - Push `6306a6c` as Cursor Agent `cursoragent@cursor.com`. Vercel `orgos` production READY (`dpl_5BkY3jyEqNg3V11bfXcBzBZ2AkpD`). Dashboard URLs are SSO-gated; HTML 200 via Vercel MCP.
 - Cloud Task failed: no GitHub token for `enginelabs-au/orgos`. T2-1 plan written locally: `phase-2-t2-1-plan.md`.
 
+## Owner correction 2026-09-11 evening
+
+- OrgOS is the product. Engine Labs marketing (`enginelabs.com.au` / `enginelabs-au-site`) must not be touched. D-10 recorded.
+- Withdrew the Engine Labs landing. `apps/web` is now the `docs/ui-blueprint` `/cc-org-dash` UI (wordmark OrgOS, Hey Engine).
+- Vercel has no projects named web/desktop/api/worker. Nothing deleted. Other account projects left alone.
+- Live Compose substitute: `scripts/dev-local.sh` + `scripts/port-scan.sh`. API `/health` PASS on :8000.
+- Tauri package: `bundle.active` true; Homebrew rustc 1.84 cannot compile current crates (edition2024). rust-toolchain.toml pins stable.
+- Cloud still: Cursor GitHub App cannot see `enginelabs-au/OrgOS`. Owner must grant org access + SSO.
+- F-G1 left off. Owner checklist: `docs/handover/phase-2-owner-actions.md`.
+

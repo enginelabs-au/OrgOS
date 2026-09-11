@@ -21,4 +21,4 @@ Start or resume the complete product lifecycle with `/launch-pipeline`; its deta
 - Product documents (phase 0 outputs): `product.md`, `capabilities.md`, `architecture.md`, `ui-blueprint.md` (spec) plus `ui-blueprint/` (pinned `8a843bd` app snapshot, captures, `SOURCE.md`), `roadmap.md`, `verification.md`, `policies/`
 - Hey Engine (PRD-E.13): persistent assistant control + wake phrase; R1 ships the control and an honest unavailable state; runtime and wake word are later phases
 - Decisions: `decisions/` — D-01…D-08 `accepted` (D-09 / H-6 2026-09-11)
-- Public website: `apps/web` on Vercel project `orgos`
+- OrgOS product UI: `apps/web` (port of `docs/ui-blueprint` `/cc-org-dash`) on Vercel project `orgos`. Engine Labs marketing stays on `enginelabs.com.au`.

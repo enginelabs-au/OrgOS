@@ -5,4 +5,4 @@ This folder contains the pinned OrgOS reference application (Vite / React `/cc-o
 - Application sources: `src/`, `public/`, `package.json`, `package-lock.json`, and the original Vite/Tailwind configs.
 - Written spec: `../ui-blueprint.md`.
 - State captures: `*.png` and `capture.mjs` (not part of the original GitHub tree).
-- Do not run `npm install` or a dev server from this folder (LIC-12 / LIC-13). The desktop port reads these files as source only.
+- Do not run `npm install` or a dev server from this folder (LIC-12 / LIC-13). The live OrgOS product UI is the copy in `apps/web`. This folder stays the pinned template.

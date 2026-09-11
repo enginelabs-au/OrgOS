@@ -31,7 +31,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
     store = Store(settings.store_path)
     store.seed_founder()
 
-    app = FastAPI(title="Engine Labs API", version="0.1.0")
+    app = FastAPI(title="OrgOS API", version="0.1.0")
     app.state.settings = settings
     app.state.store = store
     app.add_middleware(TraceMiddleware, logger=logger)

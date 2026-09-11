@@ -90,7 +90,7 @@ export function AssistantPanel({
       >
         <strong>unavailable</strong>
         <p style={{ margin: "8px 0 0", color: T.t2 }}>
-          The assistant is not connected (AUTH-28). Engine Labs will not invent an answer. Hey Engine only opens this
+          The assistant is not connected (AUTH-28). OrgOS will not invent an answer. Hey Engine only opens this
           panel.
         </p>
       </div>

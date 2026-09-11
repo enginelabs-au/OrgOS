@@ -12,7 +12,7 @@ export function Wordmark({ T }: { T: Theme }) {
         whiteSpace: "nowrap",
       }}
     >
-      Engine Labs
+      OrgOS
     </span>
   );
 }

@@ -1,7 +1,6 @@
-apps/desktop
-services
-infra
 docs/ui-blueprint
 .cursor
-.github
+infra
+services
 scripts
+.github

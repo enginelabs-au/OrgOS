@@ -4,6 +4,8 @@ Store durable user-specific instructions and preferences here. Add new durable i
 
 ## Standing directives
 
+- The product in this repository is **OrgOS**. Engine Labs is the company. `www.enginelabs.com.au` is a separate Engine Labs marketing/services site and must never be replaced, redirected, or have its Vercel project (`enginelabs-au-site`) edited from this workstream.
+- The OrgOS product UI is the `docs/ui-blueprint` `/cc-org-dash` tree. Do not invent a substitute marketing landing in its place.
 - Preserve the user's operational intent and all materially relevant requirements when improving instructions or files.
 - Prefer direct execution over asking the user to perform agent-capable work.
 - Operate autonomously unless blocked by credentials, permissions, a consequential design decision, destructive risk, or a material safety/security/privacy concern.

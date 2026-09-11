@@ -61,7 +61,7 @@ export default function App() {
   if (!ready) {
     return (
       <div style={{ minHeight: "100vh", background: T.canvas, color: T.t2, fontFamily: F.sans, padding: 24 }}>
-        Starting Engine Labs…
+        Starting OrgOS…
       </div>
     );
   }

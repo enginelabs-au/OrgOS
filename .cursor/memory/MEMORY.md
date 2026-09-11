@@ -12,7 +12,8 @@
 - Treat prompts and role identities as guidance, not production authorization; deterministic policy and external access controls govern sensitive actions.
 - Never store passwords, tokens, private keys, or secret values in agent markdown, plans, memories, logs, or templates.
 - Capability registry status discipline (D-02 item 5): a `docs/capabilities.md` row moves from `planned` only when its evidence column cites a verified artifact; the lead, not an implementing role, changes status.
-- Agent tool boundary (AUTH-25, D-03, D-S1): the Hermes worker bearer key is transport-only; Engine Labs API owns every approval record; side-effecting toolsets stay disabled until spike SP-1…SP-7 verifies interception; the worker refuses to start if `interception_verified` is false.
+- Product identity (D-10): OrgOS is the product; Engine Labs is the company; `www.enginelabs.com.au` is a separate site and must not be changed from this repo.
+- Agent tool boundary (AUTH-25, D-03, D-S1): the Hermes worker bearer key is transport-only; the OrgOS API owns every approval record; side-effecting toolsets stay disabled until spike SP-1…SP-7 verifies interception; the worker refuses to start if `interception_verified` is false.
 - Usage measurement (Growth GM-1…12): first-party, in-tenant, identifier/enum payloads only; every threshold without data is labelled `first-baseline`; no prices in any UI or document before the R4 owner decisions (CA-10).
 
 ## Memory role
@@ -51,7 +52,9 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Owner H-6 ratification (D-09): `docs/decisions/2026-09-11-owner-ratification-h6.md`
 - Cloud launch blocker: `/memory/blockers/cursor-cloud-launch.md`
 - Dev environment: `/memory/runbooks/engine-labs-dev-environment.md`
-- Single Vercel site: `/memory/runbooks/vercel-orgos-single-site.md`
+- Single Vercel site (`orgos` only; never Engine Labs marketing): `/memory/runbooks/vercel-orgos-single-site.md`
+- Product identity (D-10): `docs/decisions/2026-09-11-orgos-product-identity.md`
+- Phase 2 owner actions: `docs/handover/phase-2-owner-actions.md`
 - Phase 2 plan (active): `docs/plans/phase_2_development_loop_plan.md`
 
 ## Existing workflow references

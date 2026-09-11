@@ -15,7 +15,7 @@ risk_tier: tier_3
 
 # Phase 2: Development loop — Engine Labs
 
-Generated after G1 CONDITIONAL (2026-09-11). Activated 2026-09-11 by owner request. **Start at T2-1 (SP-1…SP-7) only. Do not enable side-effecting Hermes tools until Security re-review.** Public website (`apps/web`) is a G1 follow-on, not a T2-1 task.
+Generated after G1 CONDITIONAL (2026-09-11). Activated 2026-09-11 by owner request. **Start at T2-1 (SP-1…SP-7) only. Do not enable side-effecting Hermes tools until Security re-review.** OrgOS web UI is `apps/web` from `docs/ui-blueprint`. Do not treat Engine Labs marketing as this product.
 
 ## 1. Objective
 
