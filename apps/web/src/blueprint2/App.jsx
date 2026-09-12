@@ -355,7 +355,14 @@ export default function Blueprint2App() {
       return { label, tag: label === "Personalisation" ? "R3" : label === "Team" ? "R2" : "", go: () => setSetPane(label), bg: on ? "var(--surface)" : "transparent", ink: on ? "var(--t1)" : "var(--t2)", fw: on ? "600" : "500" };
     });
     out.set_permissions = setPane === "Permissions";
-    out.set_appearance = setPane === "Appearance" || setPane === "Plan";
+    out.set_appearance = setPane === "Appearance";
+    out.set_plan = setPane === "Plan";
+    out.planTiers = [
+      { label: "Free", note: "Public label only. No prices." },
+      { label: "Basic", note: "Public label only. No prices." },
+      { label: "Professional", note: "Public label only. No prices." },
+      { label: "Enterprise", note: "Public label only. No prices." },
+    ];
     const grantRow = (key, label, desc) => ({ label, desc, toggle: () => setGrants((g) => ({ ...g, [key]: !g[key] })), track: grants[key] ? "var(--blue)" : "var(--line2)", bd: grants[key] ? "var(--blue)" : "var(--line)", knob: grants[key] ? "20px" : "2px" });
     out.repoGrants = [grantRow("branch", "Branch", "Create and update branches in the bound repository."), grantRow("change", "Change", "Write an isolated change on a branch. Never on main."), grantRow("check", "Check", "Run checks and read their results."), grantRow("release", "Release", "Publish a release. Off by default.")];
     out.themeCards = [
@@ -372,7 +379,14 @@ export default function Blueprint2App() {
       "Data & retention": { desc: "Your content is yours. Papership does not own it.", rows: [{ k: "Conversations", v: "365 days" }, { k: "Usage disclosure", v: "First-party identifier and enum events only" }] },
       Personalisation: { desc: "Release 3.", rows: [{ k: "Adaptive views", v: "Off" }] },
       Docs: { desc: "Product documentation opens in a reader.", rows: [{ k: "Getting started", v: "Open ↗" }] },
-      Plan: { desc: "Appearance and plan sit together in this pane.", rows: [{ k: "Plan", v: "Founder desktop" }] },
+      Plan: {
+        desc: "Public tier labels only. Remaining allowance and action cost stay bands until rates are published.",
+        rows: [
+          { k: "Remaining allowance", v: "not captured" },
+          { k: "Action cost", v: "not captured" },
+          { k: "Charges", v: "Off" },
+        ],
+      },
     };
     const pd = PANES[setPane] || PANES.General;
     out.setTitle = PANES[setPane] ? setPane : "General";

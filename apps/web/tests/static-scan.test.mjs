@@ -26,6 +26,12 @@ test("localStorage keys are papership-* with legacy migrate", () => {
   assert.match(shell, /function migrateStored/);
 });
 
+test("today compose has no unpublished allowance quantity", () => {
+  const screens = readFileSync(join(root, "src/blueprint2/screens.jsx"), "utf8");
+  assert.doesNotMatch(screens, /184640|Remaining allowance:\s*\d/);
+  assert.match(screens, /Remaining allowance: not captured/);
+});
+
 test("live API client has no OrgOS product name", () => {
   const api = readFileSync(join(root, "src/api/papership.js"), "utf8");
   assert.doesNotMatch(api, /OrgOS|orgos|cc-org/);

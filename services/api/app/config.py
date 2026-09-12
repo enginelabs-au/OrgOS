@@ -28,6 +28,7 @@ API_ENV_ALLOWLIST = frozenset(
         "GMAIL_OAUTH_CLIENT_ID",
         "GMAIL_OAUTH_REDIRECT_URL",
         "SLACK_CLIENT_ID",
+        "ENGINE_BILLING_CHARGES_ENABLED",
         "ENGINE_STORE_PATH",
         "ENGINE_ATTACHMENT_SIGNING_KEY",
         "ENGINE_TEST_HOOKS",
@@ -82,6 +83,7 @@ class Settings:
     gmail_oauth_client_id: str
     gmail_oauth_redirect_url: str
     slack_client_id: str
+    billing_charges_enabled: bool
 
 
 def _get(name: str, default: str = "") -> str:
@@ -126,6 +128,8 @@ def load_settings() -> Settings:
         gmail_oauth_client_id=_get("GMAIL_OAUTH_CLIENT_ID", ""),
         gmail_oauth_redirect_url=_get("GMAIL_OAUTH_REDIRECT_URL", ""),
         slack_client_id=_get("SLACK_CLIENT_ID", ""),
+        billing_charges_enabled=_get("ENGINE_BILLING_CHARGES_ENABLED", "0").strip().lower()
+        in {"1", "true", "on"},
     )
 
 
@@ -144,4 +148,5 @@ def settings_public_dict(settings: Settings) -> dict[str, object]:
         "has_github_app_id": bool(settings.github_app_id),
         "has_github_key_path": bool(settings.github_private_key_path),
         "github_repo": f"{settings.github_owner}/{settings.github_repo}".strip("/"),
+        "billing_charges_enabled": settings.billing_charges_enabled,
     }

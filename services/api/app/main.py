@@ -249,6 +249,37 @@ def create_app(store_path: str | None = None) -> FastAPI:
     def my_entitlements(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         return {"items": store.entitlements(ctx.principal_id)}
 
+    @app.post("/allowances")
+    def create_allowance(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return store.add_allowance(
+            body["principal_id"],
+            body["feature"],
+            ctx.tenant_id,
+            band=str(body.get("band") or "unmeasured"),
+            plan_label=str(body.get("plan_label") or "free"),
+        )
+
+    @app.get("/allowances/me")
+    def my_allowances(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {
+            "items": store.allowances(ctx.principal_id),
+            "charges_enabled": settings.billing_charges_enabled,
+        }
+
+    @app.post("/allowances/reserve")
+    def reserve_allowance(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.reserve_allowance(ctx.principal_id, str(body.get("feature") or ""), ctx.tenant_id)
+
+    @app.post("/allowances/reconcile")
+    def reconcile_allowance(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.reconcile_allowance(str(body.get("reservation_id") or ""), ctx.principal_id)
+
+    @app.post("/billing/charge")
+    def billing_charge(_body: dict[str, Any], _ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        raise HTTPException(status_code=403, detail="billing charges disabled")
+
     @app.post("/approvals")
     def create_approval(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         return store.decide_approval(

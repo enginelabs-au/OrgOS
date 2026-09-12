@@ -52,7 +52,7 @@ export function TodayOverview({ v }) {
           {v.modes.map((m) => (
             <button key={m.label} type="button" style={{ height: 24, padding: "0 10px", border: `1px solid ${m.bd}`, background: m.bg, color: m.ink, borderRadius: 12, font: "500 11.5px Inter,sans-serif", cursor: m.cursor }}>{m.label}</button>
           ))}
-          <span style={{ marginLeft: "auto", font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Scope: Organisation · Remaining allowance: 184</span>
+          <span style={{ marginLeft: "auto", font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Scope: Organisation · Remaining allowance: not captured</span>
         </div>
       </div>
 
@@ -600,6 +600,22 @@ export function SettingsView({ v }) {
                 <button type="button" onClick={g.toggle} style={{ width: 40, height: 22, borderRadius: 11, border: `1px solid ${g.bd}`, background: g.track, position: "relative", cursor: "pointer" }}>
                   <span style={{ position: "absolute", top: 2, left: g.knob, width: 16, height: 16, borderRadius: "50%", background: "#fff" }} />
                 </button>
+              </div>
+            ))}
+          </div>
+        ) : v.set_plan ? (
+          <div style={{ marginTop: 16 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 10 }}>
+              {(v.planTiers || []).map((t) => (
+                <div key={t.label} style={{ border: "1px solid var(--line2)", borderRadius: 8, padding: 12 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600 }}>{t.label}</div>
+                  <div style={{ fontSize: 12, color: "var(--t3)", marginTop: 4 }}>{t.note}</div>
+                </div>
+              ))}
+            </div>
+            {(v.setRows || []).map((r) => (
+              <div key={r.k} style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid var(--line2)", fontSize: 13 }}>
+                <span>{r.k}</span><span style={{ color: "var(--t2)" }}>{r.v}</span>
               </div>
             ))}
           </div>

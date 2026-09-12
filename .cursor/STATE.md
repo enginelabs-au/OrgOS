@@ -49,7 +49,7 @@
 
 ## Active Items
 
-- Rename closeout + Phase 6 implementation authorized. G9 not started.
+- Phase 6 implementation started (T6-1…T6-4 first slice). G9 not started.
 
 ## Files in Active Use
 
@@ -90,4 +90,4 @@
 
 ## Last Updated
 
-- 2026-09-12T09:20Z — Local secrets copied into `~/.config/papership/`. Vercel project name is `papership`. Owner authorized Phase 6 implementation.
+- 2026-09-12T09:25Z — Phase 6 first slice: allowances/reservations, Plan labels, allowance fixture removed, charges stay off. pytest 16; static scan 5.

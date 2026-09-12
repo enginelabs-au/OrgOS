@@ -153,6 +153,22 @@ class Store:
               principal_id TEXT NOT NULL,
               feature TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS allowances (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              principal_id TEXT NOT NULL,
+              feature TEXT NOT NULL,
+              band TEXT NOT NULL,
+              plan_label TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS allowance_reservations (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              principal_id TEXT NOT NULL,
+              feature TEXT NOT NULL,
+              status TEXT NOT NULL,
+              created_at TEXT NOT NULL
+            );
             CREATE TABLE IF NOT EXISTS organisations (
               id TEXT PRIMARY KEY,
               tenant_id TEXT NOT NULL,
@@ -645,6 +661,80 @@ class Store:
             "SELECT * FROM entitlements WHERE principal_id=?", (principal_id,)
         ).fetchall()
         return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    ALLOWANCE_BANDS = frozenset({"unmeasured", "low", "standard", "high", "exhausted"})
+    PLAN_LABELS = frozenset({"free", "basic", "professional", "enterprise"})
+
+    def add_allowance(
+        self, principal_id: str, feature: str, tenant_id: str, *, band: str, plan_label: str
+    ) -> dict[str, Any]:
+        if band not in self.ALLOWANCE_BANDS:
+            raise StoreError("unknown allowance band", 400)
+        if plan_label not in self.PLAN_LABELS:
+            raise StoreError("unknown plan label", 400)
+        aid = _id("alw")
+        self.conn.execute(
+            """INSERT INTO allowances (id, tenant_id, principal_id, feature, band, plan_label)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (aid, tenant_id, principal_id, feature, band, plan_label),
+        )
+        self.flush()
+        return {
+            "id": aid,
+            "principal_id": principal_id,
+            "feature": feature,
+            "band": band,
+            "plan_label": plan_label,
+        }
+
+    def allowances(self, principal_id: str) -> list[dict[str, Any]]:
+        rows = self.conn.execute(
+            "SELECT id, principal_id, feature, band, plan_label FROM allowances WHERE principal_id=?",
+            (principal_id,),
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    def reserve_allowance(self, principal_id: str, feature: str, tenant_id: str) -> dict[str, Any]:
+        row = self.conn.execute(
+            "SELECT band FROM allowances WHERE principal_id=? AND feature=?",
+            (principal_id, feature),
+        ).fetchone()
+        if row is None:
+            raise StoreError("allowance missing", 404)
+        band = str(row["band"] if isinstance(row, sqlite3.Row) else row[0])
+        if band == "exhausted":
+            raise StoreError("allowance exhausted; records and exports stay available", 403)
+        open_res = self.conn.execute(
+            """SELECT id FROM allowance_reservations
+               WHERE principal_id=? AND feature=? AND status='reserved'""",
+            (principal_id, feature),
+        ).fetchone()
+        if open_res:
+            raise StoreError("duplicate reserve refused", 409)
+        rid = _id("rsv")
+        now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        self.conn.execute(
+            """INSERT INTO allowance_reservations
+               (id, tenant_id, principal_id, feature, status, created_at)
+               VALUES (?, ?, ?, ?, 'reserved', ?)""",
+            (rid, tenant_id, principal_id, feature, now),
+        )
+        self.flush()
+        return {"id": rid, "feature": feature, "status": "reserved", "band": band}
+
+    def reconcile_allowance(self, reservation_id: str, principal_id: str) -> dict[str, Any]:
+        row = self.conn.execute(
+            "SELECT * FROM allowance_reservations WHERE id=? AND principal_id=?",
+            (reservation_id, principal_id),
+        ).fetchone()
+        if row is None:
+            raise StoreError("reservation missing", 404)
+        self.conn.execute(
+            "UPDATE allowance_reservations SET status='reconciled' WHERE id=?",
+            (reservation_id,),
+        )
+        self.flush()
+        return {"id": reservation_id, "status": "reconciled"}
 
     def decide_approval(
         self,
