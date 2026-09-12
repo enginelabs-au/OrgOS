@@ -39,7 +39,7 @@
 - OT-31: OpenRouter Settings picker now uses the live tool-capable catalog (377). Cap is 999 / uncapped, not None. Serve restarted.
 - OT-32: chat OpenRouter featured shortlist is curated (~48) plus current (`openai/gpt-5.6-luna-pro` in featured). Cheap capabilities skip per-model lookups on the long tail. Serve restarted again — Desktop needs one reconnect.
 - OT-05 done: live Hermes user systemd has no `Environment=EMAIL_*`. OT-06…OT-14 parked in `docs/handover/future-tasks.md`. OT-15 JWT is sessionStorage + memory. OT-16 GET `/health` is 200.
-- Leftover feature branches are gone from git (`main` + `origin/main` only). Cursor may still show closed-PR names. Production READY `dpl_DWrfAXJpUELC8NwwdSCTCT6pMfSW` (`63a3e3a`).
+- Leftover feature branches are gone from git (`main` + `origin/main` only). Cursor may still show closed-PR names. Local and origin `main` are `451a7f3`. Vercel will pick up the Git push.
 
 ## Owner Decision
 
@@ -84,7 +84,7 @@
 
 ## Current Working State
 
-- Branch `main` @ `63a3e3a`. No leftover local or remote feature refs. Closed PRs 1–5 still exist as GitHub history.
+- Branch `main` @ `451a7f3` (pushed). No leftover local or remote feature refs. Closed PRs 1–5 still exist as GitHub history.
 - GitHub App `papership-dev` is local. VPS is Hermes only.
 - Local API sources `~/.config/papership/connectors.env`. OT-25 Gmail and OT-26 Slack are both `configured` with `has_token` on the local store. Send stays approval-then-receipt. Vercel still cannot hold these tokens.
 
@@ -96,4 +96,4 @@
 
 ## Last Updated
 
-- 2026-09-12T17:00Z — Owner: Hermes WhatsApp/Telegram already live. That is gateway chat, not Papership Integrations. No further action unless they want Inbox/send inside Papership.
+- 2026-09-12T17:05Z — Owner asked to push. `451a7f3` on `origin/main` as Cursor Agent after GH007 rejected `shuffle.ops@gmail.com`.
