@@ -699,7 +699,7 @@ export default function Blueprint2App() {
                     </span>
                     <span style={{ font: "400 10.5px 'JetBrains Mono',monospace", color: "var(--t3)" }}>read-only scope</span>
                   </div>
-                  <div style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Remaining allowance: 158 · this action ≈ 3</div>
+                  <div style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Remaining allowance: not captured · action cost: not captured</div>
                   <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
                     <div style={{ flex: 1, display: "flex", alignItems: "flex-end", gap: 7, border: "1px solid var(--line)", borderRadius: 9, background: "var(--canvas)", padding: "7px 9px" }}>
                       <textarea placeholder="Ask, or describe the outcome you want…" style={{ flex: 1, minHeight: 34, maxHeight: 120, resize: "none", border: 0, background: "transparent", color: "var(--t1)", font: "400 12.5px Inter,sans-serif", outline: "none" }} />

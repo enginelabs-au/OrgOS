@@ -52,7 +52,7 @@ export function TodayOverview({ v }) {
           {v.modes.map((m) => (
             <button key={m.label} type="button" style={{ height: 24, padding: "0 10px", border: `1px solid ${m.bd}`, background: m.bg, color: m.ink, borderRadius: 12, font: "500 11.5px Inter,sans-serif", cursor: m.cursor }}>{m.label}</button>
           ))}
-          <span style={{ marginLeft: "auto", font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Scope: Organisation · Remaining allowance: 184</span>
+          <span style={{ marginLeft: "auto", font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Scope: Organisation · Remaining allowance: not captured</span>
         </div>
       </div>
 
