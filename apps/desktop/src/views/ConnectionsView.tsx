@@ -8,7 +8,7 @@ export function ConnectionsView({ T }: { T: Theme }) {
   const [state, setState] = useState<Awaited<ReturnType<typeof loadList<RegistryRow>>>>({ status: "loading" });
 
   const reload = () => {
-    void loadList<RegistryRow>("/v1/registry", "The capability registry is empty or unavailable.").then(setState);
+    void loadList<RegistryRow>("/connections", "No connections yet. GitHub is configured in Papership; Gmail and Slack stay planned until owner credentials.").then(setState);
   };
 
   useEffect(reload, []);

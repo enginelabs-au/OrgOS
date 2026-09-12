@@ -164,9 +164,9 @@ Transition rules:
 | Release | Intake implementation phases | Basis |
 |---|---|---|
 | R1 | 07 Foundation, 08 Development loop | I-06 "Set the first release around implementation phases 07–08 and their required controls." `verified` |
-| R2 | 09 Collaboration and connections | I-06 "Assign later capabilities to subsequent releases"; blueprint §4/§13 "releases 2–4". Phase-to-release numbering for 09–12 is `proposal`. |
-| R3 | 10 Company operations | `proposal` (same basis) |
-| R4 | 11 Commercial delivery, 12 Ecosystem and mobile | `proposal` (same basis). Alternative reading (R3 = 10+11, R4 = 12) recorded as open question OQ-3. |
+| R2 | 09 Collaboration and connections | `accepted` (D-28 / OQ-3, 2026-09-12). |
+| R3 | 10 Company operations | `accepted` (D-28 / OQ-3, 2026-09-12). |
+| R4 | 11 Commercial delivery, 12 Ecosystem and mobile | `accepted` (D-28 / OQ-3, 2026-09-12). Alternative R3 = 10+11 withdrawn. |
 
 Verification phases 13–18 apply to every release's enabled scope (I-06, I-13).
 
@@ -381,9 +381,9 @@ Recorded, not blocking (charter §5). The lead routes these at the gate where th
 | ID | Question | Why it matters | Needed by |
 |---|---|---|---|
 | OQ-1 | Confirm the founder development repository bound in phase 08 (current assumption: this repository). | PRD-B.2; phase 2 plan. | Before `phase_2_development_loop_plan.md` |
-| OQ-2 | Which domain groups should be first in R3 (phase 10 "next highest-value domain capability")? Current `proposal` in §4.3. | Sequencing of R3 modules and connectors. | Before `phase_4+` plan generation |
-| OQ-3 | Confirm phase-to-release mapping for 09–12 (proposal: R2 = 09, R3 = 10, R4 = 11 + 12; alternative R3 = 10 + 11, R4 = 12). | Bucket table §4; roadmap. | Before R2 closure |
-| OQ-4 | Confirm public tier labels (proposal: Free / Basic / Professional / Enterprise for intake Tier 1–4). | Growth tier communication (T0-10); no pricing implied. | Before growth gate T0-10 |
+| OQ-2 | Which domain groups should be first in R3 (phase 10 "next highest-value domain capability")? | Sequencing of R3 modules and connectors. | **Accepted 2026-09-12 (D-27):** §4.3 proposal — B01 strategy/governance, B03 people/capacity first; memory manager / adaptive views are R3 core. |
+| OQ-3 | Confirm phase-to-release mapping for 09–12 (proposal: R2 = 09, R3 = 10, R4 = 11 + 12; alternative R3 = 10 + 11, R4 = 12). | Bucket table §4; roadmap. | **Accepted 2026-09-12 (D-28):** R2=09, R3=10, R4=11+12. |
+| OQ-4 | Confirm public tier labels (proposal: Free / Basic / Professional / Enterprise for intake Tier 1–4). | Growth tier communication (T0-10); no pricing implied. | **Accepted 2026-09-12 (D-29):** Free / Basic / Professional / Enterprise. No prices. |
 | OQ-5 | Confirm which of the seven views are implemented in R1 (proposal: home, work item, assistant, agent run, minimal permissions editor). | UI/UX scope; phase 1/2 plans. | Before `phase_1_foundation_plan.md` |
 | OQ-6 | Confirm the assistant modes enabled in R1 (proposal: six; Automate deferred to R3). | Runtime scope. | Before `phase_2_development_loop_plan.md` |
 
@@ -395,8 +395,8 @@ Recorded, not blocking (charter §5). The lead routes these at the gate where th
 | AS-2 | Founder is the only R1 user; Project Lead and Operator seats are specified now, activated R2. | `provisional` | R2 plan |
 | AS-3 | Prices, allowance quantities, seat counts, rates and model bands are structure-only in R1–R3. | `verified` (I-05 commercial gate) | Phase 11 gate |
 | AS-4 | Release bucket rule = first release with a `working`/`configured` target row (§4.2). | `proposal` | PL reconciliation T0-12 |
-| AS-5 | R3/R4 split of business domains and R2–R4 numbering (§4.1, §4.3). | `proposal` | OQ-2, OQ-3 |
-| AS-6 | Tier labels Free/Basic/Professional/Enterprise. | `proposal` | OQ-4 |
+| AS-5 | R3/R4 split of business domains and R2–R4 numbering (§4.1, §4.3). | `accepted` (D-27, D-28) | — |
+| AS-6 | Tier labels Free/Basic/Professional/Enterprise. | `accepted` (D-29); no prices | CA-10 |
 | AS-7 | Seven-view implementation timing (PRD-A.15). | `proposal` | OQ-5 |
 | AS-8 | Registry `capability_id`, `registry_version`, `status_changed_at`, `status_evidence` columns. | `proposal` | SE registry (T0-8) |
 | AS-9 | Release-1 acceptance derived from I-06/I-07/I-08/I-13/I-18 because no "Final result" heading exists in the intake. | `verified` (heading enumeration) | PL gate |

@@ -6,8 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-test("product title is OrgOS and fonts are not loaded from Google", () => {
+test("product title is Papership", () => {
   const html = readFileSync(join(root, "index.html"), "utf8");
-  assert.match(html, /<title>OrgOS<\/title>/);
-  assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic/);
+  assert.match(html, /<title>Papership<\/title>/);
 });

@@ -2,45 +2,44 @@
 
 ## Current Objective
 
-- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21). Prism-head mark is app/tab icon only, not in-app.
+- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21 / D-22). Prism-head mark is app/tab icon only, not in-app.
 
 ## Current Status
 
-- Phase 4 **implementation** (not planning). Plan exists and is `implementing`. T4-0 and T4-1 are done. Blueprint-2 port mounted at `/cc-org-dash`. Hybrid of blueprint-1 chrome withdrawn. Live slugs (`orgos` / `OrgOS` on GitHub, Vercel, `~/.config/orgos/`) left as residuals.
+- Phase 4 **complete** (G5 PASS, 2026-09-12). T4-0…T4-11 done. Do not generate Phase 5 until the owner asks.
 
 ## Project Phase
 
-- Phase 4 implementation, paused after the D-21 UI pivot. Next planned task is T4-2. Do not generate Phase 5 until G5.
+- Phase 4 closed. Next plan name (not generated): `docs/plans/phase_5_company_operations_plan.md` (R3). Three execution phase plans remain after this closeout (5, 6, 7).
 
 ## Active Plan
 
-- `docs/plans/phase_4_collaboration_connections_plan.md`
+- `docs/plans/phase_4_collaboration_connections_plan.md` (status: complete)
 
 ## Active Workstream
 
-- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3; index is stale vs Phase 4)
+- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3; G5 PASS)
 
 ## Active Role and Gate
 
-- Owner visual review of the D-21 blueprint-2 port. T4-2 (OQ-G2 notice + `oq_g2_recorded` gate) is the next Phase 4 implementation task.
+- G5 PASS. Owner residuals in `docs/handover/phase-4-owner-actions.md`.
 
 ## Predecessor Handoff
 
-- Security live-tools CONDITIONAL: `security-engineer-subagent/phase-3-live-tools-handoff.md`
-- Owner handoff: `delivery/owner-handoff.md` (`APPROVE`)
+- Phase 4 G5: `project-lead-subagent/phase-4-handoff.md`
+- Security Phase 4: `security-engineer-subagent/phase-4-handoff.md` (PASS with residuals)
 
 ## Pending Remediation
 
-- Hermes GET `/health` hang.
-- Mailbox `Environment=` hygiene.
-- Worker job consumer / subscribe (F-T33-SEC-03/09).
-- AUTH-12 HTTP not used for PR #1.
-- Residual live slugs still named OrgOS until the owner renames those providers.
+- Hermes GET `/health` hang (HEAD-first probe already used).
+- Mailbox `Environment=` hygiene (owner/VPS).
+- Live provider slugs still named OrgOS until the owner renames GitHub/Vercel/App.
+- Gmail/Slack live OAuth credentials missing (names wired).
 
 ## Owner Decision
 
+- 2026-09-12: D-22…D-30 (`docs/decisions/2026-09-12-phase-4-closeout.md`) — visual review, OQ-G2, Gmail/Slack proceed, security pass, in-repo papership slug, OQ-2/3/4/G1.
 - 2026-09-12: product UI is blueprint-2 exactly (D-21); product name Papership (D-20).
-- 2026-09-11: live tools + real PR + leftovers, then APPROVE, then Phase 4.
 
 ## Active Instructions
 
@@ -48,14 +47,14 @@
 
 ## Active Items
 
-- Blueprint-2 exact port (complete, pending owner visual review).
+- Phase 4 closed. Await owner request before Phase 5 planning.
 
 ## Files in Active Use
 
 - `/STATE.md`
-- `docs/decisions/2026-09-12-blueprint-2-product-ui.md`
-- `apps/web/src/blueprint2/App.jsx`
-- `apps/web/src/pages/cc-org-dash.jsx`
+- `docs/plans/phase_4_collaboration_connections_plan.md`
+- `docs/handover/phase-4-owner-actions.md`
+- `docs/decisions/2026-09-12-phase-4-closeout.md`
 
 ## Open Blockers
 
@@ -63,25 +62,24 @@
 
 ## Attempts Performed
 
-- 2026-09-12: replaced hybrid with blueprint-2 port; D-21; Today shell verified at http://127.0.0.1:5173/cc-org-dash.
-- 2026-09-11: live `memory_read` `accepted`; PR https://github.com/enginelabs-au/OrgOS/pull/1.
+- 2026-09-12: Phase 4 closeout — API 66 passed; People/Inbox overlay; registry `configured` for four R2 rows; G5 issued.
 
 ## Decisions and Assumptions
 
-- D-21: web product UI is blueprint-2 exactly. Fixture copy from the mock is allowed. Desktop Tauri is not this port. Mobile bottom tabs are R4.
-- D-20: Papership is the display name. Folder rename of `~/OrgOS` is safe. Do not rename GitHub/Vercel/App slugs in code until those providers change.
+- D-26: in-repo slug is papership/Papership. Live GitHub/Vercel/App names stay residual until the owner renames those providers.
+- D-25 does not authorise live write/external Hermes `accepted`.
+- OQ-G2 default in store remains false until `POST /settings/oq-g2`.
 
 ## Current Working State
 
-- In-app product icon removed from web (top bar, auth, compose, Hey) and desktop wordmark/sign-in. Favicon, PWA, and Tauri icons unchanged.
+- Branch `cursor/phase-4-closeout-cc89`.
 
 ## Next Actions
 
-1. Owner visual review of the blueprint-2 port (Hey dock, theme cycle, remaining tabs).
-2. Resume T4-2: Settings → Data measurement notice and `oq_g2_recorded` gate (legal OQ-G2 is required only before a live second seat).
-3. Continue T4-3…T4-11 after T4-2; do not generate Phase 5 until G5.
-4. Do not treat write/external Hermes tools as `accepted`.
+1. Owner: remaining human actions in `docs/handover/phase-4-owner-actions.md`.
+2. Do not generate Phase 5 until asked.
+3. Do not treat write/external Hermes tools as `accepted`.
 
 ## Last Updated
 
-- 2026-09-12T04:30Z — status review: Phase 4 implementation (T4-0/T4-1 done; T4-2 next).
+- 2026-09-12T05:30Z — Phase 4 G5 PASS. Three execution phase plans remain (5, 6, 7).

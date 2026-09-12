@@ -25,6 +25,9 @@ API_ENV_ALLOWLIST = frozenset(
         "GITHUB_APP_PRIVATE_KEY_PATH",
         "GITHUB_APP_OWNER",
         "GITHUB_APP_REPO",
+        "GMAIL_OAUTH_CLIENT_ID",
+        "GMAIL_OAUTH_REDIRECT_URL",
+        "SLACK_CLIENT_ID",
         "ENGINE_STORE_PATH",
         "ENGINE_ATTACHMENT_SIGNING_KEY",
         "ENGINE_TEST_HOOKS",
@@ -76,6 +79,9 @@ class Settings:
     github_private_key_path: str
     github_owner: str
     github_repo: str
+    gmail_oauth_client_id: str
+    gmail_oauth_redirect_url: str
+    slack_client_id: str
 
 
 def _get(name: str, default: str = "") -> str:
@@ -117,6 +123,9 @@ def load_settings() -> Settings:
         github_private_key_path=_get("GITHUB_APP_PRIVATE_KEY_PATH", "") or _get("GITHUB_APP_PRIVATE_KEY", ""),
         github_owner=_get("GITHUB_APP_OWNER", ""),
         github_repo=_get("GITHUB_APP_REPO", ""),
+        gmail_oauth_client_id=_get("GMAIL_OAUTH_CLIENT_ID", ""),
+        gmail_oauth_redirect_url=_get("GMAIL_OAUTH_REDIRECT_URL", ""),
+        slack_client_id=_get("SLACK_CLIENT_ID", ""),
     )
 
 

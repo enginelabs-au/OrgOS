@@ -370,12 +370,16 @@ export function WorkWiki() {
 }
 
 export function InboxView({ v }) {
-  const thread = v.threads[0];
+  const threads = v.threads || [];
+  const thread = threads[0] || null;
   return (
     <div style={{ display: "grid", gridTemplateColumns: "320px minmax(0,1fr) 220px", gap: 0, background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden", minHeight: 520 }}>
       <div style={{ borderRight: "1px solid var(--line2)" }}>
-        {v.threads.map((t) => (
-          <div key={t.key} style={{ padding: "11px 13px", borderBottom: "1px solid var(--line2)", background: t.bg, cursor: "pointer", borderLeft: `3px solid ${t.mark}` }}>
+        {threads.length === 0 ? (
+          <div style={{ padding: 16, fontSize: 12.5, color: "var(--t3)" }}>{v.inboxNote || "Inbox is empty."}</div>
+        ) : null}
+        {threads.map((t) => (
+          <div key={t.key || t.id} style={{ padding: "11px 13px", borderBottom: "1px solid var(--line2)", background: t.bg, cursor: "pointer", borderLeft: `3px solid ${t.mark || "transparent"}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: t.dot }} />
               <span style={{ flex: 1, fontSize: 12.5, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.subject}</span>
@@ -386,16 +390,24 @@ export function InboxView({ v }) {
         ))}
       </div>
       <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 10, borderRight: "1px solid var(--line2)" }}>
-        <div style={{ fontSize: 14, fontWeight: 600 }}>{thread.subject}</div>
-        {v.messages.map((m, i) => (
-          <div key={i} style={{ alignSelf: m.align, maxWidth: "86%", background: m.bg, border: `1px solid ${m.bd}`, borderRadius: 10, padding: "9px 11px" }}>
-            <div style={{ font: "600 11px Inter,sans-serif" }}>{m.who} · {m.when}</div>
-            <div style={{ fontSize: 12.5, marginTop: 4 }}>{m.body}</div>
+        {!thread ? (
+          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--t3)", fontSize: 13 }}>
+            Inbox is empty. Papership does not show fixture mail once the live API is connected.
           </div>
-        ))}
+        ) : (
+          <>
+            <div style={{ fontSize: 14, fontWeight: 600 }}>{thread.subject}</div>
+            {(v.messages || []).map((m, i) => (
+              <div key={i} style={{ alignSelf: m.align, maxWidth: "86%", background: m.bg, border: `1px solid ${m.bd}`, borderRadius: 10, padding: "9px 11px" }}>
+                <div style={{ font: "600 11px Inter,sans-serif" }}>{m.who} · {m.when}</div>
+                <div style={{ fontSize: 12.5, marginTop: 4 }}>{m.body}</div>
+              </div>
+            ))}
+          </>
+        )}
       </div>
       <div style={{ padding: 14 }}>
-        {v.ticketDetails.map((d) => (
+        {(v.ticketDetails || []).map((d) => (
           <div key={d.k} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid var(--line2)", fontSize: 12 }}>
             <span style={{ color: "var(--t3)" }}>{d.k}</span><span>{d.v}</span>
           </div>
@@ -406,6 +418,14 @@ export function InboxView({ v }) {
 }
 
 export function PeopleView({ v }) {
+  if (!v.people?.length) {
+    return (
+      <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 40, textAlign: "center" }}>
+        <div style={{ fontSize: 14, fontWeight: 600 }}>No people to show</div>
+        <div style={{ fontSize: 12.5, color: "var(--t3)", marginTop: 6 }}>{v.peopleNote || "Papership does not show fixture seats on the product path."}</div>
+      </div>
+    );
+  }
   return (
     <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
       {v.people.map((p) => (
@@ -424,6 +444,14 @@ export function PeopleView({ v }) {
 }
 
 export function TeamsView({ v }) {
+  if (!v.teams?.length) {
+    return (
+      <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 40, textAlign: "center" }}>
+        <div style={{ fontSize: 14, fontWeight: 600 }}>No teams yet</div>
+        <div style={{ fontSize: 12.5, color: "var(--t3)", marginTop: 6 }}>{v.teamsNote || "Teams are native Papership records, not fixtures."}</div>
+      </div>
+    );
+  }
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: 12 }}>
       {v.teams.map((t) => (
@@ -441,7 +469,7 @@ export function InvitesView() {
   return (
     <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 40, textAlign: "center" }}>
       <div style={{ fontSize: 14, fontWeight: 600 }}>No pending invites</div>
-      <div style={{ fontSize: 12.5, color: "var(--t3)", marginTop: 6 }}>Invitations open in Release 2. You can prepare a seat now.</div>
+      <div style={{ fontSize: 12.5, color: "var(--t3)", marginTop: 6 }}>A second seat stays blocked until the measurement notice is accepted. Mail is not sent.</div>
     </div>
   );
 }
@@ -571,6 +599,17 @@ export function SettingsView({ v }) {
           </div>
         ) : (
           <div style={{ marginTop: 16 }}>
+            {v.set_data && v.measurement ? (
+              <div style={{ marginBottom: 16, padding: 12, borderRadius: 8, background: "var(--raised)", border: "1px solid var(--line2)" }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>{v.measurement.title}</div>
+                <div style={{ fontSize: 12, color: "var(--t3)", marginTop: 4 }}>{v.measurement.owner}</div>
+                <ul style={{ margin: "10px 0 0", paddingLeft: 18, color: "var(--t2)", fontSize: 12.5 }}>
+                  {(v.measurement.items || []).map((item) => (
+                    <li key={item} style={{ marginBottom: 6 }}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             {v.setRows.map((r) => (
               <div key={r.k} style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid var(--line2)", fontSize: 13 }}>
                 <span>{r.k}</span><span style={{ color: "var(--t2)" }}>{r.v}</span>

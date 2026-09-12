@@ -2,8 +2,8 @@
 document: final_implementation_checklist
 status: open
 created: 2026-09-11
-updated: 2026-09-11
-release: R1
+updated: 2026-09-12
+release: R1 + R2 configured
 ---
 
 # Final Implementation Checklist
@@ -26,7 +26,7 @@ release: R1
 | Gateway mailbox `Environment=` | secret hygiene | process listings | Move credentials | owner |
 | Desktop signed update / axe gallery | V16-1/4 | PARTIAL | Apple signing; a11y lab | owner |
 | Compose live + backup restore | V15-5 / V17-4 | config OK, not brought up | Backup target + drill | owner |
-| Web `/cc-org-dash` still uses `data.jsx` | V16-3 | fixture shell | R2 People/Inbox off fixtures | later phase |
+| Web `/cc-org-dash` People/Inbox | V16-3 | overlay + empty states | done in Phase 4 (`apps/web/src/api/papership.js`) | — |
 | Browser click hook-blocked | V13-4/V16 | Cursor MCP | Owner walk Settings/Work | owner |
 
 ## 3. Role and stage-gate closure
@@ -69,7 +69,9 @@ Never include secret values.
 | F-G1 accept emit | product | done (enum only) | `/health` usage_emit |
 | Apple signing | Apple | account | signed build |
 | DigitalOcean / DNS | DO | account | droplet + health |
-| OQ-G2 second-seat notice | legal/product | owner decision | Phase 4 |
+| OQ-G2 second-seat notice | legal/product | accepted D-23; live `POST /settings/oq-g2` still owner | Phase 4 |
+| Gmail/Slack OAuth apps | Google / Slack | owner accounts | `GMAIL_OAUTH_CLIENT_ID`, `GMAIL_OAUTH_REDIRECT_URL`, `SLACK_CLIENT_ID` |
+| Rename live slugs OrgOS → Papership | GitHub / Vercel / App | provider dashboards | then update `GITHUB_APP_REPO` |
 
 ## 6. Production integrations and dashboard actions
 
@@ -116,4 +118,5 @@ No webhooks in R1. No payments. Usage emit off. Hermes gateway mailbox credentia
 - API `uv run pytest -q` → 47 passed
 - Live `GET http://127.0.0.1:8000/health`
 - `docs/workstreams/20260910-engine-labs-company-os/delivery/owner-handoff.md`
-- Phase 4 plan exists but is not implemented (D-19)
+- Phase 4 G5 PASS (`docs/plans/phase_4_collaboration_connections_plan.md`)
+- `docs/handover/phase-4-owner-actions.md`

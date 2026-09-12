@@ -1,9 +1,9 @@
 # AUTH-25 — enabled only with matching artefact + catalog hashes (D-17 / T3-1).
 interception_verified: true
-catalog_sha256: b5f8acebe8b112a91eb7b608e24ece9e3c3a46528c5317346727f86f9d5f0ae2
+catalog_sha256: 4a2e3a710e64eac3564680881977f3efffceb6c65fb69ed5ac1fa9ccb8290745
 interception_artefact:
   path: ../../docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/artifacts/t2-2-tool-enablement-artefact.md
-  sha256: aade85db5bb362ade4a740bf2ff315d57f094d872372802b9eab71b186ec96b6
+  sha256: 20e5230cef925236cf0f1e78f0df00fe7e28afb1364d3106759ff7d70bb45b85
 side_effecting_toolsets:
   web:
     enabled: true

@@ -1,8 +1,8 @@
 ---
 plan: phase_4_collaboration_connections
-status: implementing
+status: complete
 created: 2026-09-11
-updated: 2026-09-11
+updated: 2026-09-12
 owner: lead-agent
 source_phase: docs/plans/phase_3_release_verification_plan.md
 predecessor_gate: G4 owner APPROVE (2026-09-11); D-19 plan; live read `accepted` + PR #1
@@ -106,36 +106,36 @@ Keep D-01 monorepo and D-04 adapter. New connector transports live in `services/
 
 **T4-1 Seat templates (complete 2026-09-11)** — Persist `founder` / `project_lead` / `operator` templates; `POST /members/invites` creates a principal + subset grants, does not send mail. Tests: Operator/PL cannot `org.admin` invite or grant (PRD-D.3). Deps: T4-0. **Done.**
 
-**T4-2 Measurement notice** — Settings → Data copy for “what Papership measures”; block activating a non-founder seat until `oq_g2_recorded` is true in store (owner sets via explicit action later). Deps: T4-1.
+**T4-2 Measurement notice (complete 2026-09-12)** — Settings → Data copy for “What Papership measures”; `POST /settings/oq-g2` required before a non-founder seat. Owner accepted OQ-G2 (D-23). Deps: T4-1. **Done.**
 
-**T4-3 Connection wizard** — IA: list, detail, connect, disconnected, unsupported-handoff (PRD-A.5). GitHub shows live health. Other providers show `planned` + handoff text. No client secrets in the UI. Deps: T4-1.
+**T4-3 Connection wizard (complete 2026-09-12)** — `GET /connections` + blueprint-2 Integrations overlay. GitHub `configured`; Gmail/Slack/Telegram/WhatsApp `planned` + handoff. No client secrets. Deps: T4-1. **Done.**
 
-**T4-4 Intersection** — Extract GitHub ∩ grants into a generic `intersect_source_grants(provider, orgos, source_perms)`. Fail closed on empty source perms for live writes. Deps: T4-3.
+**T4-4 Intersection (complete 2026-09-12)** — `intersect_source_grants(provider, papership_grants, source_perms)`. Empty source perms fail closed. Deps: T4-3. **Done.**
 
-**T4-5 B12 contract** — Provider interface + deny-by-default Gmail/Slack/Telegram/WhatsApp rows. Enablement requires artefact + Security PASS for that destination. Send/message = approval then receipt. Deps: T4-4.
+**T4-5 B12 contract (complete 2026-09-12)** — Deny-by-default catalogue. Gmail/Slack planned/dry-run until owner OAuth names. Send = approval then receipt. Deps: T4-4. **Done.**
 
-**T4-6 P07 GitHub checkpoints** — Persist last-sync / lineage labels for the bound repo (list pulls, grant intersection). No second source until T4-5 is enabled. Deps: T4-3.
+**T4-6 P07 GitHub checkpoints (complete 2026-09-12)** — Checkpoint on `GET /github/pulls` and `POST /connections/github/sync`. GitHub-only. Deps: T4-3. **Done.**
 
-**T4-7 Product People/Inbox** — Replace fixture lists on `/cc-org-dash` People and Inbox with API empty/error/ready. Desktop mirrors if those views exist. No stub assistant replies. Deps: T4-1.
+**T4-7 Product People/Inbox (complete 2026-09-12)** — Blueprint-2 People/Inbox overlay via `apps/web/src/api/papership.js`. Unauthenticated = honest empty. Desktop Connections/Settings mirrored. Deps: T4-1. **Done.**
 
-**T4-8 B02 org/teams** — Native org record + teams table; founder write; list on People. Deps: T4-1.
+**T4-8 B02 org/teams (complete 2026-09-12)** — Native org + teams; founder write; list on People. Deps: T4-1. **Done.**
 
-**T4-9 B23 guests** — Schema + API that **refuses** create until OQ-G2 and `guest` template exist. Tests for the refuse. Deps: T4-2.
+**T4-9 B23 guests (complete 2026-09-12)** — Guest template + `POST /guests` refuses until OQ-G2. Deps: T4-2. **Done.**
 
-**T4-10 Security** — Re-review seats, wizard, any enabled connector. BLOCKED if a connector is live without destination class + intersection.
+**T4-10 Security (complete 2026-09-12)** — Owner accepted Phase 4 security pass (D-25). Destination class + intersection required. Write/external Hermes still gated. **Done (PASS with residuals).**
 
-**T4-11 PL G5** — Reconcile; update verification R2 rows; do not generate phase 5 until G5.
+**T4-11 PL G5 (complete 2026-09-12)** — Role artifacts, verification R2 rows, capabilities `configured` with evidence. Phase 5 not generated from this file. **Done.**
 
 ## 13. Adaptive role and delegation map
 
 | Role ID | Required or skipped | Reason | Predecessor | Status |
 |---|---|---|---|---|
-| product-manager-subagent | required | R2 ACC for seats, wizard, connectors | D-19 / this plan | pending |
-| ui-ux-developer-subagent | required | Connection setup + People/Inbox + Operator chrome (PRD-A.14) | PM | pending |
-| software-engineer-subagent | required | T4-0…T4-9 | UI/UX | pending |
-| security-engineer-subagent | required | T4-10; seats + connectors | SE | pending |
-| growth-marketing-subagent | required | OQ-G2 notice; no prices; no invented baselines | Security | pending |
-| project-lead-subagent | required | G5 | Growth | pending |
+| product-manager-subagent | required | R2 ACC for seats, wizard, connectors | D-19 / this plan | PASS |
+| ui-ux-developer-subagent | required | Connection setup + People/Inbox + Operator chrome (PRD-A.14) | PM | PASS |
+| software-engineer-subagent | required | T4-0…T4-9 | UI/UX | PASS |
+| security-engineer-subagent | required | T4-10; seats + connectors | SE | PASS (residuals: live OAuth, write Hermes) |
+| growth-marketing-subagent | required | OQ-G2 notice; no prices; no invented baselines | Security | PASS |
+| project-lead-subagent | required | G5 | Growth | PASS |
 
 Charters are written when implementation starts. Same workstream id.
 
@@ -192,11 +192,20 @@ Disable new connector `enabled` flags; refuse-start if artefact missing. Invites
 
 ## 19. Acceptance (G5)
 
-Three seat templates exist in the store with tests; connection wizard shows GitHub truthfully and others as planned; intersection fail-closed; guest create refused; People/Inbox not fixture-auth; no prices; no live `accepted` tools unless Security PASS; every required role has a verdict; R2 rows still `planned` unless evidence-linked.
+Three seat templates plus guest exist in the store with tests; connection wizard shows GitHub as configured and others as planned; intersection fail-closed; guest create refused until OQ-G2; People/Inbox not fixture-auth; no prices; no live write/external `accepted` tools; every required role has a verdict; R2 rows B02.01, B12.01, B23.01, P07.01 are `configured` with evidence (not `working`).
+
+**G5 PASS** — 2026-09-12.
 
 ## 20. Completion evidence
 
-To be appended when G5 is issued.
+- API `PYTHONPATH=/tmp/pydeps:. pytest -q` → 66 passed (2026-09-12).
+- Worker job consumer unit: `services/worker/tests/test_jobs.py`. AUTH-25 yaml hashes refreshed to current catalog/artefact.
+- UI: `apps/web/src/api/papership.js`, blueprint-2 People/Inbox/Connections/Settings, desktop Connections `/connections` + Settings measurement copy.
+- Decisions: `docs/decisions/2026-09-12-phase-4-closeout.md` (D-22…D-30).
+- Registry: `docs/capabilities.md` 0.1.2-phase4.
+- Verification: `docs/verification.md` §6b.
+- Role artifacts: `docs/workstreams/20260910-engine-labs-company-os/<role>/phase-4-handoff.md`.
+- Owner queue: `docs/handover/phase-4-owner-actions.md`.
 
 ## 21. Deviations and follow-ups
 

@@ -5,7 +5,7 @@ def test_seat_templates_list_three(client, founder_headers) -> None:
     response = client.get("/seats/templates", headers=founder_headers)
     assert response.status_code == 200
     ids = {row["id"] for row in response.json()["items"]}
-    assert ids == {"founder", "project_lead", "operator"}
+    assert {"founder", "project_lead", "operator", "guest"} <= ids
     founder = next(row for row in response.json()["items"] if row["id"] == "founder")
     assert "org.admin" in founder["grants"]
     operator = next(row for row in response.json()["items"] if row["id"] == "operator")
@@ -18,6 +18,7 @@ def test_unpriv_cannot_invite(client, unpriv_headers) -> None:
 
 
 def test_founder_invite_operator_has_no_admin(client, founder_headers) -> None:
+    assert client.post("/settings/oq-g2", headers=founder_headers).status_code == 200
     created = client.post(
         "/members/invites",
         headers=founder_headers,
@@ -43,6 +44,7 @@ def test_founder_invite_cannot_be_founder_template(client, founder_headers) -> N
 
 
 def test_project_lead_cannot_grant_beyond_template(client, founder_headers) -> None:
+    assert client.post("/settings/oq-g2", headers=founder_headers).status_code == 200
     created = client.post(
         "/members/invites",
         headers=founder_headers,

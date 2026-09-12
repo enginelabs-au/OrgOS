@@ -1,10 +1,10 @@
 ---
 document: verification
 title: Engine Labs — Verification Index (blueprint phases 13–18 → release-1 checks)
-status: r1_approved
-revision: 4
+status: r2_configured
+revision: 5
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-12
 owner_role: software-engineer-subagent (index skeleton, T0-8); results owned by project-lead-subagent with all roles (REQ-13..18)
 task_id: 20260910-engine-labs-company-os
 intake: docs/Company_Agent_System_Blueprint.md (Phases 13–18)
@@ -19,7 +19,7 @@ registry: docs/capabilities.md
 
 Purpose: one index that maps every intake verification phase (13–18) to the concrete release-1 checks, the method, the evidence type, and the phase/plan in which the check runs and is recorded (intake Phase 13: "Index results in docs/verification.md and retain detailed evidence in the active workstream"). Evidence states are `VERIFIED` / `PARTIAL` / `UNVERIFIED` / `NOT_APPLICABLE` and are distinct from role-gate verdicts (NFR-9). Checks for capabilities not enabled in release 1 are `NOT_APPLICABLE` for R1 but stay listed (I-13: "mark future-feature checks not applicable without deferring mandatory controls for current use").
 
-Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 baseline is recorded here at release closure. At registry version `0.1.1-phase1` (2026-09-11): 0 `working`, 12 `configured` (B06.01, B07.01, P02.01, P03.01, P05.01, P06.01, P10.01, P11.01, P13.01, P15.01, P17.01, P18.01), 31 `planned`, 0 `unavailable`.
+Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 baseline is recorded here at release closure. At registry version `0.1.2-phase4` (2026-09-12): 0 `working`, 16 `configured` (prior 12 plus B02.01, B12.01, B23.01, P07.01), 27 `planned`, 0 `unavailable`. Gmail/Slack are `configured` as deny-by-default contracts, not live OAuth.
 
 ## 1. Phase 13 — Functional and domain coverage
 
@@ -38,7 +38,7 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 | ID | Release-1 check | Method | Evidence type | Runs in | R1 state |
 |---|---|---|---|---|---|
 | V14-1 | Isolation across pages, queries, aggregates, notifications, exports, files, agent tools, memory for a second identity / request lacking a grant (R1-ACC-4, PRD-D.5) | Authorization test suite hitting each surface with an unprivileged principal | Test output (pytest) with exit codes | Phase 1 (tests) → phase 3 | PARTIAL (`test_authz.py` five surfaces + memory; 21 API tests exit 0) |
-| V14-2 | Separate organisations, roles, project scopes, guest assignments; delegated grant ≤ delegator; billing upgrade creates no data permission | Multi-tenant fixtures; delegation tests; entitlement/permission separation test (PRD-D.6 R1 part) | Test output | Phase 1 (tenant + entitlement separation); R2 for delegation/guests | PARTIAL for R1 (delegation R2 → NOT_APPLICABLE R1) |
+| V14-2 | Separate organisations, roles, project scopes, guest assignments; delegated grant ≤ delegator; billing upgrade creates no data permission | Multi-tenant fixtures; delegation tests; entitlement/permission separation test (PRD-D.6 R1 part) | Test output | Phase 1 (tenant + entitlement separation); R2 for delegation/guests | PARTIAL — R2 guest refuse + seat templates verified (`test_phase4.py`); live second human not issued |
 | V14-3 | Revoked credentials, changed assignments, expired approvals, modified action targets → running/queued work rechecks authority (PRD-D.12, D.10) | Fault injection mid-run; approval invalidation test | Run log; audit entries | Phase 2 → phase 3 | VERIFIED (`test_voided_approval_blocks_job_step`, `test_revoked_grant_blocks_queued_job_step`; API 47 passed) |
 | V14-4 | Setup access removed at handover (application, cloud, SSH) | Handover checklist + post-handover access test | Checklist record | R2 (PRD-D.8) | NOT_APPLICABLE R1 |
 | V14-5 | Memory: source restrictions, correction propagation, archive ownership, offboarding, export, erasure with disposable fixtures; summaries/indexes/caches follow deletion; backup/provider retention disclosed | R1: search/inspect + provenance fields + credential-exclusion scan (PRD-F.2, F.4); R3/R4: full operations and erasure | Test output; scan | Phase 1–2 (R1 subset) → R3/R4 | PARTIAL for R1 (subset) |
@@ -86,6 +86,22 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 | V18-4 | `docs/plans/final_implementation_checklist.md` created from template with remaining defects, env-var names and sources, human-only actions, production prerequisites | File exists and matches template | File | Phase 3 | VERIFIED (`docs/plans/final_implementation_checklist.md`) |
 | V18-5 | Owner decision `APPROVE` / `REQUEST_CHANGES` / `DO_NOT_PROCEED` recorded (not inferred) (R1-ACC-15) | Owner response captured in handoff | Handoff record | Phase 3 closure | VERIFIED (owner APPROVE 2026-09-11; `delivery/owner-handoff.md`) |
 | V18-6 | Versioned release artifacts and permitted owner/CI deployment procedure prepared; implemented/verified/ready/deployed/owner-approved states distinguished | Release notes + procedure review | Artifacts + procedure | Phase 3 | PARTIAL (handoff + checklist; not deployed) |
+
+## 6b. Release 2 residuals (Phase 4)
+
+| ID | Check | Evidence | State |
+|---|---|---|---|
+| R2-SEATS | Three + guest templates; OQ-G2 gates invite | `test_seats.py`, `test_phase4.py::test_invite_without_oq_g2_is_forbidden` | VERIFIED |
+| R2-WIZARD | GitHub truthful; others planned | `GET /connections`, blueprint-2 Integrations overlay | VERIFIED (contract) |
+| R2-INTERSECT | Empty source perms refuse live write | `intersect_source_grants`; `POST /grants/intersect` | VERIFIED |
+| R2-B12 | Unknown provider deny; send needs approval | `test_connection_wizard_and_unknown_provider`, `test_send_needs_approval_and_intersection` | VERIFIED (dry-run) |
+| R2-P07 | GitHub checkpoint after list | `test_github_checkpoint_after_list` | VERIFIED |
+| R2-B23 | Guest create refused until OQ-G2 | `test_guest_refused_until_oq_g2` | VERIFIED |
+| R2-UI | People/Inbox not fixture-auth | `apps/web/src/api/papership.js` + empty InboxView | VERIFIED (unauthenticated empty) |
+| R2-WORKER | Queued job consumer + subscribe receipt | `services/worker/jobs.py`, `tests/test_jobs.py` | VERIFIED (unit) |
+| R2-USAGE | first-baseline `not_captured` if zero events | `GET/POST /usage/baseline` | VERIFIED |
+| R2-LIVE-OAUTH | Gmail/Slack live enablement | owner credentials missing | NOT_APPLICABLE until owner apps |
+| R2-PRICES | No prices in UI/docs | CA-10 still closed | VERIFIED (D-29 labels only) |
 
 ## 7. Phase-0 evidence index (produced so far)
 

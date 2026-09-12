@@ -37,6 +37,9 @@ FOUNDER_GRANTS = [
     "repo.branch",
     "repo.change",
     "repo.check",
+    "comms.read",
+    "comms.draft",
+    "comms.send",
 ]
 
 PROJECT_LEAD_GRANTS = [
@@ -49,6 +52,7 @@ PROJECT_LEAD_GRANTS = [
         "approval.billing",
         "approval.erasure",
         "approval.release",
+        "comms.send",
     }
 ]
 
@@ -59,12 +63,18 @@ OPERATOR_GRANTS = [
     "search.read",
     "notifications.read",
     "memory.read",
+    "comms.read",
+]
+
+GUEST_GRANTS = [
+    "ledger.read",
 ]
 
 SEAT_TEMPLATES: dict[str, list[str]] = {
     "founder": list(FOUNDER_GRANTS),
     "project_lead": list(PROJECT_LEAD_GRANTS),
     "operator": list(OPERATOR_GRANTS),
+    "guest": list(GUEST_GRANTS),
 }
 
 SURFACE_GRANTS = {
@@ -318,6 +328,50 @@ class Store:
               content TEXT NOT NULL,
               created_at TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS settings (
+              key TEXT PRIMARY KEY,
+              value TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS teams (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              name TEXT NOT NULL,
+              department TEXT NOT NULL,
+              created_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS connections (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              provider TEXT NOT NULL UNIQUE,
+              status TEXT NOT NULL,
+              destination_class TEXT NOT NULL,
+              enabled INTEGER NOT NULL DEFAULT 0,
+              last_sync TEXT,
+              lineage TEXT,
+              created_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS guests (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              principal_id TEXT NOT NULL,
+              scope TEXT NOT NULL,
+              status TEXT NOT NULL,
+              created_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS inbox_threads (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              subject TEXT NOT NULL,
+              preview TEXT NOT NULL,
+              channel TEXT NOT NULL,
+              created_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS usage_baselines (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              captured_at TEXT NOT NULL,
+              payload TEXT NOT NULL
+            );
             """
         )
         self.flush()
@@ -330,6 +384,7 @@ class Store:
     def seed_founder(self) -> None:
         if self.conn.execute("SELECT 1 FROM principals WHERE id='principal-founder'").fetchone():
             self._seed_registry()
+            self._seed_phase4(tenant_id="tenant-founder")
             self.flush()
             return
         now = _now()
@@ -371,6 +426,7 @@ class Store:
             ("mem-1", "tenant-founder", "project", "approved", "seed", now),
         )
         self._seed_registry()
+        self._seed_phase4(tenant_id="tenant-founder")
         self.append_audit("principal-founder", "seed", "organisation", "org-founder")
         self.flush()
 
@@ -388,6 +444,8 @@ class Store:
         spec = SEAT_TEMPLATES.get(template)
         if spec is None or template == "founder":
             raise StoreError("unknown or forbidden seat template", 400)
+        if template != "founder" and not self.oq_g2_recorded():
+            raise StoreError("oq_g2_recorded is required before a non-founder seat", 403)
         actor_grants = self.grant_classes(actor_id)
         granted = [cls for cls in spec if cls in actor_grants]
         if not granted:
@@ -980,6 +1038,247 @@ class Store:
             return "ok"
         except sqlite3.Error:
             return "error"
+
+    def get_setting(self, key: str, default: str = "") -> str:
+        row = self.conn.execute("SELECT value FROM settings WHERE key=?", (key,)).fetchone()
+        return str(row["value"]) if row else default
+
+    def set_setting(self, key: str, value: str) -> dict[str, str]:
+        self.conn.execute(
+            "INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+            (key, value),
+        )
+        self.flush()
+        return {"key": key, "value": value}
+
+    def oq_g2_recorded(self) -> bool:
+        return self.get_setting("oq_g2_recorded", "0") in {"1", "true", "yes"}
+
+    def record_oq_g2(self, actor_id: str) -> dict[str, Any]:
+        self.set_setting("oq_g2_recorded", "1")
+        self.append_audit(actor_id, "settings.oq_g2", "setting", "oq_g2_recorded")
+        return {"oq_g2_recorded": True}
+
+    def measurement_notice(self) -> dict[str, Any]:
+        return {
+            "title": "What Papership measures",
+            "owner": "Papership does not own your content. You do.",
+            "items": [
+                "First-party, in-tenant usage events only.",
+                "Identifier and enum fields: event name, ids, seat template, outcome code, token counts, tool-class counts, duration, cost band.",
+                "No prompt text, names, emails, file contents, repository diffs, or secrets.",
+                "No third-party analytics SDK, pixel, or replay.",
+                "Events stay in the tenant store. A second seat is blocked until this notice is accepted (OQ-G2).",
+            ],
+            "oq_g2_recorded": self.oq_g2_recorded(),
+        }
+
+    def list_members(self, principal_id: str) -> list[dict[str, Any]]:
+        if not self.has_grant(principal_id, "org.admin") and not self.has_grant(principal_id, "ledger.read"):
+            raise StoreError("denied: people", 403)
+        p = self.principal(principal_id)
+        rows = self.conn.execute(
+            """SELECT principals.id, principals.kind, seats.template
+               FROM principals
+               LEFT JOIN seats ON seats.principal_id = principals.id
+               WHERE principals.tenant_id=? AND principals.kind='human'
+               ORDER BY principals.id""",
+            (p["tenant_id"],),
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    def list_teams(self, principal_id: str) -> list[dict[str, Any]]:
+        p = self.principal(principal_id)
+        rows = self.conn.execute(
+            "SELECT * FROM teams WHERE tenant_id=? ORDER BY name", (p["tenant_id"],)
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    def create_team(self, principal_id: str, name: str, department: str = "") -> dict[str, Any]:
+        if not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: org.admin", 403)
+        if not (name or "").strip():
+            raise StoreError("team name is required", 400)
+        p = self.principal(principal_id)
+        tid = _id("team")
+        self.conn.execute(
+            "INSERT INTO teams (id, tenant_id, name, department, created_at) VALUES (?, ?, ?, ?, ?)",
+            (tid, p["tenant_id"], name, department or name, _now()),
+        )
+        self.append_audit(principal_id, "team.create", "team", tid)
+        self.flush()
+        return self.row_to_dict(self.conn.execute("SELECT * FROM teams WHERE id=?", (tid,)).fetchone())  # type: ignore[return-value]
+
+    def organisation(self, principal_id: str) -> dict[str, Any]:
+        p = self.principal(principal_id)
+        row = self.conn.execute(
+            "SELECT * FROM organisations WHERE tenant_id=?", (p["tenant_id"],)
+        ).fetchone()
+        if not row:
+            raise StoreError("organisation not found", 404)
+        return self.row_to_dict(row)  # type: ignore[return-value]
+
+    def list_connections(self, principal_id: str) -> list[dict[str, Any]]:
+        from app.connectors import list_connectors
+
+        p = self.principal(principal_id)
+        stored = {
+            r["provider"]: self.row_to_dict(r)
+            for r in self.conn.execute(
+                "SELECT * FROM connections WHERE tenant_id=?", (p["tenant_id"],)
+            ).fetchall()
+        }
+        out: list[dict[str, Any]] = []
+        for spec in list_connectors():
+            row = stored.get(spec["id"]) or {}
+            item = {**spec, **{k: row[k] for k in ("status", "enabled", "last_sync", "lineage") if row}}
+            if not row:
+                item["enabled"] = False
+            out.append(item)
+        return out
+
+    def connect_provider(self, principal_id: str, provider: str) -> dict[str, Any]:
+        from app.connectors import get_connector
+
+        spec = get_connector(provider)
+        if spec is None:
+            raise StoreError("unknown provider", 403)
+        if not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: org.admin", 403)
+        p = self.principal(principal_id)
+        now = _now()
+        status = "configured" if spec["id"] == "github" else "planned"
+        enabled = 1 if spec["id"] == "github" else 0
+        existing = self.conn.execute(
+            "SELECT * FROM connections WHERE tenant_id=? AND provider=?",
+            (p["tenant_id"], spec["id"]),
+        ).fetchone()
+        if existing:
+            self.conn.execute(
+                "UPDATE connections SET status=?, enabled=?, last_sync=? WHERE id=?",
+                (status, enabled, now if spec["id"] == "github" else existing["last_sync"], existing["id"]),
+            )
+            cid = existing["id"]
+        else:
+            cid = _id("conn")
+            self.conn.execute(
+                """INSERT INTO connections
+                   (id, tenant_id, provider, status, destination_class, enabled, last_sync, lineage, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (cid, p["tenant_id"], spec["id"], status, spec["destination_class"], enabled, now if spec["id"] == "github" else None, "", now),
+            )
+        self.append_audit(principal_id, "connection.connect", "connection", spec["id"])
+        self.flush()
+        return {"id": cid, "provider": spec["id"], "status": status, "enabled": bool(enabled), "destination_class": spec["destination_class"]}
+
+    def record_sync_checkpoint(
+        self, principal_id: str, provider: str, lineage: str, label: str = "incremental"
+    ) -> dict[str, Any]:
+        if provider != "github":
+            raise StoreError("sync checkpoints are GitHub-only until another source is enabled", 403)
+        p = self.principal(principal_id)
+        now = _now()
+        row = self.conn.execute(
+            "SELECT * FROM connections WHERE tenant_id=? AND provider=?",
+            (p["tenant_id"], provider),
+        ).fetchone()
+        if not row:
+            self.connect_provider(principal_id, provider)
+            row = self.conn.execute(
+                "SELECT * FROM connections WHERE tenant_id=? AND provider=?",
+                (p["tenant_id"], provider),
+            ).fetchone()
+        self.conn.execute(
+            "UPDATE connections SET last_sync=?, lineage=? WHERE id=?",
+            (now, f"{label}:{lineage}", row["id"]),
+        )
+        self.flush()
+        return {"provider": provider, "last_sync": now, "lineage": f"{label}:{lineage}", "label": label}
+
+    def create_guest(self, actor_id: str, tenant_id: str, scope: str) -> dict[str, Any]:
+        if "guest" not in SEAT_TEMPLATES:
+            raise StoreError("guest template missing", 403)
+        if not self.oq_g2_recorded():
+            raise StoreError("guest create refused until oq_g2_recorded", 403)
+        invited = self.create_invite(actor_id=actor_id, tenant_id=tenant_id, template="guest", label=scope)
+        gid = _id("guest")
+        self.conn.execute(
+            "INSERT INTO guests (id, tenant_id, principal_id, scope, status, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            (gid, tenant_id, invited["principal_id"], scope or "assigned", "active", _now()),
+        )
+        self.flush()
+        return {**invited, "guest_id": gid, "scope": scope or "assigned", "deny_by_default": True}
+
+    def list_inbox(self, principal_id: str) -> list[dict[str, Any]]:
+        p = self.principal(principal_id)
+        rows = self.conn.execute(
+            "SELECT * FROM inbox_threads WHERE tenant_id=? ORDER BY created_at DESC",
+            (p["tenant_id"],),
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    def capture_usage_baseline(self, principal_id: str) -> dict[str, Any]:
+        if not self.has_grant(principal_id, "usage.read") and not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: usage", 403)
+        p = self.principal(principal_id)
+        count = self.usage_count()
+        payload = {
+            "label": "first-baseline",
+            "event_count": count,
+            "task_completion": "not_captured" if count == 0 else "recorded",
+            "correctness": "not_captured",
+            "recovery": "not_captured",
+            "operator_intervention": "not_captured",
+            "context_switching": "not_captured",
+            "cost_per_completed_outcome": "not_captured",
+            "reason_if_missing": "no events yet" if count == 0 else "",
+        }
+        bid = _id("base")
+        self.conn.execute(
+            "INSERT INTO usage_baselines (id, tenant_id, captured_at, payload) VALUES (?, ?, ?, ?)",
+            (bid, p["tenant_id"], _now(), json.dumps(payload)),
+        )
+        self.flush()
+        return {"id": bid, **payload}
+
+    def latest_usage_baseline(self, principal_id: str) -> dict[str, Any] | None:
+        p = self.principal(principal_id)
+        row = self.conn.execute(
+            "SELECT * FROM usage_baselines WHERE tenant_id=? ORDER BY captured_at DESC LIMIT 1",
+            (p["tenant_id"],),
+        ).fetchone()
+        if not row:
+            return None
+        data = self.row_to_dict(row)
+        data["payload"] = json.loads(data["payload"])
+        return data  # type: ignore[return-value]
+
+    def list_queued_jobs(self, limit: int = 8) -> list[dict[str, Any]]:
+        rows = self.conn.execute(
+            """SELECT jobs.*, runs.id AS run_id FROM jobs
+               LEFT JOIN runs ON runs.job_id = jobs.id
+               WHERE jobs.status='queued' ORDER BY jobs.created_at LIMIT ?""",
+            (limit,),
+        ).fetchall()
+        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+
+    def claim_job(self, job_id: str) -> None:
+        self.start_job(job_id)
+
+    def _seed_phase4(self, tenant_id: str) -> None:
+        now = _now()
+        if not self.conn.execute("SELECT 1 FROM teams WHERE tenant_id=?", (tenant_id,)).fetchone():
+            self.conn.execute(
+                "INSERT INTO teams (id, tenant_id, name, department, created_at) VALUES (?, ?, ?, ?, ?)",
+                ("team-platform", tenant_id, "Platform", "Platform", now),
+            )
+        if not self.conn.execute("SELECT 1 FROM connections WHERE provider='github'").fetchone():
+            self.conn.execute(
+                """INSERT INTO connections
+                   (id, tenant_id, provider, status, destination_class, enabled, last_sync, lineage, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                ("conn-github", tenant_id, "github", "configured", "source_control", 1, None, "", now),
+            )
 
 
 def effective_grants(sponsor: set[str], toolset: set[str], mode: set[str]) -> set[str]:

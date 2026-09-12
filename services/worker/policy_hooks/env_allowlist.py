@@ -8,6 +8,7 @@ from dataclasses import dataclass
 WORKER_ENV_ALLOWLIST = frozenset(
     {
         "ENGINE_API_BASE_URL",
+        "ENGINE_STORE_PATH",
         "ENGINE_WORKER_CONFIG",
         "HERMES_API_BASE_URL",
         "HERMES_API_SERVER_KEY",

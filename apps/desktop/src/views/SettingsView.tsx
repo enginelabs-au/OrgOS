@@ -29,10 +29,11 @@ export function SettingsView({
       />
       {tab === "data" && (
         <div>
-          <h3 style={{ color: T.t1, fontSize: 16 }}>Data disclosure</h3>
+          <h3 style={{ color: T.t1, fontSize: 16 }}>What Papership measures</h3>
           <p style={{ color: T.t2, fontSize: 13, lineHeight: 1.5 }}>
-            Usage events store only these identifier and enum fields. Content, names, emails, and secrets are not
-            included.
+            Papership does not own your content. Usage events store only these identifier and enum fields.
+            Content, names, emails, and secrets are not included. A second seat stays blocked until this notice
+            is accepted.
           </p>
           <ul style={{ color: T.t1, fontSize: 13, columns: 2 }}>
             {USAGE_EVENT_FIELDS.map((field) => (

@@ -12,10 +12,10 @@
 - Treat prompts and role identities as guidance, not production authorization; deterministic policy and external access controls govern sensitive actions.
 - Never store passwords, tokens, private keys, or secret values in agent markdown, plans, memories, logs, or templates.
 - Capability registry status discipline (D-02 item 5): a `docs/capabilities.md` row moves from `planned` only when its evidence column cites a verified artifact; the lead, not an implementing role, changes status.
-- Product identity (D-20): Papership is the product; Engine Labs is the company; `www.enginelabs.com.au` is a separate site and must not be changed from this repo. D-10 is historical (former display name OrgOS). Live slugs `orgos` / `OrgOS` remain on GitHub, Vercel, and `~/.config/orgos/` until the owner renames those providers.
+- Product identity (D-20, D-26): Papership is the product (in-repo slug `papership`, UI **Papership**); Engine Labs is the company; `www.enginelabs.com.au` is a separate site and must not be changed from this repo. D-10 is historical (former display name OrgOS). Live provider slugs `orgos` / `OrgOS` remain on GitHub, Vercel, and `~/.config/orgos/` until the owner renames those providers.
 - Product UI (D-21): live web chrome is `docs/ui-blueprint/blueprint-2` exactly (cream canvas, purple field, light/dark/dimmed, docked Hey Engine). Prism-head mark is app/tab icon only — never inside the product UI. D-15 is historical for the prior hybrid/overlay shell. Fixtures are Papership/blueprint only (no invented revenue or prices).
 - Agent tool boundary (AUTH-25, D-03, D-S1, D-17): Owner authorized the documented Hermes catalog. Unknown tools denied. Write = receipt; external = Papership approval. Private/metadata egress denied. Worker may hold `HERMES_API_SERVER_KEY` (transport only; Hermes secret-scoped key, not yaml/EnvironmentFile copy). AUTH-25 startup verified 2026-09-11. Hermes HTTP API listens on VPS `127.0.0.1:8642`. Worker `api_server` is proven by capabilities 401/`run_submission`, never HEAD 405. Live `accepted` is allowed only for catalogued **read** `tool=` after intercept (Security live-tools CONDITIONAL 2026-09-11). Live `start_run` without `tool=` is refused. D-16 “keep disabled” is superseded for catalog enablement.
-- R1 V18-5 **APPROVE** recorded 2026-09-11 (`delivery/owner-handoff.md`). Live PR https://github.com/enginelabs-au/OrgOS/pull/1. Phase 4 plan is active.
+- R1 V18-5 **APPROVE** recorded 2026-09-11 (`delivery/owner-handoff.md`). Live PR https://github.com/enginelabs-au/OrgOS/pull/1. Phase 4 G5 PASS 2026-09-12. Do not generate Phase 5 until asked.
 - Usage measurement (Growth GM-1…12): first-party, in-tenant, identifier/enum payloads only; every threshold without data is labelled `first-baseline`; no prices in any UI or document before the R4 owner decisions (CA-10).
 
 ## Memory role
@@ -72,7 +72,9 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Phase 3 plan (complete; G3 PASS-with-residuals): `docs/plans/phase_3_release_verification_plan.md`
 - Owner handoff (V18-5 APPROVE): `docs/workstreams/20260910-engine-labs-company-os/delivery/owner-handoff.md`
 - R1 checklist: `docs/plans/final_implementation_checklist.md`
-- Phase 4 plan (implementing; T4-0/T4-1 done, T4-2 next): `docs/plans/phase_4_collaboration_connections_plan.md`
+- Phase 4 plan (complete; G5 PASS): `docs/plans/phase_4_collaboration_connections_plan.md`
+- Phase 4 closeout decisions (D-22…D-30): `docs/decisions/2026-09-12-phase-4-closeout.md`
+- Phase 4 owner actions: `docs/handover/phase-4-owner-actions.md`
 - D-19 (R2 planning from G3 CONDITIONAL; Phase 3 later closed): `docs/decisions/2026-09-11-phase-4-planning-from-g3.md`
 
 ## Existing workflow references

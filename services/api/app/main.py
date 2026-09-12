@@ -10,12 +10,15 @@ import time
 from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from app.auth import AuthContext, auth_dep, require_reauth
 from app.config import load_settings
+from app.connectors import get_connector, list_connectors
 from app.github_app import GithubError, installation_permissions, list_pulls, open_pull, probe_github
 from app.github_grants import intersect_repo_grants, may_open_pull
+from app.source_grants import intersect_source_grants, may_live_write
 from app.hermes_health import probe_hermes
 from app.loop import LOOP_STAGES
 from app.grants import effective_grants
@@ -38,6 +41,19 @@ def create_app(store_path: str | None = None) -> FastAPI:
     app = FastAPI(title="Papership API", version="0.1.0")
     app.state.settings = settings
     app.state.store = store
+    origins = list(settings.cors_origins) or [
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+        "http://127.0.0.1:1420",
+        "http://localhost:1420",
+    ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     app.add_middleware(TraceMiddleware, logger=logger)
 
     @app.exception_handler(StoreError)
@@ -94,6 +110,117 @@ def create_app(store_path: str | None = None) -> FastAPI:
             template=str(body.get("template") or ""),
             label=str(body.get("label") or ""),
         )
+
+    @app.get("/people")
+    def list_people(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_members(ctx.principal_id), "state": "ready"}
+
+    @app.get("/organisation")
+    def get_organisation(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.organisation(ctx.principal_id)
+
+    @app.get("/teams")
+    def list_teams(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_teams(ctx.principal_id)}
+
+    @app.post("/teams")
+    def create_team(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.create_team(ctx.principal_id, str(body.get("name") or ""), str(body.get("department") or ""))
+
+    @app.get("/inbox")
+    def list_inbox(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        items = store.list_inbox(ctx.principal_id)
+        return {"items": items, "state": "ready" if items else "empty"}
+
+    @app.get("/settings/measurement")
+    def measurement_notice(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.measurement_notice()
+
+    @app.post("/settings/oq-g2")
+    def record_oq_g2(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return store.record_oq_g2(ctx.principal_id)
+
+    @app.get("/connections")
+    def connections(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_connections(ctx.principal_id), "catalog": list_connectors()}
+
+    @app.get("/connections/{provider}")
+    def connection_detail(provider: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        spec = get_connector(provider)
+        if spec is None:
+            raise HTTPException(status_code=403, detail="unknown provider")
+        items = {row["id"]: row for row in store.list_connections(ctx.principal_id)}
+        return items.get(provider, spec)
+
+    @app.post("/connections/{provider}/connect")
+    def connect_provider(provider: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.connect_provider(ctx.principal_id, provider)
+
+    @app.post("/connections/{provider}/send")
+    def send_via_provider(provider: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        spec = get_connector(provider)
+        if spec is None:
+            raise HTTPException(status_code=403, detail="unknown provider")
+        if spec["actions"].get("send") != "approval_then_receipt":
+            raise HTTPException(status_code=403, detail="send is not enabled for this provider")
+        grants = store.grant_classes(ctx.principal_id)
+        perms = body.get("source_perms") or {}
+        if not may_live_write(provider, grants, perms):
+            raise HTTPException(status_code=403, detail="empty source perms or missing comms.send intersection")
+        if not body.get("approval_id"):
+            raise HTTPException(status_code=403, detail="send needs approval then receipt")
+        store.require_live_approval(str(body.get("target_id") or provider), str(body.get("target_version") or "1"))
+        return {"status": "receipt", "provider": provider, "dry_run": True}
+
+    @app.post("/connections/{provider}/sync")
+    def sync_provider(provider: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.record_sync_checkpoint(
+            ctx.principal_id,
+            provider,
+            lineage=str(body.get("lineage") or "list"),
+            label=str(body.get("label") or "incremental"),
+        )
+
+    @app.post("/grants/intersect")
+    def intersect_grants(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        grants = store.grant_classes(ctx.principal_id)
+        provider = str(body.get("provider") or "github")
+        source_perms = body.get("source_perms") or {}
+        effective = sorted(intersect_source_grants(provider, grants, source_perms))
+        return {
+            "provider": provider,
+            "papership": sorted(g for g in grants if g.startswith(("repo.", "comms."))),
+            "source": source_perms,
+            "effective": effective,
+            "live_write": may_live_write(provider, grants, source_perms),
+        }
+
+    @app.post("/guests")
+    def create_guest(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return store.create_guest(ctx.principal_id, ctx.tenant_id, str(body.get("scope") or "assigned"))
+
+    @app.get("/jobs/queued")
+    def queued_jobs(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "run.start") and not store.has_grant(
+            ctx.principal_id, "org.admin"
+        ):
+            raise HTTPException(status_code=403, detail="denied")
+        return {"items": store.list_queued_jobs()}
+
+    @app.post("/usage/baseline")
+    def post_usage_baseline(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.capture_usage_baseline(ctx.principal_id)
+
+    @app.get("/usage/baseline")
+    def get_usage_baseline(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        row = store.latest_usage_baseline(ctx.principal_id)
+        if row is None:
+            return {"label": "first-baseline", "event_count": store.usage_count(), "state": "not_captured"}
+        return row
 
     @app.post("/grants")
     def create_grant(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
@@ -319,17 +446,24 @@ def create_app(store_path: str | None = None) -> FastAPI:
 
     @app.get("/github/pulls")
     def github_list_pulls(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
-        return list_pulls(
+        result = list_pulls(
             settings.github_app_id,
             settings.github_installation_id,
             settings.github_private_key_path,
             owner=settings.github_owner,
             repo=settings.github_repo,
         )
+        checkpoint = store.record_sync_checkpoint(
+            ctx.principal_id,
+            "github",
+            lineage=f"list:{result.get('status', 'unknown')}",
+            label="import",
+        )
+        return {**result, "checkpoint": checkpoint}
 
     @app.get("/github/grants")
     def github_grant_intersection(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
-        orgos = {
+        papership = {
             row["grant_class"]
             for row in store.conn.execute(
                 "SELECT grant_class FROM grants WHERE principal_id=?",
@@ -341,9 +475,11 @@ def create_app(store_path: str | None = None) -> FastAPI:
             settings.github_installation_id,
             settings.github_private_key_path,
         )
-        effective = sorted(intersect_repo_grants(orgos, perms))
+        effective = sorted(intersect_repo_grants(papership, perms))
+        repo_grants = sorted(g for g in papership if g.startswith("repo."))
         return {
-            "orgos": sorted(g for g in orgos if g.startswith("repo.")),
+            "papership": repo_grants,
+            "orgos": repo_grants,
             "installation": perms,
             "effective": effective,
         }
@@ -420,7 +556,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
                 and (settings.github_private_key_path or "").strip()
             )
             if configured:
-                orgos = {
+                papership = {
                     row["grant_class"]
                     for row in store.conn.execute(
                         "SELECT grant_class FROM grants WHERE principal_id=?",
@@ -437,7 +573,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
                         status_code=403,
                         detail="installation permissions are empty; refuse live open",
                     )
-                if not may_open_pull(orgos, perms):
+                if not may_open_pull(papership, perms):
                     raise HTTPException(
                         status_code=403,
                         detail="repo.change is not in the installation intersection",

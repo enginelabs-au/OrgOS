@@ -3,14 +3,14 @@ schema_version: 1
 task_id: 20260910-engine-labs-company-os
 title: Engine Labs — company operating system, first release lifecycle
 source_request: docs/Company_Agent_System_Blueprint.md (complete product intake) via /launch-pipeline
-status: phase_1_g1_conditional
+status: phase_4_g5_pass
 risk_tier: tier_3
 created_at: 2026-09-10T15:35:00Z
-updated_at: 2026-09-11T04:30:00Z
-revision: 4
+updated_at: 2026-09-12T05:30:00Z
+revision: 5
 owner: user-operator (founder)
 active_role: orchestrating-lead
-current_gate: G4 owner APPROVE (2026-09-11); Phase 4 T4-1
+current_gate: G5 PASS (2026-09-12); do not generate Phase 5 until owner asks
 ---
 
 # Workstream Manifest: Engine Labs — company operating system
@@ -26,8 +26,8 @@ Requested outcome of this workstream: an owner-approved first release in which t
 - Intake: `docs/Company_Agent_System_Blueprint.md` (18 blueprint phases: planning 01–06, implementation 07–12, verification 13–18). Location accepted as-is.
 - Launch protocol: `AGENTS.md` → `.cursor/AGENTS.md` → `.cursor/instructions/LAUCH.md` via `/launch-pipeline`. Preflight `MATERIALIZATION_REQUIRED` → bootstrap exit 0 on 2026-09-10.
 - UI reference: [enginelabs-au/Papership](https://github.com/enginelabs-au/OrgOS) at commit `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`, active route `/cc-org-dash`. Inspected read-only on 2026-09-10 (see `.cursor/STATE.md` Active Items).
-- Repository state: fresh repository (`master`, zero commits); contains the `.cursor/` control plane, root governance files, and `docs/` only. No application code yet.
-- Prior decisions: `docs/decisions/2026-08-18-agent-role-pipeline.md`.
+- Repository state: live Papership monorepo. Phases 0–3 closed. Phase 4 G5 PASS 2026-09-12.
+- Prior decisions: `docs/decisions/2026-08-18-agent-role-pipeline.md`; Phase 4 closeout `docs/decisions/2026-09-12-phase-4-closeout.md`.
 
 ## 3. Scope and non-goals
 

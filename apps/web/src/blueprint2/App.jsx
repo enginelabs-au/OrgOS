@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { applyPapershipOverlay, loadPapershipOverlay } from "../api/papership";
 import { PRODUCT } from "../brand";
 import "./blueprint2.css";
 import { Ico, PATHS, SearchIco } from "./svg";
@@ -137,6 +138,17 @@ export default function Blueprint2App() {
   const [setPane, setSetPane] = useState("Permissions");
   const [streaming, setStreaming] = useState(true);
   const [grants, setGrants] = useState({ branch: true, change: true, check: true, release: false });
+  const [overlay, setOverlay] = useState({ source: "loading", people: [], teams: [], threads: [], connections: [], measurement: null });
+
+  useEffect(() => {
+    let cancelled = false;
+    loadPapershipOverlay().then((next) => {
+      if (!cancelled) setOverlay(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [authed]);
 
   const cycleTheme = useCallback(() => {
     setTheme((t) => {
@@ -336,8 +348,8 @@ export default function Blueprint2App() {
       "AI & Agents": { desc: "Ceilings apply to every agent run.", rows: [{ k: "Budget band", v: "Medium" }, { k: "Allowed modes", v: "6 of 7" }] },
       Notifications: { desc: "What reaches you, and how loudly.", rows: [{ k: "Critical incidents", v: "On" }, { k: "Approvals", v: "On · immediate" }] },
       Security: { desc: "Sessions and strong factors.", rows: [{ k: "Active sessions", v: "2" }, { k: "Two-factor", v: "Authenticator app" }] },
-      Team: { desc: "Members and invitations open in Release 2.", rows: [{ k: "Members", v: "1" }] },
-      "Data & retention": { desc: "Your content is yours. Engine Labs does not own it.", rows: [{ k: "Conversations", v: "365 days" }, { k: "Usage disclosure", v: "Anonymous first-party events only" }] },
+      Team: { desc: "Members and invitations. A second seat needs the measurement notice.", rows: [{ k: "Members", v: "1" }] },
+      "Data & retention": { desc: "Your content is yours. Papership does not own it.", rows: [{ k: "Conversations", v: "365 days" }, { k: "Usage disclosure", v: "First-party identifier and enum events only" }] },
       Personalisation: { desc: "Release 3.", rows: [{ k: "Adaptive views", v: "Off" }] },
       Docs: { desc: "Product documentation opens in a reader.", rows: [{ k: "Getting started", v: "Open ↗" }] },
       Plan: { desc: "Appearance and plan sit together in this pane.", rows: [{ k: "Plan", v: "Founder desktop" }] },
@@ -420,8 +432,8 @@ export default function Blueprint2App() {
       { label: "Actions", items: [{ label: "Approve — open a dry-run pull request", meta: "approval", dot: DOTS.warn, go: () => { setModal("approve"); setPalette(false); } }, { label: "Start a run scoped to CCO-245", meta: "run", dot: DOTS.run, go: () => { setHey(true); setPalette(false); } }] },
     ];
     void page; void cur;
-    return out;
-  }, [theme, tab, sub, setPane, grants, go, openSlide, routeTo]);
+    return applyPapershipOverlay(out, overlay, setModal);
+  }, [theme, tab, sub, setPane, grants, go, openSlide, routeTo, overlay]);
 
   const page = PAGES[tab] || PAGES.today;
   const cur = sub[tab] || DFLT[tab];
@@ -441,7 +453,9 @@ export default function Blueprint2App() {
 
   const subnav = page.subs.map((s) => {
     const on = s === cur;
-    return { label: s, go: setSubTab(tab, s), bg: on ? "var(--surface)" : "transparent", ink: on ? "var(--t1)" : "var(--t3)", fw: on ? "600" : "500", sh: on ? "0 1px 2px rgba(26,18,36,.08)" : "none", count: (page.counts || {})[s] || "", cbg: on ? "var(--blue-soft)" : "var(--line2)", cink: on ? "var(--blue)" : "var(--t3)" };
+    let count = (page.counts || {})[s] || "";
+    if (tab === "inbox" && s === "All") count = String((v.threads || []).length);
+    return { label: s, go: setSubTab(tab, s), bg: on ? "var(--surface)" : "transparent", ink: on ? "var(--t1)" : "var(--t3)", fw: on ? "600" : "500", sh: on ? "0 1px 2px rgba(26,18,36,.08)" : "none", count, cbg: on ? "var(--blue-soft)" : "var(--line2)", cink: on ? "var(--blue)" : "var(--t3)" };
   });
 
   const MODALS = {
@@ -449,8 +463,8 @@ export default function Blueprint2App() {
     reject: { title: "Reject this action?", body: "The run will stop at this step and wait for new instructions.", confirm: "Reject", cancel: "Back", btn: "var(--red)" },
     revoke: { title: "Revoke this connection?", body: "Papership will lose access to GitHub · Papership immediately.", confirm: "Revoke", cancel: "Back", btn: "var(--red)" },
     upload: { title: "Upload documents", body: "Documents are classified on intake and linked to work items.", confirm: "Choose files", cancel: "Cancel", btn: "var(--blue)" },
-    invite: { title: "Invite a person", body: "Invitations open in Release 2.", confirm: "Prepare seat", cancel: "Cancel", btn: "var(--blue)" },
-    wizard: { title: "Connect a provider", body: "Authorisation happens in your browser — Papership never embeds a provider sign-in.", confirm: "Continue to authorise ↗", cancel: "Cancel", btn: "var(--blue)" },
+    invite: { title: "Invite a person", body: "A second seat stays blocked until the measurement notice is accepted (OQ-G2). Mail is not sent.", confirm: "Prepare seat", cancel: "Cancel", btn: "var(--blue)" },
+    wizard: { title: "Connect a provider", body: "GitHub is configured. Gmail and Slack stay planned until owner credentials. Authorisation happens in your browser — Papership never embeds a provider sign-in.", confirm: "Continue to authorise ↗", cancel: "Cancel", btn: "var(--blue)" },
   };
   const md = MODALS[modal];
 
@@ -821,11 +835,11 @@ export default function Blueprint2App() {
               <div style={{ padding: "14px 17px" }}>
                 <div style={{ border: "1px solid var(--line)", borderRadius: 9, padding: 13, background: "var(--canvas)" }}>
                   <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 9 }}>Grant scopes</div>
-                  {["Read issues and pull requests", "Create a branch", "Propose an isolated change", "Run checks"].map((label) => (
-                    <label key={label} style={{ display: "flex", alignItems: "flex-start", gap: 9, padding: "6px 0", cursor: "pointer" }}>
-                      <input type="checkbox" defaultChecked style={{ accentColor: "var(--blue)", marginTop: 2 }} />
-                      <span style={{ fontSize: 12.5, fontWeight: 500 }}>{label}</span>
-                    </label>
+                  {(v.wizardProviders || []).map((row) => (
+                    <div key={row.id || row.name} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "7px 0", borderBottom: "1px solid var(--line2)" }}>
+                      <span style={{ fontSize: 12.5, fontWeight: 600 }}>{row.label || row.name}</span>
+                      <span style={{ fontSize: 11.5, color: "var(--t3)" }}>{row.status || "planned"}</span>
+                    </div>
                   ))}
                   <div style={{ marginTop: 10, padding: "9px 10px", borderRadius: 7, background: "var(--raised)", fontSize: 11.5, color: "var(--t2)" }}>Authorisation happens in your browser, on the provider’s own site. Papership never asks for your provider password or keys.</div>
                 </div>
