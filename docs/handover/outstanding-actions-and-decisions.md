@@ -44,7 +44,7 @@ Live receipt path `.orgos/loop/` and `GITHUB_APP_REPO` stay as-is until the owne
 
 ## 3. Agent-capable next work (not started this turn)
 
-Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks.
+Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks. Leftover OrgOS/cc-org → Papership sweep is **not started**; wait for owner go on `docs/handover/rename-audit-orgos-to-papership.md`.
 
 G7 closed. One execution phase plan remains after Phase 6: Phase 7 (R4 ecosystem/mobile / intake 12). Verification phases 13–18 re-run per release and are not extra build phases.
 

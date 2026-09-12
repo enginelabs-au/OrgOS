@@ -7,7 +7,7 @@
 ## Current Status
 
 - Phase 6 **planning** (D-33). Plan drafted. Do not implement T6-1…T6-8 until the owner asks.
-- Rename audit **NO-GO** for a one-pass OrgOS → Paperclip swap (competitor collision + provider lockstep). Await owner §1 answers.
+- Rename audit (Papership target): **NO-GO** for a one-pass wipe including GitHub/App/Vercel/history. **GO** for sequenced Pass A now if the owner says so; Passes B–E after the owner renames GitHub and syncs `GITHUB_APP_REPO`. File: `docs/handover/rename-audit-orgos-to-papership.md`.
 
 ## Project Phase
 
@@ -57,7 +57,7 @@
 - `docs/decisions/2026-09-12-papership-canonical-route.md`
 - `docs/decisions/2026-09-12-phase-6-planning-authorized.md`
 - `docs/handover/outstanding-actions-and-decisions.md`
-- `docs/handover/rename-audit-orgos-to-paperclip.md`
+- `docs/handover/rename-audit-orgos-to-papership.md`
 
 ## Open Blockers
 
@@ -81,12 +81,12 @@
 
 ## Next Actions
 
-1. Owner: answer rename audit §1 (Papership vs Paperclip; GitHub/Vercel/App first). File: `docs/handover/rename-audit-orgos-to-paperclip.md`.
+1. Owner: accept Papership rename audit §1, then say go for Pass A (or finish GitHub rename first for B–E). File: `docs/handover/rename-audit-orgos-to-papership.md`.
 2. Do not implement Phase 6 until asked.
 3. Do not generate Phase 7 until G9.
 4. Do not treat write/external Hermes tools as `accepted`.
-5. Do not start an OrgOS/cc-org string sweep until the owner gives go after the audit.
+5. Do not start the OrgOS/cc-org sweep until the owner gives go after this audit.
 
 ## Last Updated
 
-- 2026-09-12T07:15Z — Rename audit NO-GO for Paperclip one-pass. Phase 6 still draft.
+- 2026-09-12T07:25Z — Papership leftover-name audit: sequenced GO / one-pass NO-GO. Phase 6 still draft. No strings changed.
