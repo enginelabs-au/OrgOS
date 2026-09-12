@@ -17,4 +17,4 @@ Registry: four R2 rows `configured` with evidence. People/Inbox off fixtures. No
 
 Do **not** generate `docs/plans/phase_5_company_operations_plan.md` until the owner asks. Remaining execution phase plans after this closeout: **3** (Phase 5 R3, Phase 6 R4 commercial, Phase 7 R4 ecosystem/mobile).
 
-Owner residuals: `docs/handover/phase-4-owner-actions.md`.
+Follow-up 2026-09-12: owner asked (D-31). Phase 5 plan exists at `docs/plans/phase_5_company_operations_plan.md` (draft). Remaining execution phase plans after Phase 5: **2** (6, 7). Owner residuals: `docs/handover/outstanding-actions-and-decisions.md`.

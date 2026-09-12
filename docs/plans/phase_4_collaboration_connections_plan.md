@@ -124,7 +124,7 @@ Keep D-01 monorepo and D-04 adapter. New connector transports live in `services/
 
 **T4-10 Security (complete 2026-09-12)** — Owner accepted Phase 4 security pass (D-25). Destination class + intersection required. Write/external Hermes still gated. **Done (PASS with residuals).**
 
-**T4-11 PL G5 (complete 2026-09-12)** — Role artifacts, verification R2 rows, capabilities `configured` with evidence. Phase 5 not generated from this file. **Done.**
+**T4-11 PL G5 (complete 2026-09-12)** — Role artifacts, verification R2 rows, capabilities `configured` with evidence. Phase 5 plan later generated on request (D-31). **Done.**
 
 ## 13. Adaptive role and delegation map
 
@@ -209,7 +209,7 @@ Three seat templates plus guest exist in the store with tests; connection wizard
 
 ## 21. Deviations and follow-ups
 
-Entered from G3 CONDITIONAL via D-19, not G4 APPROVE. R1-ACC-6…9 remain PARTIAL. Phase 5 (company operations) is not generated from this file.
+Entered from G3 CONDITIONAL via D-19, not G4 APPROVE. R1-ACC-6…9 remain PARTIAL. Phase 5 plan generated 2026-09-12 after owner request (D-31): `docs/plans/phase_5_company_operations_plan.md`. That plan is draft-only until implementation is asked.
 
 ## 22. Next Plan Generation Prompt
 

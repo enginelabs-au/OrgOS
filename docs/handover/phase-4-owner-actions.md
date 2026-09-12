@@ -26,4 +26,4 @@ Agent-capable Phase 4 work is closed (G5, 2026-09-12). These items cannot be fin
 | Fire live write/external Hermes tools | requires a new Security PASS plus approval | no — do not treat D-25 as that licence |
 | Public build-log | D-30 says no until a later publish decision | no |
 
-Do not start Phase 5 until you ask for the next plan. Three execution phase plans remain after Phase 4: Phase 5 (R3 company operations), Phase 6 (R4 commercial delivery), Phase 7 (R4 ecosystem/mobile). Verification phases 13–18 re-run per release and are not extra build phases.
+Phase 5 **plan** exists (`docs/plans/phase_5_company_operations_plan.md`, D-31). Do not implement T5-0…T5-12 until asked. Canonical residual log: `docs/handover/outstanding-actions-and-decisions.md`. Two execution phase plans remain after Phase 5: Phase 6 (R4 commercial), Phase 7 (R4 ecosystem/mobile). Verification phases 13–18 re-run per release and are not extra build phases.

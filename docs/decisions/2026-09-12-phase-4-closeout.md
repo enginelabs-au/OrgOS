@@ -55,6 +55,6 @@ No public build-log until a later explicit publish decision. Record only.
 
 ## Consequences
 
-- Phase 4 implementation may finish T4-2…T4-11 and issue G5.
-- Do not generate `docs/plans/phase_5_company_operations_plan.md` until G5 exists.
+- Phase 4 implementation finished T4-2…T4-11 and issued G5 (2026-09-12).
+- Phase 5 plan later authorized by D-31: `docs/plans/phase_5_company_operations_plan.md`.
 - Do not fire live write/external Hermes tools from this decision.
