@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
   "installCommand": "npm ci --ignore-scripts",
-  "buildCommand": "npm run build -w @orgos/web",
+  "buildCommand": "npm run build -w @papership/web",
   "outputDirectory": "apps/web/dist",
   "rewrites": [
     {
