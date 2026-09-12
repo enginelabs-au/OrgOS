@@ -1,6 +1,6 @@
 # Provider-locked names — owner first
 
-The in-repo leftover sweep to **Papership** is in progress. These files still say OrgOS **on purpose** because they must match the live GitHub repo, GitHub App, and Vercel project. I cannot change them in advance without breaking `open_pull` and deploys.
+The in-repo leftover sweep to **Papership** (Pass A) is done. These files still say OrgOS **on purpose** because they must match the live GitHub repo, GitHub App, and Vercel project. I cannot change them in advance without breaking `open_pull` and deploys.
 
 ## Change these on the dashboards first
 
@@ -9,7 +9,7 @@ The in-repo leftover sweep to **Papership** is in progress. These files still sa
 3. Vercel project `orgos` (`prj_S74JOIky7KugVTrfu652NhJYOL8l`): relink Git if needed; rename the project if you want the dashboard slug gone. The `*.vercel.app` host may stay. Never touch `enginelabs-au-site`.
 4. Host env: set `GITHUB_APP_REPO=Papership`. Optional: copy `~/.config/orgos/` → `~/.config/papership/` and point `github-app.paths`.
 
-Then tell me. I will update the files below in one follow-up.
+Then open a new chat with `docs/handover/resume-after-provider-rename.md` (and the saved transcript). The next agent will update the files below in one follow-up.
 
 ## Files I will not change until you finish the list above
 

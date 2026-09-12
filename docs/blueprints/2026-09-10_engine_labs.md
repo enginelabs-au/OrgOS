@@ -17,7 +17,7 @@ This document is the evidence-based strategy assessment required by `.cursor/ins
 
 **Build**, with the first release deliberately narrowed to a founder-only development loop.
 
-Engine Labs is an operator-led company operating system: one desktop client, a cloud execution plane, a universal assistant backed by Hermes, a governed action ledger, and a capability registry spanning business and platform domains. The market evidence supports the underlying thesis: founders and small teams adopting agents are converging on the same unmet needs — attributable identity per agent, least-privilege grants, approval queues bound to specific actions, replayable audit trails, and one canonical context layer — and the products that exist today either give you primitives without a product (Paperclip, LangGraph, CrewAI), a product without company-level governance (Lindy), or an enterprise workforce platform priced and positioned for 50+ person ops teams (Relevance AI).
+Engine Labs is an operator-led company operating system: one desktop client, a cloud execution plane, a universal assistant backed by Hermes, a governed action ledger, and a capability registry spanning business and platform domains. The market evidence supports the underlying thesis: founders and small teams adopting agents are converging on the same unmet needs — attributable identity per agent, least-privilege grants, approval queues bound to specific actions, replayable audit trails, and one canonical context layer — and the products that exist today either give you primitives without a product, a product without company-level governance, or an enterprise workforce platform priced and positioned for 50+ person ops teams.
 
 The strategic wedge is not "another agent platform". It is a **company operating system that treats authority, provenance, and recovery as the product**, starts with the one workflow the founder does every day (shipping changes to the company's own software), and expands into connected business domains only after that loop is verified.
 
@@ -32,7 +32,7 @@ Performed on 2026-09-10 by the orchestrating lead (read-only):
 
 - Repository intake: full read of `docs/Company_Agent_System_Blueprint.md`; inspection of the UI reference [enginelabs-au/Papership](https://github.com/enginelabs-au/OrgOS) at commit `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` via GitHub MCP (`package.json`, `README.md`, `src/App.jsx`, `src/pages/`, `src/components/cc-org-dash/`, `src/lib/AuthContext.jsx`, `src/api/entities.js`).
 - Primary documentation: Hermes Agent API server ([docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/api-server)), DBOS Python programming guide ([docs](https://docs.dbos.dev/python/programming-guide)), Tauri 2 overview ([docs](https://v2.tauri.app/start/)).
-- Market scan: two web searches (agent company-OS platforms for founders; founder pain points around approvals, audit, and access sprawl) yielding six third-party comparison/analysis sources and the Paperclip repository README.
+- Market scan: two web searches (agent company-OS platforms for founders; founder pain points around approvals, audit, and access sprawl) yielding six third-party comparison/analysis sources.
 
 Not performed (recorded as limitations in §16): community/Reddit thread analysis, customer interviews, analytics queries, pricing benchmarks beyond the sources above, Hermes version-pinned capability inventory (phase 0 SE task), Figma inspection (no design file exists).
 
@@ -59,17 +59,9 @@ The intake's action lifecycle (retrieve authorised context → typed action → 
 
 ## 5. Competitive landscape and gap
 
-| Alternative | Type | Where it stops | Source |
-|---|---|---|---|
-| Paperclip (MIT, self-hosted) | Agent org-chart coordination layer: agents with roles, budgets, heartbeats, approvals, audit; "not a chatbot" | Config-first; developer audience; no business-domain records; security posture not independently documented | [GitHub](https://github.com/paperclipai/paperclip/), [tycoon.us](https://tycoon.us/alternatives/paperclip), [creeta](https://news.creeta.com/en/paperclip-ai-agent-orchestration-platform-2026/) |
-| Relevance AI | Hosted multi-agent workforce; RBAC, SSO, SOC 2, approvals, 1000+ integrations | Enterprise ops/GTM positioning; Team tier ~$349/mo; not a company OS with a work ledger | [zoeticai](https://www.zoeticai.com/guides/lindy-vs-relevance-ai-vs-dust/), creeta |
-| Lindy | No-code personal productivity agents (~$49.99/mo) | Individual workflows; SMB SaaS limits on governance | zoeticai, [agentshortlist](https://agentshortlist.com/compare/lindy-vs-paperclip) |
-| Dust | Team knowledge agents, per-seat | Knowledge-first, not execution/authority-first | zoeticai |
-| LangGraph / CrewAI / OpenAI Agents SDK | Frameworks | Governance, persistence, and approvals are "an exercise for the developer" | creeta |
-| n8n / Zapier Agents | Workflow automation with agent nodes | Automation graph, not a company model | creeta |
-| Do nothing | IDE agent + chat + CI + tickets | No sponsor/budget/receipt model; manual recovery; no retained knowledge | intake |
+Named-competitor comparison tables were removed by owner request (2026-09-12). The gap statement below is the remaining strategy claim.
 
-**Gap:** no product combines (a) a real company work ledger and organisation model, (b) per-run sponsorship, scoped grants, and action-bound approvals, (c) durable cloud execution the operator can disconnect from, (d) an OS-quality desktop experience, and (e) retention of decisions as governed company memory — while remaining usable by a founder who is not standing up frameworks. Paperclip is the closest in philosophy and is the alternative Engine Labs must be measurably better than on operator experience, recovery, and business-record integration.
+**Gap:** no product combines (a) a real company work ledger and organisation model, (b) per-run sponsorship, scoped grants, and action-bound approvals, (c) durable cloud execution the operator can disconnect from, (d) an OS-quality desktop experience, and (e) retention of decisions as governed company memory — while remaining usable by a founder who is not standing up frameworks. Engine Labs must be measurably better on operator experience, recovery, and business-record integration.
 
 ## 6. Unique value proposition and wedge
 
@@ -171,8 +163,8 @@ Human-only actions (accounts, credentials, provider terms, DNS, billing) are def
 
 Release 1 has one user and no external launch; this section defines the posture that later releases inherit, without recommending any publication or spend now.
 
-- **Where the audience gathers:** founder and indie-hacker communities, AI-agent builder communities, and open-source agent-orchestration repositories (Paperclip's 43k+ stars indicate the size of the interested developer audience). These communities reward transparent build logs, evidence, and honesty about failures; they punish undisclosed promotion.
-- **Trust-building assets (draft-only, later releases):** the verified development-loop evidence itself (a real change shipped through the governed loop with its receipts), the authority-model and recovery documentation, and honest comparisons against Paperclip and Relevance AI on the dimensions where Engine Labs differs.
+- **Where the audience gathers:** founder and indie-hacker communities, AI-agent builder communities, and open-source agent-orchestration repositories. These communities reward transparent build logs, evidence, and honesty about failures; they punish undisclosed promotion.
+- **Trust-building assets (draft-only, later releases):** the verified development-loop evidence itself (a real change shipped through the governed loop with its receipts), the authority-model and recovery documentation, and honest capability claims on the dimensions where Engine Labs differs.
 - **Launch sequence:** founder-only pilot → invited Project Lead/Operator seats → design partners in one sector → commercial activation with published rates. Each stage gated by verified workflows.
 - **Reddit concepts (when relevant; drafts, never posted without owner approval):** (1) problem-first — "how do you keep agents from repeating an external write after a timeout?"; (2) transparent build journey — what the receipt/idempotency model looked like after 20 interruption trials; (3) resource-value — a free checklist for scoping agent credentials per task.
 - **Ethics:** no astroturfing, deceptive scarcity, dark patterns, or rule evasion; all claims traceable to evidence.
@@ -198,7 +190,7 @@ Sources cited inline in §2, §3, §5, §10. Limitations:
 
 - No community thread analysis or interviews were performed; problem evidence is from published analyses and the intake author's own requirements.
 - No analytics baseline exists; all metrics in V4 are first measurements.
-- Pricing figures for competitors come from third-party comparison pages and may be stale.
+- Named-competitor comparison tables and third-party price points were withdrawn by owner request (2026-09-12). Do not restore them. Commercial figures stay unpublished until CA-10.
 - Hermes capabilities are taken from current documentation; the pinned-version inventory (tools, profiles, sessions, skills, memory, scheduling, delegation, browser, research, execution, documents, media) is a phase 0 engineering task and may narrow what is available.
 - DigitalOcean, self-hosted Supabase, and Gmail scope documentation were not re-fetched in this pass; they are verified in the phase 0/1 compatibility spike.
 

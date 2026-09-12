@@ -2,7 +2,7 @@
 
 Canonical log after Phase 5 G7 PASS (2026-09-12) and owner authorization to plan Phase 6. Do not store secret values here.
 
-Related: `docs/decisions/2026-09-12-phase-4-closeout.md` (D-22…D-30), `docs/decisions/2026-09-12-phase-5-planning-authorized.md` (D-31), `docs/decisions/2026-09-12-papership-canonical-route.md` (D-32), `docs/decisions/2026-09-12-phase-6-planning-authorized.md` (D-33), `docs/handover/phase-4-owner-actions.md`, `docs/plans/phase_6_commercial_delivery_plan.md`.
+Related: `docs/decisions/2026-09-12-phase-4-closeout.md` (D-22…D-30), `docs/decisions/2026-09-12-phase-5-planning-authorized.md` (D-31), `docs/decisions/2026-09-12-papership-canonical-route.md` (D-32), `docs/decisions/2026-09-12-phase-6-planning-authorized.md` (D-33), `docs/handover/phase-4-owner-actions.md`, `docs/plans/phase_6_commercial_delivery_plan.md`, `docs/handover/resume-after-provider-rename.md`.
 
 ## 1. Standing product decisions (still binding)
 
@@ -44,7 +44,7 @@ Live receipt path `.orgos/loop/` and `GITHUB_APP_REPO` stay as-is until the owne
 
 ## 3. Agent-capable next work (not started this turn)
 
-Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks. Leftover sweep Pass A is done. Owner must rename GitHub / App / Vercel before the locked-file follow-up (`docs/handover/rename-owner-first-providers.md`).
+Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks. Leftover sweep Pass A is done. Named-competitor tables withdrawn. Resume pack finalized: `docs/handover/resume-after-provider-rename.md`. Owner must rename GitHub / App / Vercel before the locked-file follow-up (`docs/handover/rename-owner-first-providers.md`).
 
 G7 closed. One execution phase plan remains after Phase 6: Phase 7 (R4 ecosystem/mobile / intake 12). Verification phases 13–18 re-run per release and are not extra build phases.
 

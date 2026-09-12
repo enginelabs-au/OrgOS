@@ -80,6 +80,7 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Phase 6 plan (draft; D-33): `docs/plans/phase_6_commercial_delivery_plan.md`
 - Phase 6 planning authorized (D-33): `docs/decisions/2026-09-12-phase-6-planning-authorized.md`
 - Provider-locked rename wait list: `docs/handover/rename-owner-first-providers.md`
+- Resume after provider rename: `docs/handover/resume-after-provider-rename.md`
 - Outstanding actions and decisions: `docs/handover/outstanding-actions-and-decisions.md`
 - Phase 4 owner actions: `docs/handover/phase-4-owner-actions.md`
 - D-19 (R2 planning from G3 CONDITIONAL; Phase 3 later closed): `docs/decisions/2026-09-11-phase-4-planning-from-g3.md`

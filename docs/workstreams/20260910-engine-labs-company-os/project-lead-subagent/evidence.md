@@ -53,7 +53,7 @@ Produced read-only by the role on 2026-09-10; materialized verbatim by the orche
 - Sanitized result and exit status: no matches; exit 1 (clean, expected).
 - Timestamp: 2026-09-10T18:18Z
 - Environment: as above.
-- Limitations: `docs/blueprints/2026-09-10_engine_labs.md` §5 quotes third-party competitor price points (Relevance AI, Lindy) as sourced market evidence; it is a strategy document, not a product/roadmap/decision artefact, and states no Engine Labs price. Not scanned by requirement; noted for transparency.
+- Limitations: named-competitor comparison tables and third-party price points were withdrawn from `docs/blueprints/2026-09-10_engine_labs.md` §5 (2026-09-12). The remaining strategy claim is the Papership-only gap statement. No Engine Labs price is stated.
 - Required follow-up: re-run on `docs/roadmap.md` after any §3–§4 edit (roadmap §8).
 
 ## EV-PL04 — Registry row count, buckets, status discipline
@@ -156,7 +156,7 @@ Produced read-only by the role on 2026-09-10; materialized verbatim by the orche
   - C-06 `docs/ui-blueprint.md` §E L414 rule text still proposes `#6b7a90` (≈4.6:1) with an appended SE correction; §H D-3 L512 carries the lead annotation to `#617083`; D-06 item 4 adopts `#617083`. Resolved by D-06 (`proposed`); UI/UX spec is annotated, not silently rewritten (ROLES §3.7 immutability). Owner: owner acknowledgement of D-3 as revised. Non-blocking.
   - C-07 Manifest §6 REQ-03 says "Security authority-model review pending" and REQ-04 "Security boundary review pending" — both completed at T0-9 (Security §5.1, D-03). Owner: lead (T0-13). Non-blocking.
   - C-08 `docs/product.md` §12 OQ-4 "Needed by: Before growth gate T0-10" has passed; Growth D-G3 and roadmap §7 moved it to "before any tier UI (R4)". PM-owned text is stale but superseded by roadmap. Owner: lead annotates in T0-13 (or PM revision when OQ-4 is answered). Low.
-  - C-09 Blueprint §14 cites Paperclip "43k+ stars"; Growth §5.1 re-verified 80,404 on 2026-09-10. Later fetch prevails; blueprint is dated strategy evidence. Low; no action required.
+  - C-09 Blueprint §14 audience-size citation withdrawn with named-competitor tables (2026-09-12). Low; no action required.
   - C-10 Plan §17 deferred human-action queue lacks explicit rows for H-2…H-7, OQ-G1/OQ-G2, D-01…D-06 ratification, OQ-5, D-3/D-11; all are present in roadmap §6 and manifest §13/§14. Security §11.2 required them in plan §17. Owner: lead (T0-13) — see handoff §13 delta. Non-blocking (queue complete in roadmap §6).
   - C-11 `docs/verification.md` §7 PL row "pending (T0-12)". Owner: lead (T0-13).
   - C-12 OQ-5 R1 view set consistent across product PRD-A.15, ui-blueprint AS-U1, roadmap §2.1, D-05 item 3, D-06 item 1, Growth A-G2. Phase-1 plan scope depends on the answer; default = proposal. No inconsistency.

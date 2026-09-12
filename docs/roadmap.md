@@ -197,7 +197,7 @@ Reporting: PL includes first-baseline records (min/median/max, `not_captured`) i
 
 - Positioning (draft, 57 words; publishable only after R1-ACC-3/6/7/8 are VERIFIED): "Engine Labs is the company operating system for founders who run work through agents they must be able to hold accountable: every run is sponsored, scoped, budgeted and receipted; approvals bind to the exact action and version; jobs survive a closed laptop; and every decision is retained as governed company memory — starting with shipping your own software."
 - Audience and communities (blueprint §14): founder/indie-hacker, AI-agent builder and open-source orchestration communities; community rules must be fetched and recorded before any draft is considered.
-- Trust assets: verified development-loop evidence; adopted authority-model and recovery documentation; honest comparisons vs Paperclip / Relevance AI on the handoff §5.1 dimensions, re-verified against primary sources with fetch dates.
+- Trust assets: verified development-loop evidence; adopted authority-model and recovery documentation; honest capability claims on the handoff §5.1 dimensions, re-verified against primary sources with fetch dates.
 - Sequence: founder pilot (R1) → invited seats (R2) → design partners in one sector (R3) → activation with published rates (R4, after CA-1…CA-10).
 - Content concepts (drafts): timeout-after-write problem post; interruption-trial build journey (after V3 results exist); credential-scoping checklist.
 - Open questions: OQ-G1 owner appetite for a public build-log; OQ-G2 member measurement notice/legal basis before R2 seats.

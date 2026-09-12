@@ -55,16 +55,16 @@ Produced read-only by the role; materialized verbatim by the orchestrating lead.
 ## Evidence record EV-G04
 
 - Requirement ID: plan §6 task 1; charter §9 "positioning cites sources"
-- Claim: The positioning statement and differentiation table are grounded in blueprint §3/§5 sources (six third-party analyses plus the Paperclip repository) and one new source fetched by this role (Paperclip GitHub repository page).
+- Claim: The positioning statement is grounded in blueprint §3/§5 sources. Named-competitor comparison tables were later removed by owner request.
 - Evidence state: `PARTIAL`
-- Method: read of blueprint §3/§5 source list; read-only web fetch of one primary source
-- Exact command or tool: `WebFetch https://github.com/paperclipai/paperclip` (2026-09-10T17:56Z) → success; `WebFetch https://raw.githubusercontent.com/paperclipai/paperclip/main/README.md` → timed out
-- Artifact: blueprint §5 table (L62–70) and §3 (L42–47) source URLs; fetched page tagline "The open-source app everyone uses to manage agents at work", 80,404 stars at fetch time
-- Sanitized result and exit status: one primary source verified (tagline, star count; the blueprint's "43k+ stars" figure is superseded by the fetched 80,404); README feature list not fetched; competitor feature/positioning claims for Relevance AI, Lindy, Dust, LangGraph/CrewAI, n8n/Zapier remain secondary-source (blueprint §5) and are labelled `unverified-secondary` in the table
-- Timestamp: 2026-09-10T17:56Z–17:57Z
-- Environment: as header (network allowlist permitted github.com and raw.githubusercontent.com; README fetch timed out, not blocked)
-- Limitations: no competitor product was trialled; no pricing page fetched; competitor prices are intentionally omitted from the differentiation table (blueprint §16 warns they may be stale; PRD-G.10 spirit)
-- Required follow-up: before any external publication of a comparison, re-verify each competitor row against its primary documentation with fetch dates (owner-approved publication only)
+- Method: read of blueprint §3/§5 source list
+- Exact command or tool: document inspection (named-competitor fetch artefacts withdrawn)
+- Artifact: blueprint §5 gap statement; §3 source URLs
+- Sanitized result and exit status: competitor comparison table withdrawn; remaining claim is the Papership gap statement
+- Timestamp: 2026-09-10T17:56Z–17:57Z (original); table removal 2026-09-12
+- Environment: as header
+- Limitations: no competitor product was trialled; no pricing page fetched
+- Required follow-up: owner-approved publication only; do not restore named-competitor tables unless the owner asks
 
 ## Evidence record EV-G05
 
@@ -133,7 +133,7 @@ Produced read-only by the role; materialized verbatim by the orchestrating lead.
 - Sanitized result and exit status: no matches, `rg` exit 1 (clean); payload contains no monetary figure
 - Timestamp: 2026-09-10T17:56:15Z
 - Environment: as header
-- Limitations: the blueprint §5 table contains third-party competitor price points; they are not repeated here
+- Limitations: named-competitor comparison tables and third-party price points were withdrawn from blueprint §5 (2026-09-12); they are not repeated here
 - Required follow-up: lead re-runs the same scan on materialized `docs/roadmap.md` sections
 
 ## Evidence record EV-G10

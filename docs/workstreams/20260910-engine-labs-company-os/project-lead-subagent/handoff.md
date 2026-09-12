@@ -84,7 +84,7 @@ No intake planning requirement lacks an artefact. Deferred by design with a reco
 
 ### 5.3 Consistency findings
 
-C-01…C-16 are recorded in EV-PL10 with paths, line numbers, owners and disposition. Summary: stale status text in `docs/verification.md` V16-2 and §7 PL row (C-01, C-11); plan §10/§19/T0-13/§22 "D-01…D-05" (C-03); plan §12/§13/§14 task states (C-04, C-14); manifest header/§5/§6/§15 (C-05, C-07); plan §17 missing H-2…H-7, OQ-G1/G2, ratification rows (C-10); STATE active files (C-15); architecture §10/§14 worker `data` network vs AUTH-24 (C-02); `#6b7a90` vs `#617083` resolved by D-06 with annotated spec (C-06); product §12 OQ-4 deadline superseded (C-08); blueprint Paperclip star count superseded (C-09); AUTH-25 strength vs D-04 decision 9 (C-16). OQ-5 and OQ-3 are consistent everywhere (C-12, C-13).
+C-01…C-16 are recorded in EV-PL10 with paths, line numbers, owners and disposition. Summary: stale status text in `docs/verification.md` V16-2 and §7 PL row (C-01, C-11); plan §10/§19/T0-13/§22 "D-01…D-05" (C-03); plan §12/§13/§14 task states (C-04, C-14); manifest header/§5/§6/§15 (C-05, C-07); plan §17 missing H-2…H-7, OQ-G1/G2, ratification rows (C-10); STATE active files (C-15); architecture §10/§14 worker `data` network vs AUTH-24 (C-02); `#6b7a90` vs `#617083` resolved by D-06 with annotated spec (C-06); product §12 OQ-4 deadline superseded (C-08); blueprint audience-size citation withdrawn (C-09); AUTH-25 strength vs D-04 decision 9 (C-16). OQ-5 and OQ-3 are consistent everywhere (C-12, C-13).
 
 ### 5.4 Horizontal checklist
 
@@ -131,7 +131,7 @@ Recommendations (not executed): render the Mermaid diagram (F-S6); run the valid
 | C-01…C-05, C-07, C-10, C-11, C-15 | low (stale state/plan text) | verification V16-2 and §7 PL row; plan §10/§12/§13/§14/§17/§19/§22; manifest header/§5/§6/§15; STATE active files | lead (T0-13) | apply §13 deltas | validators re-run; preflight `mode_hint` reflects state |
 | C-02 | low | architecture §10 worker on `data` network / §14 open vs AUTH-24 | SE (phase-1 F-SEC-07 architecture revision) | remove `data` from worker row; close §14 item | Security review of revised architecture (phase 1) |
 | C-16 | low | D-04 decision 9 / architecture §7 state weaker "disabled if no path" vs AUTH-25 "disabled until spike passes" | lead (phase-1 plan), SE (D-04 annotation at phase-2 acceptance) | phase-1 plan implements AUTH-25 startup refusal + `interception_verified` flag | startup-refusal test (phase 1) |
-| C-06, C-08, C-09 | low | superseded wording (contrast token, OQ-4 deadline, Paperclip stars) | owner ack (D-3); lead annotate | none beyond acknowledgement | — |
+| C-06, C-08, C-09 | low | superseded wording (contrast token, OQ-4 deadline, withdrawn audience-size citation) | owner ack (D-3); lead annotate | none beyond acknowledgement | — |
 | R-PL1 | medium | F-SEC-01/02/04 remain design-stage; Security verdict reverts to BLOCKED if the phase-1 plan omits any phase-1 gate | lead (phase-1 plan) | carry list §11 as acceptance items | Security re-review at G1 |
 | R-PL2 | medium | Scope pull toward 43 domains / metric pressure toward `working` rows or invented targets (PM risk; Growth risk) | PL at every gate | D-02 item 5 status audit; NFR-4 `first-baseline` | registry audit per gate (EV-PL04 method) |
 | R-PL3 | medium | OQ-5 unanswered before phase-1 plan generation | owner | default = proposal (4+1 views); plan carries the dependency explicitly | owner answer recorded as D-05 amendment |
