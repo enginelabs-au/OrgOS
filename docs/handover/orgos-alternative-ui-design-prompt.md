@@ -1,6 +1,6 @@
 # Papership — alternative UI layout brief (Claude Design / Minimax Design)
 
-Copy everything below the line into Claude Design or Minimax Design. Attach `brand/orgos-icon.png` plus 2–4 screenshots of the current `/cc-org-dash` shell (light and dark) if the tool accepts images.
+Copy everything below the line into Claude Design or Minimax Design. Attach `brand/papership-icon.png` plus 2–4 screenshots of the current `/papership` shell (light and dark) if the tool accepts images.
 
 ---
 
@@ -62,7 +62,7 @@ Desktop width **1440×900** and **1280×800**. Mobile **390×844** as a compress
 
 ## Visual system (must use)
 
-**Mark:** low-poly prism head on fractured purple. Use the attached `orgos-icon.png`. Do not invent a new logo.
+**Mark:** low-poly prism head. Use the attached `papership-icon.png`. Do not invent a new logo.
 
 **Type:** Inter for UI. JetBrains Mono only for IDs, SHAs, keys, timestamps, allowance, issue keys (`CCO-245`), run ids.
 

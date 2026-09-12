@@ -15,7 +15,7 @@
    - Vercel project `orgos`
    - local config `~/.config/orgos/`
    - `GITHUB_APP_REPO=OrgOS`
-   - asset filename `orgos-icon.png`
+   - asset filename `papership-icon.png` (supersedes `orgos-icon.png`)
    - internal route `/cc-org-dash` (alias `/papership` added)
 
 ## Consequences

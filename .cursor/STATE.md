@@ -2,11 +2,11 @@
 
 ## Current Objective
 
-- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21 / D-22) at **`/papership`** (D-32). Prism-head mark is app/tab icon only, not in-app.
+- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21 / D-22) at **`/papership`** (D-32). Prism-head mark is app/tab icon only, not in-app. Canonical file is `brand/papership-icon.png`.
 
 ## Current Status
 
-- Owner asked to finish rename leftovers, push, then implement Phase 6 (D-33 implement request).
+- 2026-09-12 owner icon render applied: transparent master plus platform favicon/PWA/iOS/Android/Tauri slots. Name `orgos-icon` replaced by `papership-icon`.
 - Provider rename closeout: GitHub `enginelabs-au/papership`, App `papership-dev`, local folder `/Users/camdouglas/papership`, local secrets copied to `~/.config/papership/`. Vercel dashboard name is already `papership`; Git link still shows `enginelabs-au/OrgOS` (redirects).
 
 ## Project Phase
@@ -84,10 +84,10 @@
 
 ## Next Actions
 
-1. Implement Phase 6 (T6-0…T6-8, all six roles, G9). Do not generate Phase 7 until G9.
+1. Implement Phase 6 (T6-5…T6-8, remaining role `phase-6-*` artifacts, G9). Do not generate Phase 7 until G9.
 2. Do not treat write/external Hermes tools as `accepted`.
-3. Optional residual: relink Vercel Git from `OrgOS` to `papership` (redirect works today).
+3. Optional residual: relink Vercel Git from `OrgOS` to `papership` (redirect works today). GitHub org/App dashboard avatars are owner-only if they still show the old mark.
 
 ## Last Updated
 
-- 2026-09-12T09:25Z — Phase 6 first slice: allowances/reservations, Plan labels, allowance fixture removed, charges stay off. pytest 16; static scan 5.
+- 2026-09-12T09:32Z — Owner prism icon supersedes all prior files; `orgos-icon` → `papership-icon` on web/desktop/PWA/iOS/Android/Tauri.

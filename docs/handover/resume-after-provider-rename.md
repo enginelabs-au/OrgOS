@@ -100,7 +100,7 @@ Leave these. “Gone” means live product surfaces, not these pins.
 - `/cc-org-dash` **redirect** (bookmark alias)
 - Git history and old PR titles
 - Published `.orgos/loop/` receipts on GitHub (next agent dual-reads; new receipts go to `.papership/loop/`)
-- Asset `orgos-icon.png` until a later explicit ask
+- Asset `papership-icon.png` (2026-09-12 owner render; supersedes `orgos-icon.png`)
 - Locked files in §7 until the next agent confirms §0.3
 
 ### 0.5 What the next agent will do after you paste this (not you)
