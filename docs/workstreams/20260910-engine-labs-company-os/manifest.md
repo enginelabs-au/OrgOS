@@ -3,14 +3,14 @@ schema_version: 1
 task_id: 20260910-engine-labs-company-os
 title: Engine Labs — company operating system, first release lifecycle
 source_request: docs/Company_Agent_System_Blueprint.md (complete product intake) via /launch-pipeline
-status: phase_5_plan_draft
+status: phase_5_g7_pass
 risk_tier: tier_3
 created_at: 2026-09-10T15:35:00Z
-updated_at: 2026-09-12T06:10:00Z
-revision: 6
+updated_at: 2026-09-12T07:20:00Z
+revision: 7
 owner: user-operator (founder)
 active_role: orchestrating-lead
-current_gate: G5 PASS (2026-09-12); Phase 5 plan drafted (D-31); G7 not started
+current_gate: G7 PASS (2026-09-12); do not generate Phase 6 until owner asks
 ---
 
 # Workstream Manifest: Engine Labs — company operating system
@@ -88,7 +88,7 @@ Requirement IDs are stable for the life of the workstream. Detailed sub-requirem
 | REQ-08 | Development loop: pinned Hermes runtime, repository binding, request→release-proposal loop, GlobalAgentPanel wired to backend sessions, contract tests, no duplicate external effects | Blueprint Phase 08 | `software-engineer-subagent` | phase 2 plan evidence | planned (phase 2) |
 | REQ-13..18 | Verification: functional/domain coverage, authority/memory/lifecycle, integrations/recovery/backups, desktop/adaptive experience, usage/deployment/commercial, release readiness and owner handoff | Blueprint Phases 13–18 | `project-lead-subagent` with all roles | phase 3 plan evidence, `docs/verification.md` | planned (phase 3) |
 | REQ-09 | Collaboration and connections | Blueprint Phase 09 | Phase 4 roles | G5 PASS 2026-09-12 | complete (R2 `configured`) |
-| REQ-10 | Company operations | Blueprint Phase 10 | Phase 5 roles | `docs/plans/phase_5_company_operations_plan.md` | plan drafted (D-31); implementation not started |
+| REQ-10 | Company operations | Blueprint Phase 10 | Phase 5 roles | G7 PASS 2026-09-12 | complete (R3 `configured` for B01/B03/P08/P09/P16) |
 | REQ-11..12 | Commercial delivery, ecosystem/mobile | Blueprint Phases 11–12 | future releases | roadmap entries only | deferred (R4) |
 
 ## 7. Dependency and gate order

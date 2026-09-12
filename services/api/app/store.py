@@ -114,6 +114,7 @@ class Store:
         self.conn.execute("PRAGMA journal_mode=WAL")
         self.conn.execute("PRAGMA foreign_keys=ON")
         self._init_schema()
+        self._migrate_phase5()
         self.flush()
 
     def flush(self) -> None:
@@ -376,6 +377,74 @@ class Store:
         )
         self.flush()
 
+    def _migrate_phase5(self) -> None:
+        existing = {
+            row["name"]
+            for row in self.conn.execute("PRAGMA table_info(memory_items)").fetchall()
+        }
+        additions = {
+            "title": "TEXT NOT NULL DEFAULT ''",
+            "owner_principal_id": "TEXT",
+            "version": "INTEGER NOT NULL DEFAULT 1",
+            "restriction_scope": "TEXT NOT NULL DEFAULT ''",
+            "archived_at": "TEXT",
+            "expires_at": "TEXT",
+            "content_class": "TEXT NOT NULL DEFAULT 'source'",
+            "parent_id": "TEXT",
+            "content": "TEXT NOT NULL DEFAULT ''",
+            "deleted_at": "TEXT",
+        }
+        for name, decl in additions.items():
+            if name not in existing:
+                self.conn.execute(f"ALTER TABLE memory_items ADD COLUMN {name} {decl}")
+        self.conn.executescript(
+            """
+            CREATE TABLE IF NOT EXISTS strategy_records (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              kind TEXT NOT NULL,
+              title TEXT NOT NULL,
+              body TEXT NOT NULL,
+              kpi_status TEXT NOT NULL,
+              source_bound INTEGER NOT NULL DEFAULT 0,
+              created_at TEXT NOT NULL,
+              archived_at TEXT
+            );
+            CREATE TABLE IF NOT EXISTS member_capacity (
+              principal_id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              availability TEXT NOT NULL,
+              workload TEXT NOT NULL,
+              leave_reference TEXT NOT NULL,
+              updated_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS view_states (
+              tenant_id TEXT NOT NULL,
+              principal_id TEXT NOT NULL,
+              definition TEXT NOT NULL,
+              pins TEXT NOT NULL,
+              history TEXT NOT NULL,
+              enabled INTEGER NOT NULL DEFAULT 0,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (tenant_id, principal_id)
+            );
+            CREATE TABLE IF NOT EXISTS schedules (
+              id TEXT PRIMARY KEY,
+              tenant_id TEXT NOT NULL,
+              mode TEXT NOT NULL,
+              cadence TEXT NOT NULL,
+              definition TEXT NOT NULL,
+              fire_external INTEGER NOT NULL DEFAULT 0,
+              created_at TEXT NOT NULL
+            );
+            """
+        )
+        self.conn.execute(
+            """UPDATE memory_items SET title=id, content_class=class
+               WHERE title='' OR title IS NULL"""
+        )
+        self.flush()
+
     def row_to_dict(self, row: sqlite3.Row | None) -> dict[str, Any] | None:
         if row is None:
             return None
@@ -385,6 +454,7 @@ class Store:
         if self.conn.execute("SELECT 1 FROM principals WHERE id='principal-founder'").fetchone():
             self._seed_registry()
             self._seed_phase4(tenant_id="tenant-founder")
+            self._seed_phase5(tenant_id="tenant-founder")
             self.flush()
             return
         now = _now()
@@ -427,6 +497,7 @@ class Store:
         )
         self._seed_registry()
         self._seed_phase4(tenant_id="tenant-founder")
+        self._seed_phase5(tenant_id="tenant-founder")
         self.append_audit("principal-founder", "seed", "organisation", "org-founder")
         self.flush()
 
@@ -987,12 +1058,9 @@ class Store:
         return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
 
     def list_memory(self, principal_id: str) -> list[dict[str, Any]]:
-        self.require_surface(principal_id, "memory")
-        p = self.principal(principal_id)
-        rows = self.conn.execute(
-            "SELECT * FROM memory_items WHERE tenant_id=?", (p["tenant_id"],)
-        ).fetchall()
-        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+        from app.memory_ops import list_memory as list_memory_ops
+
+        return list_memory_ops(self, principal_id)
 
     def list_records(self, principal_id: str) -> list[dict[str, Any]]:
         self.require_surface(principal_id, "records")
@@ -1078,14 +1146,25 @@ class Store:
             raise StoreError("denied: people", 403)
         p = self.principal(principal_id)
         rows = self.conn.execute(
-            """SELECT principals.id, principals.kind, seats.template
+            """SELECT principals.id, principals.kind, seats.template,
+                      member_capacity.availability, member_capacity.workload,
+                      member_capacity.leave_reference
                FROM principals
                LEFT JOIN seats ON seats.principal_id = principals.id
+               LEFT JOIN member_capacity ON member_capacity.principal_id = principals.id
                WHERE principals.tenant_id=? AND principals.kind='human'
                ORDER BY principals.id""",
             (p["tenant_id"],),
         ).fetchall()
-        return [self.row_to_dict(r) for r in rows]  # type: ignore[misc]
+        out = []
+        for row in rows:
+            item = self.row_to_dict(row)
+            item["availability"] = item.get("availability") or "unknown"
+            item["workload"] = item.get("workload") or "unknown"
+            item["leave_reference"] = item.get("leave_reference") or ""
+            item["hr_connector"] = "planned"
+            out.append(item)
+        return out
 
     def list_teams(self, principal_id: str) -> list[dict[str, Any]]:
         p = self.principal(principal_id)
@@ -1278,6 +1357,42 @@ class Store:
                    (id, tenant_id, provider, status, destination_class, enabled, last_sync, lineage, created_at)
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 ("conn-github", tenant_id, "github", "configured", "source_control", 1, None, "", now),
+            )
+
+    def _seed_phase5(self, tenant_id: str) -> None:
+        now = _now()
+        self.conn.execute(
+            """UPDATE memory_items SET title=?, owner_principal_id=?, version=1, content_class='approved',
+               content=? WHERE id='mem-1' AND (title='' OR title='mem-1')""",
+            ("Seed retained knowledge", "principal-founder", "Governed store seed. No credentials."),
+        )
+        if not self.conn.execute(
+            "SELECT 1 FROM strategy_records WHERE tenant_id=?", (tenant_id,)
+        ).fetchone():
+            self.conn.execute(
+                """INSERT INTO strategy_records
+                   (id, tenant_id, kind, title, body, kpi_status, source_bound, created_at, archived_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    "strat-r3",
+                    tenant_id,
+                    "goal",
+                    "Company operations (R3)",
+                    "Native goals and capacity. KPI sources are not bound.",
+                    "not_captured",
+                    0,
+                    now,
+                    None,
+                ),
+            )
+        if not self.conn.execute(
+            "SELECT 1 FROM member_capacity WHERE principal_id='principal-founder'"
+        ).fetchone():
+            self.conn.execute(
+                """INSERT INTO member_capacity
+                   (principal_id, tenant_id, availability, workload, leave_reference, updated_at)
+                   VALUES (?, ?, ?, ?, ?, ?)""",
+                ("principal-founder", tenant_id, "available", "normal", "", now),
             )
 
 

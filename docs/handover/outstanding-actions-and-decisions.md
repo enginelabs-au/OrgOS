@@ -41,11 +41,9 @@ Live receipt path `.orgos/loop/` and `GITHUB_APP_REPO` stay as-is until the owne
 
 ## 3. Agent-capable next work (not started this turn)
 
-Phase 5 implementation is **planned only**. Do not start T5-0…T5-12 until the owner asks to implement.
+Phase 5 implementation is **closed** (G7, 2026-09-12). Do not start Phase 6 until the owner asks.
 
-Target (G7): R3 company operations — memory operations + manager UI, adaptive views + personalisation, native B01/B03, deny-by-default shells for the remaining R3 rows. Registry rows move from `planned` only with evidence; Phase 5 targets `configured`, not `working` live CRM/HR/finance connectors.
-
-Two execution phase plans remain after Phase 5: Phase 6 (R4 commercial), Phase 7 (R4 ecosystem/mobile). Verification phases 13–18 re-run per release and are not extra build phases.
+G7 closed. Two execution phase plans remain: Phase 6 (R4 commercial), Phase 7 (R4 ecosystem/mobile). Verification phases 13–18 re-run per release and are not extra build phases.
 
 ## 4. Closed owner questions (do not re-ask)
 

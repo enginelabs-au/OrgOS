@@ -41,7 +41,7 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 | V14-2 | Separate organisations, roles, project scopes, guest assignments; delegated grant ≤ delegator; billing upgrade creates no data permission | Multi-tenant fixtures; delegation tests; entitlement/permission separation test (PRD-D.6 R1 part) | Test output | Phase 1 (tenant + entitlement separation); R2 for delegation/guests | PARTIAL — R2 guest refuse + seat templates verified (`test_phase4.py`); live second human not issued |
 | V14-3 | Revoked credentials, changed assignments, expired approvals, modified action targets → running/queued work rechecks authority (PRD-D.12, D.10) | Fault injection mid-run; approval invalidation test | Run log; audit entries | Phase 2 → phase 3 | VERIFIED (`test_voided_approval_blocks_job_step`, `test_revoked_grant_blocks_queued_job_step`; API 47 passed) |
 | V14-4 | Setup access removed at handover (application, cloud, SSH) | Handover checklist + post-handover access test | Checklist record | R2 (PRD-D.8) | NOT_APPLICABLE R1 |
-| V14-5 | Memory: source restrictions, correction propagation, archive ownership, offboarding, export, erasure with disposable fixtures; summaries/indexes/caches follow deletion; backup/provider retention disclosed | R1: search/inspect + provenance fields + credential-exclusion scan (PRD-F.2, F.4); R3/R4: full operations and erasure | Test output; scan | Phase 1–2 (R1 subset) → R3/R4 | PARTIAL for R1 (subset) |
+| V14-5 | Memory: source restrictions, correction propagation, archive ownership, offboarding, export, erasure with disposable fixtures; summaries/indexes/caches follow deletion; backup/provider retention disclosed | R1: search/inspect + provenance fields + credential-exclusion scan (PRD-F.2, F.4); R3/R4: full operations and erasure | Test output; scan | Phase 1–2 (R1 subset) → R3/R4 | PARTIAL — R3 operations + restriction + scan verified (`test_phase5.py`); org-wide erasure and backup disclosure remain R4 |
 
 ## 3. Phase 15 — Integrations, recovery, and backups
 
@@ -63,7 +63,7 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 | V16-3 | Production screens use real permissions, persisted records and agent events (PRD-A.16) | Static scan: no `data.jsx`/`entities.js`/localStorage fixtures in production imports; runtime check | Scan output | Phase 1 → phase 3 | PARTIAL (desktop `tests/*.test.mjs` exit 0; runtime against live API not run) |
 | V16-4 | Keyboard navigation, focus, accessible labels, contrast, responsive layout, readable empty/error states (NFR-2; ui-blueprint §E) | axe/pa11y run + manual keyboard walkthrough; contrast tool report (phase-0 computed ratios in ui-blueprint §0.6 are the baseline) | Accessibility report | Phase 1 (components) → phase 3 | PARTIAL (closed Hey Engine unmounts; Work `aria-current`; no axe; Cursor browser click hook-blocked) |
 | V16-5 | Operator completes routine work without technical traces or special prompting; compare Founder/PL/Operator scopes enabled | Founder walkthrough R1; PL/Operator R2 | Walkthrough log | Phase 3 (Founder) ; R2 | PARTIAL scope |
-| V16-6 | Adaptive views: stable controls, permitted data, valid schemas, pinning, undo, fallback; completion time vs fixed views; within design system | — | — | R3 | NOT_APPLICABLE R1 |
+| V16-6 | Adaptive views: stable controls, permitted data, valid schemas, pinning, undo, fallback; completion time vs fixed views; within design system | — | — | R3 | PARTIAL — schema/fallback/pin/undo/reset API (`test_phase5.py`); screenshot-diff and usability timing not run |
 
 ## 5. Phase 17 — Usage, deployment, and commercial operations
 
@@ -102,6 +102,21 @@ Coverage metric (PRD-C.6): count of `working` registry rows per release — R1 b
 | R2-USAGE | first-baseline `not_captured` if zero events | `GET/POST /usage/baseline` | VERIFIED |
 | R2-LIVE-OAUTH | Gmail/Slack live enablement | owner credentials missing | NOT_APPLICABLE until owner apps |
 | R2-PRICES | No prices in UI/docs | CA-10 still closed | VERIFIED (D-29 labels only) |
+
+## 6c. Release 3 residuals (Phase 5)
+
+| ID | Check | Evidence | State |
+|---|---|---|---|
+| R3-MEM | Eight PRD-F.3 operations; restriction hides derived; credential scan | `test_phase5.py::test_memory_eight_operations_and_credential_scan` | VERIFIED (fixtures) |
+| R3-MEM-UI | Memory manager honest empty / API rows | `apps/web/src/api/papership.js`, `MemoryView` | VERIFIED (overlay; browser click-through not run) |
+| R3-ADAPT | AUTH-29 fallback; pin/undo/reset; personalisation off | `test_adaptive_views_fallback_pin_undo_reset`, `test_personalisation_off_refuses_apply` | VERIFIED (API) |
+| R3-B01 | Native strategy; KPI `not_captured` | `test_strategy_kpis_not_captured` | VERIFIED |
+| R3-B03 | Native capacity; no HR OAuth | `test_capacity_native_not_hr` | VERIFIED |
+| R3-SHELLS | Other R3 domains deny live write | `test_r3_shells_deny_live_write` | VERIFIED |
+| R3-P08 | Canonical refs; no invented metrics | `GET /references` | VERIFIED |
+| R3-P05 | Automate schedules `configured`; no external fire | `test_references_and_schedules_configured` | VERIFIED |
+| R3-HERMES | No write/external `accepted` lift | D-25 residual | VERIFIED (unchanged) |
+| R3-PRICES | No prices | CA-10 | VERIFIED |
 
 ## 7. Phase-0 evidence index (produced so far)
 

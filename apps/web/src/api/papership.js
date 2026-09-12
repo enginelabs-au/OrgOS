@@ -102,15 +102,29 @@ export async function loadPapershipOverlay() {
       connections: CONNECTOR_CATALOG,
       threads: [],
       measurement: defaultMeasurement(),
+      memory: [],
+      strategy: [],
+      personalisation: defaultPersonalisation(),
+      view: { fallback: true, personalisation: false },
+      domains: [],
+      references: defaultReferences(),
+      schedules: [],
     };
   }
   try {
-    const [people, teams, inbox, connections, measurement] = await Promise.all([
+    const [people, teams, inbox, connections, measurement, memory, strategy, personalisation, view, domains, references, schedules] = await Promise.all([
       fetchPapershipJson("/people"),
       fetchPapershipJson("/teams"),
       fetchPapershipJson("/inbox"),
       fetchPapershipJson("/connections"),
       fetchPapershipJson("/settings/measurement"),
+      fetchPapershipJson("/memory"),
+      fetchPapershipJson("/strategy"),
+      fetchPapershipJson("/settings/personalisation"),
+      fetchPapershipJson("/views/current"),
+      fetchPapershipJson("/domains/catalogue"),
+      fetchPapershipJson("/references"),
+      fetchPapershipJson("/schedules"),
     ]);
     return {
       source: "api",
@@ -122,6 +136,14 @@ export async function loadPapershipOverlay() {
       measurement,
       inboxState: inbox.state,
       peopleState: people.state,
+      memory: memory.items || [],
+      strategy: strategy.items || [],
+      strategyKpi: strategy.kpi_status || "not_captured",
+      personalisation,
+      view,
+      domains: domains.items || [],
+      references,
+      schedules: schedules.items || [],
     };
   } catch (error) {
     return {
@@ -133,8 +155,23 @@ export async function loadPapershipOverlay() {
       connections: CONNECTOR_CATALOG,
       threads: [],
       measurement: defaultMeasurement(),
+      memory: [],
+      strategy: [],
+      personalisation: defaultPersonalisation(),
+      view: { fallback: true, personalisation: false },
+      domains: [],
+      references: defaultReferences(),
+      schedules: [],
     };
   }
+}
+
+export function defaultPersonalisation() {
+  return { enabled: false, default: false, inspect: { intent: "fallback", fallback: true, why: "Personalisation is off." }, pins: [], current: { fallback: true } };
+}
+
+export function defaultReferences() {
+  return { currency: "AUD", calendar: "en-AU", timezone: "Australia/Sydney", kpi_default: "not_captured", metrics: [], status_labels: ["planned", "configured", "working", "unavailable"] };
 }
 
 export function defaultMeasurement() {
@@ -155,6 +192,8 @@ export function defaultMeasurement() {
 function mapPerson(row) {
   const template = row.template || "member";
   const founder = row.id === "principal-founder";
+  const availability = row.availability || "unknown";
+  const workload = row.workload || "unknown";
   return {
     name: founder ? "Cam Douglas" : SEAT_LABEL[template] || row.id,
     initials: founder ? "CD" : (SEAT_LABEL[template] || "SE").slice(0, 2).toUpperCase(),
@@ -163,6 +202,10 @@ function mapPerson(row) {
     email: founder ? "founder@enginelabs.com.au" : "not issued",
     status: founder ? "Active" : "Issued",
     dot: founder ? "var(--green)" : "var(--t3)",
+    availability,
+    workload,
+    leave: row.leave_reference || "",
+    capacity: `${availability} · ${workload}`,
   };
 }
 
@@ -254,5 +297,80 @@ export function applyPapershipOverlay(view, overlay, setModal) {
   const catalog = overlay.connections?.length ? overlay.connections : CONNECTOR_CATALOG;
   out.connections = catalog.map((row) => mapConnection(row, setModal));
   out.wizardProviders = catalog;
+
+  const memoryItems = overlay.memory || [];
+  const kinds = ["Sessions", "Preferences", "Projects", "Domains", "Organisation", "Skills"];
+  out.memoryNav = kinds.map((label) => {
+    const n = memoryItems.filter((item) => (item.kind || "").toLowerCase() === label.toLowerCase()).length;
+    return { label, n: String(n), bg: n ? "var(--blue-soft)" : "transparent", fw: n ? "600" : "500" };
+  });
+  out.memoryRows = memoryItems.map((item, index) => ({
+    title: item.title || item.id,
+    kind: item.kind || "project",
+    cls: item.class || item.content_class || "source",
+    version: `v${item.version || 1}`,
+    bg: index === 0 ? "var(--blue-soft)" : "transparent",
+  }));
+  const first = memoryItems[0];
+  out.provenance = first
+    ? [
+        { k: "Source", v: first.provenance?.source || "native" },
+        { k: "Owner", v: first.provenance?.owner || first.owner_principal_id || "" },
+        { k: "Class", v: first.class || "" },
+        { k: "Version", v: String(first.version || 1) },
+        { k: "Restriction", v: first.restriction_scope || "none" },
+      ]
+    : [];
+  out.memoryNote =
+    overlay.source === "unauthenticated"
+      ? "No Papership API session. Memory stays empty until a JWT is stored as engine-os-token."
+      : overlay.source === "error"
+        ? overlay.error
+        : memoryItems.length
+          ? ""
+          : "No memory yet. Knowledge the assistant retains will appear here with its source.";
+  out.memoryEmpty = !memoryItems.length;
+
+  const personalisation = overlay.personalisation || defaultPersonalisation();
+  if (view.setTitle === "Personalisation" || view.setPane === "Personalisation") {
+    out.setDesc = personalisation.enabled ? "Adaptive views can apply trusted definitions." : "Adaptive views are off by default. Inspect, disable and reset live here.";
+    out.setRows = [
+      { k: "Adaptive views", v: personalisation.enabled ? "On" : "Off" },
+      { k: "Intent", v: personalisation.inspect?.intent || "fallback" },
+      { k: "Fallback", v: personalisation.inspect?.fallback ? "Seat template" : "Adapted" },
+    ];
+  }
+  out.personalisation = personalisation;
+  out.adaptedBadge = overlay.view?.fallback || !personalisation.enabled ? "" : `Adapted for: ${overlay.view?.intent || personalisation.inspect?.intent || "intent"}`;
+
+  const strategy = overlay.strategy || [];
+  out.strategyKpi = overlay.strategyKpi || overlay.references?.kpi_default || "not_captured";
+  if (overlay.source !== "loading") {
+    const goals = strategy.filter((row) => row.kind === "goal" || row.kind === "initiative");
+    const decisions = strategy.filter((row) => row.kind === "decision" || row.kind === "risk_appetite");
+    out.railPriorities = goals.map((row) => ({
+      label: row.title,
+      meta: `${row.kind} · KPI ${row.kpi_status || "not_captured"}`,
+      pct: 0,
+      pctw: "0%",
+      due: "",
+      dot: "var(--t3)",
+      open: () => {},
+    }));
+    out.railDecisions = decisions.map((row) => ({
+      label: row.title,
+      meta: `${row.kind} · ${row.kpi_status || "not_captured"}`,
+      open: () => {},
+    }));
+  }
+  out.domainShells = overlay.domains || [];
+  out.references = overlay.references || defaultReferences();
+  out.schedules = overlay.schedules || [];
+  if (out.modes) {
+    out.modes = out.modes.map((mode) => {
+      if (!String(mode.label).startsWith("Automate")) return mode;
+      return { ...mode, label: "Automate · configured", cursor: "pointer", ink: "var(--t2)" };
+    });
+  }
   return out;
 }

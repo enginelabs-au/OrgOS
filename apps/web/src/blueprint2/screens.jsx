@@ -429,13 +429,14 @@ export function PeopleView({ v }) {
   return (
     <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
       {v.people.map((p) => (
-        <div key={p.name} onClick={p.open} style={{ display: "grid", gridTemplateColumns: "220px 130px 1fr 90px", gap: 12, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
+        <div key={p.name} onClick={p.open} style={{ display: "grid", gridTemplateColumns: "200px 110px 1fr 140px 90px", gap: 12, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
           <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ width: 26, height: 26, borderRadius: "50%", background: p.av, color: "#fff", font: "600 10px Inter,sans-serif", display: "flex", alignItems: "center", justifyContent: "center" }}>{p.initials}</span>
             {p.name}
           </span>
           <span style={{ fontSize: 12, color: "var(--t2)" }}>{p.seat}</span>
           <span style={{ font: "400 11.5px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{p.email}</span>
+          <span style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{p.capacity || "capacity unknown"}</span>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: p.dot }} />{p.status}</span>
         </div>
       ))}
@@ -533,6 +534,7 @@ export function FilesView({ v }) {
 
 export function ConnectionsView({ v }) {
   return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
     <div style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 12 }}>
       {v.connections.map((c) => (
         <div key={c.name} style={{ background: "var(--surface)", border: `1px solid ${c.bd}`, borderRadius: 10, padding: 14 }}>
@@ -556,6 +558,20 @@ export function ConnectionsView({ v }) {
           </div>
         </div>
       ))}
+    </div>
+    {v.domainShells?.length ? (
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--t3)", marginBottom: 8 }}>Company domains</div>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
+          {v.domainShells.map((d) => (
+            <div key={d.id} style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", borderBottom: "1px solid var(--line2)", fontSize: 12.5 }}>
+              <span>{d.id} · {d.label}</span>
+              <span style={{ color: "var(--t3)" }}>{d.status} · needs connection</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null}
     </div>
   );
 }
@@ -649,15 +665,23 @@ export function AccountView({ v }) {
 }
 
 export function MemoryView({ v }) {
+  if (v.memoryEmpty) {
+    return (
+      <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 40, textAlign: "center" }}>
+        <div style={{ fontSize: 14, fontWeight: 600 }}>No memory yet</div>
+        <div style={{ fontSize: 12.5, color: "var(--t3)", marginTop: 6 }}>{v.memoryNote || "Knowledge the assistant retains will appear here with its source."}</div>
+      </div>
+    );
+  }
   return (
     <div style={{ display: "grid", gridTemplateColumns: "180px minmax(0,1fr) 240px", gap: 12 }}>
-      <div style={{ background: "var(--raised)", borderRadius: 10, padding: 8 }}>
+      <div style={{ background: "var(--raised)", borderRadius: 10, padding: 8 }} role="navigation" aria-label="Memory kinds">
         {v.memoryNav.map((m) => (
           <div key={m.label} style={{ padding: "7px 8px", borderRadius: 7, background: m.bg, fontWeight: m.fw, display: "flex", justifyContent: "space-between" }}>{m.label}<span style={{ fontFamily: "'JetBrains Mono',monospace", color: "var(--t3)" }}>{m.n}</span></div>
         ))}
       </div>
-      <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
-        {v.memoryRows.map((r) => (
+      <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }} aria-live="polite">
+        {(v.memoryRows || []).map((r) => (
           <div key={r.title} style={{ padding: "10px 14px", borderBottom: "1px solid var(--line2)", background: r.bg }}>
             <div style={{ fontSize: 12.5, fontWeight: 500 }}>{r.title}</div>
             <div style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)", marginTop: 3 }}>{r.kind} · {r.cls} · {r.version}</div>
@@ -665,7 +689,7 @@ export function MemoryView({ v }) {
         ))}
       </div>
       <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 14 }}>
-        {v.provenance.map((p) => (
+        {(v.provenance || []).map((p) => (
           <div key={p.k} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", fontSize: 12, borderBottom: "1px solid var(--line2)" }}>
             <span style={{ color: "var(--t3)" }}>{p.k}</span><span>{p.v}</span>
           </div>

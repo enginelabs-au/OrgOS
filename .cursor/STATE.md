@@ -6,29 +6,28 @@
 
 ## Current Status
 
-- Phase 4 **complete** (G5 PASS, 2026-09-12). Phase 5 **plan drafted** (D-31). Do not implement T5-0…T5-12 until the owner asks.
+- Phase 5 **complete** (G7 PASS, 2026-09-12). T5-0…T5-12 done. Do not generate Phase 6 until the owner asks.
 
 ## Project Phase
 
-- Phase 5 planning. Active plan: `docs/plans/phase_5_company_operations_plan.md` (status: draft). Two execution phase plans remain after Phase 5 (6, 7).
+- Phase 5 closed. Next plan name (not generated): `docs/plans/phase_6_commercial_delivery_plan.md` (R4). Two execution phase plans remain after this closeout (6, 7).
 
 ## Active Plan
 
-- `docs/plans/phase_5_company_operations_plan.md` (status: draft; not implementing)
+- `docs/plans/phase_5_company_operations_plan.md` (status: complete)
 
 ## Active Workstream
 
-- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3; G5 PASS; Phase 5 plan drafted; G7 not started)
+- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3; G7 PASS)
 
 ## Active Role and Gate
 
-- G5 PASS. Next implementation gate is G7. Owner residuals: `docs/handover/outstanding-actions-and-decisions.md`.
+- G7 PASS. Owner residuals in `docs/handover/outstanding-actions-and-decisions.md`.
 
 ## Predecessor Handoff
 
-- Phase 4 G5: `project-lead-subagent/phase-4-handoff.md`
-- Security Phase 4: `security-engineer-subagent/phase-4-handoff.md` (PASS with residuals)
-- Planning auth: D-31
+- Phase 5 G7: `project-lead-subagent/phase-5-handoff.md`
+- Security Phase 5: `security-engineer-subagent/phase-5-handoff.md` (PASS with residuals)
 
 ## Pending Remediation
 
@@ -39,9 +38,8 @@
 
 ## Owner Decision
 
-- 2026-09-12: D-31 — generate Phase 5 plan; do not implement this turn.
-- 2026-09-12: D-22…D-30 (`docs/decisions/2026-09-12-phase-4-closeout.md`) — visual review, OQ-G2, Gmail/Slack proceed, security pass, in-repo papership slug, OQ-2/3/4/G1.
-- 2026-09-12: product UI is blueprint-2 exactly (D-21); product name Papership (D-20).
+- 2026-09-12: implement Phase 5 (after D-31 plan).
+- 2026-09-12: D-22…D-31 stand.
 
 ## Active Instructions
 
@@ -49,15 +47,13 @@
 
 ## Active Items
 
-- Phase 5 plan exists. Await owner request before implementation. Phase 5 role charters are written when implementation starts.
+- Phase 5 closed. Await owner request before Phase 6 planning.
 
 ## Files in Active Use
 
 - `/STATE.md`
 - `docs/plans/phase_5_company_operations_plan.md`
 - `docs/handover/outstanding-actions-and-decisions.md`
-- `docs/decisions/2026-09-12-phase-5-planning-authorized.md`
-- `docs/decisions/2026-09-12-phase-4-closeout.md`
 
 ## Open Blockers
 
@@ -65,15 +61,13 @@
 
 ## Attempts Performed
 
-- 2026-09-12: Phase 5 planning — outstanding-actions log + phase_5 plan; no product code.
+- 2026-09-12: Phase 5 implementation — API 77 passed; overlay Memory/People/strategy/personalisation/shells; G7 issued.
 
 ## Decisions and Assumptions
 
-- D-26: in-repo slug is papership/Papership. Live GitHub/Vercel/App names stay residual until the owner renames those providers.
 - D-25 does not authorise live write/external Hermes `accepted`.
-- OQ-G2 default in store remains false until `POST /settings/oq-g2`.
-- D-27: first R3 domains B01 + B03; memory manager and adaptive views are R3 core.
-- Provisional: B03 is native capacity this phase, not live HR; B01 KPIs stay `not_captured` without a source; adaptive views are tenant-stored declarative JSON.
+- B03 this phase is native capacity, not live HR.
+- B01 KPIs stay `not_captured` without a source.
 
 ## Current Working State
 
@@ -82,10 +76,9 @@
 ## Next Actions
 
 1. Owner: remaining human actions in `docs/handover/outstanding-actions-and-decisions.md`.
-2. Do not implement Phase 5 until asked.
-3. Do not generate Phase 6 until G7.
-4. Do not treat write/external Hermes tools as `accepted`.
+2. Do not generate Phase 6 until asked.
+3. Do not treat write/external Hermes tools as `accepted`.
 
 ## Last Updated
 
-- 2026-09-12T06:10Z — Phase 5 plan drafted (D-31). Two execution phase plans remain after Phase 5 (6, 7).
+- 2026-09-12T07:20Z — Phase 5 G7 PASS. Two execution phase plans remain (6, 7).

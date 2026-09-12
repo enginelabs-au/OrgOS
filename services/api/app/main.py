@@ -25,6 +25,7 @@ from app.grants import effective_grants
 from app.logging_util import TraceMiddleware, configure_logging
 from app.store import Store, StoreError
 from app.usage import emit_usage, validate_usage_event
+from app import memory_ops, phase5, view_defs
 
 SIGNED_URL_TTL = 300
 
@@ -366,8 +367,123 @@ def create_app(store_path: str | None = None) -> FastAPI:
         return {"items": store.list_notifications(ctx.principal_id)}
 
     @app.get("/memory")
-    def memory(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
-        return {"items": store.list_memory(ctx.principal_id)}
+    def memory(q: str = Query(default=""), ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        items = memory_ops.list_memory(store, ctx.principal_id, q)
+        phase5.maybe_emit(store, settings.usage_emit, "memory.search.executed", ctx.tenant_id, ctx.principal_id, "results_found" if items else "none")
+        return {"items": items}
+
+    @app.get("/memory/{item_id}")
+    def inspect_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        item = memory_ops.inspect_memory(store, ctx.principal_id, item_id)
+        phase5.maybe_emit(store, settings.usage_emit, "memory.item.inspected", ctx.tenant_id, ctx.principal_id, "ok")
+        return item
+
+    @app.post("/memory")
+    def create_memory(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.create_memory(store, ctx.principal_id, body)
+
+    @app.post("/memory/{item_id}/correct")
+    def correct_memory(item_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.correct_memory(store, ctx.principal_id, item_id, body)
+
+    @app.post("/memory/merge")
+    def merge_memory(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.merge_memory(store, ctx.principal_id, str(body.get("left_id") or ""), str(body.get("right_id") or ""))
+
+    @app.post("/memory/{item_id}/restrict")
+    def restrict_memory(item_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.restrict_memory(store, ctx.principal_id, item_id, str(body.get("scope") or "restricted"))
+
+    @app.post("/memory/{item_id}/archive")
+    def archive_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.archive_memory(store, ctx.principal_id, item_id)
+
+    @app.post("/memory/{item_id}/export")
+    def export_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.export_memory(store, ctx.principal_id, item_id)
+
+    @app.post("/memory/{item_id}/delete")
+    def delete_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.delete_memory(store, ctx.principal_id, item_id)
+
+    @app.get("/views/current")
+    def current_view(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.current_view(store, ctx.principal_id)
+
+    @app.post("/views/preview")
+    def preview_view(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.preview_view(store, ctx.principal_id, body)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.previewed", ctx.tenant_id, ctx.principal_id, "ok")
+        return result
+
+    @app.post("/views/apply")
+    def apply_view(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.apply_view(store, ctx.principal_id, body)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.applied", ctx.tenant_id, ctx.principal_id, "ok" if result.get("applied") else "fallback")
+        return result
+
+    @app.post("/views/undo")
+    def undo_view(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.undo_view(store, ctx.principal_id)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.reverted", ctx.tenant_id, ctx.principal_id, "ok")
+        return result
+
+    @app.post("/views/reset")
+    def reset_view(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.reset_view(store, ctx.principal_id)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.reset", ctx.tenant_id, ctx.principal_id, "ok")
+        return result
+
+    @app.post("/views/pin")
+    def pin_view(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.pin_region(store, ctx.principal_id, str(body.get("region") or ""))
+
+    @app.get("/settings/personalisation")
+    def get_personalisation(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.inspect_personalisation(store, ctx.principal_id)
+
+    @app.post("/settings/personalisation")
+    def set_personalisation(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.set_personalisation(store, ctx.principal_id, bool(body.get("enabled")))
+
+    @app.post("/settings/personalisation/reset")
+    def reset_personalisation(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        view_defs.reset_view(store, ctx.principal_id)
+        return view_defs.set_personalisation(store, ctx.principal_id, False)
+
+    @app.get("/strategy")
+    def list_strategy(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        items = phase5.list_strategy(store, ctx.principal_id)
+        return {"items": items, "kpi_status": "not_captured"}
+
+    @app.post("/strategy")
+    def create_strategy(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.create_strategy(store, ctx.principal_id, body)
+
+    @app.post("/people/{member_id}/capacity")
+    def set_capacity(member_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.upsert_capacity(store, ctx.principal_id, member_id, body)
+
+    @app.get("/domains/catalogue")
+    def domain_catalogue(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": phase5.domain_catalogue()}
+
+    @app.post("/domains/{domain_id}/connect")
+    def connect_domain(domain_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        phase5.refuse_domain_connect(domain_id)
+        return {}
+
+    @app.get("/references")
+    def references(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.CANONICAL_REFERENCES
+
+    @app.get("/schedules")
+    def list_schedules(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": phase5.list_schedules(store, ctx.principal_id), "mode": "Automate", "fire_external": False}
+
+    @app.post("/schedules")
+    def create_schedule(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.create_schedule(store, ctx.principal_id, body)
 
     @app.post("/jobs")
     def post_job(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> JSONResponse:

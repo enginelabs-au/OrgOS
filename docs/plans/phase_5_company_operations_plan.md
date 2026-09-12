@@ -1,6 +1,6 @@
 ---
 plan: phase_5_company_operations
-status: draft
+status: complete
 created: 2026-09-12
 updated: 2026-09-12
 owner: lead-agent
@@ -15,7 +15,7 @@ risk_tier: tier_3
 
 # Phase 5: Company operations — Engine Labs / Papership
 
-Generated after Phase 4 G5 PASS. Owner authorized this **plan** (D-31). **Do not implement until this file exists and a later turn starts T5-0.** Papership UI remains `docs/ui-blueprint/blueprint-2` at `/cc-org-dash`. Do not edit `www.enginelabs.com.au`.
+Generated after Phase 4 G5 PASS. Owner authorized the plan (D-31) and then implementation. Papership UI remains `docs/ui-blueprint/blueprint-2` at `/cc-org-dash`. Do not edit `www.enginelabs.com.au`.
 
 ## 1. Objective
 
@@ -132,31 +132,31 @@ No Engine Labs marketing project. No live `.orgos/loop/` path change.
 
 ## 12. Ordered implementation tasks
 
-**T5-0 Carry owner residuals (document only)** — Confirm residuals in `docs/handover/outstanding-actions-and-decisions.md` still do not block implementation. Do not request credentials. Deps: this plan. Files: handover log, STATE. Validation: table names OQ-G2, Gmail/Slack env names, provider rename, Hermes GET `/health`, write/external Hermes. Completion: residuals listed; none treated as G7 blockers.
+**T5-0 Carry owner residuals (complete 2026-09-12)** — Residuals remain owner-only and do not block G7. **Done.**
 
-**T5-1 Memory API** — Extend `memory_items` with title, owner_principal_id, version, restriction_scope, archived_at, expires_at, content_class, parent_id (merge/correct lineage). Endpoints: search/inspect; `POST` correct (new version, provenance preserved); merge; restrict; archive; scoped export job; scoped delete (Founder; not org-wide erasure). Recheck `memory.read` / `memory.write` and source restrictions before retrieval; hide derived summaries when a source is restricted. Credential-exclusion scan on write. Deps: T5-0. Files: `store.py`, `main.py`, `services/api/tests/test_phase5.py`. Validation: pytest for each operation; unprivileged 403; restricted source hides derived row; scan rejects credential-shaped content. Completion: eight PRD-F.3 operations demonstrated on fixtures.
+**T5-1 Memory API (complete 2026-09-12)** — Eight operations + scan + restriction propagation. **Done.**
 
-**T5-2 Memory manager UI** — Wire blueprint-2 `MemoryView` to `/memory`. Honest empty: “No memory yet. Knowledge the assistant retains will appear here with its source.” Remove fixture counts. Left nav = six kinds + class filter; list = title/kind/class/owner/version; detail = provenance card + actions. Operator cannot correct/merge/delete. Deps: T5-1. Files: `papership.js`, `App.jsx`, `screens.jsx`. Validation: unauthenticated = empty, not fixtures; Founder can inspect an API item; static scan still expects `<title>Papership</title>`. Completion: §B.6 layout on product path without invented rows.
+**T5-2 Memory manager UI (complete 2026-09-12)** — Overlay + honest empty. **Done.**
 
-**T5-3 Adaptive views** — Versioned view-definition schema; store per tenant/member; validate; unknown component or schema fail → fallback seat template (never a blank region). Pin persists; undo reverts last adaptation; reset restores template. Stable chrome (tabs, top bar, rail toggle, assistant, evidence, approvals, destructive actions) never moves. No fs/shell/db/credentials. Deps: T5-1. Files: API view-def module + tests; blueprint-2 renderer using existing components only. Validation: invalid document → fallback test; pin/undo/reset unit tests; AUTH-29 review notes. Completion: P16.01 evidence ready for `configured`.
+**T5-3 Adaptive views (complete 2026-09-12)** — Schema, fallback, pin/undo/reset. **Done.**
 
-**T5-4 Personalisation** — Settings → Personalisation: inspect current adaptation, disable, reset. Default **off**. Disabled ⇒ T5-3 apply is refused. Deps: T5-3. Files: Settings pane in `App.jsx`; settings store flag. Validation: disable then apply → 403 or no-op; reset clears pins. Completion: PRD-A.12 inspect/disable/reset demonstrated.
+**T5-4 Personalisation (complete 2026-09-12)** — Off by default; apply refused when disabled. **Done.**
 
-**T5-5 B01 native strategy** — Persist goals, initiatives, decisions, risk-appetite note. Surface on Home / Company rail from the API. KPI fields render `not_captured` without a source. No invented revenue. Deps: T5-2. Files: store + `/strategy` (or equivalent) + Home rail overlay. Validation: founder create/list; unauthenticated rail does not show fixture KPIs as live. Completion: B01.01 evidence for `configured` (native only).
+**T5-5 B01 native strategy (complete 2026-09-12)** — `/strategy` + rail overlay. **Done.**
 
-**T5-6 B03 native capacity** — Availability and workload fields on People members. No HR connector, no payroll/compensation source. Deps: T5-2. Files: people/store overlay; People screen. Validation: field round-trip; catalogue still lists live HR as `planned`. Completion: B03.01 evidence for `configured` on the native subset.
+**T5-6 B03 native capacity (complete 2026-09-12)** — People capacity fields; HR planned. **Done.**
 
-**T5-7 Other R3 catalogue shells** — B04, B05, B09, B10, B13, B15, B16, B17, B18, B22 appear in the in-product registry / discovery as `planned` / `unavailable` with “needs connection” copy. Deny-by-default; no OAuth env names. Deps: T5-5. Files: connections/registry overlay. Validation: unknown/unbound domain refuses live write. Completion: PRD-A.17 discoverable without crowding daily work.
+**T5-7 Other R3 catalogue shells (complete 2026-09-12)** — Catalogue + 403 connect. **Done.**
 
-**T5-8 P08 canonical refs** — Reference map for currency/calendar/status labels used by B01/B03. Deterministic code only (PRD-E.11). No invented metric values; dashboards that lack a source show `not_captured`. Deps: T5-5. Files: small reference table + read API. Validation: no numeric fixture KPIs in product path. Completion: P08.01 `configured`.
+**T5-8 P08 canonical refs (complete 2026-09-12)** — `GET /references`. **Done.**
 
-**T5-9 Automate + schedules `configured`** — Persist Automate mode and schedule definitions; they do not fire external systems. Deps: T5-1. Files: store + settings/assistant mode list. Validation: schedule create/list; runner does not call connectors. Completion: P05 / PRD-E.1 Automate `configured`.
+**T5-9 Automate + schedules `configured` (complete 2026-09-12)** — Persist only; `fire_external=false`. **Done.**
 
-**T5-10 Security** — Independent review: AUTH-29, retrieval isolation, restriction propagation, no desktop secrets, no write/external Hermes lift, no new provider secrets. Deps: T5-1…T5-9. Files: `security-engineer-subagent/phase-5-*`. Validation: handoff PASS or CONDITIONAL with bounded residuals. Completion: G7 security gate.
+**T5-10 Security (complete 2026-09-12)** — PASS with residuals. **Done.**
 
-**T5-11 Growth** — Wire `memory.search.executed`, `memory.item.inspected`, `view.adaptation.previewed/applied/reverted/reset` as identifier/enum payloads. First-baseline targets remain `not_captured` if `event_count=0`. No prices. Deps: T5-2, T5-3. Files: usage emit + Growth phase-5 artifacts. Validation: payload scan; CA-10 scan clean. Completion: Growth PASS.
+**T5-11 Growth (complete 2026-09-12)** — Enum emits; no prices. **Done.**
 
-**T5-12 PL G7** — Reconcile role verdicts, move evidence-backed registry rows to `configured`, update verification R3 residuals, outstanding-actions log, STATE. Do not generate Phase 6 from this task until G7 is issued. Deps: T5-10, T5-11. Completion: G7 PASS or CONDITIONAL recorded.
+**T5-12 PL G7 (complete 2026-09-12)** — G7 PASS. Phase 6 not generated. **Done.**
 
 ## 13. Adaptive role and delegation map
 
@@ -164,31 +164,31 @@ Tier 3 + product/UI/SE/security/growth/PL triggers. All six roles required. Char
 
 | Role ID | Required or skipped | Reason | Predecessor | Owned paths | Gate evidence | Status |
 |---|---|---|---|---|---|---|
-| product-manager-subagent | required | R3 ACC for memory ops, adaptive views, B01/B03, catalogue shells; no prices | D-31 / this plan | `.../product-manager-subagent/phase-5-*` | R3 acceptance vs D-27 | not started |
-| ui-ux-developer-subagent | required | Memory manager B.6; adaptive §D; personalisation; Home/People honest empty | PM | `.../ui-ux-developer-subagent/phase-5-*` | §B.6/§D states; a11y | not started |
-| software-engineer-subagent | required | T5-1…T5-9 | UI/UX | `services/api`, `apps/web/src/blueprint2`, tests | pytest + UI overlay | not started |
-| security-engineer-subagent | required | T5-10; AUTH-29; memory isolation | SE | `.../security-engineer-subagent/phase-5-*` | PASS/CONDITIONAL | not started |
-| growth-marketing-subagent | required | T5-11; no invented baselines; no prices | Security | `.../growth-marketing-subagent/phase-5-*` | emit enums; CA-10 scan | not started |
-| project-lead-subagent | required | T5-12 G7 | Growth | `.../project-lead-subagent/phase-5-*` | G7 verdict | not started |
+| product-manager-subagent | required | R3 ACC for memory ops, adaptive views, B01/B03, catalogue shells; no prices | D-31 / this plan | `.../product-manager-subagent/phase-5-*` | R3 acceptance vs D-27 | PASS |
+| ui-ux-developer-subagent | required | Memory manager B.6; adaptive §D; personalisation; Home/People honest empty | PM | `.../ui-ux-developer-subagent/phase-5-*` | §B.6/§D states; a11y | PASS |
+| software-engineer-subagent | required | T5-1…T5-9 | UI/UX | `services/api`, `apps/web/src/blueprint2`, tests | pytest + UI overlay | PASS |
+| security-engineer-subagent | required | T5-10; AUTH-29; memory isolation | SE | `.../security-engineer-subagent/phase-5-*` | PASS/CONDITIONAL | PASS (residuals) |
+| growth-marketing-subagent | required | T5-11; no invented baselines; no prices | Security | `.../growth-marketing-subagent/phase-5-*` | emit enums; CA-10 scan | PASS |
+| project-lead-subagent | required | T5-12 G7 | Growth | `.../project-lead-subagent/phase-5-*` | G7 verdict | PASS |
 
 ## 14. Test and validation matrix
 
 | Requirement | Validation method | Expected evidence | Status |
 |---|---|---|---|
-| PRD-F.3 eight operations | pytest on fixture tenant | each operation + 403 for Operator delete | not started |
-| PRD-F.3 restriction propagation | derived summary hidden after source restrict | pass | not started |
-| PRD-F.2 provenance | inspect returns required fields; credential scan refuses secrets | pass | not started |
-| PRD-A.15 B.6 | MemoryView on API data; honest empty | no fixture counts | not started |
-| PRD-A.11 / AUTH-29 | invalid view-def → fallback; no fs/shell/db/credentials | pass | not started |
-| PRD-A.11 pin/undo/reset | unit + chrome-stability checklist | stable controls unchanged | not started |
-| PRD-A.12 | disable/reset; off by default | no adaptation when disabled | not started |
-| B01.01 | native goal/initiative/decision create/list | KPI `not_captured` without source | not started |
-| B03.01 | native availability/workload | no HR OAuth | not started |
-| Other R3 shells | catalogue planned; live write refused | deny-by-default | not started |
-| P08.01 | reference map; no invented metrics | scan clean | not started |
-| PRD-E.1 Automate | schedule persist; no external fire | `configured` | not started |
-| D-25 residual | no write/external Hermes `accepted` | residual recorded | not started |
-| D-29 / CA-10 | no prices in UI/docs | scan clean | not started |
+| PRD-F.3 eight operations | pytest on fixture tenant | each operation + 403 for Operator delete | pass |
+| PRD-F.3 restriction propagation | derived summary hidden after source restrict | pass | pass |
+| PRD-F.2 provenance | inspect returns required fields; credential scan refuses secrets | pass | pass |
+| PRD-A.15 B.6 | MemoryView on API data; honest empty | no fixture counts | pass (overlay) |
+| PRD-A.11 / AUTH-29 | invalid view-def → fallback; no fs/shell/db/credentials | pass | pass |
+| PRD-A.11 pin/undo/reset | unit + chrome-stability checklist | stable controls unchanged | pass (API) |
+| PRD-A.12 | disable/reset; off by default | no adaptation when disabled | pass |
+| B01.01 | native goal/initiative/decision create/list | KPI `not_captured` without source | pass |
+| B03.01 | native availability/workload | no HR OAuth | pass |
+| Other R3 shells | catalogue planned; live write refused | deny-by-default | pass |
+| P08.01 | reference map; no invented metrics | scan clean | pass |
+| PRD-E.1 Automate | schedule persist; no external fire | `configured` | pass |
+| D-25 residual | no write/external Hermes `accepted` | residual recorded | pass |
+| D-29 / CA-10 | no prices in UI/docs | scan clean | pass |
 
 ## 15. Security, privacy, reliability, accessibility, and performance checks
 
@@ -251,11 +251,17 @@ Disable adaptation (`personalisation.enabled=false`) and new memory-write routes
 
 ## 20. Completion evidence
 
-Not started. Record pytest counts, UI overlay paths, registry version, verification § R3, and role handoff paths here at G7.
+- API `PYTHONPATH=/tmp/pydeps:. pytest -q` → 77 passed (2026-09-12).
+- Worker 33 passed. Web static scan: `<title>Papership</title>`.
+- UI overlay: `apps/web/src/api/papership.js`, MemoryView/People/Connections/Settings.
+- Registry: `docs/capabilities.md` 0.1.3-phase5.
+- Verification: `docs/verification.md` §6c.
+- Role artifacts: `docs/workstreams/20260910-engine-labs-company-os/<role>/phase-5-handoff.md`.
+- Browser click-through of `/cc-org-dash` was not run.
 
 ## 21. Deviations and follow-ups
 
-None yet. Owner residuals inherited from Phase 4 remain owner-only and are not G7 blockers. Phase 6 is not generated from this file.
+None material. Owner residuals inherited from Phase 4 remain owner-only and are not G7 blockers. Phase 6 is not generated from this file. Browser verification of the overlay was not run.
 
 ## 22. Next Plan Generation Prompt
 
