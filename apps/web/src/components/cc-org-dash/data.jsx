@@ -222,7 +222,7 @@ export const FILE_DATA = {
     { id: "f4", name: "D-14 user-owned data.md",          type: "document",    size: "4 KB",   modified: "Sep 11, 2026", owner: "Cam Douglas", shared: 1 },
     { id: "f5", name: "github-app-and-model-key.md",      type: "document",    size: "6 KB",   modified: "Sep 11, 2026", owner: "Cam Douglas", shared: 1 },
     { id: "f6", name: "phase-1-handoff.md",               type: "pdf",         size: "28 KB",  modified: "Sep 11, 2026", owner: "Project Lead", shared: 1 },
-    { id: "f7", name: "orgos-icon.png",                   type: "image",       size: "86 KB",  modified: "Sep 11, 2026", owner: "Cam Douglas", shared: 0 },
+    { id: "f7", name: "papership-icon.png",                   type: "image",       size: "86 KB",  modified: "Sep 12, 2026", owner: "Cam Douglas", shared: 0 },
     { id: "f8", name: "architecture.md",                  type: "document",    size: "22 KB",  modified: "Sep 10, 2026", owner: "Cam Douglas", shared: 1 },
   ],
   projects: [

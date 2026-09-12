@@ -2,5 +2,5 @@
 export const PRODUCT = {
   name: "Papership",
   company: "Engine Labs",
-  iconSrc: "/orgos-icon.png",
+  iconSrc: "/papership-icon.png",
 };

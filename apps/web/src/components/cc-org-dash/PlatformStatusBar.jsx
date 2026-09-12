@@ -30,7 +30,7 @@ export const SIGNAL_LABELS = {
 const EVENT_TEMPLATES = [
   { kind: "auth", verbs: ["signed in", "signed out"], actors: ["Cam D.", "Hey Engine", "Loop runner"] },
   { kind: "org", verbs: ["updated grant class", "recorded a decision", "edited workspace policy"], actors: ["Founder", "Project Lead"] },
-  { kind: "file", verbs: ["uploaded", "downloaded", "shared"], actors: ["phase_2_plan.md", "blueprint.md", "orgos-icon.png"] },
+  { kind: "file", verbs: ["uploaded", "downloaded", "shared"], actors: ["phase_2_plan.md", "blueprint.md", "papership-icon.png"] },
   { kind: "data", verbs: ["ran sync job", "refreshed warehouse"], actors: ["usage-emit", "ledger"] },
   { kind: "integration", verbs: ["connected", "reauthorized"], actors: ["Hermes", "GitHub App", "Vercel orgos"] },
   { kind: "security", verbs: ["API key rotated", "MFA enrollment"], actors: ["local-dev", "founder-seat"] },

@@ -74,7 +74,7 @@
 
 ## Prism brand (D-13)
 
-- Owner icon applied: `brand/orgos-icon.png` plus web favicon/PWA, desktop `public/orgos-icon.png`, Tauri `icons/` (png/icns/ico).
+- Owner icon applied: `brand/papership-icon.png` plus web favicon/PWA, desktop `public/papership-icon.png`, Tauri `icons/` (png/icns/ico).
 - Theme: blue primary (`#2563eb`), rainbow accents (Hey Engine), fractured purple secondary. D-06 contrast still PASS. Login CTA uses blue (was purple).
 
 ## GitHub App install
