@@ -7,6 +7,7 @@
 ## Current Status
 
 - Phase 6 **planning** (D-33). Plan drafted. Do not implement T6-1…T6-8 until the owner asks.
+- Rename audit **NO-GO** for a one-pass OrgOS → Paperclip swap (competitor collision + provider lockstep). Await owner §1 answers.
 
 ## Project Phase
 
@@ -56,6 +57,7 @@
 - `docs/decisions/2026-09-12-papership-canonical-route.md`
 - `docs/decisions/2026-09-12-phase-6-planning-authorized.md`
 - `docs/handover/outstanding-actions-and-decisions.md`
+- `docs/handover/rename-audit-orgos-to-paperclip.md`
 
 ## Open Blockers
 
@@ -79,11 +81,12 @@
 
 ## Next Actions
 
-1. Owner: remaining human actions in `docs/handover/outstanding-actions-and-decisions.md`.
+1. Owner: answer rename audit §1 (Papership vs Paperclip; GitHub/Vercel/App first). File: `docs/handover/rename-audit-orgos-to-paperclip.md`.
 2. Do not implement Phase 6 until asked.
 3. Do not generate Phase 7 until G9.
 4. Do not treat write/external Hermes tools as `accepted`.
+5. Do not start an OrgOS/cc-org string sweep until the owner gives go after the audit.
 
 ## Last Updated
 
-- 2026-09-12T06:10Z — Phase 6 plan drafted (D-33). Route `/papership` (D-32). Click-through recorded. One execution phase plan remains after Phase 6 (7).
+- 2026-09-12T07:15Z — Rename audit NO-GO for Paperclip one-pass. Phase 6 still draft.

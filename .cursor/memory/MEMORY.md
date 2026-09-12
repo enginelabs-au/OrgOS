@@ -79,6 +79,7 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Canonical product route (D-32): `docs/decisions/2026-09-12-papership-canonical-route.md`
 - Phase 6 plan (draft; D-33): `docs/plans/phase_6_commercial_delivery_plan.md`
 - Phase 6 planning authorized (D-33): `docs/decisions/2026-09-12-phase-6-planning-authorized.md`
+- OrgOS/cc-org rename audit (NO-GO for one-pass Paperclip): `docs/handover/rename-audit-orgos-to-paperclip.md`
 - Outstanding actions and decisions: `docs/handover/outstanding-actions-and-decisions.md`
 - Phase 4 owner actions: `docs/handover/phase-4-owner-actions.md`
 - D-19 (R2 planning from G3 CONDITIONAL; Phase 3 later closed): `docs/decisions/2026-09-11-phase-4-planning-from-g3.md`
