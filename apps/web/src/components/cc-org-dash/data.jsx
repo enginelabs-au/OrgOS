@@ -50,7 +50,7 @@ export const DB = {
   integrations: [
     { id: "i1",  name: "Hermes",           cat: "Runtime",        status: "connected", logo: "◇", users: 1, synced: "health" },
     { id: "i2",  name: "GitHub App",       cat: "Source",         status: "connected", logo: "⌥", users: 1, synced: "Papership only" },
-    { id: "i3",  name: "Vercel orgos",     cat: "Hosting",        status: "connected", logo: "▲", users: 1, synced: "live" },
+    { id: "i3",  name: "Vercel Papership",     cat: "Hosting",        status: "connected", logo: "▲", users: 1, synced: "live" },
     { id: "i4",  name: "OpenRouter",       cat: "Models",         status: "connected", logo: "◎", users: 1, synced: "via Hermes" },
     { id: "i5",  name: "Supabase",         cat: "Identity",       status: "degraded",  logo: "⬡", users: 1, synced: "planned" },
     { id: "i6",  name: "Usage emit",       cat: "Measurement",    status: "connected", logo: "▣", users: 1, synced: "anonymous" },

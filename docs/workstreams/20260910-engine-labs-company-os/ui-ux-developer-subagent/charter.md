@@ -23,14 +23,14 @@ Specify the release-1 member experience of Engine Labs derived from the Papershi
 - Active plan: `docs/plans/phase_0_foundations_plan.md` (T0-7)
 - Predecessor handoff: PM handoff (PRD IDs, seat templates, release-1 acceptance)
 - Reference: `enginelabs-au/Papership` @ `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` — `src/App.jsx`, `src/pages/cc-org-dash.jsx`, `src/components/cc-org-dash/*` (20 files), `src/index.css`, `tailwind.config.js`, `components.json`
-- Intake sections: "Member experience and authority model", "Design specification", "Adaptive views", `docs/ui-blueprint.md` requirement
+- Intake sections: "Member experience and authority model", "Design specification", "Adaptive views", `docs/blueprints/ui-blueprint.md` requirement
 - Blueprint §8 PRD-A/PRD-D, §10 desktop layer
 
 ## 3. Scope, non-goals, and ownership
 
 - In scope: view specifications (purpose, layout, primary actions, states: loading/empty/error/disconnected/pending-approval/running/completed), navigation model (GlobalCommandRail, GlobalAgentPanel, PlatformStatusBar, NotifDrawer relationships), seat-specific defaults, adaptive-view constraints (schema-driven, sandboxed, no privileged access), accessibility (keyboard, focus, contrast, motion, screen reader), responsive/desktop window behaviour, component migration map and departures from reference, screenshot capture plan for SE.
 - Explicit non-goals: visual redesign; implementing components; choosing backend APIs; security controls design; any file edits.
-- Owned/write paths or `read-only`: **read-only**. Lead materializes `evidence.md`, `handoff.md`, and the `docs/ui-blueprint.md` specification sections.
+- Owned/write paths or `read-only`: **read-only**. Lead materializes `evidence.md`, `handoff.md`, and the `docs/blueprints/ui-blueprint.md` specification sections.
 - Read-only paths: repository; reference repository via GitHub MCP read tools.
 - External-system scope: none. No Figma file exists (verified: none supplied); Figma MCP not used.
 - Prohibited actions: file edits; MCP writes; asserting visual details not present in source; exposing prompts/schemas/runtime config in Founder-seat views.
@@ -52,7 +52,7 @@ GitHub MCP `get_file_contents` (verified reachable 2026-09-10) for reading refer
 
 ## 7. Outputs and storage paths
 
-Payload → `docs/workstreams/20260910-engine-labs-company-os/ui-ux-developer-subagent/{evidence,handoff}.md`; `docs/ui-blueprint.md` (specification sections; SE completes commit/file/launch/capture sections).
+Payload → `docs/workstreams/20260910-engine-labs-company-os/ui-ux-developer-subagent/{evidence,handoff}.md`; `docs/blueprints/ui-blueprint.md` (specification sections; SE completes commit/file/launch/capture sections).
 
 ## 8. Horizontal quality coverage
 

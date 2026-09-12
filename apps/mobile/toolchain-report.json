@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-09-12T10:53:12.797Z",
+  "wrap": "apps/web blueprint-2 via Tauri 2 mobile (Capacitor fallback not activated)",
+  "api": "same Papership cloud API; tokens belong in OS keychain/keystore",
+  "oauth": "system browser only",
+  "store_submission": "not in G11 scope",
+  "rustc": {
+    "ok": true,
+    "text": "rustc 1.84.1 (e71f9a9a9 2025-01-27) (Homebrew)"
+  },
+  "cargo": {
+    "ok": true,
+    "text": "cargo 1.84.1"
+  },
+  "xcode": {
+    "ok": true,
+    "text": "Xcode 26.3"
+  },
+  "adb": {
+    "ok": true,
+    "text": "Android Debug Bridge version 1.0.41"
+  },
+  "tauri_cli": {
+    "ok": true,
+    "text": "tauri-cli 2.11.4"
+  },
+  "ios_ready": true,
+  "android_ready": true,
+  "residual": "toolchain present; simulator launch is owner/local"
+}

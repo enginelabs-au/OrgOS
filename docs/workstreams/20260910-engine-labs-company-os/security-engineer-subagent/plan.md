@@ -30,7 +30,7 @@ SE architecture and registry; PM PRD-D/F; UI/UX exposure table.
 
 ## 4. Files, interfaces, data, and external systems
 
-Read: `docs/architecture.md`, `docs/product.md`, `docs/ui-blueprint.md`, `docs/capabilities.md`, `.gitignore`, `.cursor/hooks/policy.mjs`, `.cursor/*.json`, intake. No external systems.
+Read: `docs/architecture.md`, `docs/product.md`, `docs/blueprints/ui-blueprint.md`, `docs/capabilities.md`, `.gitignore`, `.cursor/hooks/policy.mjs`, `.cursor/*.json`, intake. No external systems.
 
 ## 5. Ownership and concurrency
 

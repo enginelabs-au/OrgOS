@@ -353,12 +353,12 @@ export default function DataScreen({ T, isMobile }) {
             selectedId={selected?.id}
             onRow={setSelected}
             rows={[
-              { id: "tr1", name: "sales_forecast_run", agent: "DataOracle", model: "claude-3.5", tokens: "5,210", cost: "$0.12", latency: "2.1s", status: "success", time: "10:03" },
-              { id: "tr2", name: "deal_summary_batch", agent: "SalesGPT", model: "gpt-4o", tokens: "2,847", cost: "$0.048", latency: "1.2s", status: "success", time: "09:16" },
-              { id: "tr3", name: "support_triage_x42", agent: "SupportBot", model: "gpt-4o", tokens: "892", cost: "$0.008", latency: "0.8s", status: "success", time: "10:45" },
-              { id: "tr4", name: "code_review_pr189", agent: "DevAssist", model: "gpt-4o-mini", tokens: "1,240", cost: "$0.009", latency: "1.1s", status: "success", time: "11:02" },
-              { id: "tr5", name: "iso_control_map_v2", agent: "ComplianceAI", model: "claude-3", tokens: "8,921", cost: "$0.18", latency: "4.2s", status: "error", time: "11:14" },
-              { id: "tr6", name: "deal_summary_batch", agent: "SalesGPT", model: "gpt-4o", tokens: "3,102", cost: "$0.052", latency: "1.4s", status: "success", time: "11:30" },
+              { id: "tr1", name: "sales_forecast_run", agent: "DataOracle", model: "claude-3.5", tokens: "not captured", cost: "not captured", latency: "not captured", status: "success", time: "—" },
+              { id: "tr2", name: "deal_summary_batch", agent: "SalesGPT", model: "gpt-4o", tokens: "not captured", cost: "not captured", latency: "not captured", status: "success", time: "—" },
+              { id: "tr3", name: "support_triage_x42", agent: "SupportBot", model: "gpt-4o", tokens: "not captured", cost: "not captured", latency: "not captured", status: "success", time: "—" },
+              { id: "tr4", name: "code_review_pr189", agent: "DevAssist", model: "gpt-4o-mini", tokens: "not captured", cost: "not captured", latency: "not captured", status: "success", time: "—" },
+              { id: "tr5", name: "iso_control_map_v2", agent: "ComplianceAI", model: "claude-3", tokens: "not captured", cost: "not captured", latency: "not captured", status: "error", time: "—" },
+              { id: "tr6", name: "deal_summary_batch", agent: "SalesGPT", model: "gpt-4o", tokens: "not captured", cost: "not captured", latency: "not captured", status: "success", time: "—" },
             ]}
             cols={[
               { key: "name", label: "Run Name", render: (v) => <span style={{ fontFamily: F.mono, fontSize: 12, color: T.accent, fontWeight: 600 }}>{v}</span> },

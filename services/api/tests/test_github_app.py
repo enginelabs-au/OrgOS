@@ -1,7 +1,7 @@
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
-from app.github_app import GithubError, list_pulls, open_pull, plan_pull, probe_github
+from app.github_app import GithubError, list_pulls, open_pull, plan_pull, probe_github, receipt_read_paths
 
 
 def _write_pem(path) -> None:
@@ -32,13 +32,18 @@ def test_probe_configured_without_live(tmp_path) -> None:
 def test_plan_pull_sanitizes_path() -> None:
     planned = plan_pull(
         owner="enginelabs-au",
-        repo="OrgOS",
+        repo="papership",
         title="Loop receipt",
         body="Phase 2",
-        head="orgos/loop t2-3",
+        head="papership/loop t2-3",
     )
-    assert planned["file_path"] == ".orgos/loop/orgos-loop-t2-3.md"
+    assert planned["file_path"] == ".papership/loop/papership-loop-t2-3.md"
+    assert planned["legacy_file_path"] == ".orgos/loop/papership-loop-t2-3.md"
     assert planned["base"] == "main"
+    assert receipt_read_paths(planned) == (
+        ".papership/loop/papership-loop-t2-3.md",
+        ".orgos/loop/papership-loop-t2-3.md",
+    )
 
 
 def test_open_pull_dry_run_does_not_call_github() -> None:
@@ -53,16 +58,16 @@ def test_open_pull_dry_run_does_not_call_github() -> None:
         "",
         "",
         owner="enginelabs-au",
-        repo="OrgOS",
+        repo="papership",
         title="Wire PR client",
         body="dry run",
-        head="orgos/pr-client",
+        head="papership/pr-client",
         dry_run=True,
         request=boom,
     )
     assert result["status"] == "planned"
     assert result["dry_run"] is True
-    assert result["planned"]["head"] == "orgos/pr-client"
+    assert result["planned"]["head"] == "papership/pr-client"
     assert called == []
 
 
@@ -78,11 +83,11 @@ def test_open_pull_live_uses_installation_and_creates(tmp_path) -> None:
         if "/git/ref/heads/main" in url:
             return 200, {"object": {"sha": "abc123"}}
         if url.endswith("/git/refs"):
-            return 201, {"ref": "refs/heads/orgos/pr-client"}
+            return 201, {"ref": "refs/heads/papership/pr-client"}
         if "/contents/" in url:
-            return 201, {"content": {"path": ".orgos/loop/orgos-pr-client.md"}}
+            return 201, {"content": {"path": ".papership/loop/papership-pr-client.md"}}
         if url.endswith("/pulls"):
-            return 201, {"number": 42, "html_url": "https://github.com/enginelabs-au/OrgOS/pull/42"}
+            return 201, {"number": 42, "html_url": "https://github.com/enginelabs-au/papership/pull/42"}
         return 404, {"message": "unexpected"}
 
     result = open_pull(
@@ -90,10 +95,10 @@ def test_open_pull_live_uses_installation_and_creates(tmp_path) -> None:
         "2",
         str(pem),
         owner="enginelabs-au",
-        repo="OrgOS",
+        repo="papership",
         title="Wire PR client",
         body="live",
-        head="orgos/pr-client",
+        head="papership/pr-client",
         dry_run=False,
         request=fake,
     )

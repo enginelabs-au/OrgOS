@@ -8,7 +8,7 @@ updated_at: 2026-09-10T17:05:00Z
 
 # Role Evidence: software-engineer-subagent (T0-8 foundation checks)
 
-One record per material claim. No secret values. Environment for every record unless stated otherwise: macOS (darwin 25.6.0), zsh, repository `/Users/camdouglas/OrgOS` on branch `master`, Node v25.6.1, npm 11.9.0, Python 3.11.9, rustc 1.84.1 (Homebrew), Docker 27.5.1; Cursor agent session with fail-closed hooks (protected `.cursor/`, `AGENTS.md`, `.cursorignore`, `.github/` untouched). Detailed result tables live in `docs/ui-blueprint.md` §0 and are referenced rather than duplicated.
+One record per material claim. No secret values. Environment for every record unless stated otherwise: macOS (darwin 25.6.0), zsh, repository `/Users/camdouglas/OrgOS` on branch `master`, Node v25.6.1, npm 11.9.0, Python 3.11.9, rustc 1.84.1 (Homebrew), Docker 27.5.1; Cursor agent session with fail-closed hooks (protected `.cursor/`, `AGENTS.md`, `.cursorignore`, `.github/` untouched). Detailed result tables live in `docs/blueprints/ui-blueprint.md` §0 and are referenced rather than duplicated.
 
 ## EV-S01 — Toolchain inventory
 
@@ -17,7 +17,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `VERIFIED`
 - Method: direct command execution
 - Exact command or tool: `node -v; npm -v; python3 --version; rustc --version; cargo --version; docker --version; docker compose version; uv --version; cargo tauri --version`
-- Artifact, path, source, or stable reference: `docs/ui-blueprint.md` §0.3 (toolchain row); this record
+- Artifact, path, source, or stable reference: `docs/blueprints/ui-blueprint.md` §0.3 (toolchain row); this record
 - Sanitized result and exit status: all core commands exit 0 with the versions above; `cargo tauri` not installed (expected — installed per project in phase 1, no global installs performed).
 - Timestamp: 2026-09-10T16:0xZ (first run) / re-confirmed 2026-09-10T16:58Z
 - Environment: as header
@@ -45,7 +45,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `VERIFIED`
 - Method: `git clone` + `git checkout <sha>` + `git rev-parse HEAD`; file inventory hashed
 - Exact command or tool: `git clone https://github.com/enginelabs-au/OrgOS .reference/orgos && git -C .reference/orgos checkout 8a843bd6429faf1ace5a9eb6dcfb7440703d34c4 && git -C .reference/orgos rev-parse HEAD`; `shasum -a 256` over `src/pages/cc-org-dash.jsx` and `src/components/cc-org-dash/*`
-- Artifact, path, source, or stable reference: `.reference/orgos/`; `docs/ui-blueprint.md` §0.1 (commit) and §0.2 (22-file inventory with byte sizes and sha256 prefixes)
+- Artifact, path, source, or stable reference: `.reference/orgos/`; `docs/blueprints/ui-blueprint.md` §0.1 (commit) and §0.2 (22-file inventory with byte sizes and sha256 prefixes)
 - Sanitized result and exit status: exit 0; `rev-parse` = `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` (re-confirmed 2026-09-10T16:58Z)
 - Timestamp: 2026-09-10T16:12Z
 - Environment: as header; network access to github.com available
@@ -59,7 +59,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `VERIFIED`
 - Method: command execution with timing
 - Exact command or tool: `cd .reference/orgos && npm ci`
-- Artifact, path, source, or stable reference: `docs/ui-blueprint.md` §0.3 row `npm ci`; `.reference/orgos/node_modules/` (ignored)
+- Artifact, path, source, or stable reference: `docs/blueprints/ui-blueprint.md` §0.3 row `npm ci`; `.reference/orgos/node_modules/` (ignored)
 - Sanitized result and exit status: exit 0, ≈6 s; "added 605 packages"; `npm audit` summary 24 advisories (2 low, 10 moderate, 11 high, 1 critical) — not remediated (out of scope, reference only).
 - Timestamp: 2026-09-10T16:13Z
 - Environment: as header
@@ -87,7 +87,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `VERIFIED`
 - Method: command execution with output captured outside the repository
 - Exact command or tool: `cd .reference/orgos && npm run lint > /tmp/orgos-lint.txt 2>&1; echo $?` ; `npm run typecheck > /tmp/orgos-typecheck.txt 2>&1; echo $?`
-- Artifact, path, source, or stable reference: `/tmp/orgos-lint.txt`, `/tmp/orgos-typecheck.txt` (ephemeral); summary in `docs/ui-blueprint.md` §0.3
+- Artifact, path, source, or stable reference: `/tmp/orgos-lint.txt`, `/tmp/orgos-typecheck.txt` (ephemeral); summary in `docs/blueprints/ui-blueprint.md` §0.3
 - Sanitized result and exit status: lint exit 1 (`FilesScreen.jsx:2:15` `Avi`, `PeopleScreen.jsx:4:31` `Plus`, `unused-imports/no-unused-imports`); typecheck exit 2 (328 errors; per-file breakdown in §0.3)
 - Timestamp: 2026-09-10T16:15Z
 - Environment: as header; eslint per reference lockfile; `tsc -p ./jsconfig.json`
@@ -101,7 +101,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `VERIFIED`
 - Method: ripgrep scans + file reads
 - Exact command or tool: `rg -n "className" .reference/orgos/src/components/cc-org-dash` ; `rg -n "var\(--" .reference/orgos/src/components/cc-org-dash .reference/orgos/src/pages/cc-org-dash.jsx` ; `rg -n "^import .* from ['\"]" .reference/orgos/src/pages/cc-org-dash.jsx .reference/orgos/src/components/cc-org-dash | rg -v "from ['\"]\./" ` ; `rg -n "fonts.googleapis" .reference/orgos/index.html .reference/orgos/src`
-- Artifact, path, source, or stable reference: `docs/ui-blueprint.md` §0.5 (20 primitives, 63 icons, 40 `THEMES` keys per theme, 11 data exports, localStorage keys)
+- Artifact, path, source, or stable reference: `docs/blueprints/ui-blueprint.md` §0.5 (20 primitives, 63 icons, 40 `THEMES` keys per theme, 11 data exports, localStorage keys)
 - Sanitized result and exit status: `className` → 0 matches (rg exit 1 = no matches); CSS vars → 0; external imports → only `react`, `react-dom`; fonts → Roboto only
 - Timestamp: 2026-09-10T16:20Z
 - Environment: as header; ripgrep
@@ -115,7 +115,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `VERIFIED`
 - Method: Python script implementing WCAG relative luminance and contrast ratio, run outside the repository
 - Exact command or tool: `python3 /tmp/contrast.py` (hex values read from `THEMES` in `.reference/orgos/src/components/cc-org-dash/primitives.jsx`)
-- Artifact, path, source, or stable reference: `docs/ui-blueprint.md` §0.6 table and finding F-S1; §E completed line
+- Artifact, path, source, or stable reference: `docs/blueprints/ui-blueprint.md` §0.6 table and finding F-S1; §E completed line
 - Sanitized result and exit status: exit 0; table values as above
 - Timestamp: 2026-09-10T16:25Z
 - Environment: Python 3.11.9
@@ -129,7 +129,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `PARTIAL` (server verified; captures UNVERIFIED)
 - Method: background managed shell; `curl -sI`; `GetDynamicTools` discovery then `browser_navigate` attempts
 - Exact command or tool: `cd .reference/orgos && exec npm run dev -- --port 5173 --strictPort --host 127.0.0.1` (managed background shell 157409, PID 86187); `curl -sI http://127.0.0.1:5173/cc-org-dash`; `cursor-ide-browser.browser_tabs {action:list}`, `browser_navigate` ×5
-- Artifact, path, source, or stable reference: `docs/ui-blueprint.md` §0.4 (capture index 0/52, attempt log, seeding script, restart instructions); dev-server log `/Users/camdouglas/.cursor/projects/Users-camdouglas-Papership/terminals/157409.txt`; `docs/ui-blueprint/` (empty — 0 files)
+- Artifact, path, source, or stable reference: `docs/blueprints/ui-blueprint.md` §0.4 (capture index 0/52, attempt log, seeding script, restart instructions); dev-server log `/Users/camdouglas/.cursor/projects/Users-camdouglas-Papership/terminals/157409.txt`; `docs/ui-blueprint/` (empty — 0 files)
 - Sanitized result and exit status: `HTTP/1.1 200 OK` (re-confirmed 2026-09-10T16:58Z, process elapsed 16:01); module probes `/src/pages/cc-org-dash.jsx` 200; browser attempts failed with "No browser tab available" / "Browser view not found: c07e4f" (5 attempts, within the ≤4-justified-attempts rule after the first discovery call; stopped per policy).
 - Timestamp: 2026-09-10T16:30Z–16:45Z; re-check 2026-09-10T16:58Z
 - Environment: as header; first `nohup npm run dev &` attempt died with the shell — replaced by the managed background job.
@@ -144,7 +144,7 @@ One record per material claim. No secret values. Environment for every record un
 - Evidence state: `VERIFIED`
 - Method: Cursor IDE browser first (4 justified attempts: `127.0.0.1`, `localhost`, LAN IP after rebinding, plus public-URL controls `https://example.com` and `http://neverssl.com` which loaded) → `chrome-error://chromewebdata/` for every loopback/LAN URL, so the tool cannot reach local servers here. Fallback without installs: host `Google Chrome 152.0.7977.83` launched `--headless=new --remote-debugging-port=9333 --user-data-dir=/tmp/orgos-capture/profile`, driven over CDP WebSocket by `capture.mjs` (Node v25.6.1 built-in `WebSocket`/`fetch`): `Emulation.setDeviceMetricsOverride`, `Page.navigate`, `Runtime.evaluate` (localStorage seeding + DOM clicks), `Input.dispatchKeyEvent` (state 51), `Emulation.setEmulatedMedia` (state 52), `Page.captureScreenshot`.
 - Exact command or tool: `cd .reference/orgos && exec npm run dev -- --port 5173 --strictPort --host 127.0.0.1` (managed job, PID 5506); Chrome as above (managed job, PID 4858); `node capture.mjs` (full run, 192 s, 110 files, 12 failures) then `node capture.mjs only=14,25,31,36,44,47` after selector fixes (23 s, 12 files, 0 failures); `ls docs/ui-blueprint/*.png | wc -l` → 122; distinct `nn` prefixes → 52; `kill 4858 5506` → both exited (Chrome exit 0, Vite exit 143).
-- Artifact, path, source, or stable reference: `docs/ui-blueprint/*.png` (122), `docs/ui-blueprint/capture.mjs`, `docs/ui-blueprint.md` §0.4 and §G; visual spot-checks by the lead of 03 light V1, 08 dark V1, 15, 11, 25, 07, 51 (content matches the §B/§A descriptions: rail, tabs, agent panel 420 px, `[Demo]` reply, issue slide-over CCO-245, project slide-over "Q2 Growth Initiative").
+- Artifact, path, source, or stable reference: `docs/ui-blueprint/*.png` (122), `docs/ui-blueprint/capture.mjs`, `docs/blueprints/ui-blueprint.md` §0.4 and §G; visual spot-checks by the lead of 03 light V1, 08 dark V1, 15, 11, 25, 07, 51 (content matches the §B/§A descriptions: rail, tabs, agent panel 420 px, `[Demo]` reply, issue slide-over CCO-245, project slide-over "Q2 Growth Initiative").
 - Sanitized result and exit status: 122/122 writes succeeded; 0 residual failures; run results in `/tmp/orgos-capture/results.json` (outside repository).
 - Timestamp: 2026-09-10T17:05Z–17:20Z
 - Environment: macOS Darwin 25.6.0 arm64; Node v25.6.1; Google Chrome 152.0.7977.83 (pre-installed host binary); no packages installed.

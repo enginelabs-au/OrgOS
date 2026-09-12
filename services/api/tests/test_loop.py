@@ -22,7 +22,7 @@ def test_loop_stages_forward_only(client: TestClient, founder_headers: dict[str,
     assert back.status_code == 400
     isolated = client.post(
         f"/work-items/{wid}/stage",
-        json={"stage": "isolated_change", "evidence": "orgos/loop-demo"},
+        json={"stage": "isolated_change", "evidence": "papership/loop-demo"},
         headers=founder_headers,
     )
     assert isolated.status_code == 200
@@ -53,9 +53,9 @@ def test_r1_acc6_walks_all_loop_stages(client: TestClient, founder_headers: dict
         json={
             "title": "R1-ACC-6 release proposal only",
             "body": "Dry-run receipt. Do not execute_release.",
-            "head": "orgos/r1-acc6-loop",
+            "head": "papership/r1-acc6-loop",
             "owner": "enginelabs-au",
-            "repo": "OrgOS",
+            "repo": "papership",
             "dry_run": True,
         },
     )

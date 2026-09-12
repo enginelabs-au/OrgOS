@@ -8,7 +8,7 @@ import {
   Archive,
   Search,
   Edit2,
-  Paperclip,
+  Attach,
   Smile,
   Code2,
   Bot,
@@ -855,7 +855,7 @@ export default function InboxScreen({ T, isMobile }) {
       </div>
       <div style={{ display: "flex", gap: 2, marginBottom: 8 }}>
         {[
-          [<Paperclip size={14} />, "Attach"],
+          [<Attach size={14} />, "Attach"],
           [<Smile size={14} />, "Emoji"],
           [<AtSign size={14} />, "Mention"],
           [<Code2 size={14} />, "Code"],

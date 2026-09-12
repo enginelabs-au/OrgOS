@@ -10,7 +10,7 @@ def test_phase2_env_names_are_not_read(monkeypatch) -> None:
     monkeypatch.setenv("HERMES_VERSION_PIN", "v0.21.1")
     monkeypatch.setenv("MODEL_PROVIDER_API_KEY", marker)
     monkeypatch.setenv("GITHUB_APP_ID", "4908453")
-    monkeypatch.setenv("GITHUB_APP_PRIVATE_KEY", "/tmp/orgos-github-app.pem")
+    monkeypatch.setenv("GITHUB_APP_PRIVATE_KEY", "/tmp/papership-github-app.pem")
     monkeypatch.setenv("GITHUB_APP_INSTALLATION_ID", "160851156")
     monkeypatch.setenv("GITHUB_APP_OWNER", "enginelabs-au")
     monkeypatch.setenv("GITHUB_APP_REPO", "Papership")
@@ -22,7 +22,7 @@ def test_phase2_env_names_are_not_read(monkeypatch) -> None:
     assert settings.hermes_version_pin == "v0.21.1"
     assert settings.github_app_id == "4908453"
     assert settings.github_installation_id == "160851156"
-    assert settings.github_private_key_path == "/tmp/orgos-github-app.pem"
+    assert settings.github_private_key_path == "/tmp/papership-github-app.pem"
     assert settings.github_owner == "enginelabs-au"
     assert settings.github_repo == "Papership"
     assert marker not in dumped

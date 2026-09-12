@@ -27,7 +27,7 @@ Phase 0 of the Engine Labs workstream is reconciled and the gate verdict is **CO
 
 Completed (plan §6 tasks 1–8, in order): §19 acceptance-criterion verification with commands and exit codes (EV-PL01…EV-PL09, EV-PL13); traceability matrix (§5.2; EV-PL12); consistency checks (EV-PL10); Security review of gate coverage and ordering (EV-PL11); residual risks and owner decisions (§9, §12); §22 prompt check (EV-PL14); proposed deltas with exact text (§13); this handoff.
 
-Not completed / out of scope by charter: no specialist content produced; no file edits; no owner handoff (phase 3); no ratification of decisions (owner); `docs/ui-blueprint.md` §A–§D/§F/§G and the 122 PNGs not re-inspected line-by-line (SE/UI-UX evidence relied upon); Mermaid diagram not rendered (F-S6 carried).
+Not completed / out of scope by charter: no specialist content produced; no file edits; no owner handoff (phase 3); no ratification of decisions (owner); `docs/blueprints/ui-blueprint.md` §A–§D/§F/§G and the 122 PNGs not re-inspected line-by-line (SE/UI-UX evidence relied upon); Mermaid diagram not rendered (F-S6 carried).
 
 ## 3. Charter, plan, and predecessor handoffs
 
@@ -64,7 +64,7 @@ Not completed / out of scope by charter: no specialist content produced; no file
 | Phase 01 Launch protocol | REQ-01 | §0.4; process | manifest; `phase_0_foundations_plan.md`; six charters/plans; STATE; continuation | V13-3 (PARTIAL: static validators pass; session trials phase 3) | 0 (done) → 3 |
 | Phase 02 Product + registry | REQ-02 | PRD-A.1–A.5, A.17; PRD-B.1; PRD-C.1–C.7; §4; §10 | `docs/product.md`; `docs/capabilities.md` (43, D-02); Hermes inventory placeholder §5 | V13-1, V13-2 (PARTIAL), V13-6, R1-ACC-10/11 | 1 (registry service), 2 (inventory vs pin), 3 |
 | Phase 02 six outcome metrics | REQ-05/06 | §10; PRD-G.11 | Growth §5.3 taxonomy; roadmap §3; `P14` row | V17-1; R1-ACC-11 | 1 (schema, GM-11 review), 2 (capture), 3 (first-baseline report) |
-| Phase 03 Experience | REQ-03 | PRD-A.10–A.16; NFR-2/3; §5.1 | `docs/ui-blueprint.md` §A–§H + 122 PNGs; D-06 | V16-1…V16-5; R1-ACC-1/8 | 1 (shell, 4+1 views), 3 (fidelity, a11y) |
+| Phase 03 Experience | REQ-03 | PRD-A.10–A.16; NFR-2/3; §5.1 | `docs/blueprints/ui-blueprint.md` §A–§H + 122 PNGs; D-06 | V16-1…V16-5; R1-ACC-1/8 | 1 (shell, 4+1 views), 3 (fidelity, a11y) |
 | Phase 03 Authority model | REQ-03 | PRD-D.1–D.13; PRD-E.2 | `docs/policies/authority-model.md` AUTH-01…30; D-03; architecture TB-1/2/5/10 | V14-1…V14-3; R1-ACC-4 | 1 (schema/tests), 2 (GitHub intersection) |
 | Phase 04 Architecture + stack | REQ-04 | PRD-A.16, B.5, B.9, B.10, D.13, E.4, E.5, E.7, E.10; NFR-1, 5–7, 10 | `docs/architecture.md` §1–§13; D-01; D-04; Compose §10 | V15-6; V16-1; V17-4/5; R1-ACC-3/5/7 | 1 (spike, Compose), 2 (adapter contract tests) |
 | Phase 04 Connections + connector contract | REQ-04 | PRD-A.5–A.9; PRD-B.2 | `capabilities.md` B08/B12/P06/P07 rows; architecture TB-6; roadmap §2.2 | V15-1, V15-2; R1-ACC-9 | 2 (GitHub), R2 (messaging) |
@@ -84,7 +84,7 @@ No intake planning requirement lacks an artefact. Deferred by design with a reco
 
 ### 5.3 Consistency findings
 
-C-01…C-16 are recorded in EV-PL10 with paths, line numbers, owners and disposition. Summary: stale status text in `docs/verification.md` V16-2 and §7 PL row (C-01, C-11); plan §10/§19/T0-13/§22 "D-01…D-05" (C-03); plan §12/§13/§14 task states (C-04, C-14); manifest header/§5/§6/§15 (C-05, C-07); plan §17 missing H-2…H-7, OQ-G1/G2, ratification rows (C-10); STATE active files (C-15); architecture §10/§14 worker `data` network vs AUTH-24 (C-02); `#6b7a90` vs `#617083` resolved by D-06 with annotated spec (C-06); product §12 OQ-4 deadline superseded (C-08); blueprint Paperclip star count superseded (C-09); AUTH-25 strength vs D-04 decision 9 (C-16). OQ-5 and OQ-3 are consistent everywhere (C-12, C-13).
+C-01…C-16 are recorded in EV-PL10 with paths, line numbers, owners and disposition. Summary: stale status text in `docs/verification.md` V16-2 and §7 PL row (C-01, C-11); plan §10/§19/T0-13/§22 "D-01…D-05" (C-03); plan §12/§13/§14 task states (C-04, C-14); manifest header/§5/§6/§15 (C-05, C-07); plan §17 missing H-2…H-7, OQ-G1/G2, ratification rows (C-10); STATE active files (C-15); architecture §10/§14 worker `data` network vs AUTH-24 (C-02); `#6b7a90` vs `#617083` resolved by D-06 with annotated spec (C-06); product §12 OQ-4 deadline superseded (C-08); blueprint audience-size citation withdrawn (C-09); AUTH-25 strength vs D-04 decision 9 (C-16). OQ-5 and OQ-3 are consistent everywhere (C-12, C-13).
 
 ### 5.4 Horizontal checklist
 
@@ -131,7 +131,7 @@ Recommendations (not executed): render the Mermaid diagram (F-S6); run the valid
 | C-01…C-05, C-07, C-10, C-11, C-15 | low (stale state/plan text) | verification V16-2 and §7 PL row; plan §10/§12/§13/§14/§17/§19/§22; manifest header/§5/§6/§15; STATE active files | lead (T0-13) | apply §13 deltas | validators re-run; preflight `mode_hint` reflects state |
 | C-02 | low | architecture §10 worker on `data` network / §14 open vs AUTH-24 | SE (phase-1 F-SEC-07 architecture revision) | remove `data` from worker row; close §14 item | Security review of revised architecture (phase 1) |
 | C-16 | low | D-04 decision 9 / architecture §7 state weaker "disabled if no path" vs AUTH-25 "disabled until spike passes" | lead (phase-1 plan), SE (D-04 annotation at phase-2 acceptance) | phase-1 plan implements AUTH-25 startup refusal + `interception_verified` flag | startup-refusal test (phase 1) |
-| C-06, C-08, C-09 | low | superseded wording (contrast token, OQ-4 deadline, Paperclip stars) | owner ack (D-3); lead annotate | none beyond acknowledgement | — |
+| C-06, C-08, C-09 | low | superseded wording (contrast token, OQ-4 deadline, withdrawn audience-size citation) | owner ack (D-3); lead annotate | none beyond acknowledgement | — |
 | R-PL1 | medium | F-SEC-01/02/04 remain design-stage; Security verdict reverts to BLOCKED if the phase-1 plan omits any phase-1 gate | lead (phase-1 plan) | carry list §11 as acceptance items | Security re-review at G1 |
 | R-PL2 | medium | Scope pull toward 43 domains / metric pressure toward `working` rows or invented targets (PM risk; Growth risk) | PL at every gate | D-02 item 5 status audit; NFR-4 `first-baseline` | registry audit per gate (EV-PL04 method) |
 | R-PL3 | medium | OQ-5 unanswered before phase-1 plan generation | owner | default = proposal (4+1 views); plan carries the dependency explicitly | owner answer recorded as D-05 amendment |
@@ -155,7 +155,7 @@ None invalidated. No predecessor verdict is rejected: each CONDITIONAL is suppor
   1. Security phase-1 gates as acceptance items: F-SEC-01 fail-closed config (AUTH-25: worker refuses to start with any side-effecting toolset enabled unless `interception_verified` is backed by a committed contract-test artefact; affected registry rows `unavailable`); F-SEC-02 (only API + `/auth/v1/*` on `edge`; Compose assertion + external port scan; `/rest`, `/storage`, `/realtime` unreachable); F-SEC-04 (`approval.<class>` grant class; agents cannot hold `approval.*` by DB constraint + API check; self-approval refused for restricted classes); medium phase-1 tasks F-SEC-03/05/06/07/08/09/10/13/16 and low F-SEC-11/15/17 per Security §9; Security re-review at phase-1 exit (G1).
   2. F-G1 / F-SEC-16 / GM-11: Security schema review of the UsageEvent required/extension/prohibited sets (Growth §5.4.2–5.4.4) before any event is emitted; content fields excluded by construction; Settings → Data disclosure list.
   3. F-S7 (closed agent panel out of tab order), F-U2 (dialog semantics/focus traps), D-06 token corrections (`#617083` light `t3`; `t4` decorative-only), F-S1 re-run of the contrast script on the phase-1 token file; keyboard focus walk.
-  4. D-06 departures: five primary tabs (Home, Work, Runs, Connections, Settings), `THEMES` as single token source in `packages/ui/tokens.ts`, no Tailwind, AUTH-27 exclusions; record as `docs/ui-blueprint.md` §H departures.
+  4. D-06 departures: five primary tabs (Home, Work, Runs, Connections, Settings), `THEMES` as single token source in `packages/ui/tokens.ts`, no Tailwind, AUTH-27 exclusions; record as `docs/blueprints/ui-blueprint.md` §H departures.
   5. OQ-5 dependency stated explicitly: scope = home, work item, assistant, agent run, minimal permissions editor unless the owner answers otherwise before generation; PRD-F.3 search/inspect via assistant (D-PL3).
   6. D-01 layout (`apps/desktop`, `services/api`, `services/worker`, `packages/contracts`, `packages/ui`, `infra/`) with the Tauri 2 + Vite 6 + npm-workspaces compatibility spike as the first task; architecture §14 phase-1 items (proxy choice, Postgres version, digests, Tauri capabilities, retention job design) and the C-02 worker-network correction.
   7. Environment-variable names from plan §16 phase-1 rows only (`ENGINE_API_BASE_URL`, `ENGINE_API_CORS_ORIGINS`, `ENGINE_JWT_ISSUER`/`ENGINE_JWT_AUDIENCE`, `DBOS_SYSTEM_DATABASE_URL`, `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_SECRET`, `POSTGRES_PASSWORD`); names only; `.env.example` names only; per-service env allowlist asserted by test (DRR-19, T-24).
@@ -219,7 +219,7 @@ Production approvals: none requested. Phase 0 is documentation; no deployment, D
   - T0-4: `docs/README.md` "Engine Labs" section; 17/17 links resolve (PL EV-PL07, 2026-09-10T18:19Z).
   - T0-5: six charters + six plans under `docs/workstreams/20260910-engine-labs-company-os/<role>/` (PL EV-PL06).
   - T0-6: PM CONDITIONAL 2026-09-10T16:00Z → `docs/product.md` (PRD-A…G, NFR-1..10, R1-ACC-1..15, OQ-1..6).
-  - T0-7: UI/UX CONDITIONAL 16:31Z → `docs/ui-blueprint.md` §A–§H (seven views × eight states; 52-state capture plan; D-1..D-11; OQ-U1..U4).
+  - T0-7: UI/UX CONDITIONAL 16:31Z → `docs/blueprints/ui-blueprint.md` §A–§H (seven views × eight states; 52-state capture plan; D-1..D-11; OQ-U1..U4).
   - T0-8: SE CONDITIONAL 17:05Z → `.gitignore`; `.reference/orgos/` @ 8a843bd6 (`npm ci` 0, build 0, lint 1, typecheck 2); `docs/capabilities.md` 43 rows; `docs/architecture.md`; `docs/verification.md`; D-01/D-04. Captures closed by lead 17:20Z: 122 PNGs / 52 states (EV-S16).
   - T0-9: Security CONDITIONAL 17:58Z → 19 findings (3 high, all phase-1 gated), STRIDE T-01…T-58, five `proposed` policies, GM-1…12, H-1…H-7; hygiene scan exit 1.
   - T0-10: Growth CONDITIONAL 17:58Z → taxonomy 9 rows, 18 event families, `domain.object.action`, CA-1…10, F-G1; price scan exit 1.
@@ -242,7 +242,7 @@ Production approvals: none requested. Phase 0 is documentation; no deployment, D
 - Active Role and Gate: "orchestrating lead — T0-13; predecessor `project-lead-subagent/handoff.md` (CONDITIONAL 18:22Z)."
 - Pending Remediation: add C-02 (architecture worker network, phase-1 F-SEC-07 revision) and C-16 (AUTH-25 form in phase-1 plan).
 - Owner Decision: unchanged list; add "OQ-U2 disposition D-PL3".
-- Files in Active Use: add `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`, `docs/workstreams/20260910-engine-labs-company-os/project-lead-subagent/{evidence,handoff}.md`.
+- Files in Active Use: add `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`, `docs/workstreams/20260910-engine-labs-company-os/project-lead-subagent/{evidence,handoff}.md`.
 - Last Updated: materialization timestamp.
 
 ### 13.5 `.cursor/memory/memories/2026-09-10-continuation.md` — append

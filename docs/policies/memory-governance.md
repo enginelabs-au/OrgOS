@@ -12,7 +12,7 @@ sources:
   - docs/architecture.md (§4 MemoryItem; §5 TB-10; §6 Hermes gateway state; §7 adapter contract)
   - docs/capabilities.md (§5 Hermes inventory; memory.read/memory.write grants)
   - Hermes API documentation capture (X-Hermes-Session-Key; sessions API; stored responses)
-  - docs/Company_Agent_System_Blueprint.md Phase 13–15 (L358–390)
+  - docs/blueprints/company_agent_system_blueprint.md Phase 13–15 (L358–390)
   - docs/workstreams/20260910-engine-labs-company-os/security-engineer-subagent/handoff.md (TB-13 T-53…T-58; F-SEC-07, F-SEC-13, F-SEC-14)
 ---
 

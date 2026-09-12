@@ -29,7 +29,7 @@ Not PASS because two bounded items are pending outside this role: Security schem
 
 Completed (plan §6 tasks 1–8, in order): positioning + differentiation (§5.1); V4/V5 review and baseline definition (§5.2); metric taxonomy (§5.3); event convention, properties, catalogue, retention, Security gate (§5.4); pilot learning plan (§5.5); tier communication principles and activation prerequisites (§5.6); GTM posture drafts and ethics (§5.7); evidence EV-G01…EV-G15 and this handoff.
 
-Not completed / out of scope by charter: publishing; pricing numbers; ad or vendor spend; community posting; analytics tooling selection; instrumentation code; file edits. Not performed: competitor product trials; pricing-page fetches; community-rule fetches (recorded EV-G04, EV-G14); Paperclip README fetch timed out (EV-G04).
+Not completed / out of scope by charter: publishing; pricing numbers; ad or vendor spend; community posting; analytics tooling selection; instrumentation code; file edits. Not performed: competitor product trials; pricing-page fetches; community-rule fetches (recorded EV-G04, EV-G14). Named-competitor comparison tables were later removed by owner request.
 
 ## 3. Charter, plan, and predecessor handoffs
 
@@ -81,18 +81,18 @@ Claim-to-evidence map (GM-8: claims must match verified architecture; no certifi
 
 Audience (blueprint §4): founders and very small teams already using agents for engineering work who have no sponsor/budget/receipt model and recover failures manually. Message hierarchy: (1) accountability primitives are the product, (2) durable cloud execution the operator can disconnect from, (3) the founder's own development loop as proof, (4) company memory. Objections and evidence limits: "governance is table stakes" (blueprint §3 implication — differentiation must come from execution quality, which R1 must demonstrate); "single founder is not a market" (deferred to design-partner stage, §5.7).
 
-Differentiation table. Sources: blueprint §5 rows and §3 sources (Startup Fortune, dreaming.press, Arcade, Agen, Improvado; tycoon.us, creeta, zoeticai, agentshortlist; Paperclip GitHub) plus this role's fetch of https://github.com/paperclipai/paperclip on 2026-09-10 (tagline; 80,404 stars). Rows marked `unverified-secondary` rest on the blueprint's third-party comparison pages only. No competitor prices are repeated.
+Papership capability table (named-competitor columns removed by owner request, 2026-09-12). No prices.
 
-| Dimension | Engine Labs (design intent, PRD ref) | Paperclip (`verified-primary`: tagline/stars; features `unverified-secondary`) | Relevance AI (`unverified-secondary`) | Lindy (`unverified-secondary`) | Dust · LangGraph/CrewAI · n8n/Zapier (`unverified-secondary`, brief) |
-|---|---|---|---|---|---|
-| Company work ledger + organisation model | Native ledger (plans, assignments, dependencies, decisions, evidence) + 8 org entities (PRD-A.3, D.4) | Agent org chart; no business-domain records | Workforce platform for ops/GTM teams; no company ledger | Personal workflows | Dust: knowledge agents per seat; frameworks: none; automation: graph not company model |
-| Per-run sponsorship, scoped grants, action-bound approvals | Nine run fields; grant classes; approval bound to action + target version (PRD-E.2, D.10) | Roles, budgets, heartbeats, approvals, audit (config-first) | RBAC, SSO, approvals | SMB SaaS governance limits | Frameworks: "exercise for the developer"; automation: step-level only |
-| Durable cloud execution operator can disconnect from | Close ≠ cancel; reconnect/resume; receipts; idempotency (PRD-E.4, E.7) | Self-hosted; disconnect semantics not documented in sources | Hosted | Hosted | Frameworks: developer-built persistence |
-| Desktop operating experience | Tauri desktop from Papership shell; no prompts/schemas for operators (PRD-A.14, D.13) | Developer audience | Web app | Web app | Web/IDE |
-| Governed company memory with provenance | Seven provenance fields; class source/approved/inferred (PRD-F.1–F.3) | Not documented in sources | Not a stated focus | Not a stated focus | Dust: knowledge-first, not authority-first |
-| Audience and deployment | Founder-first, single-tenant self-hosted per customer (architecture §10) | Developers, self-hosted, MIT | Enterprise ops teams | Individuals/SMB | Teams / developers / automation users |
+| Dimension | Papership design intent | PRD |
+|---|---|---|
+| Company work ledger + organisation model | Native ledger (plans, assignments, dependencies, decisions, evidence) + 8 org entities | A.3, D.4 |
+| Per-run sponsorship, scoped grants, action-bound approvals | Nine run fields; grant classes; approval bound to action + target version | E.2, D.10 |
+| Durable cloud execution operator can disconnect from | Close ≠ cancel; reconnect/resume; receipts; idempotency | E.4, E.7 |
+| Desktop operating experience | Tauri desktop from Papership shell; no prompts/schemas for operators | A.14, D.13 |
+| Governed company memory with provenance | Seven provenance fields; class source/approved/inferred | F.1–F.3 |
+| Audience and deployment | Founder-first, single-tenant self-hosted per customer | architecture §10 |
 
-Engine Labs must be measurably better than Paperclip on operator experience, recovery and business-record integration (blueprint §5) — these are exactly the V4/V5 dimensions.
+Engine Labs must be measurably better on operator experience, recovery and business-record integration (blueprint §5) — these are exactly the V4/V5 dimensions.
 
 ### 5.2 Value hypothesis and V4/V5 threshold review (plan task 2)
 
@@ -108,7 +108,7 @@ Restated thresholds (blueprint §7, verbatim):
 Measurability assessment:
 
 - V4 — measurable as written. Pass element (a) "≥1 change fully reviewed with linked evidence" is binary and verified by R1-ACC-6. Pass element (b) "recorded as baseline" is a capture criterion satisfied when all four V4 measures (interventions, context switches, wall time, cost per completed outcome) exist for each of the ≥3 changes on the release revision. The assumption text "faster and safer than the founder's current workflow" is **not testable in R1**: no comparator baseline exists (EV-G15). Label: `first-baseline`. Optional recommendation C-2 (§9): a self-reported comparator log for 3 comparable changes done the current way (wall time, interventions, cost if known), labelled `self-report, n=1, low rigour` and never presented as a measured result.
-- V5 — measurable once the "routine task" list is fixed. Proposed list (derived from R1-ACC-2, 3, 6, 8, 13 and `docs/ui-blueprint.md` §B primary actions): create priority and plan; start a run from a work item; approve/reject a decision; pause/resume/cancel a run; reconnect after closing the app; read remaining allowance and estimated cost; search/inspect memory via the assistant; view the registry and a "needs connection" explanation; grant a repository grant class. Measure: pass/fail per task plus count of technical-trace exposures (prompt text, schema, runtime config, session id outside the designated technical view) — the exposure count must be zero (PRD-A.14 acceptance). Scope: the views actually built in R1 (4+1 per OQ-5 proposal); B.5/B.6 tasks are `NOT_APPLICABLE` until R2/R3. Label: `first-baseline` for task time and error counts; zero-exposure is a requirement, not a target.
+- V5 — measurable once the "routine task" list is fixed. Proposed list (derived from R1-ACC-2, 3, 6, 8, 13 and `docs/blueprints/ui-blueprint.md` §B primary actions): create priority and plan; start a run from a work item; approve/reject a decision; pause/resume/cancel a run; reconnect after closing the app; read remaining allowance and estimated cost; search/inspect memory via the assistant; view the registry and a "needs connection" explanation; grant a repository grant class. Measure: pass/fail per task plus count of technical-trace exposures (prompt text, schema, runtime config, session id outside the designated technical view) — the exposure count must be zero (PRD-A.14 acceptance). Scope: the views actually built in R1 (4+1 per OQ-5 proposal); B.5/B.6 tasks are `NOT_APPLICABLE` until R2/R3. Label: `first-baseline` for task time and error counts; zero-exposure is a requirement, not a target.
 
 Definition of "baseline" for the single-user pilot (binding for R1 reporting):
 
@@ -152,7 +152,7 @@ All are opaque identifiers or closed enumerations; none carries content: `work_i
 
 Prompt text or any message body; conversation, file or document content; memory item content (counts by kind/class only, MEM-20); personal data of external individuals; member names, emails, auth ids, IPs, device fingerprints; full model configuration or provider prompts; credentials, tokens, keys (C3); free-text fields of any kind; repository file paths or diff text; URLs other than the internal deep-link id.
 
-#### 5.4.5 Initial event catalogue (R1 unless stated; view refs `docs/ui-blueprint.md` §B/§C/§D)
+#### 5.4.5 Initial event catalogue (R1 unless stated; view refs `docs/blueprints/ui-blueprint.md` §B/§C/§D)
 
 | Event | Trigger | View/surface | Extension props | Feeds metric | Release |
 |---|---|---|---|---|---|
@@ -236,8 +236,8 @@ Commercial activation prerequisites (all must have evidence before publication o
 
 Every item below is a draft for owner review; nothing is scheduled, posted, or spent. Publication is a human action (phase plan §17 "Approve any publication of go-to-market drafts").
 
-- Where the audience gathers (blueprint §14): founder/indie-hacker communities, AI-agent builder communities, open-source agent-orchestration repositories (Paperclip's audience size re-verified at 80,404 stars on 2026-09-10, EV-G04). Rule text for each community must be fetched and recorded before any draft is considered (EV-G14).
-- Trust assets (produced only from verified evidence): the R1 development-loop evidence itself (a real change with receipts, R1-ACC-6); the authority-model and recovery documentation (`docs/policies/authority-model.md`, PRD-E.7/E.8) once adopted; honest comparisons vs Paperclip and Relevance AI limited to the §5.1 dimensions, each row re-verified against primary sources with fetch dates.
+- Where the audience gathers (blueprint §14): founder/indie-hacker communities, AI-agent builder communities, open-source agent-orchestration repositories. Rule text for each community must be fetched and recorded before any draft is considered (EV-G14).
+- Trust assets (produced only from verified evidence): the R1 development-loop evidence itself (a real change with receipts, R1-ACC-6); the authority-model and recovery documentation (`docs/policies/authority-model.md`, PRD-E.7/E.8) once adopted; honest capability claims limited to the §5.1 dimensions, each row re-verified against primary sources with fetch dates.
 - Sequence (gated on verified workflows): founder-only pilot (R1) → invited Project Lead/Operator seats (R2) → design partners in one sector (R3) → commercial activation with published rates (R4, after CA-1…CA-10).
 - Content concepts (blueprint §14; drafts, never posted without owner approval): problem-first "how do you keep agents from repeating an external write after a timeout?"; transparent build journey — receipt/idempotency model after the V3 interruption trials (only after V3 results exist); resource-value — a checklist for scoping agent credentials per task.
 - Open question OQ-G1: owner appetite for a public build-log (recorded only; no default).
@@ -245,7 +245,7 @@ Every item below is a draft for owner review; nothing is scheduled, posted, or s
 
 ## 6. Validation and evidence
 
-Executed by the role (read-only): `date -u` (17:56:15Z, 17:58:00Z); `rg -c "^- GM-[0-9]+:"` → 12; `rg -n '\$[0-9]|USD|AUD|€' docs/product.md` → no match (exit 1); `rg -n "^### B\.[1-7]" docs/ui-blueprint.md` → 7; `rg -c "^\| (B|P)[0-9]{2}" docs/capabilities.md` → 43; `ls docs/roadmap.md` → absent; `ls` of role directory → `charter.md`, `plan.md`; `WebFetch` Paperclip repository page → success; README raw fetch → timeout. All other validation is document inspection (EV-G01…EV-G15). No tests, builds or analytics queries were possible or attempted (no code; no analytics source).
+Executed by the role (read-only): `date -u` (17:56:15Z, 17:58:00Z); `rg -c "^- GM-[0-9]+:"` → 12; `rg -n '\$[0-9]|USD|AUD|€' docs/product.md` → no match (exit 1); `rg -n "^### B\.[1-7]" docs/blueprints/ui-blueprint.md` → 7; `rg -c "^\| (B|P)[0-9]{2}" docs/capabilities.md` → 43; `ls docs/roadmap.md` → absent; `ls` of role directory → `charter.md`, `plan.md`. All other validation is document inspection (EV-G01…EV-G15). No tests, builds or analytics queries were possible or attempted (no code; no analytics source).
 
 Recommendations (not executed): optional V4 comparator self-report log (C-2); community rule fetch before any draft publication.
 
@@ -275,7 +275,7 @@ Recommendations (not executed): optional V4 comparator self-report log (C-2); co
 | F-G2 | low | V4 comparator baseline absent; "faster and safer" not testable in R1 | PL | Score V4 on capture criterion; optional comparator self-report (C-2) labelled low rigour | phase-2 plan text |
 | F-G3 | low | V5 "routine task" list not fixed; V5 references seven views while R1 builds 4+1 | PL / UI-UX | Adopt §5.2 task list in the phase-3 plan; mark B.5/B.6 tasks NOT_APPLICABLE for R1 | phase-3 plan |
 | F-G4 | low | OQ-4 tier labels unresolved | owner | Answer before any tier appears in a UI (R4) | decision record |
-| F-G5 | low | Positioning claims describe unverified design (PRD-E.4, D.10, E.2/E.3) | PL / owner | Keep DRAFT until R1-ACC-3/6/7/8 VERIFIED; re-verify competitor rows before publication | verification index rows |
+| F-G5 | low | Positioning claims describe unverified design (PRD-E.4, D.10, E.2/E.3) | PL / owner | Keep DRAFT until R1-ACC-3/6/7/8 VERIFIED; re-verify the Papership capability table against primary sources before publication. Do not restore named-competitor columns. | verification index rows |
 | F-G6 | low | R2 member measurement notice/legal basis undefined | owner (legal) | Decide before first non-founder seat (OQ-G2) | decision record |
 | Risk | medium | Metric pressure could push registry rows to `working` or thresholds to invented targets | PL | NFR-4 and PRD §3.2 rule 6 enforced at every gate; `first-baseline` label mandatory | gate review |
 

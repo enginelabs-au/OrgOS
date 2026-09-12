@@ -51,3 +51,11 @@ export {
   parseUsageEvent,
 } from "./usage.ts";
 export { EVENT_CATALOGUE, EVENT_NAME_SET } from "./events/index.ts";
+export {
+  FIXTURE_PACK_ID,
+  PACK_KINDS,
+  PACK_TRUST_VERDICTS,
+  type PackKind,
+  type PackManifest,
+  type PackTrustVerdict,
+} from "./packs.ts";

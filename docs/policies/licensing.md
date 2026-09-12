@@ -12,7 +12,7 @@ sources:
   - docs/decisions/2026-09-10-monorepo-layout.md (D-01)
   - docs/plans/phase_0_foundations_plan.md (§15, §16)
   - docs/verification.md (V17-6 licence inventory)
-  - docs/ui-blueprint.md (§0.5 fonts; §F keep list)
+  - docs/blueprints/ui-blueprint.md (§0.5 fonts; §F keep list)
   - docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/evidence.md (EV-S04 `npm ci`; F-S3)
   - docs/workstreams/20260910-engine-labs-company-os/security-engineer-subagent/handoff.md (EV-SEC-07, EV-SEC-11; F-SEC-10, F-SEC-12; T-44, T-47)
 ---
@@ -45,7 +45,7 @@ All first-party code in the monorepo (D-01: `apps/desktop`, `services/api`, `ser
 - LIC-03. The SDK (`packages/contracts` when published) MUST be independently licensable; its licence MUST be decided by decision record before first external publication (PRD-G.9).
 - LIC-04. No dependency under a licence incompatible with proprietary distribution (GPL-family strong copyleft for linked code, SSPL, non-commercial or field-of-use restricted licences) MAY be included in shipped artefacts without a decision record. AGPL components MAY run only as separate network services (e.g. Supabase stack components) with their licences recorded and unmodified sources noted.
 - LIC-05. The Hermes agent licence MUST be verified for commercial self-hosted use and recorded in the inventory before phase-2 spike work begins (owner action H-5). If verification fails, D-04 is reopened.
-- LIC-06. Fonts MUST be vendored (Inter, JetBrains Mono under SIL OFL 1.1 as recorded in `docs/ui-blueprint.md` §0.5 once verified) and MUST NOT be fetched from external font services at runtime.
+- LIC-06. Fonts MUST be vendored (Inter, JetBrains Mono under SIL OFL 1.1 as recorded in `docs/blueprints/ui-blueprint.md` §0.5 once verified) and MUST NOT be fetched from external font services at runtime.
 
 ### 4.2 Inventory
 
@@ -83,6 +83,10 @@ All first-party code in the monorepo (D-01: `apps/desktop`, `services/api`, `ser
 
 Decision record with named component, reason, compensating control and expiry ≤ 30 days for advisories or ≤ 90 days for licence questions. No exception may ship strong-copyleft linked code under the proprietary licence (LIC-04) or place signing keys outside the protected CI environment (LIC-16).
 
-## 7. Related decisions and requirements
+## 7. In-product licensing-state hook (ERA-17 / Phase 6)
+
+`GET /licenses` returns identifiers and presence flags only (LICENSE, NOTICE, policy path). It does not return secret values, pin strings, or prices. Settings → Docs shows the same identifiers. Policy status remains `proposed` until an owner decision adopts it. After erasure, retain only those identifiers and dates (ERA-17).
+
+## 8. Related decisions and requirements
 
 D-01, D-04; PRD-G.7, G.9; phase plan §15, §16, §17; V17-6; SE F-S3, EV-S04; findings F-SEC-10, F-SEC-11, F-SEC-12; threats T-43…T-47, T-50…T-52.

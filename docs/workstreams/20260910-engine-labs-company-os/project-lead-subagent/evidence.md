@@ -53,7 +53,7 @@ Produced read-only by the role on 2026-09-10; materialized verbatim by the orche
 - Sanitized result and exit status: no matches; exit 1 (clean, expected).
 - Timestamp: 2026-09-10T18:18Z
 - Environment: as above.
-- Limitations: `docs/blueprints/2026-09-10_engine_labs.md` §5 quotes third-party competitor price points (Relevance AI, Lindy) as sourced market evidence; it is a strategy document, not a product/roadmap/decision artefact, and states no Engine Labs price. Not scanned by requirement; noted for transparency.
+- Limitations: named-competitor comparison tables and third-party price points were withdrawn from `docs/blueprints/2026-09-10_engine_labs.md` §5 (2026-09-12). The remaining strategy claim is the Papership-only gap statement. No Engine Labs price is stated.
 - Required follow-up: re-run on `docs/roadmap.md` after any §3–§4 edit (roadmap §8).
 
 ## EV-PL04 — Registry row count, buckets, status discipline
@@ -73,11 +73,11 @@ Produced read-only by the role on 2026-09-10; materialized verbatim by the orche
 ## EV-PL05 — UI captures and reference evidence
 
 - Requirement ID: REQ-03; plan §19 criterion 3 ("captures or recorded limitation"); V16-2 baseline
-- Claim: 122 PNGs covering 52 distinct capture states exist under `docs/ui-blueprint/`; `docs/ui-blueprint.md` status is `captures_complete` r3.
+- Claim: 122 PNGs covering 52 distinct capture states exist under `docs/ui-blueprint/`; `docs/blueprints/ui-blueprint.md` status is `captures_complete` r3.
 - Evidence state: `VERIFIED`
 - Method: file count; distinct-prefix count; front-matter inspection.
-- Exact command or tool: `ls docs/ui-blueprint/*.png | wc -l` → 122; `ls docs/ui-blueprint/*.png | sed -E 's#.*/##; s/[-_](light|dark|dimmed|[0-9]+x[0-9]+).*//' | sort -u | wc -l` → 52; `rg -n '^status:|^revision:' docs/ui-blueprint.md`.
-- Artifact, path, source, or stable reference: `docs/ui-blueprint/` (122 files + `capture.mjs`); `docs/ui-blueprint.md` L4–5 (`status: specification_complete; captures_complete …`, `revision: 3`), §0.4 total row "122".
+- Exact command or tool: `ls docs/ui-blueprint/*.png | wc -l` → 122; `ls docs/ui-blueprint/*.png | sed -E 's#.*/##; s/[-_](light|dark|dimmed|[0-9]+x[0-9]+).*//' | sort -u | wc -l` → 52; `rg -n '^status:|^revision:' docs/blueprints/ui-blueprint.md`.
+- Artifact, path, source, or stable reference: `docs/ui-blueprint/` (122 files + `capture.mjs`); `docs/blueprints/ui-blueprint.md` L4–5 (`status: specification_complete; captures_complete …`, `revision: 3`), §0.4 total row "122".
 - Sanitized result and exit status: 122 / 52 / status and revision as stated; exit 0.
 - Timestamp: 2026-09-10T18:18Z
 - Environment: as above.
@@ -101,7 +101,7 @@ Produced read-only by the role on 2026-09-10; materialized verbatim by the orche
 ## EV-PL07 — Product-document set exists and cross-links
 
 - Requirement ID: plan §19 criterion 3; REQ-02…REQ-06; intake Phase 06 deliverables list
-- Claim: `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, five `docs/policies/*.md`, six `docs/decisions/2026-09-10-*.md` exist, carry front matter linking intake/blueprint/plan/manifest/handoff, and every link in `docs/README.md` "Engine Labs" section resolves.
+- Claim: `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, five `docs/policies/*.md`, six `docs/decisions/2026-09-10-*.md` exist, carry front matter linking intake/blueprint/plan/manifest/handoff, and every link in `docs/README.md` "Engine Labs" section resolves.
 - Evidence state: `VERIFIED`
 - Method: existence loop; front-matter reads; README link resolution.
 - Exact command or tool: `for f in …; do test -e docs/$f && echo ok $f || echo MISSING $f; done` over 17 paths; `ls docs/policies`; `rg -n '^status:' docs/policies/*.md`.
@@ -153,20 +153,20 @@ Produced read-only by the role on 2026-09-10; materialized verbatim by the orche
   - C-03 Phase-0 plan §10 L106, T0-13 L145, §19 L231 and §22 L250 say "D-01…D-05"; D-06 exists and is required by roadmap G0 and D-05 item 3. Owner: lead (T0-13); §22 prompt text must read "decisions D-01…D-06". Non-blocking.
   - C-04 Phase-0 plan §12 task states T0-4…T0-11 read `pending` although completed (manifest §5, STATE, continuation, roadmap §1). Owner: lead (T0-13). Non-blocking.
   - C-05 Manifest header (`status: phase_0_planning`, `current_gate: phase_0_role_planning`, `updated_at 15:35Z`), §5 PL row `required`/`pending`, §6 REQ-01…06 `in_progress`, §15 open. Owner: lead (T0-13); exact text in handoff §13. Non-blocking.
-  - C-06 `docs/ui-blueprint.md` §E L414 rule text still proposes `#6b7a90` (≈4.6:1) with an appended SE correction; §H D-3 L512 carries the lead annotation to `#617083`; D-06 item 4 adopts `#617083`. Resolved by D-06 (`proposed`); UI/UX spec is annotated, not silently rewritten (ROLES §3.7 immutability). Owner: owner acknowledgement of D-3 as revised. Non-blocking.
+  - C-06 `docs/blueprints/ui-blueprint.md` §E L414 rule text still proposes `#6b7a90` (≈4.6:1) with an appended SE correction; §H D-3 L512 carries the lead annotation to `#617083`; D-06 item 4 adopts `#617083`. Resolved by D-06 (`proposed`); UI/UX spec is annotated, not silently rewritten (ROLES §3.7 immutability). Owner: owner acknowledgement of D-3 as revised. Non-blocking.
   - C-07 Manifest §6 REQ-03 says "Security authority-model review pending" and REQ-04 "Security boundary review pending" — both completed at T0-9 (Security §5.1, D-03). Owner: lead (T0-13). Non-blocking.
   - C-08 `docs/product.md` §12 OQ-4 "Needed by: Before growth gate T0-10" has passed; Growth D-G3 and roadmap §7 moved it to "before any tier UI (R4)". PM-owned text is stale but superseded by roadmap. Owner: lead annotates in T0-13 (or PM revision when OQ-4 is answered). Low.
-  - C-09 Blueprint §14 cites Paperclip "43k+ stars"; Growth §5.1 re-verified 80,404 on 2026-09-10. Later fetch prevails; blueprint is dated strategy evidence. Low; no action required.
+  - C-09 Blueprint §14 audience-size citation withdrawn with named-competitor tables (2026-09-12). Low; no action required.
   - C-10 Plan §17 deferred human-action queue lacks explicit rows for H-2…H-7, OQ-G1/OQ-G2, D-01…D-06 ratification, OQ-5, D-3/D-11; all are present in roadmap §6 and manifest §13/§14. Security §11.2 required them in plan §17. Owner: lead (T0-13) — see handoff §13 delta. Non-blocking (queue complete in roadmap §6).
   - C-11 `docs/verification.md` §7 PL row "pending (T0-12)". Owner: lead (T0-13).
   - C-12 OQ-5 R1 view set consistent across product PRD-A.15, ui-blueprint AS-U1, roadmap §2.1, D-05 item 3, D-06 item 1, Growth A-G2. Phase-1 plan scope depends on the answer; default = proposal. No inconsistency.
   - C-13 OQ-3 numbering consistent (`proposal`) across product §4.1, roadmap §1, D-05. No inconsistency.
   - C-14 Manifest §5/§6 vs plan §13/§14 vs handoffs: verdicts and timestamps agree everywhere they are stated; plan §13/§14 status columns are stale (`pending`) — same remediation as C-04.
-  - C-15 STATE.md matches reality as of 18:15Z (active role PL, pending remediation, owner decisions); "Files in Active Use" lacks `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`; refresh in T0-13.
+  - C-15 STATE.md matches reality as of 18:15Z (active role PL, pending remediation, owner decisions); "Files in Active Use" lacks `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`; refresh in T0-13.
   - C-16 Fail-closed strength: AUTH-25, D-03 item 7, D-05 item 5 and roadmap §5 require side-effecting toolsets disabled *until* SP-1…SP-7 pass (phase-1 config gate); D-04 decision 9 and architecture §7 "Tool interception" row state the weaker conditional form ("if no supported path exists… disabled"). Not contradictory (stronger subsumes weaker) but the phase-1 plan must implement the AUTH-25 form (startup refusal unless `interception_verified` is backed by a committed contract-test artefact); D-04 should be annotated on acceptance in the phase-2 plan. Owner: lead (phase-1 plan), SE (D-04 amendment). Non-blocking.
 - Timestamp: 2026-09-10T18:19Z–18:21Z
 - Environment: as above.
-- Limitations: `docs/ui-blueprint.md` read in part (§0, §E, §H, front matter) plus greps; §A–§D, §F, §G relied upon via UI/UX and SE handoffs.
+- Limitations: `docs/blueprints/ui-blueprint.md` read in part (§0, §E, §H, front matter) plus greps; §A–§D, §F, §G relied upon via UI/UX and SE handoffs.
 - Required follow-up: handoff §13 deltas; phase-1 plan carry list (handoff §11).
 
 ## EV-PL11 — Security high findings have phase-1 gates; fail-closed ordering consistent
@@ -188,8 +188,8 @@ Produced read-only by the role on 2026-09-10; materialized verbatim by the orche
 - Requirement ID: REQ-01…REQ-06; charter §9 ("every intake requirement traces to a PRD ID and a phase"); NFR-9
 - Claim: every intake planning-phase heading maps to at least one REQ ID, PRD group, phase-0 artefact, verification entry and execution phase; no planning requirement lacks an artefact. Matrix in handoff §5.
 - Evidence state: `VERIFIED`
-- Method: full read of `docs/Company_Agent_System_Blueprint.md` Phases 01–06 (and 07–18 for release mapping) against `docs/product.md` §0.1/§14, manifest §6, `docs/verification.md` §1–§6, `docs/roadmap.md` §1.
-- Exact command or tool: `Read` (full intake); `rg -n 'Final result' docs/Company_Agent_System_Blueprint.md` → exit 1 (no such heading; confirms PM AS-9/EV-05 derivation).
+- Method: full read of `docs/blueprints/company_agent_system_blueprint.md` Phases 01–06 (and 07–18 for release mapping) against `docs/product.md` §0.1/§14, manifest §6, `docs/verification.md` §1–§6, `docs/roadmap.md` §1.
+- Exact command or tool: `Read` (full intake); `rg -n 'Final result' docs/blueprints/company_agent_system_blueprint.md` → exit 1 (no such heading; confirms PM AS-9/EV-05 derivation).
 - Artifact, path, source, or stable reference: handoff §5 matrix.
 - Sanitized result and exit status: 0 gaps at artefact level; 3 items deferred by design with recorded phase (Hermes pinned-version inventory → phase 2, PRD-C.4; compatibility spikes V1/V2 → phase 1/2; D-01…D-06 ratification → owner). PM assumption AS-4 (bucket rule) and AS-9 (acceptance derivation) accepted by PL at this gate.
 - Timestamp: 2026-09-10T18:20Z

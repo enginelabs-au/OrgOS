@@ -2,15 +2,15 @@
 schema_version: 1
 task_id: 20260910-engine-labs-company-os
 title: Engine Labs — company operating system, first release lifecycle
-source_request: docs/Company_Agent_System_Blueprint.md (complete product intake) via /launch-pipeline
-status: phase_1_g1_conditional
+source_request: docs/blueprints/company_agent_system_blueprint.md (complete product intake) via /launch-pipeline
+status: phase_7_g11_pass
 risk_tier: tier_3
 created_at: 2026-09-10T15:35:00Z
-updated_at: 2026-09-11T04:30:00Z
-revision: 4
+updated_at: 2026-09-12T10:55:00Z
+revision: 11
 owner: user-operator (founder)
 active_role: orchestrating-lead
-current_gate: G4 owner APPROVE (2026-09-11); Phase 4 T4-1
+current_gate: G11 PASS (2026-09-12); residuals CA-10 / D-25 / no store binaries; final checklist not generated until owner proceeds
 ---
 
 # Workstream Manifest: Engine Labs — company operating system
@@ -23,11 +23,11 @@ Requested outcome of this workstream: an owner-approved first release in which t
 
 ## 2. Source request and project context
 
-- Intake: `docs/Company_Agent_System_Blueprint.md` (18 blueprint phases: planning 01–06, implementation 07–12, verification 13–18). Location accepted as-is.
+- Intake: `docs/blueprints/company_agent_system_blueprint.md` (18 blueprint phases: planning 01–06, implementation 07–12, verification 13–18). Location accepted as-is.
 - Launch protocol: `AGENTS.md` → `.cursor/AGENTS.md` → `.cursor/instructions/LAUCH.md` via `/launch-pipeline`. Preflight `MATERIALIZATION_REQUIRED` → bootstrap exit 0 on 2026-09-10.
-- UI reference: [enginelabs-au/Papership](https://github.com/enginelabs-au/OrgOS) at commit `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`, active route `/cc-org-dash`. Inspected read-only on 2026-09-10 (see `.cursor/STATE.md` Active Items).
-- Repository state: fresh repository (`master`, zero commits); contains the `.cursor/` control plane, root governance files, and `docs/` only. No application code yet.
-- Prior decisions: `docs/decisions/2026-08-18-agent-role-pipeline.md`.
+- UI reference: [enginelabs-au/Papership](https://github.com/enginelabs-au/OrgOS) at commit `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`. Live mount is `/papership` (D-32); leftover `/cc-org-dash` redirects. Historical inspection used `/cc-org-dash` on 2026-09-10.
+- Repository state: live Papership monorepo. Phases 0–3 closed. Phase 4 G5 PASS 2026-09-12.
+- Prior decisions: `docs/decisions/2026-08-18-agent-role-pipeline.md`; Phase 4 closeout `docs/decisions/2026-09-12-phase-4-closeout.md`.
 
 ## 3. Scope and non-goals
 
@@ -62,8 +62,8 @@ Every canonical role must appear. A skipped role requires a specific reason.
 | Role ID | Required or skipped | Reason/evidence | Predecessor | Owned paths | Status | Handoff |
 |---|---|---|---|---|---|---|
 | `product-manager-subagent` | required | New product; complete product contract, capability registry, seat templates, commercial tiers, acceptance criteria must be derived from the blueprint (ROLES §3.4 domain trigger: product scope, prioritization, pricing, metrics) | orchestrating lead (manifest, blueprint, phase 0) | read-only; artifacts materialized by lead under `docs/workstreams/20260910-engine-labs-company-os/product-manager-subagent/` | CONDITIONAL (2026-09-10T16:00Z) | `product-manager-subagent/handoff.md` → `docs/product.md` |
-| `ui-ux-developer-subagent` | required | Desktop shell derived from Papership `/cc-org-dash`; design specification for home, work item, assistant, agent run, connection setup, memory manager, permissions editor; accessibility and responsive states (trigger: user-facing layout/interaction) | `product-manager-subagent` | read-only; lead materializes under `.../ui-ux-developer-subagent/` | CONDITIONAL (2026-09-10T16:31Z) | `ui-ux-developer-subagent/handoff.md` → `docs/ui-blueprint.md` |
-| `software-engineer-subagent` | required | Only writable specialist; phase 0 foundation checks (reference capture, compatibility spike scaffolding, docs registry), then phases 1–2 implementation (trigger: source, schema, configuration, integration) | `ui-ux-developer-subagent` | phase 0: `docs/ui-blueprint.md`, `docs/architecture.md`, `docs/capabilities.md`, `docs/verification.md`, `.reference/` capture notes; phases 1–2: application paths assigned in those plans | CONDITIONAL (2026-09-10T17:05Z; captures completed by lead 17:20Z) | `software-engineer-subagent/handoff.md` → `docs/capabilities.md`, `docs/architecture.md`, `docs/verification.md`, `docs/ui-blueprint/` (122 PNGs), D-01/D-04 |
+| `ui-ux-developer-subagent` | required | Desktop shell derived from Papership `/cc-org-dash`; design specification for home, work item, assistant, agent run, connection setup, memory manager, permissions editor; accessibility and responsive states (trigger: user-facing layout/interaction) | `product-manager-subagent` | read-only; lead materializes under `.../ui-ux-developer-subagent/` | CONDITIONAL (2026-09-10T16:31Z) | `ui-ux-developer-subagent/handoff.md` → `docs/blueprints/ui-blueprint.md` |
+| `software-engineer-subagent` | required | Only writable specialist; phase 0 foundation checks (reference capture, compatibility spike scaffolding, docs registry), then phases 1–2 implementation (trigger: source, schema, configuration, integration) | `ui-ux-developer-subagent` | phase 0: `docs/blueprints/ui-blueprint.md`, `docs/architecture.md`, `docs/capabilities.md`, `docs/verification.md`, `.reference/` capture notes; phases 1–2: application paths assigned in those plans | CONDITIONAL (2026-09-10T17:05Z; captures completed by lead 17:20Z) | `software-engineer-subagent/handoff.md` → `docs/capabilities.md`, `docs/architecture.md`, `docs/verification.md`, `docs/ui-blueprint/` (122 PNGs), D-01/D-04 |
 | `security-engineer-subagent` | required | Tier 3 mandatory; authn/authz, tenant boundaries, secrets, agent tool side effects, data lifecycle, supply chain (ROLES §7 mandatory triggers) | `software-engineer-subagent` | read-only; lead materializes under `.../security-engineer-subagent/` and `docs/policies/` | CONDITIONAL (2026-09-10T17:58Z) | `security-engineer-subagent/handoff.md` → `docs/policies/{authority-model,data-residency-and-retention,memory-governance,erasure-and-offboarding,licensing}.md` |
 | `growth-marketing-subagent` | required | Blueprint requires positioning, value hypothesis, validation thresholds, commercial tiers and later expansion assessment; STRATEGY.md Phase 3 cultural GTM; metrics taxonomy for task completion, correctness, recovery, intervention, cost (trigger: positioning, pricing communication, analytics taxonomy) | `security-engineer-subagent` | read-only; lead materializes under `.../growth-marketing-subagent/` and `docs/roadmap.md` §3–§4 | CONDITIONAL (2026-09-10T17:58Z) | `growth-marketing-subagent/handoff.md` → `docs/roadmap.md` "Measurement and validation", "Commercial activation" |
 | `project-lead-subagent` | required | Tier 1–4 always required; cross-role reconciliation, traceability, phase gates, owner handoff | `growth-marketing-subagent` | read-only; lead materializes under `.../project-lead-subagent/` and `delivery/owner-handoff.md` (phase 3) | CONDITIONAL (2026-09-10T18:22Z) | `project-lead-subagent/handoff.md` (evidence `project-lead-subagent/evidence.md`, EV-PL01…EV-PL16) |
@@ -80,14 +80,17 @@ Requirement IDs are stable for the life of the workstream. Detailed sub-requirem
 |---|---|---|---|---|---|
 | REQ-01 | Launch protocol compliance: preflight, bootstrap, manifest, roles, state/memory, Build/bootstrap boundary, no production inference | Blueprint Phase 01 | orchestrating lead / `project-lead-subagent` | preflight and bootstrap outputs; manifest; STATE; continuation; validators pass | complete (phase 0) |
 | REQ-02 | Product definition and versioned capability registry covering all 43 domain groups (B01–B24, P01–P19) with owner, actions, authority, grants, dependencies, components, phase, status, evidence; Hermes capability inventory | Blueprint Phase 02 | `product-manager-subagent` (contract), `software-engineer-subagent` (registry file) | `docs/product.md`, `docs/capabilities.md` | complete (phase 0; 43 rows all `planned`; Hermes capability inventory phase 2 against the pinned version) |
-| REQ-03 | Member experience and authority model: Papership-derived shell, three seat templates, owner→lead→member hierarchy, server-side checks, provisioning/handover, adaptive views, design specification for seven views, `docs/ui-blueprint.md` | Blueprint Phase 03 | `ui-ux-developer-subagent` (spec), `security-engineer-subagent` (authority model review) | `docs/ui-blueprint.md`, design specification, permissions model | complete (phase 0; spec 16:31Z; captures 52/52 17:20Z; Security authority-model review done — D-03 / `docs/policies/authority-model.md`) |
+| REQ-03 | Member experience and authority model: Papership-derived shell, three seat templates, owner→lead→member hierarchy, server-side checks, provisioning/handover, adaptive views, design specification for seven views, `docs/blueprints/ui-blueprint.md` | Blueprint Phase 03 | `ui-ux-developer-subagent` (spec), `security-engineer-subagent` (authority model review) | `docs/blueprints/ui-blueprint.md`, design specification, permissions model | complete (phase 0; spec 16:31Z; captures 52/52 17:20Z; Security authority-model review done — D-03 / `docs/policies/authority-model.md`) |
 | REQ-04 | Cloud architecture and connections: Tauri 2 desktop, FastAPI, self-hosted Supabase, Hermes workers behind adapter/policy, DBOS workflows, Postgres retrieval, Docker Compose on DigitalOcean, data residency/backups, connector contract, priority connections | Blueprint Phase 04 | `software-engineer-subagent` (architecture), `security-engineer-subagent` (boundaries) | `docs/architecture.md`, decisions, compatibility spike results | complete (phase 0 design; D-01/D-04 `proposed`; Security boundary review done TB-1…TB-13; C-02 worker-network correction phase 1; spikes phase 1–2) |
 | REQ-05 | Agents, memory, lifecycle, commercial controls: universal assistant modes, run sponsorship, action lifecycle, isolation, recovery/diagnostic harness, governed memory, retention defaults, offboarding/erasure, four tiers, licensing | Blueprint Phase 05 | `product-manager-subagent`, `security-engineer-subagent`, `growth-marketing-subagent` (tiers/pricing comms) | `docs/product.md`, `docs/policies/` (five `proposed`), Security threat model T-01…T-58, Growth taxonomy/tier principles (`docs/roadmap.md` §3–§4) | complete (phase 0; adoption via H-6 decision records; enforcement at phase-1 gates) |
 | REQ-06 | Release scope, dependencies, acceptance gates: phase-0 roadmap, execution-plan mapping, release map, verification index, env-var registry, deferred human-action queue, next-plan prompts | Blueprint Phase 06 | orchestrating lead, `project-lead-subagent` | `docs/plans/phase_0_foundations_plan.md`, `docs/roadmap.md`, `docs/verification.md` | complete (phase 0) |
 | REQ-07 | Foundation implementation: desktop shell, cloud API/data, identity, owner seat, grants, registry, work ledger, job persistence, streamed status, reconnect | Blueprint Phase 07 | `software-engineer-subagent` | phase 1 plan evidence | planned (phase 1) |
 | REQ-08 | Development loop: pinned Hermes runtime, repository binding, request→release-proposal loop, GlobalAgentPanel wired to backend sessions, contract tests, no duplicate external effects | Blueprint Phase 08 | `software-engineer-subagent` | phase 2 plan evidence | planned (phase 2) |
 | REQ-13..18 | Verification: functional/domain coverage, authority/memory/lifecycle, integrations/recovery/backups, desktop/adaptive experience, usage/deployment/commercial, release readiness and owner handoff | Blueprint Phases 13–18 | `project-lead-subagent` with all roles | phase 3 plan evidence, `docs/verification.md` | planned (phase 3) |
-| REQ-09..12 | Collaboration/connections, company operations, commercial delivery, ecosystem/mobile | Blueprint Phases 09–12 | future releases | roadmap entries only | deferred (later releases) |
+| REQ-09 | Collaboration and connections | Blueprint Phase 09 | Phase 4 roles | G5 PASS 2026-09-12 | complete (R2 `configured`) |
+| REQ-10 | Company operations | Blueprint Phase 10 | Phase 5 roles | G7 PASS 2026-09-12 | complete (R3 `configured` for B01/B03/P08/P09/P16) |
+| REQ-11 | Commercial delivery | Blueprint Phase 11 | Phase 6 roles | G9 PASS 2026-09-12 | complete (R4 commercial structure; CA-10 still owner) |
+| REQ-12 | Ecosystem and mobile | Blueprint Phase 12 | Phase 7 roles | G11 PASS 2026-09-12 | complete (R4 shells/P19/PWA/mobile wrap; store publish owner) |
 
 ## 7. Dependency and gate order
 
@@ -112,7 +115,7 @@ The same relative order repeats inside phases 1, 2, and 3 with the roles require
 | `docs/plans/**` | orchestrating lead | all roles | create/update | whole workstream |
 | `docs/README.md` | orchestrating lead | PL | update index | whole workstream |
 | `docs/product.md`, `docs/roadmap.md`, `docs/policies/**` | orchestrating lead (from PM/Growth/Security output) | all | create/update | phase 0 |
-| `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`, `docs/verification.md` | `software-engineer-subagent` (phase 0 delegated), lead integrates | all | create/update | phase 0 |
+| `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`, `docs/verification.md` | `software-engineer-subagent` (phase 0 delegated), lead integrates | all | create/update | phase 0 |
 | `docs/decisions/**` | orchestrating lead | all | create | whole workstream |
 | `.cursor/STATE.md`, `.cursor/memory/**` | orchestrating lead | PL (proposes deltas) | update | whole workstream |
 | `.reference/orgos/` (local clone of pinned commit, git-ignored) | `software-engineer-subagent` | UI/UX, Security | clone at pinned SHA, `npm ci`, `npm run dev`, capture | phase 0 |
@@ -139,7 +142,7 @@ Label assumptions as `verified`, `provisional`, or `blocking`.
 - `verified` — Reference stack: Vite 6, React 18 JSX, Tailwind 3.4, Radix/shadcn, react-router 6, TanStack Query 5, lockfile present; `AuthContext.jsx` is a dev stub; `entities.js` is localStorage.
 - `provisional` — The owner's Agent-mode `/launch-pipeline` invocation plus declined Plan Mode switch is treated as explicit Agent-mode implementation authorization for phase 0 documentation and later local implementation. Validation point: owner may revoke at any gate; phase 0 output is documentation only.
 - `provisional` — Task ID `20260910-engine-labs-company-os` (UTC date of intake).
-- `provisional` — Blueprint remains at `docs/Company_Agent_System_Blueprint.md`; not moved.
+- `provisional` — Blueprint remains at `docs/blueprints/company_agent_system_blueprint.md`; not moved.
 - `provisional` — Default branch remains `master` for now; CI workflow targets `main`. Owner decision required before first push; recorded in the deferred human-action queue.
 - `provisional` — The control plane and all workstream artifacts stay uncommitted until the owner explicitly requests versioning (carried from prior STATE).
 - `provisional` — Repository layout for implementation will be a monorepo (`apps/desktop`, `services/api`, `services/worker`, `packages/contracts`, `infra/`); fixed in the phase 1 plan after the phase 0 compatibility spike.
@@ -170,10 +173,10 @@ Resolved before this workstream: `.cursor/memory/blockers-fixed/agent-installati
 
 ## 12. Artifact and evidence index
 
-- Intake: `docs/Company_Agent_System_Blueprint.md`
+- Intake: `docs/blueprints/company_agent_system_blueprint.md`
 - Strategy blueprint: `docs/blueprints/2026-09-10_engine_labs.md`
 - Phase 0 plan: `docs/plans/phase_0_foundations_plan.md`
-- Product documents (phase 0 outputs): `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, `docs/policies/`
+- Product documents (phase 0 outputs): `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, `docs/policies/`
 - Decisions: `docs/decisions/`
 - Role artifacts: `docs/workstreams/20260910-engine-labs-company-os/<role-id>/{charter,plan,evidence,handoff}.md`
 - Owner handoff (release closure): `docs/workstreams/20260910-engine-labs-company-os/delivery/owner-handoff.md`

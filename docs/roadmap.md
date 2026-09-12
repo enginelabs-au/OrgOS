@@ -1,14 +1,14 @@
 ---
 document: roadmap
 title: Engine Labs Company OS — Roadmap
-status: phase_0_draft
-revision: 1
+status: r4_structure_complete
+revision: 3
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-12
 task_id: 20260910-engine-labs-company-os
 owner_role: orchestrating lead (T0-11); measurement and commercial sections drafted read-only by growth-marketing-subagent (T0-10)
 sources:
-  - docs/Company_Agent_System_Blueprint.md (Phases 01–18)
+  - docs/blueprints/company_agent_system_blueprint.md (Phases 01–18)
   - docs/blueprints/2026-09-10_engine_labs.md (§7, §13, §14, §15)
   - docs/product.md (§4 release map; §9 R1-ACC; §10 metrics; §12 open questions)
   - docs/capabilities.md (43 rows; buckets R1 = 19, R2 = 4, R3 = 14, R4 = 6)
@@ -24,7 +24,7 @@ This roadmap maps every intake phase (01–18) exactly once to an execution plan
 Rules that govern this document:
 
 - Exactly one later phase plan is generated after each verified completion (`.cursor/instructions/PROJECT_PLANNING.md`); the plan names below are commitments to file names, not to content.
-- Release R1 = intake phases 07–08 (`verified`, I-06). The phase-to-release mapping for 09–12 is a `proposal` (PRD §4.1; OQ-3).
+- Release R1 = intake phases 07–08 (`verified`, I-06). The phase-to-release mapping for 09–12 is `accepted` (D-28 / OQ-3): R2=09, R3=10, R4=11+12.
 - Registry status discipline (PRD §3.2) applies at every gate: `project-lead-subagent` rejects any `working` row without demonstrated workflow, verified integration and linked evidence.
 - Production, DNS, billing, publishing and credential actions are owner/CI actions; no role verdict or Build authorization confers them.
 
@@ -34,7 +34,7 @@ Rules that govern this document:
 |---|---|---|---|---|
 | 01 | Launch from the supplied blueprint | `docs/plans/phase_0_foundations_plan.md` (T0-1…T0-5) | R1 | complete — manifest, blueprint, plan, charters |
 | 02 | Plan the product and its complete capability registry | `phase_0_foundations_plan.md` (T0-6 PM gate) | R1 | complete — `docs/product.md`, `docs/capabilities.md` (43 rows); PM CONDITIONAL |
-| 03 | Plan the member experience and authority model | `phase_0_foundations_plan.md` (T0-7 UI/UX; T0-9 Security D-03) | R1 | complete — `docs/ui-blueprint.md` (52 states, 122 captures), `docs/policies/authority-model.md`; UI/UX and Security CONDITIONAL |
+| 03 | Plan the member experience and authority model | `phase_0_foundations_plan.md` (T0-7 UI/UX; T0-9 Security D-03) | R1 | complete — `docs/blueprints/ui-blueprint.md` (52 states, 122 captures), `docs/policies/authority-model.md`; UI/UX and Security CONDITIONAL |
 | 04 | Plan cloud architecture and connections | `phase_0_foundations_plan.md` (T0-8 SE; T0-9 Security) | R1 | complete — `docs/architecture.md`, D-01, D-04; SE CONDITIONAL |
 | 05 | Plan agents, memory, lifecycle and commercial controls | `phase_0_foundations_plan.md` (T0-6, T0-9, T0-10) | R1 | complete — `docs/policies/{memory-governance,data-residency-and-retention,erasure-and-offboarding,licensing}.md`; §3–§4 below; Growth CONDITIONAL |
 | 06 | Plan release scope, dependencies and acceptance gates | `phase_0_foundations_plan.md` (T0-11 this roadmap; T0-12 PL gate; T0-13) | R1 | complete — this document; PL gate CONDITIONAL 2026-09-10T18:22Z; T0-13 reconciled |
@@ -45,11 +45,11 @@ Rules that govern this document:
 | 15 | Verify integrations, recovery and backups | `phase_3_release_verification_plan.md` | R1 (re-run each release) | G3 closed — live `accepted` N/A; V15-2 N/A |
 | 16 | Verify the desktop and adaptive experience | `phase_3_release_verification_plan.md` | R1 (adaptive views R3) | G3 closed — V16 PARTIAL |
 | 17 | Verify usage, deployment and commercial operations | `phase_3_release_verification_plan.md` | R1 (usage measurement); R4 (commercial) | G3 closed — emit off; first-baseline not_captured |
-| 18 | Verify release readiness and complete the owner handoff | `phase_3_release_verification_plan.md` + `docs/plans/final_implementation_checklist.md` | R1 (repeated per release) | G3 closed — V18-5 waiting owner |
-| 09 | Build collaboration and connections | `docs/plans/phase_4_collaboration_connections_plan.md` | R2 (`proposal`) | plan written 2026-09-11 (D-19 from G3 CONDITIONAL); not implemented |
-| 10 | Expand company operations | `docs/plans/phase_5_company_operations_plan.md` | R3 (`proposal`) | not started |
-| 11 | Build commercial delivery | `docs/plans/phase_6_commercial_delivery_plan.md` | R4 (`proposal`) | not started — commercial gate CA-1…CA-10 (§4) |
-| 12 | Expand the ecosystem and mobile clients | `docs/plans/phase_7_ecosystem_mobile_plan.md` | R4 (`proposal`) | not started |
+| 18 | Verify release readiness and complete the owner handoff | `phase_3_release_verification_plan.md` + `docs/plans/final_implementation_checklist.md` | R1 (repeated per release) | R1 V18-5 APPROVE 2026-09-11; R4 closeout checklist 2026-09-12 |
+| 09 | Build collaboration and connections | `docs/plans/phase_4_collaboration_connections_plan.md` | R2 (`accepted`) | G5 PASS 2026-09-12 — seats, wizard, intersection, B12 contract, GitHub checkpoints, People/Inbox API overlay. Live Gmail/Slack OAuth owner-gated. |
+| 10 | Expand company operations | `docs/plans/phase_5_company_operations_plan.md` | R3 (`accepted`) | G7 PASS 2026-09-12 — memory ops, adaptive views, native B01/B03, R3 shells |
+| 11 | Build commercial delivery | `docs/plans/phase_6_commercial_delivery_plan.md` | R4 (`accepted`) | G9 PASS 2026-09-12 — commercial structure/test-mode; CA-10 still gates published rates/charges |
+| 12 | Expand the ecosystem and mobile clients | `docs/plans/phase_7_ecosystem_mobile_plan.md` | R4 (`accepted`) | G11 PASS 2026-09-12 — P19/packs, R4 shells, PWA + mobile wrap; store submit and CA-10 still owner |
 
 Verification phases 13–18 are executed for the enabled scope of every release (I-06, I-13); the R2–R4 rows above inherit their own verification and closure plans when generated.
 
@@ -69,15 +69,15 @@ Scope boundary (D-05): the 19 R1-bucketed registry rows in `docs/capabilities.md
 
 Dependency order inside R1: contracts (`packages/contracts`, D-02 schema) → API + auth + grants → `packages/ui` port → desktop views → worker adapter (read-only toolset first) → interception spike → development loop → verification.
 
-### 2.2 Release 2 — collaboration and connections (phase 09, `proposal`)
+### 2.2 Release 2 — collaboration and connections (phase 09, `accepted`)
 
-Entry: G4 APPROVE for R1; OQ-G2 member measurement notice decided; OQ-5 remaining views scheduled (connection setup B.5). Content: invited Project Lead and Operator seats (seat templates → grants, AUTH-21), connection setup wizard, source-permission intersection for additional connectors (PRD-D.6 general case), the four R2-bucketed rows (`docs/capabilities.md`). Gates: Security re-review of each new connector's destination classification (DRR-04, LIC-20); member notice before first non-founder seat (OQ-G2, F-G6).
+Entry: G4 APPROVE for R1; OQ-G2 member measurement notice decided (D-23); OQ-5 remaining views scheduled (connection setup B.5). Content delivered in Phase 4: Project Lead / Operator / guest templates, connection wizard, source-permission intersection, B12 deny-by-default catalogue, GitHub P07 checkpoints, People/Inbox API overlay. Live Gmail/Slack OAuth and a second human user remain owner-gated. Gates: destination class + intersection (D-25); member notice before first non-founder seat (OQ-G2, F-G6).
 
-### 2.3 Release 3 — company operations (phase 10, `proposal`)
+### 2.3 Release 3 — company operations (phase 10, `accepted`)
 
-Entry: R2 closure. Content: memory manager view (B.6), adaptive views (§D; AUTH-29 constraints binding from R1), personalisation (MEM policy), the 14 R3-bucketed rows. Gates: usability targets set from the R1/R2 first-baseline before R3 tests (NFR-4); adaptive-view screenshot-diff enforcement (PRD-A.11).
+Entry: R2 G5. Content: memory manager view (B.6), adaptive views (§D; AUTH-29 constraints binding from R1), personalisation (MEM policy), first R3 domains B01 and B03 (D-27), the 14 R3-bucketed rows. Gates: usability targets set from the R1/R2 first-baseline before R3 tests (NFR-4); adaptive-view screenshot-diff enforcement (PRD-A.11).
 
-### 2.4 Release 4 — commercial delivery, ecosystem and mobile (phases 11 + 12, `proposal`)
+### 2.4 Release 4 — commercial delivery, ecosystem and mobile (phases 11 + 12, `accepted`)
 
 Entry: R3 closure and the commercial decision gate in §4 (CA-1…CA-10 all evidenced). Content: entitlements, allowances, reservations and limit enforcement in billing test mode before any charge (PRD-G.12), tier UI after OQ-4, licensing state (ERA-17), connector SDK/domain packs (P19), mobile clients, remaining market domains (I-12); the six R4-bucketed rows. Gates: two separate owner decisions — publish rates; activate charges (CA-10); Security review of billing reconciliation (CA-4); decommissioning drill (ERA-15).
 
@@ -121,7 +121,7 @@ Privacy class C2, personal-data flag true (pseudonymous) for all rows (DRR-01, D
 
 ### Initial event catalogue (R1 unless stated)
 
-| Event family | Surface (`docs/ui-blueprint.md`) | Metric | Release |
+| Event family | Surface (`docs/blueprints/ui-blueprint.md`) | Metric | Release |
 |---|---|---|---|
 | `work.item.created/edited/closed`, `work.stage.completed` | B.2 Work item, Home | task completion, correctness, intervention | R1 |
 | `agent.run.started/paused/resumed/cancelled/completed/failed`, `agent.run.retried/recovered/escalated` | B.4 Agent run, B.3 run card, Home | task completion, recovery, cost | R1 |
@@ -143,13 +143,13 @@ Server-side transitions are the single source for run/approval/usage events; UI 
 - Events retained 365 days then aggregated; not individually erasable; excluded from exports after organisation erasure and aggregated within 30 days (GM-3, ERA-14).
 - Destination: tenant Postgres only; no external measurement destination, SDK, pixel, replay or fingerprinting (GM-4, GM-12, DRR-22, DRR-26); optional telemetry opt-in and scrubbed.
 - No cross-tenant learning or benchmarking (GM-5, DRR-23); preference learning never feeds segmentation (GM-6, MEM-19).
-- Disclosure: "What Engine Labs measures" list in Settings → Data (R1); member notice before first non-founder seat (R2, owner decision OQ-G2). Lifecycle messaging only via consented channels; no contact harvesting (GM-7, DRR-25); first-party consented attribution only (GM-10).
+- Disclosure: "What Papership measures" list in Settings → Data; member notice before first non-founder seat (R2, OQ-G2 accepted D-23). Lifecycle messaging only via consented channels; no contact harvesting (GM-7, DRR-25); first-party consented attribution only (GM-10).
 - Experiments never vary authorization, approval, retention, safety or pricing disclosure (GM-9, DRR-27).
 - Gate: Security schema review in phase 1 before any event is emitted (GM-11; F-SEC-16 re-verification).
 
 ## 4. Commercial activation
 
-Source of truth: `docs/workstreams/20260910-engine-labs-company-os/growth-marketing-subagent/handoff.md` §5.5–§5.7. Commercial activation is a decision gate at R4 / blueprint phase 11 (I-05, I-11, PRD-G.10). No price, allowance quantity, seat count or rate appears in this document or in any release before that gate. Tiers are named `Tier 1`–`Tier 4` (intake) until the owner answers OQ-4.
+Source of truth: `docs/workstreams/20260910-engine-labs-company-os/growth-marketing-subagent/handoff.md` §5.5–§5.7. Commercial activation is a decision gate at R4 / blueprint phase 11 (I-05, I-11, PRD-G.10). No price, allowance quantity, seat count or rate appears in this document or in any release before that gate. Public labels are Free / Basic / Professional / Enterprise (D-29 / OQ-4). Intake names Tier 1–4 remain the internal ids.
 
 ### Tier communication principles (binding for any UI or document that mentions tiers)
 
@@ -197,7 +197,7 @@ Reporting: PL includes first-baseline records (min/median/max, `not_captured`) i
 
 - Positioning (draft, 57 words; publishable only after R1-ACC-3/6/7/8 are VERIFIED): "Engine Labs is the company operating system for founders who run work through agents they must be able to hold accountable: every run is sponsored, scoped, budgeted and receipted; approvals bind to the exact action and version; jobs survive a closed laptop; and every decision is retained as governed company memory — starting with shipping your own software."
 - Audience and communities (blueprint §14): founder/indie-hacker, AI-agent builder and open-source orchestration communities; community rules must be fetched and recorded before any draft is considered.
-- Trust assets: verified development-loop evidence; adopted authority-model and recovery documentation; honest comparisons vs Paperclip / Relevance AI on the handoff §5.1 dimensions, re-verified against primary sources with fetch dates.
+- Trust assets: verified development-loop evidence; adopted authority-model and recovery documentation; honest capability claims on the handoff §5.1 dimensions, re-verified against primary sources with fetch dates.
 - Sequence: founder pilot (R1) → invited seats (R2) → design partners in one sector (R3) → activation with published rates (R4, after CA-1…CA-10).
 - Content concepts (drafts): timeout-after-write problem post; interruption-trial build journey (after V3 results exist); credential-scoping checklist.
 - Open questions: OQ-G1 owner appetite for a public build-log; OQ-G2 member measurement notice/legal basis before R2 seats.
@@ -235,8 +235,8 @@ Actions the agent cannot perform; recorded, not requested, until they become str
 | Phase 1 | Confirm toolchain on the workstation; pin GitHub Actions by SHA and enable Dependabot in the protected workflow (H-2); branch protection on product repositories (H-3) | phase-0 plan §17; Security H-2/H-3 |
 | Phase 2 | Provision model-provider account (`MODEL_PROVIDER_API_KEY`); create the GitHub App; confirm this repository as the phase-08 development repository (OQ-1); record provider data-use terms (H-4); verify Hermes licence (H-5) | phase-0 plan §17; Security H-4/H-5 |
 | Phase 3 | DigitalOcean account/Droplet and token; Apple developer account for signing/notarization; backup target; CI signing secrets in a protected environment (H-7); release decision `APPROVE` / `REQUEST_CHANGES` / `DO_NOT_PROCEED` | phase-0 plan §17; LIC-16 |
-| R2 | Gmail OAuth scope review; Telegram/Slack/WhatsApp developer registrations; member measurement notice and legal basis (OQ-G2); OQ-G1 build-log appetite (record only) | phase-0 plan §17; Growth §12 |
-| R4 | Tier labels (OQ-4); publish rates; activate charges (two separate decisions, CA-10); approve any GTM draft before publication | Growth §12; PRD §12 |
+| R2 | Gmail/Slack developer apps (OAuth names wired, secrets missing); Telegram/WhatsApp still planned; OQ-G2 accepted in product (D-23); OQ-G1 no public build-log (D-30) | `docs/handover/phase-4-owner-actions.md` |
+| R4 | Publish rates; activate charges (two separate decisions, CA-10); approve any GTM draft before publication. Tier labels already accepted (D-29). | Growth §12; PRD §12 |
 
 All of these are consolidated into `docs/plans/final_implementation_checklist.md` at each release's closure phase.
 
@@ -245,13 +245,14 @@ All of these are consolidated into `docs/plans/final_implementation_checklist.md
 | ID | Question | Owner | Needed by |
 |---|---|---|---|
 | OQ-1 | Confirm this repository as the founder development repository for phase 08 | owner | phase 2 |
-| OQ-2…OQ-3 | PM open questions incl. phase-to-release numbering for 09–12 | owner | before R2 plan |
-| OQ-4 | Tier public labels | owner | before any tier UI (R4) |
+| OQ-2 | First R3 domains | owner | **accepted D-27** — B01, B03 + memory/adaptive views |
+| OQ-3 | Phase-to-release numbering for 09–12 | owner | **accepted D-28** — R2=09, R3=10, R4=11+12 |
+| OQ-4 | Tier public labels | owner | **accepted D-29** — Free / Basic / Professional / Enterprise; no prices |
 | OQ-5 | R1 view set (proposal: home, work item, assistant, agent run, minimal permissions editor) | owner | before `phase_1_foundation_plan.md` |
 | OQ-6 | Assistant modes exposed in R1 | owner | phase 1 |
 | OQ-U1…OQ-U4 | UI/UX questions (Board in R1; fonts Inter/JetBrains Mono vendoring; others per UI/UX handoff §12) | owner | phase 1 |
-| OQ-G1 | Public build-log appetite | owner | record only; R2 |
-| OQ-G2 | Member measurement notice / legal basis | owner (legal) | before first non-founder seat (R2) |
+| OQ-G1 | Public build-log appetite | owner | **accepted D-30** — no public build-log until a later publish decision |
+| OQ-G2 | Member measurement notice / legal basis | owner (legal) | **accepted D-23** — notice + `oq_g2_recorded` gate; live second seat still owner action |
 
 ## 8. Maintenance
 

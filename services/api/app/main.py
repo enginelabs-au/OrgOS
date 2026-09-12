@@ -7,21 +7,26 @@ import hmac
 import json
 import os
 import time
+from pathlib import Path
 from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from app.auth import AuthContext, auth_dep, require_reauth
 from app.config import load_settings
+from app.connectors import get_connector, list_connectors
 from app.github_app import GithubError, installation_permissions, list_pulls, open_pull, probe_github
 from app.github_grants import intersect_repo_grants, may_open_pull
+from app.source_grants import intersect_source_grants, may_live_write
 from app.hermes_health import probe_hermes
 from app.loop import LOOP_STAGES
 from app.grants import effective_grants
 from app.logging_util import TraceMiddleware, configure_logging
 from app.store import Store, StoreError
 from app.usage import emit_usage, validate_usage_event
+from app import memory_ops, phase5, phase7, rate_card, view_defs
 
 SIGNED_URL_TTL = 300
 
@@ -38,6 +43,22 @@ def create_app(store_path: str | None = None) -> FastAPI:
     app = FastAPI(title="Papership API", version="0.1.0")
     app.state.settings = settings
     app.state.store = store
+    origins = list(settings.cors_origins) or [
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+        "http://127.0.0.1:1420",
+        "http://localhost:1420",
+        "http://tauri.localhost",
+        "https://tauri.localhost",
+        "tauri://localhost",
+    ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     app.add_middleware(TraceMiddleware, logger=logger)
 
     @app.exception_handler(StoreError)
@@ -95,6 +116,117 @@ def create_app(store_path: str | None = None) -> FastAPI:
             label=str(body.get("label") or ""),
         )
 
+    @app.get("/people")
+    def list_people(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_members(ctx.principal_id), "state": "ready"}
+
+    @app.get("/organisation")
+    def get_organisation(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.organisation(ctx.principal_id)
+
+    @app.get("/teams")
+    def list_teams(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_teams(ctx.principal_id)}
+
+    @app.post("/teams")
+    def create_team(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.create_team(ctx.principal_id, str(body.get("name") or ""), str(body.get("department") or ""))
+
+    @app.get("/inbox")
+    def list_inbox(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        items = store.list_inbox(ctx.principal_id)
+        return {"items": items, "state": "ready" if items else "empty"}
+
+    @app.get("/settings/measurement")
+    def measurement_notice(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.measurement_notice()
+
+    @app.post("/settings/oq-g2")
+    def record_oq_g2(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return store.record_oq_g2(ctx.principal_id)
+
+    @app.get("/connections")
+    def connections(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": store.list_connections(ctx.principal_id), "catalog": list_connectors()}
+
+    @app.get("/connections/{provider}")
+    def connection_detail(provider: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        spec = get_connector(provider)
+        if spec is None:
+            raise HTTPException(status_code=403, detail="unknown provider")
+        items = {row["id"]: row for row in store.list_connections(ctx.principal_id)}
+        return items.get(provider, spec)
+
+    @app.post("/connections/{provider}/connect")
+    def connect_provider(provider: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.connect_provider(ctx.principal_id, provider)
+
+    @app.post("/connections/{provider}/send")
+    def send_via_provider(provider: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        spec = get_connector(provider)
+        if spec is None:
+            raise HTTPException(status_code=403, detail="unknown provider")
+        if spec["actions"].get("send") != "approval_then_receipt":
+            raise HTTPException(status_code=403, detail="send is not enabled for this provider")
+        grants = store.grant_classes(ctx.principal_id)
+        perms = body.get("source_perms") or {}
+        if not may_live_write(provider, grants, perms):
+            raise HTTPException(status_code=403, detail="empty source perms or missing comms.send intersection")
+        if not body.get("approval_id"):
+            raise HTTPException(status_code=403, detail="send needs approval then receipt")
+        store.require_live_approval(str(body.get("target_id") or provider), str(body.get("target_version") or "1"))
+        return {"status": "receipt", "provider": provider, "dry_run": True}
+
+    @app.post("/connections/{provider}/sync")
+    def sync_provider(provider: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.record_sync_checkpoint(
+            ctx.principal_id,
+            provider,
+            lineage=str(body.get("lineage") or "list"),
+            label=str(body.get("label") or "incremental"),
+        )
+
+    @app.post("/grants/intersect")
+    def intersect_grants(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        grants = store.grant_classes(ctx.principal_id)
+        provider = str(body.get("provider") or "github")
+        source_perms = body.get("source_perms") or {}
+        effective = sorted(intersect_source_grants(provider, grants, source_perms))
+        return {
+            "provider": provider,
+            "papership": sorted(g for g in grants if g.startswith(("repo.", "comms."))),
+            "source": source_perms,
+            "effective": effective,
+            "live_write": may_live_write(provider, grants, source_perms),
+        }
+
+    @app.post("/guests")
+    def create_guest(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return store.create_guest(ctx.principal_id, ctx.tenant_id, str(body.get("scope") or "assigned"))
+
+    @app.get("/jobs/queued")
+    def queued_jobs(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "run.start") and not store.has_grant(
+            ctx.principal_id, "org.admin"
+        ):
+            raise HTTPException(status_code=403, detail="denied")
+        return {"items": store.list_queued_jobs()}
+
+    @app.post("/usage/baseline")
+    def post_usage_baseline(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.capture_usage_baseline(ctx.principal_id)
+
+    @app.get("/usage/baseline")
+    def get_usage_baseline(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        row = store.latest_usage_baseline(ctx.principal_id)
+        if row is None:
+            return {"label": "first-baseline", "event_count": store.usage_count(), "state": "not_captured"}
+        return row
+
     @app.post("/grants")
     def create_grant(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         if not store.has_grant(ctx.principal_id, "org.admin"):
@@ -120,6 +252,138 @@ def create_app(store_path: str | None = None) -> FastAPI:
     @app.get("/entitlements/me")
     def my_entitlements(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         return {"items": store.entitlements(ctx.principal_id)}
+
+    @app.post("/allowances")
+    def create_allowance(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        if not store.has_grant(ctx.principal_id, "org.admin"):
+            raise HTTPException(status_code=403, detail="denied")
+        return store.add_allowance(
+            body["principal_id"],
+            body["feature"],
+            ctx.tenant_id,
+            band=str(body.get("band") or "unmeasured"),
+            plan_label=str(body.get("plan_label") or "free"),
+        )
+
+    @app.get("/allowances/me")
+    def my_allowances(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {
+            "items": store.allowances(ctx.principal_id),
+            "charges_enabled": settings.billing_charges_enabled,
+        }
+
+    @app.post("/allowances/reserve")
+    def reserve_allowance(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.reserve_allowance(ctx.principal_id, str(body.get("feature") or ""), ctx.tenant_id)
+
+    @app.post("/allowances/reconcile")
+    def reconcile_allowance(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return store.reconcile_allowance(str(body.get("reservation_id") or ""), ctx.principal_id)
+
+    @app.post("/billing/charge")
+    def billing_charge(_body: dict[str, Any], _ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        raise HTTPException(status_code=403, detail="billing charges disabled")
+
+    @app.get("/billing/rate-card")
+    def billing_rate_card(_ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return rate_card.trial_rate_card(charges_enabled=settings.billing_charges_enabled)
+
+    @app.get("/packs")
+    def list_packs(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {
+            "items": phase7.list_packs(store, ctx.tenant_id),
+            "execution_enabled": settings.pack_execution_enabled,
+        }
+
+    @app.get("/packs/{pack_id}")
+    def get_pack(pack_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.get_pack(store, ctx.tenant_id, pack_id)
+
+    @app.post("/packs/install")
+    def install_pack(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.install_pack(store, ctx.principal_id, ctx.tenant_id, str(body.get("pack_id") or ""))
+
+    @app.post("/packs/{pack_id}/trust")
+    def review_pack_trust(pack_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.review_pack_trust(
+            store, ctx.principal_id, ctx.tenant_id, pack_id, str(body.get("verdict") or "")
+        )
+
+    @app.post("/packs/{pack_id}/custom-fields")
+    def define_custom_field(pack_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.define_custom_field(
+            store,
+            ctx.principal_id,
+            ctx.tenant_id,
+            pack_id,
+            str(body.get("field_id") or ""),
+            str(body.get("field_type") or ""),
+        )
+
+    @app.post("/packs/{pack_id}/activate")
+    def activate_pack(pack_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.activate_pack(
+            store,
+            ctx.principal_id,
+            ctx.tenant_id,
+            pack_id,
+            execution_enabled=settings.pack_execution_enabled,
+        )
+
+    @app.get("/payments/proposals")
+    def list_payment_proposals(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": phase7.list_proposals(store, ctx.principal_id), "payout": False}
+
+    @app.post("/payments/proposals")
+    def create_payment_proposal(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.create_proposal(store, ctx.principal_id, body)
+
+    @app.post("/payments/proposals/{proposal_id}/approve")
+    def approve_payment_proposal(proposal_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        require_reauth(ctx)
+        return phase7.approve_proposal(store, ctx.principal_id, proposal_id)
+
+    @app.post("/payments/bank-details")
+    def change_bank_details(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        require_reauth(ctx)
+        return phase7.change_bank_details(store, ctx.principal_id, str(body.get("note") or ""))
+
+    @app.get("/field-evidence")
+    def list_field_evidence(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": phase7.list_field_evidence(store, ctx.principal_id)}
+
+    @app.post("/field-evidence")
+    def capture_field_evidence(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.capture_field_evidence(store, ctx.principal_id, body)
+
+    @app.post("/field-evidence/dispatch")
+    def dispatch_field(_body: dict[str, Any], _ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        phase7.refuse_dispatch()
+        return {}
+
+    @app.get("/erasure/status")
+    def get_erasure_status(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase7.erasure_status(store, ctx.principal_id, ctx.tenant_id)
+
+    @app.post("/erasure/request")
+    def post_erasure_request(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        require_reauth(ctx)
+        return phase7.request_erasure(
+            store, ctx.principal_id, ctx.tenant_id, list(body.get("confirmations") or [])
+        )
+
+    @app.get("/licenses")
+    def licenses(_ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        root = Path(__file__).resolve().parents[3]
+        return {
+            "product_license": "SEE LICENSE IN LICENSE",
+            "notice_present": (root / "NOTICE").is_file(),
+            "license_present": (root / "LICENSE").is_file(),
+            "policy": "proposed",
+            "identifiers": ["LICENSE", "NOTICE", "docs/policies/licensing.md"],
+            "hermes_pin_configured": bool(settings.hermes_version_pin),
+            "charges_enabled": settings.billing_charges_enabled,
+        }
 
     @app.post("/approvals")
     def create_approval(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
@@ -239,8 +503,123 @@ def create_app(store_path: str | None = None) -> FastAPI:
         return {"items": store.list_notifications(ctx.principal_id)}
 
     @app.get("/memory")
-    def memory(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
-        return {"items": store.list_memory(ctx.principal_id)}
+    def memory(q: str = Query(default=""), ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        items = memory_ops.list_memory(store, ctx.principal_id, q)
+        phase5.maybe_emit(store, settings.usage_emit, "memory.search.executed", ctx.tenant_id, ctx.principal_id, "results_found" if items else "none")
+        return {"items": items}
+
+    @app.get("/memory/{item_id}")
+    def inspect_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        item = memory_ops.inspect_memory(store, ctx.principal_id, item_id)
+        phase5.maybe_emit(store, settings.usage_emit, "memory.item.inspected", ctx.tenant_id, ctx.principal_id, "ok")
+        return item
+
+    @app.post("/memory")
+    def create_memory(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.create_memory(store, ctx.principal_id, body)
+
+    @app.post("/memory/{item_id}/correct")
+    def correct_memory(item_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.correct_memory(store, ctx.principal_id, item_id, body)
+
+    @app.post("/memory/merge")
+    def merge_memory(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.merge_memory(store, ctx.principal_id, str(body.get("left_id") or ""), str(body.get("right_id") or ""))
+
+    @app.post("/memory/{item_id}/restrict")
+    def restrict_memory(item_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.restrict_memory(store, ctx.principal_id, item_id, str(body.get("scope") or "restricted"))
+
+    @app.post("/memory/{item_id}/archive")
+    def archive_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.archive_memory(store, ctx.principal_id, item_id)
+
+    @app.post("/memory/{item_id}/export")
+    def export_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.export_memory(store, ctx.principal_id, item_id)
+
+    @app.post("/memory/{item_id}/delete")
+    def delete_memory(item_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return memory_ops.delete_memory(store, ctx.principal_id, item_id)
+
+    @app.get("/views/current")
+    def current_view(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.current_view(store, ctx.principal_id)
+
+    @app.post("/views/preview")
+    def preview_view(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.preview_view(store, ctx.principal_id, body)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.previewed", ctx.tenant_id, ctx.principal_id, "ok")
+        return result
+
+    @app.post("/views/apply")
+    def apply_view(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.apply_view(store, ctx.principal_id, body)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.applied", ctx.tenant_id, ctx.principal_id, "ok" if result.get("applied") else "fallback")
+        return result
+
+    @app.post("/views/undo")
+    def undo_view(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.undo_view(store, ctx.principal_id)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.reverted", ctx.tenant_id, ctx.principal_id, "ok")
+        return result
+
+    @app.post("/views/reset")
+    def reset_view(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        result = view_defs.reset_view(store, ctx.principal_id)
+        phase5.maybe_emit(store, settings.usage_emit, "view.adaptation.reset", ctx.tenant_id, ctx.principal_id, "ok")
+        return result
+
+    @app.post("/views/pin")
+    def pin_view(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.pin_region(store, ctx.principal_id, str(body.get("region") or ""))
+
+    @app.get("/settings/personalisation")
+    def get_personalisation(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.inspect_personalisation(store, ctx.principal_id)
+
+    @app.post("/settings/personalisation")
+    def set_personalisation(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return view_defs.set_personalisation(store, ctx.principal_id, bool(body.get("enabled")))
+
+    @app.post("/settings/personalisation/reset")
+    def reset_personalisation(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        view_defs.reset_view(store, ctx.principal_id)
+        return view_defs.set_personalisation(store, ctx.principal_id, False)
+
+    @app.get("/strategy")
+    def list_strategy(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        items = phase5.list_strategy(store, ctx.principal_id)
+        return {"items": items, "kpi_status": "not_captured"}
+
+    @app.post("/strategy")
+    def create_strategy(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.create_strategy(store, ctx.principal_id, body)
+
+    @app.post("/people/{member_id}/capacity")
+    def set_capacity(member_id: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.upsert_capacity(store, ctx.principal_id, member_id, body)
+
+    @app.get("/domains/catalogue")
+    def domain_catalogue(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": phase5.domain_catalogue() + phase7.domain_shells()}
+
+    @app.post("/domains/{domain_id}/connect")
+    def connect_domain(domain_id: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        phase5.refuse_domain_connect(domain_id)
+        return {}
+
+    @app.get("/references")
+    def references(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.CANONICAL_REFERENCES
+
+    @app.get("/schedules")
+    def list_schedules(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"items": phase5.list_schedules(store, ctx.principal_id), "mode": "Automate", "fire_external": False}
+
+    @app.post("/schedules")
+    def create_schedule(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return phase5.create_schedule(store, ctx.principal_id, body)
 
     @app.post("/jobs")
     def post_job(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> JSONResponse:
@@ -319,17 +698,24 @@ def create_app(store_path: str | None = None) -> FastAPI:
 
     @app.get("/github/pulls")
     def github_list_pulls(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
-        return list_pulls(
+        result = list_pulls(
             settings.github_app_id,
             settings.github_installation_id,
             settings.github_private_key_path,
             owner=settings.github_owner,
             repo=settings.github_repo,
         )
+        checkpoint = store.record_sync_checkpoint(
+            ctx.principal_id,
+            "github",
+            lineage=f"list:{result.get('status', 'unknown')}",
+            label="import",
+        )
+        return {**result, "checkpoint": checkpoint}
 
     @app.get("/github/grants")
     def github_grant_intersection(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
-        orgos = {
+        papership = {
             row["grant_class"]
             for row in store.conn.execute(
                 "SELECT grant_class FROM grants WHERE principal_id=?",
@@ -341,9 +727,10 @@ def create_app(store_path: str | None = None) -> FastAPI:
             settings.github_installation_id,
             settings.github_private_key_path,
         )
-        effective = sorted(intersect_repo_grants(orgos, perms))
+        effective = sorted(intersect_repo_grants(papership, perms))
+        repo_grants = sorted(g for g in papership if g.startswith("repo."))
         return {
-            "orgos": sorted(g for g in orgos if g.startswith("repo.")),
+            "papership": repo_grants,
             "installation": perms,
             "effective": effective,
         }
@@ -420,7 +807,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
                 and (settings.github_private_key_path or "").strip()
             )
             if configured:
-                orgos = {
+                papership = {
                     row["grant_class"]
                     for row in store.conn.execute(
                         "SELECT grant_class FROM grants WHERE principal_id=?",
@@ -437,7 +824,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
                         status_code=403,
                         detail="installation permissions are empty; refuse live open",
                     )
-                if not may_open_pull(orgos, perms):
+                if not may_open_pull(papership, perms):
                     raise HTTPException(
                         status_code=403,
                         detail="repo.change is not in the installation intersection",

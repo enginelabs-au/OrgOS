@@ -25,6 +25,12 @@ API_ENV_ALLOWLIST = frozenset(
         "GITHUB_APP_PRIVATE_KEY_PATH",
         "GITHUB_APP_OWNER",
         "GITHUB_APP_REPO",
+        "GMAIL_OAUTH_CLIENT_ID",
+        "GMAIL_OAUTH_REDIRECT_URL",
+        "SLACK_CLIENT_ID",
+        "ENGINE_BILLING_CHARGES_ENABLED",
+        "ENGINE_PACK_EXECUTION_ENABLED",
+        "ENGINE_API_PUBLIC_URL",
         "ENGINE_STORE_PATH",
         "ENGINE_ATTACHMENT_SIGNING_KEY",
         "ENGINE_TEST_HOOKS",
@@ -76,6 +82,12 @@ class Settings:
     github_private_key_path: str
     github_owner: str
     github_repo: str
+    gmail_oauth_client_id: str
+    gmail_oauth_redirect_url: str
+    slack_client_id: str
+    billing_charges_enabled: bool
+    pack_execution_enabled: bool
+    api_public_url: str
 
 
 def _get(name: str, default: str = "") -> str:
@@ -117,6 +129,14 @@ def load_settings() -> Settings:
         github_private_key_path=_get("GITHUB_APP_PRIVATE_KEY_PATH", "") or _get("GITHUB_APP_PRIVATE_KEY", ""),
         github_owner=_get("GITHUB_APP_OWNER", ""),
         github_repo=_get("GITHUB_APP_REPO", ""),
+        gmail_oauth_client_id=_get("GMAIL_OAUTH_CLIENT_ID", ""),
+        gmail_oauth_redirect_url=_get("GMAIL_OAUTH_REDIRECT_URL", ""),
+        slack_client_id=_get("SLACK_CLIENT_ID", ""),
+        billing_charges_enabled=_get("ENGINE_BILLING_CHARGES_ENABLED", "0").strip().lower()
+        in {"1", "true", "on"},
+        pack_execution_enabled=_get("ENGINE_PACK_EXECUTION_ENABLED", "0").strip().lower()
+        in {"1", "true", "on"},
+        api_public_url=_get("ENGINE_API_PUBLIC_URL", "") or _get("ENGINE_API_BASE_URL", "http://127.0.0.1:8000"),
     )
 
 
@@ -135,4 +155,7 @@ def settings_public_dict(settings: Settings) -> dict[str, object]:
         "has_github_app_id": bool(settings.github_app_id),
         "has_github_key_path": bool(settings.github_private_key_path),
         "github_repo": f"{settings.github_owner}/{settings.github_repo}".strip("/"),
+        "billing_charges_enabled": settings.billing_charges_enabled,
+        "pack_execution_enabled": settings.pack_execution_enabled,
+        "api_public_url": settings.api_public_url,
     }

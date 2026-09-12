@@ -28,7 +28,7 @@ Intake; blueprint; phase 0 plan; ROLES.md PM section. No credentials.
 
 ## 4. Files, interfaces, data, and external systems
 
-Read: `docs/Company_Agent_System_Blueprint.md`, `docs/blueprints/2026-09-10_engine_labs.md`, `docs/plans/phase_0_foundations_plan.md`, manifest. Output: payload for `docs/product.md`, `evidence.md`, `handoff.md`.
+Read: `docs/blueprints/company_agent_system_blueprint.md`, `docs/blueprints/2026-09-10_engine_labs.md`, `docs/plans/phase_0_foundations_plan.md`, manifest. Output: payload for `docs/product.md`, `evidence.md`, `handoff.md`.
 
 ## 5. Ownership and concurrency
 

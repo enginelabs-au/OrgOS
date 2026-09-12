@@ -15,7 +15,7 @@ predecessor_handoff: docs/workstreams/20260910-engine-labs-company-os/ui-ux-deve
 
 ### Mission
 
-Execute the phase-0 foundation checks and produce the engineering documents release 1 depends on: workstation toolchain inventory; root `.gitignore`; reference clone at the pinned commit with `npm ci`, build, run, and state captures; `docs/ui-blueprint.md` completion; `docs/capabilities.md` with all 43 domain rows; `docs/architecture.md` with diagram, entities, trust boundaries, data destinations, and the Hermes adapter contract expectations; `docs/verification.md`; decision drafts D-01 (monorepo layout) and D-04 (Hermes adapter contract). No application code in phase 0.
+Execute the phase-0 foundation checks and produce the engineering documents release 1 depends on: workstation toolchain inventory; root `.gitignore`; reference clone at the pinned commit with `npm ci`, build, run, and state captures; `docs/blueprints/ui-blueprint.md` completion; `docs/capabilities.md` with all 43 domain rows; `docs/architecture.md` with diagram, entities, trust boundaries, data destinations, and the Hermes adapter contract expectations; `docs/verification.md`; decision drafts D-01 (monorepo layout) and D-04 (Hermes adapter contract). No application code in phase 0.
 
 ## 2. Inherited request and evidence
 
@@ -28,7 +28,7 @@ Execute the phase-0 foundation checks and produce the engineering documents rele
 
 - In scope: items (a)–(h) of T0-8.
 - Explicit non-goals: application code; Docker Compose; schemas; installing Hermes/DBOS/Supabase; installing global toolchains (record absence instead); committing; modifying protected files; modifying `.cursorignore`.
-- Owned/write paths: `.gitignore` (new), `.reference/orgos/` (clone), `docs/ui-blueprint.md` (commit/files/launch/capture/component sections; preserve UI/UX specification sections), `docs/ui-blueprint/*.png`, `docs/capabilities.md`, `docs/architecture.md`, `docs/verification.md`, `docs/decisions/2026-09-10-monorepo-layout.md`, `docs/decisions/2026-09-10-hermes-adapter-contract.md`, `docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/{evidence,handoff}.md`.
+- Owned/write paths: `.gitignore` (new), `.reference/orgos/` (clone), `docs/blueprints/ui-blueprint.md` (commit/files/launch/capture/component sections; preserve UI/UX specification sections), `docs/ui-blueprint/*.png`, `docs/capabilities.md`, `docs/architecture.md`, `docs/verification.md`, `docs/decisions/2026-09-10-monorepo-layout.md`, `docs/decisions/2026-09-10-hermes-adapter-contract.md`, `docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/{evidence,handoff}.md`.
 - Read-only paths: everything else.
 - External-system scope: `git clone` of the public reference over HTTPS; `npm ci` from the npm registry (allowed hosts). No pushes, no accounts.
 - Prohibited actions: running anything from the reference beyond documented `npm ci`, `npm run build`, `npm run dev`, `npm run lint`, `npm run typecheck`; touching protected files; secrets; network beyond GitHub/npm from sandboxed shell; deleting anything outside owned paths.

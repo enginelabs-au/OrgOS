@@ -7,7 +7,7 @@ owner: lead-agent
 source_phase: none
 workstream: docs/workstreams/20260910-engine-labs-company-os/manifest.md
 blueprint: docs/blueprints/2026-09-10_engine_labs.md
-intake: docs/Company_Agent_System_Blueprint.md
+intake: docs/blueprints/company_agent_system_blueprint.md
 ---
 
 # Phase 0: Foundations — Engine Labs company operating system
@@ -41,7 +41,7 @@ Blueprint planning phases 01–06 in full, plus the approved foundation checks t
 
 - 01 Launch protocol compliance (this plan, manifest, state, memory).
 - 02 Product definition and capability registry (`docs/product.md`, `docs/capabilities.md`).
-- 03 Member experience and authority model (`docs/ui-blueprint.md`, design specification, permissions model).
+- 03 Member experience and authority model (`docs/blueprints/ui-blueprint.md`, design specification, permissions model).
 - 04 Cloud architecture and connections (`docs/architecture.md`, connector contract, priority connections).
 - 05 Agents, memory, lifecycle, commercial controls (`docs/product.md` runtime/memory/commercial sections, `docs/policies/`).
 - 06 Release scope, dependencies, acceptance gates (`docs/roadmap.md`, `docs/verification.md`, this plan's §16–§17 registries, Next Plan Generation Prompt).
@@ -58,7 +58,7 @@ Blueprint planning phases 01–06 in full, plus the approved foundation checks t
 
 ## 6. Current-state audit
 
-- Repository: fresh (`master`, zero commits). Contents: `AGENTS.md`, `.cursorignore`, `.github/workflows/agent-governance.yml`, `.cursor/` control plane (79 files, validated), `docs/Company_Agent_System_Blueprint.md`, `docs/handover/agent-governance-operator-setup.md`, `docs/decisions/2026-08-18-agent-role-pipeline.md`, bootstrap-seeded `docs/README.md`, `docs/plans/README.md`, `docs/workstreams/README.md`, plus the manifest and blueprint created in this phase.
+- Repository: fresh (`master`, zero commits). Contents: `AGENTS.md`, `.cursorignore`, `.github/workflows/agent-governance.yml`, `.cursor/` control plane (79 files, validated), `docs/blueprints/company_agent_system_blueprint.md`, `docs/handover/agent-governance-operator-setup.md`, `docs/decisions/2026-08-18-agent-role-pipeline.md`, bootstrap-seeded `docs/README.md`, `docs/plans/README.md`, `docs/workstreams/README.md`, plus the manifest and blueprint created in this phase.
 - No `.gitignore`; no application toolchain files; no tests beyond the control-plane tests (17 pass).
 - UI reference (remote, pinned): Vite 6 / React 18 JSX / Tailwind 3.4 / Radix-shadcn / react-router 6 / TanStack Query 5 / Stripe JS / recharts / framer-motion / three / leaflet; `npm run typecheck` = `tsc -p jsconfig.json` over JSX; `vercel.json` present (web deploy artefact, not needed for desktop). Routes: `/` → `/cc-org-dash`; legacy `Dashboard.jsx` (66 KB) and `Dashboard_new.jsx` (71 KB) reachable but not part of the shell. `src/components/cc-org-dash/` has 20 files (intake list plus `AuthPortal.jsx`, `WorkflowVis.jsx`, `useIsMobile.jsx`). `AuthContext.jsx` is a no-op dev stub; `entities.js` is localStorage CRUD for Integration, DashboardWidget, RosterEntry, ReportSnapshot, AIInsight.
 - Tooling on the workstation: unknown until T0-7 checks (`node`, `npm`, `rustc`, `cargo`, `python3`, `docker`).
@@ -101,14 +101,14 @@ Create or update:
 - `docs/workstreams/20260910-engine-labs-company-os/<role-id>/{charter,plan,evidence,handoff}.md` for all six roles
 - `docs/blueprints/2026-09-10_engine_labs.md`
 - `docs/plans/phase_0_foundations_plan.md` (this file)
-- `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`, `docs/ui-blueprint/` (captures), `docs/roadmap.md`, `docs/verification.md`
+- `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`, `docs/ui-blueprint/` (captures), `docs/roadmap.md`, `docs/verification.md`
 - `docs/policies/{authority-model,data-residency-and-retention,memory-governance,erasure-and-offboarding,licensing}.md`
 - `docs/decisions/2026-09-10-*.md` (D-01…D-06)
 - `.gitignore` (new; ignores `.reference/`, `node_modules/`, build outputs, `.env*` except examples)
 - `.reference/orgos/` (clone, ignored)
 - `.cursor/STATE.md`, `.cursor/memory/MEMORY.md`, `.cursor/memory/memories/2026-09-10-continuation.md`
 
-Read-only: `docs/Company_Agent_System_Blueprint.md`, `.cursor/instructions/**`, `.cursor/agents/**`, `.cursor/templates/**`, remote reference repository.
+Read-only: `docs/blueprints/company_agent_system_blueprint.md`, `.cursor/instructions/**`, `.cursor/agents/**`, `.cursor/templates/**`, remote reference repository.
 
 ## 11. Supporting documents to create or update
 
@@ -130,9 +130,9 @@ Each task lists objective, dependencies, exact files/systems, notes, validation 
 
 **T0-6 Product Manager gate** — objective: product contract: requirement IDs PRD-A…G with acceptance criteria, seat templates, release-1 acceptance definition, registry row schema, commercial tier definitions (no prices), success metrics taxonomy inputs. Deps: T0-5. Method: Task delegation to `product-manager-subagent` (read-only); lead materializes `evidence.md`, `handoff.md`, and `docs/product.md`. Validation: handoff verdict PASS/CONDITIONAL with cited evidence; every intake requirement mapped. State: `complete` (2026-09-10; CONDITIONAL 16:00Z).
 
-**T0-7 UI/UX gate** — objective: experience specification for the seven core views; adaptive-view rules; seat-specific flows; accessibility and responsive states; migration notes from Papership components; screenshot capture plan. Deps: T0-6. Method: Task delegation to `ui-ux-developer-subagent` (read-only, may read the remote reference via GitHub MCP); lead materializes handoff and `docs/ui-blueprint.md` skeleton. Validation: every core view specified with states; departures from reference justified. State: `complete` (2026-09-10; CONDITIONAL 16:31Z).
+**T0-7 UI/UX gate** — objective: experience specification for the seven core views; adaptive-view rules; seat-specific flows; accessibility and responsive states; migration notes from Papership components; screenshot capture plan. Deps: T0-6. Method: Task delegation to `ui-ux-developer-subagent` (read-only, may read the remote reference via GitHub MCP); lead materializes handoff and `docs/blueprints/ui-blueprint.md` skeleton. Validation: every core view specified with states; departures from reference justified. State: `complete` (2026-09-10; CONDITIONAL 16:31Z).
 
-**T0-8 Software Engineer foundation checks** — objective: (a) toolchain check (`node -v`, `npm -v`, `rustc --version`, `cargo --version`, `python3 --version`, `docker --version`) recorded; (b) root `.gitignore`; (c) clone reference at pinned SHA into `.reference/orgos/`, `npm ci`, `npm run build`, `npm run dev` and capture `/cc-org-dash` states into `docs/ui-blueprint/`; (d) `docs/ui-blueprint.md` completed (commit, file list, launch commands, captured states, component inventory); (e) `docs/capabilities.md` with all 43 domain rows (`planned`) per D-02 schema; (f) `docs/architecture.md` with diagram, entities, trust boundaries, data-destination map, Hermes adapter contract expectations table with documentation citations, DBOS/Supabase/Compose notes; (g) `docs/verification.md` index mapping blueprint 13–18 to release-1 checks; (h) D-01 and D-04 decision records drafted. Deps: T0-7. Method: Task delegation to `software-engineer-subagent` (writable within owned paths). Validation: commands and exit codes recorded in evidence; captures exist; registry row count = 43; documents lint-clean Markdown. State: `complete` (2026-09-10; CONDITIONAL 17:05Z; captures closed by lead 17:20Z, EV-S16).
+**T0-8 Software Engineer foundation checks** — objective: (a) toolchain check (`node -v`, `npm -v`, `rustc --version`, `cargo --version`, `python3 --version`, `docker --version`) recorded; (b) root `.gitignore`; (c) clone reference at pinned SHA into `.reference/orgos/`, `npm ci`, `npm run build`, `npm run dev` and capture `/cc-org-dash` states into `docs/ui-blueprint/`; (d) `docs/blueprints/ui-blueprint.md` completed (commit, file list, launch commands, captured states, component inventory); (e) `docs/capabilities.md` with all 43 domain rows (`planned`) per D-02 schema; (f) `docs/architecture.md` with diagram, entities, trust boundaries, data-destination map, Hermes adapter contract expectations table with documentation citations, DBOS/Supabase/Compose notes; (g) `docs/verification.md` index mapping blueprint 13–18 to release-1 checks; (h) D-01 and D-04 decision records drafted. Deps: T0-7. Method: Task delegation to `software-engineer-subagent` (writable within owned paths). Validation: commands and exit codes recorded in evidence; captures exist; registry row count = 43; documents lint-clean Markdown. State: `complete` (2026-09-10; CONDITIONAL 17:05Z; captures closed by lead 17:20Z, EV-S16).
 
 **T0-9 Security gate** — objective: threat model (STRIDE or equivalent) for release-1 architecture; authority-model review (D-03); data-destination and retention review; agent tool side-effect and prompt-injection controls; secrets handling; supply-chain baseline (lockfiles, dependency licence inventory plan); findings with severity and required remediation before phase 1. Deps: T0-8. Method: Task delegation to `security-engineer-subagent` (read-only); lead materializes handoff and `docs/policies/*` from findings and intake. Validation: no unresolved blocking finding; policies exist. State: `complete` (2026-09-10; CONDITIONAL 17:58Z; five `proposed` policies).
 
@@ -149,7 +149,7 @@ Each task lists objective, dependencies, exact files/systems, notes, validation 
 | Role ID | Required or skipped | Reason | Predecessor | Owned paths | Gate evidence | Status |
 |---|---|---|---|---|---|---|
 | `product-manager-subagent` | required | New product contract, registry schema, seats, tiers, metrics inputs | lead (T0-1…T0-5) | read-only; lead materializes `product-manager-subagent/*`, `docs/product.md` | `product-manager-subagent/handoff.md` PASS/CONDITIONAL | CONDITIONAL (2026-09-10T16:00Z) |
-| `ui-ux-developer-subagent` | required | Seven-view design spec, adaptive views, accessibility, Papership migration notes | PM | read-only; lead materializes `ui-ux-developer-subagent/*`, `docs/ui-blueprint.md` skeleton | `ui-ux-developer-subagent/handoff.md` | CONDITIONAL (2026-09-10T16:31Z) |
+| `ui-ux-developer-subagent` | required | Seven-view design spec, adaptive views, accessibility, Papership migration notes | PM | read-only; lead materializes `ui-ux-developer-subagent/*`, `docs/blueprints/ui-blueprint.md` skeleton | `ui-ux-developer-subagent/handoff.md` | CONDITIONAL (2026-09-10T16:31Z) |
 | `software-engineer-subagent` | required | Foundation checks, reference capture, registry, architecture, verification index | UI/UX | `.gitignore`, `.reference/`, `docs/ui-blueprint*`, `docs/capabilities.md`, `docs/architecture.md`, `docs/verification.md`, `docs/decisions/2026-09-10-{monorepo-layout,hermes-adapter-contract}.md`, `software-engineer-subagent/*` | `software-engineer-subagent/handoff.md` with commands/exit codes | CONDITIONAL (2026-09-10T17:05Z; captures closed 17:20Z) |
 | `security-engineer-subagent` | required | Tier 3 mandatory: threat model, authority, data, agent side effects, supply chain | SE | read-only; lead materializes `security-engineer-subagent/*`, `docs/policies/*` | `security-engineer-subagent/handoff.md`; no open blocking finding | CONDITIONAL (2026-09-10T17:58Z) |
 | `growth-marketing-subagent` | required | Positioning, thresholds, measurement taxonomy, tier communication, ethics | Security | read-only; lead materializes `growth-marketing-subagent/*`, `docs/roadmap.md` commercial sections | `growth-marketing-subagent/handoff.md` | CONDITIONAL (2026-09-10T17:58Z) |
@@ -237,7 +237,7 @@ Phase 0 changes are documentation and an ignored reference clone. Rollback = del
 
 - Manifest, blueprint, this plan, docs index, six charters, six plans exist and are consistent.
 - Six handoffs materialized with supported verdicts; no BLOCKED verdict outstanding.
-- `docs/product.md`, `docs/capabilities.md` (43 rows), `docs/architecture.md`, `docs/ui-blueprint.md` (+ captures or recorded limitation), `docs/roadmap.md`, `docs/verification.md`, `docs/policies/*` exist and cross-link.
+- `docs/product.md`, `docs/capabilities.md` (43 rows), `docs/architecture.md`, `docs/blueprints/ui-blueprint.md` (+ captures or recorded limitation), `docs/roadmap.md`, `docs/verification.md`, `docs/policies/*` exist and cross-link.
 - Decisions D-01…D-06 recorded.
 - Env-var names and human-action queue complete; no secret values anywhere.
 - Validators pass: `node .cursor/skills/launch-pipeline/scripts/preflight.mjs`, `node --test .cursor/skills/launch-pipeline/scripts/preflight.test.mjs .cursor/hooks/policy.test.mjs`, `node .cursor/skills/launch-pipeline/scripts/validate-launch.mjs`, `node .cursor/scripts/validate-agent-config.mjs`.
@@ -251,7 +251,7 @@ To be appended as tasks complete (commands, exit codes, file paths, handoff verd
 - T0-4: `docs/README.md` "Engine Labs" section; 17/17 links resolve (PL EV-PL07, 2026-09-10T18:19Z).
 - T0-5: six charters + six plans under `docs/workstreams/20260910-engine-labs-company-os/<role>/` (PL EV-PL06).
 - T0-6: PM CONDITIONAL 2026-09-10T16:00Z → `docs/product.md` (PRD-A…G, NFR-1..10, R1-ACC-1..15, OQ-1..6).
-- T0-7: UI/UX CONDITIONAL 16:31Z → `docs/ui-blueprint.md` §A–§H (seven views × eight states; 52-state capture plan; D-1..D-11; OQ-U1..U4).
+- T0-7: UI/UX CONDITIONAL 16:31Z → `docs/blueprints/ui-blueprint.md` §A–§H (seven views × eight states; 52-state capture plan; D-1..D-11; OQ-U1..U4).
 - T0-8: SE CONDITIONAL 17:05Z → `.gitignore`; `.reference/orgos/` @ 8a843bd6 (`npm ci` 0, build 0, lint 1, typecheck 2); `docs/capabilities.md` 43 rows; `docs/architecture.md`; `docs/verification.md`; D-01/D-04. Captures closed by lead 17:20Z: 122 PNGs / 52 states (EV-S16).
 - T0-9: Security CONDITIONAL 17:58Z → 19 findings (3 high, all phase-1 gated), STRIDE T-01…T-58, five `proposed` policies, GM-1…12, H-1…H-7; hygiene scan exit 1.
 - T0-10: Growth CONDITIONAL 17:58Z → taxonomy 9 rows, 18 event families, `domain.object.action`, CA-1…10, F-G1; price scan exit 1.
@@ -266,9 +266,9 @@ To be appended as tasks complete (commands, exit codes, file paths, handoff verd
 ## 21. Deviations and follow-ups
 
 - Plan Mode was declined by the owner; the pre-Build plan was delivered inline and this phase proceeds under recorded Agent-mode authorization.
-- T0-8 captures were completed by the lead (not the SE role) because the IDE browser tool cannot reach loopback here; method recorded in `docs/ui-blueprint.md` §0.4 and EV-S16.
+- T0-8 captures were completed by the lead (not the SE role) because the IDE browser tool cannot reach loopback here; method recorded in `docs/blueprints/ui-blueprint.md` §0.4 and EV-S16.
 - T0-12 recorded sixteen consistency items (C-01…C-16), all non-blocking and reconciled in T0-13 or carried to phase 1; D-06 added beyond the five decisions planned in §7.
 
 ## 22. Next Plan Generation Prompt
 
-Read `/AGENTS.md`, the complete core agent context, `/instructions/PROJECT_PLANNING.md`, `/instructions/ROLES.md`, the original `docs/plans/phase_0_foundations_plan.md`, this completed phase plan, the active workstream manifest `docs/workstreams/20260910-engine-labs-company-os/manifest.md` and all six role handoffs, all completion evidence, `docs/blueprints/2026-09-10_engine_labs.md`, `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, `docs/policies/`, decisions D-01…D-06, `docs/roadmap.md` §5 Security gates and the phase-1 carry list in `docs/workstreams/20260910-engine-labs-company-os/project-lead-subagent/handoff.md` §11, current repository state, active blockers, and relevant decisions. Confirm this phase and every required role gate are fully implemented and validated. Then generate exactly one exhaustive next phase plan at `docs/plans/phase_1_foundation_plan.md` covering blueprint implementation phase 07 (Foundation: desktop shell from the Papership reference inside Tauri 2, cloud API and data boundary, identity and owner seat, grant checks, capability registry service, work ledger, job persistence with DBOS, streamed status, secure desktop connection, reconnect/resume) plus the applicable verification gates from phases 13–18. Derive it from the phase-0 roadmap and verified current state, preserve unresolved requirements, include all required plan sections and adaptive role decisions, defer non-blocking human actions to the final phase, and do not implement the next phase until the plan is written.
+Read `/AGENTS.md`, the complete core agent context, `/instructions/PROJECT_PLANNING.md`, `/instructions/ROLES.md`, the original `docs/plans/phase_0_foundations_plan.md`, this completed phase plan, the active workstream manifest `docs/workstreams/20260910-engine-labs-company-os/manifest.md` and all six role handoffs, all completion evidence, `docs/blueprints/2026-09-10_engine_labs.md`, `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, `docs/policies/`, decisions D-01…D-06, `docs/roadmap.md` §5 Security gates and the phase-1 carry list in `docs/workstreams/20260910-engine-labs-company-os/project-lead-subagent/handoff.md` §11, current repository state, active blockers, and relevant decisions. Confirm this phase and every required role gate are fully implemented and validated. Then generate exactly one exhaustive next phase plan at `docs/plans/phase_1_foundation_plan.md` covering blueprint implementation phase 07 (Foundation: desktop shell from the Papership reference inside Tauri 2, cloud API and data boundary, identity and owner seat, grant checks, capability registry service, work ledger, job persistence with DBOS, streamed status, secure desktop connection, reconnect/resume) plus the applicable verification gates from phases 13–18. Derive it from the phase-0 roadmap and verified current state, preserve unresolved requirements, include all required plan sections and adaptive role decisions, defer non-blocking human actions to the final phase, and do not implement the next phase until the plan is written.

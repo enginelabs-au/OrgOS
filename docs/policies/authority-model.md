@@ -11,9 +11,9 @@ sources:
   - docs/product.md (PRD-D.1–D.13, PRD-E.2, PRD-E.10, §5.1, §9 R1-ACC-1..15)
   - docs/architecture.md (§5 TB-1, TB-2, TB-5, TB-10; §9; §14)
   - docs/capabilities.md (grant identifiers; required_grants; data_authority)
-  - docs/ui-blueprint.md (§B, §B.7, §C, §D, §H D-8)
+  - docs/blueprints/ui-blueprint.md (§B, §B.7, §C, §D, §H D-8)
   - docs/decisions/2026-09-10-hermes-adapter-contract.md (D-04 decisions 3, 6, 7, 9, 11)
-  - docs/Company_Agent_System_Blueprint.md Phase 03 (L114–155), Phase 04 (L156–214)
+  - docs/blueprints/company_agent_system_blueprint.md Phase 03 (L114–155), Phase 04 (L156–214)
   - docs/workstreams/20260910-engine-labs-company-os/security-engineer-subagent/handoff.md (F-SEC-01…06, F-SEC-08, F-SEC-15)
 ---
 
@@ -95,9 +95,9 @@ Applies to every principal (member, agent, service identity), every surface (des
 ### 4.8 Desktop posture
 
 - AUTH-26. Authentication tokens MUST be stored only in the operating system keychain via the Tauri secure-storage plugin; never in `localStorage`, `sessionStorage`, IndexedDB or files (PRD-D.13).
-- AUTH-27. The reference patterns `cc-org-dash-auth` (localStorage session), Settings "AI & Agents" provider key in `localStorage`, Security tab API keys, demo credentials and Google sign-in MUST NOT exist in the product (`docs/ui-blueprint.md` §C, §H D-8; SE handoff §11).
+- AUTH-27. The reference patterns `cc-org-dash-auth` (localStorage session), Settings "AI & Agents" provider key in `localStorage`, Security tab API keys, demo credentials and Google sign-in MUST NOT exist in the product (`docs/blueprints/ui-blueprint.md` §C, §H D-8; SE handoff §11).
 - AUTH-28. No simulated authorization, approval or permission control MAY ship; every control either performs the server-side operation or is absent (UI/UX F-U3).
-- AUTH-29. Generated or adaptive views MUST be schema-validated view definitions composed from trusted components; they MUST NOT access filesystem, shell, database or credentials and MUST use the same API read contracts as static views (`docs/ui-blueprint.md` §D).
+- AUTH-29. Generated or adaptive views MUST be schema-validated view definitions composed from trusted components; they MUST NOT access filesystem, shell, database or credentials and MUST use the same API read contracts as static views (`docs/blueprints/ui-blueprint.md` §D).
 - AUTH-30. Tauri capability files MUST grant the minimum: no `fs`, `shell:allow-open` limited to `https?` URLs with confirmation, updater and secure-storage only; Security reviews capability files in phase 1 (F-SEC-17).
 
 ## 5. Verification

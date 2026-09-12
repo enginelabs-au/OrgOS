@@ -25,7 +25,7 @@ Define the positioning, value hypothesis, validation thresholds, measurement tax
 
 ## 3. Scope, non-goals, and ownership
 
-- In scope: positioning statement and differentiation vs Paperclip/Relevance AI/Lindy grounded in blueprint sources; value hypothesis and V4/V5 threshold review; measurement taxonomy and event naming convention for release-1 usage measurement (privacy-preserving, consent-aware); pilot learning plan; tier communication principles (no prices); commercial activation prerequisites (cost measurement, rate card evidence); ethical constraints; go-to-market posture for later releases (drafts only).
+- In scope: positioning statement and Papership capability table grounded in blueprint sources; value hypothesis and V4/V5 threshold review; measurement taxonomy and event naming convention for release-1 usage measurement (privacy-preserving, consent-aware); pilot learning plan; tier communication principles (no prices); commercial activation prerequisites (cost measurement, rate card evidence); ethical constraints; go-to-market posture for later releases (drafts only).
 - Explicit non-goals: publishing; pricing numbers; ad spend; community posting; analytics tooling selection beyond requirements; code; file edits.
 - Owned/write paths or `read-only`: **read-only**. Lead materializes `evidence.md`, `handoff.md`, and `docs/roadmap.md` commercial/measurement sections.
 - External-system scope: none. Web research permitted read-only; cite sources; record what was not researched.

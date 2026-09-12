@@ -7,14 +7,14 @@ created: 2026-09-10
 updated: 2026-09-11
 owner_role: software-engineer-subagent (T0-8); boundaries reviewed by security-engineer-subagent (T0-9)
 task_id: 20260910-engine-labs-company-os
-intake: docs/Company_Agent_System_Blueprint.md (Phase 04, Phase 05, Phase 07, Phase 08)
+intake: docs/blueprints/company_agent_system_blueprint.md (Phase 04, Phase 05, Phase 07, Phase 08)
 blueprint: docs/blueprints/2026-09-10_engine_labs.md §10–§12
 product: docs/product.md (PRD-A.3, A.6, B.2, B.5, B.7, B.9, B.10, D.4, D.13, E.4–E.8, E.10, E.12, F.4, F.6, G.11, NFR-1, NFR-5–7, NFR-10)
 phase_plan: docs/plans/phase_0_foundations_plan.md (§9, §16, T0-8 item f)
 manifest: docs/workstreams/20260910-engine-labs-company-os/manifest.md (REQ-04; §10 monorepo assumption)
 decisions: docs/decisions/2026-09-10-monorepo-layout.md (D-01), docs/decisions/2026-09-10-hermes-adapter-contract.md (D-04)
 registry: docs/capabilities.md
-ui_blueprint: docs/ui-blueprint.md
+ui_blueprint: docs/blueprints/ui-blueprint.md
 role_evidence: docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/evidence.md (EV-S11)
 ---
 
@@ -165,6 +165,8 @@ Ownership: `tenant` = customer organisation data environment (PRD-F.6); `native`
 | TB-8 | VPS ⇄ backup target | Public internet, encrypted at rest | Encryption before leaving VPS; key owned by client (`BACKUP_ENCRYPTION_KEY_PATH`); target in separate provider/region (`BACKUP_TARGET_URL`); provider snapshots tracked separately | unencrypted export, key co-location, "local backup as DR" (prohibited) |
 | TB-9 | Agents ⇄ security controls / production | Policy + hooks + CI | Agents cannot self-grant or modify security controls (PRD-D.11); production deployment credentials absent from worker env (PRD-B.10; test asserts denial); release execution only via owner/CI (PRD-B.11) | self-escalation, production mutation from dev loop |
 | TB-10 | Identity namespaces | Data model | Cursor delivery roles, product seats, and Hermes runtime identities are distinct with no shared credential (PRD-B.9) | identity confusion, credential reuse |
+| TB-14 | Mobile/PWA ⇄ API | Public internet; bearer JWT | Same issuer/audience as desktop; PWA may keep the web session key (XSS residual); native shells store tokens in OS keychain/keystore; OAuth in the system browser; offline queues are tenant+user scoped and wiped on sign-out; cloud jobs never start from cache | token theft on PWA storage, offline replay, embedded OAuth |
+| TB-15 | Pack install ⇄ execution | API store | Declarative packs only until `ENGINE_PACK_EXECUTION_ENABLED`; install creates a pending trust-review; activate is fail-closed; no client-side eval; install does not grant AUTH classes | plugin execution, grant smuggling |
 
 ## 6. Data-destination map (PRD-F.6)
 

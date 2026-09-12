@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Papership",
+  "version": "0.1.0",
+  "identifier": "au.enginelabs.papership.mobile",
+  "build": {
+    "frontendDist": "../../web/dist",
+    "devUrl": "http://127.0.0.1:5173/papership"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Papership",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:* http://localhost:* https:; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'self'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "icon": [
+      "../../desktop/src-tauri/icons/32x32.png",
+      "../../desktop/src-tauri/icons/128x128.png",
+      "../../desktop/src-tauri/icons/icon.icns",
+      "../../desktop/src-tauri/icons/icon.ico"
+    ]
+  }
+}

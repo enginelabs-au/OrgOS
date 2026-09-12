@@ -8,7 +8,7 @@ source_phase: docs/plans/phase_1_foundation_plan.md
 predecessor_gate: docs/workstreams/20260910-engine-labs-company-os/project-lead-subagent/phase-1-handoff.md (CONDITIONAL)
 workstream: docs/workstreams/20260910-engine-labs-company-os/manifest.md
 blueprint: docs/blueprints/2026-09-10_engine_labs.md
-intake: docs/Company_Agent_System_Blueprint.md (Phase 08 — Development loop)
+intake: docs/blueprints/company_agent_system_blueprint.md (Phase 08 — Development loop)
 release: R1 (D-05); gate G2
 risk_tier: tier_3
 ---

@@ -11,7 +11,7 @@ sources:
   - docs/product.md (PRD-F.1, F.4, F.5, F.6, PRD-G.7, PRD-G.11, §10)
   - docs/architecture.md (§4 entity table; §6 data-destination map; §8 DBOS; §10 Compose; §11 backup)
   - docs/plans/phase_0_foundations_plan.md (§16 environment-variable registry)
-  - docs/Company_Agent_System_Blueprint.md Phases 13–18 (L358–412)
+  - docs/blueprints/company_agent_system_blueprint.md Phases 13–18 (L358–412)
   - docs/workstreams/20260910-engine-labs-company-os/security-engineer-subagent/handoff.md (EV-SEC-06; F-SEC-07, F-SEC-14, F-SEC-16; GM-1…GM-12)
 ---
 

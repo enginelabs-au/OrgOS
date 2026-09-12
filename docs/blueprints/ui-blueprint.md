@@ -7,7 +7,7 @@ created: 2026-09-10
 updated: 2026-09-10
 owner_role: ui-ux-developer-subagent (read-only; materialized by orchestrating lead); capture sections owned by software-engineer-subagent
 task_id: 20260910-engine-labs-company-os
-intake: docs/Company_Agent_System_Blueprint.md (Phase 03, Phase 16)
+intake: docs/blueprints/company_agent_system_blueprint.md (Phase 03, Phase 16)
 product: docs/product.md (PRD-A.10–A.17, §5.1, PRD-B.5–B.6, PRD-D.7/D.13, PRD-E.4, PRD-G.6, §9, NFR-2, NFR-3)
 blueprint: docs/blueprints/2026-09-10_engine_labs.md §10–§12
 phase_plan: docs/plans/phase_0_foundations_plan.md (T0-7 spec, T0-8 capture)
@@ -250,7 +250,7 @@ Findings for UI/UX and the owner (recorded in the SE handoff §9 as F-S1): D-3 a
 
 ### A.5 Icons (`icons.jsx`, 14 713)
 
-63 inline lucide-compatible SVG components via `Svg` wrapper (L3–21: `size`, `color`, `strokeWidth` default 2, `viewBox 0 0 24 24`): Home, Briefcase, Inbox, Users, BarChart3, FolderOpen, Plug, SettingsIcon, Search, Bell, Plus, ChevronDown, User, LogOut, GitBranch, CheckCircle2, ArrowUp, CircleDot, LogIn, AtSign, Star, Archive, Edit2, Paperclip, Smile, Code2, Bot, Clock, Upload, LayoutGrid, List, ChevronRight, ChevronLeft, ExternalLink, PanelLeft, Target, Calendar, GitPullRequest, Activity, TrendingUp, TrendingDown, Shield, Mail, UserPlus, Zap, Key, Lock, Eye, EyeOff, Globe, CreditCard, Palette, Sun, Moon, Workflow, BookOpen, AlertCircle, Trash2, ImageIcon, MoreHorizontal, MoreVertical, Rocket, Monitor. No `aria-hidden`/`role="img"` on any. EL additions needed (same style): Pause, Play/Resume, StopCircle (cancel), RotateCcw (recovery/retry), ShieldCheck (approval), Database/Brain (memory), Coins (cost), WifiOff (disconnected), Pin/PinOff, Undo (adaptive), KeyRound (grant).
+63 inline lucide-compatible SVG components via `Svg` wrapper (L3–21: `size`, `color`, `strokeWidth` default 2, `viewBox 0 0 24 24`): Home, Briefcase, Inbox, Users, BarChart3, FolderOpen, Plug, SettingsIcon, Search, Bell, Plus, ChevronDown, User, LogOut, GitBranch, CheckCircle2, ArrowUp, CircleDot, LogIn, AtSign, Star, Archive, Edit2, Attach, Smile, Code2, Bot, Clock, Upload, LayoutGrid, List, ChevronRight, ChevronLeft, ExternalLink, PanelLeft, Target, Calendar, GitPullRequest, Activity, TrendingUp, TrendingDown, Shield, Mail, UserPlus, Zap, Key, Lock, Eye, EyeOff, Globe, CreditCard, Palette, Sun, Moon, Workflow, BookOpen, AlertCircle, Trash2, ImageIcon, MoreHorizontal, MoreVertical, Rocket, Monitor. No `aria-hidden`/`role="img"` on any. EL additions needed (same style): Pause, Play/Resume, StopCircle (cancel), RotateCcw (recovery/retry), ShieldCheck (approval), Database/Brain (memory), Coins (cost), WifiOff (disconnected), Pin/PinOff, Undo (adaptive), KeyRound (grant).
 
 ### A.6 Sample-data contracts (`data.jsx`) — all are demo fixtures, prohibited in production screens (PRD-A.16)
 

@@ -11,7 +11,7 @@ sources:
   - docs/product.md (PRD-F.7 offboarding, PRD-F.8 erasure, PRD-F.9 export, PRD-D.8)
   - docs/architecture.md (§4 deletion semantics; §6 destinations; §11 backup)
   - Hermes API documentation capture (sessions API)
-  - docs/Company_Agent_System_Blueprint.md Phase 16–17 (L391–405)
+  - docs/blueprints/company_agent_system_blueprint.md Phase 16–17 (L391–405)
   - docs/workstreams/20260910-engine-labs-company-os/security-engineer-subagent/handoff.md (ERA references; F-SEC-06, F-SEC-14; T-42)
 ---
 

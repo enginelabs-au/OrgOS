@@ -8,7 +8,7 @@ source_phase: docs/plans/phase_2_development_loop_plan.md
 predecessor_gate: G2 CONDITIONAL (2026-09-11)
 workstream: docs/workstreams/20260910-engine-labs-company-os/manifest.md
 blueprint: docs/blueprints/2026-09-10_engine_labs.md
-intake: docs/Company_Agent_System_Blueprint.md (Phases 13–18)
+intake: docs/blueprints/company_agent_system_blueprint.md (Phases 13–18)
 release: R1 (D-05); gate G3
 risk_tier: tier_3
 ---

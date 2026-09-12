@@ -14,11 +14,11 @@ downstream_role: security-engineer-subagent
 
 ## 1. Outcome
 
-All twelve ordered tasks of `plan.md` §6 were executed. Delivered: toolchain inventory; root `.gitignore`; Papership reference clone at the pinned commit with `npm ci` / build / lint / typecheck results; static source inventory and scans; tool-verified contrast ratios; SE sections of `docs/ui-blueprint.md`; `docs/capabilities.md` (43 rows, D-02 schema); `docs/architecture.md`; `docs/verification.md`; decision records D-01 and D-04 (`proposed`); three read-only validators passing; this evidence/handoff pair. The role objective is met except for one bounded item: **0 of 52 reference PNG captures** were produced because the Cursor IDE browser tool could not open a tab in this session (five attempts). The dev server was left running for the lead; the seeding script and capture index are in `docs/ui-blueprint.md` §0.4. Verdict: `CONDITIONAL`.
+All twelve ordered tasks of `plan.md` §6 were executed. Delivered: toolchain inventory; root `.gitignore`; Papership reference clone at the pinned commit with `npm ci` / build / lint / typecheck results; static source inventory and scans; tool-verified contrast ratios; SE sections of `docs/blueprints/ui-blueprint.md`; `docs/capabilities.md` (43 rows, D-02 schema); `docs/architecture.md`; `docs/verification.md`; decision records D-01 and D-04 (`proposed`); three read-only validators passing; this evidence/handoff pair. The role objective is met except for one bounded item: **0 of 52 reference PNG captures** were produced because the Cursor IDE browser tool could not open a tab in this session (five attempts). The dev server was left running for the lead; the seeding script and capture index are in `docs/blueprints/ui-blueprint.md` §0.4. Verdict: `CONDITIONAL`.
 
 ## 2. Scope completed and not completed
 
-Completed (plan §6 tasks 1–12): toolchain inventory (EV-S01); `.gitignore` (EV-S02); clone + `npm ci` + build + lint + typecheck (EV-S03–S06); dev server up and probed (EV-S09); source scans and contrast (EV-S07, EV-S08); `docs/ui-blueprint.md` §0, §E and §G SE placeholders filled, front-matter status/revision updated, §A–§H preserved; `docs/capabilities.md` (EV-S10); `docs/architecture.md` (EV-S11); `docs/verification.md` (EV-S12); D-01/D-04 (EV-S13); validators (EV-S14); constraint compliance (EV-S15).
+Completed (plan §6 tasks 1–12): toolchain inventory (EV-S01); `.gitignore` (EV-S02); clone + `npm ci` + build + lint + typecheck (EV-S03–S06); dev server up and probed (EV-S09); source scans and contrast (EV-S07, EV-S08); `docs/blueprints/ui-blueprint.md` §0, §E and §G SE placeholders filled, front-matter status/revision updated, §A–§H preserved; `docs/capabilities.md` (EV-S10); `docs/architecture.md` (EV-S11); `docs/verification.md` (EV-S12); D-01/D-04 (EV-S13); validators (EV-S14); constraint compliance (EV-S15).
 
 Not completed: `docs/ui-blueprint/*.png` (52 captures) — limitation, not a defect in the reference; see §9 F-S2. Deliberately not done: Playwright/Chromium install (forbidden without owner approval), dependency remediation in the reference (read-only artefact), Mermaid rendering check (no CLI, no global installs).
 
@@ -26,7 +26,7 @@ Not completed: `docs/ui-blueprint/*.png` (52 captures) — limitation, not a def
 
 - Charter: `docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/charter.md` (REQ-02 registry file, REQ-03 capture, REQ-04 architecture, REQ-06 verification index).
 - Plan: `…/software-engineer-subagent/plan.md` r1, §6 tasks 1–12 followed in order; deviations in §8 below.
-- Predecessors consumed: PM handoff `CONDITIONAL` (2026-09-10T16:00Z; `docs/product.md`, D-02 schema, 43-domain buckets, OQ-1…OQ-6); UI/UX handoff `CONDITIONAL` (2026-09-10T16:31Z; `docs/ui-blueprint.md` §A–§H, capture plan §G, EV-U03/EV-U08/EV-U09 `PARTIAL` items handed to SE — now `VERIFIED` by EV-S07/EV-S08).
+- Predecessors consumed: PM handoff `CONDITIONAL` (2026-09-10T16:00Z; `docs/product.md`, D-02 schema, 43-domain buckets, OQ-1…OQ-6); UI/UX handoff `CONDITIONAL` (2026-09-10T16:31Z; `docs/blueprints/ui-blueprint.md` §A–§H, capture plan §G, EV-U03/EV-U08/EV-U09 `PARTIAL` items handed to SE — now `VERIFIED` by EV-S07/EV-S08).
 - Inputs: `docs/plans/phase_0_foundations_plan.md` §6–§8, §14, §16; manifest §10 assumptions; intake blueprint Phases 02, 04, 07–08, 13–18; strategy blueprint §2, §10–§12; Hermes API server documentation supplied by the lead.
 
 ## 4. Outputs, changed paths, and external changes
@@ -35,7 +35,7 @@ Not completed: `docs/ui-blueprint/*.png` (52 captures) — limitation, not a def
 |---|---|---|
 | `.gitignore` | created | 52 |
 | `.reference/orgos/` | created (git-ignored clone at `8a843bd6…d34c4`, `node_modules/`, `dist/`) | — |
-| `docs/ui-blueprint.md` | modified (front matter; §0.1–§0.6; §E and §G placeholders) | 473 |
+| `docs/blueprints/ui-blueprint.md` | modified (front matter; §0.1–§0.6; §E and §G placeholders) | 473 |
 | `docs/capabilities.md` | created | 150 |
 | `docs/architecture.md` | created | 263 |
 | `docs/verification.md` | created | 108 |
@@ -52,7 +52,7 @@ External changes: none. No commit, push, PR, global install, or network mutation
 | Requirement ID | Result | Evidence |
 |---|---|---|
 | REQ-02 (registry file, 43 rows, D-02 schema, Hermes inventory placeholder) | Met | EV-S10; `docs/capabilities.md` |
-| REQ-03 (clone, run, capture; complete ui-blueprint SE sections) | Partially met — clone/run/inventory/contrast done; PNG captures pending | EV-S03–S09; `docs/ui-blueprint.md` §0 |
+| REQ-03 (clone, run, capture; complete ui-blueprint SE sections) | Partially met — clone/run/inventory/contrast done; PNG captures pending | EV-S03–S09; `docs/blueprints/ui-blueprint.md` §0 |
 | REQ-04 (architecture + D-01 + D-04) | Met (documents `proposed`; design unverified until spikes) | EV-S11, EV-S13 |
 | REQ-06 (verification index) | Met | EV-S12 |
 | T0-8 toolchain inventory / `.gitignore` | Met | EV-S01, EV-S02 |
@@ -75,7 +75,7 @@ Executed (see `evidence.md` for full records):
 - `git clone … && git checkout 8a843bd6429faf1ace5a9eb6dcfb7440703d34c4` → exit 0 (EV-S03).
 - `npm ci` exit 0 (≈6 s, 605 packages, scripts allowed); `npm run build` exit 0 (≈2 s); `npm run lint` exit 1 (2 unused imports); `npm run typecheck` exit 2 (328 JSX errors) (EV-S04–S06).
 - `rg -n "className" .reference/orgos/src/components/cc-org-dash` → 0 matches; external imports only `react`/`react-dom` (EV-S07).
-- `python3 /tmp/contrast.py` → ratios in `docs/ui-blueprint.md` §0.6 (EV-S08).
+- `python3 /tmp/contrast.py` → ratios in `docs/blueprints/ui-blueprint.md` §0.6 (EV-S08).
 - `curl -sI http://127.0.0.1:5173/cc-org-dash` → `HTTP/1.1 200 OK` (EV-S09).
 - `rg -c '^\| (B|P)[0-9]{2} \| (B|P)[0-9]{2}\.[0-9]{2} \|' docs/capabilities.md` → 43 (EV-S10).
 - `node .cursor/skills/launch-pipeline/scripts/preflight.mjs` → READY, exit 0; `validate-launch.mjs` → 79 files, exit 0; `validate-agent-config.mjs` → exit 0 (EV-S14).
@@ -122,7 +122,7 @@ No predecessor gate invalidated. UI/UX `CONDITIONAL` items EV-U03/EV-U08/EV-U09 
 ## 11. Downstream instructions
 
 - Next role: `security-engineer-subagent` (T0-9), read-only.
-- Required inputs: `docs/architecture.md` §5 trust boundaries TB-1…TB-10, §6 data-destination map, §7 Hermes adapter contract table, §9 Supabase boundary, §10 Compose topology, §12 env-var names; `docs/capabilities.md` §1 schema authority columns (`authority_model`, `grant_class`, `default_approval`) and all 43 rows; `.gitignore` coverage (EV-S02); D-04 decisions 3, 6, 7, 9, 11; F-S3 advisory summary; `docs/ui-blueprint.md` §0.5 localStorage auth stub (`cc-org-dash-auth`) as a pattern that must not survive the port.
+- Required inputs: `docs/architecture.md` §5 trust boundaries TB-1…TB-10, §6 data-destination map, §7 Hermes adapter contract table, §9 Supabase boundary, §10 Compose topology, §12 env-var names; `docs/capabilities.md` §1 schema authority columns (`authority_model`, `grant_class`, `default_approval`) and all 43 rows; `.gitignore` coverage (EV-S02); D-04 decisions 3, 6, 7, 9, 11; F-S3 advisory summary; `docs/blueprints/ui-blueprint.md` §0.5 localStorage auth stub (`cc-org-dash-auth`) as a pattern that must not survive the port.
 - Constraints that remain binding: no secret values anywhere; env-var names only; protected paths untouched; reference clone read-only; no production inference.
 - Checks that must be repeated: none of the SE commands need re-running for Security; PL must re-run the three validators after any further docs changes; the capture plan (§G) must be executed by the lead (F-S2).
 

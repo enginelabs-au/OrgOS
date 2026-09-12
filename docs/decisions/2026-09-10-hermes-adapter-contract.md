@@ -46,7 +46,7 @@ The Hermes API server documentation fetched by the lead on 2026-09-10 (<https://
 ## Evidence and citations
 
 - Hermes API server documentation (fetched 2026-09-10): runs API (`POST /v1/runs`, `Idempotency-Key` semantics, `GET /v1/runs/{id}`, `GET /v1/runs/{id}/events` incl. `subagent.*`, `POST …/stop`, `POST …/approval`), `GET /v1/capabilities`, sessions API and turn leases, jobs API, `GET /v1/toolsets`, `GET /v1/skills`, `/health`, `/health/detailed`, authentication, CORS, concurrent-run cap, limitations, multi-profile routing — <https://hermes-agent.nousresearch.com/docs/user-guide/features/api-server>.
-- Intake: `docs/Company_Agent_System_Blueprint.md` Phase 04 (Hermes paragraphs), Phase 05 (action lifecycle, recovery), Phase 08 (GlobalAgentPanel, contract tests).
+- Intake: `docs/blueprints/company_agent_system_blueprint.md` Phase 04 (Hermes paragraphs), Phase 05 (action lifecycle, recovery), Phase 08 (GlobalAgentPanel, contract tests).
 - Product: `docs/product.md` PRD-B.5–B.7, PRD-E.4, E.5, E.7, E.8, E.10, E.12, PRD-G.3, G.11, §9 R1-ACC-3/5/7/8/9.
 - Strategy blueprint: `docs/blueprints/2026-09-10_engine_labs.md` §10–§12.
 - Architecture: `docs/architecture.md` §7 (expectation table with contract tests), §5 (trust boundaries), §8 (DBOS usage).

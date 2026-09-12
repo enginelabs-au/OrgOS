@@ -7,7 +7,7 @@ created: 2026-09-10
 updated: 2026-09-10
 owner_role: product-manager-subagent (read-only; materialized by orchestrating lead)
 task_id: 20260910-engine-labs-company-os
-intake: docs/Company_Agent_System_Blueprint.md
+intake: docs/blueprints/company_agent_system_blueprint.md
 blueprint: docs/blueprints/2026-09-10_engine_labs.md
 phase_plan: docs/plans/phase_0_foundations_plan.md
 manifest: docs/workstreams/20260910-engine-labs-company-os/manifest.md
@@ -18,7 +18,7 @@ release_1_scope: intake implementation phases 07 (Foundation) + 08 (Development 
 
 # Engine Labs — Product Contract
 
-This document is the single traceable product contract for Engine Labs. It converts the canonical intake, [`docs/Company_Agent_System_Blueprint.md`](Company_Agent_System_Blueprint.md), into uniquely identified, testable requirements. It does not restate the intake; every requirement cites the intake heading it comes from. Anything not present in the intake is marked `proposal` and may be overturned by the owner without invalidating the rest of the contract.
+This document is the single traceable product contract for Engine Labs. It converts the canonical intake, [`docs/blueprints/company_agent_system_blueprint.md`](blueprints/company_agent_system_blueprint.md), into uniquely identified, testable requirements. It does not restate the intake; every requirement cites the intake heading it comes from. Anything not present in the intake is marked `proposal` and may be overturned by the owner without invalidating the rest of the contract.
 
 Downstream roles (`ui-ux-developer-subagent`, `software-engineer-subagent`, `security-engineer-subagent`, `growth-marketing-subagent`, `project-lead-subagent`) may refine *how* a requirement is met; they may not reinterpret *what* a requirement says, change a release bucket, alter a status transition rule, or add prices.
 
@@ -85,7 +85,7 @@ Each requirement row has: **ID** · **Requirement** · **Acceptance criterion** 
 | PRD-A.12 | Preference learning stays within the member's scope with settings to inspect, disable and reset personalisation; optimise for task completion and error reduction. | Settings expose inspect/disable/reset; with personalisation disabled no adaptation occurs; comparison against fixed seat templates is recorded before promotion (I-10). | R3 | I-03, I-10 |
 | PRD-A.13 | Home view fits system health, active priorities, running work, required decisions and a universal assistant asking "What would you like to do?" into the Papership layout. | Home renders the five regions with live data (not fixtures): health from real checks, priorities and running work from the ledger/runs, decisions from approvals, assistant prompt text present. | R1 | I-03 |
 | PRD-A.14 | Role-appropriate detail without exposing prompts, API schemas or runtime configuration to normal operators. | Operator seat UI contains no prompt text, schema, or runtime configuration; Founder sees such detail only in designated technical views. R1 evidence: Founder views checked; R2 evidence: Operator seat checked. | R1 (Founder), R2 (Operator) | I-03, I-16 |
-| PRD-A.15 | Design specification for seven views — home, work item, assistant, agent run, connection setup, memory manager, permissions editor — each mapped to Papership components or a documented extension; reusable code, adaptations and departures recorded in `docs/ui-blueprint.md`. | A specification exists per view with loading/empty/failure/permission states and component mapping. `proposal`: R1 implements home, work item, assistant, agent run and a minimal permissions editor (owner grants); connection setup and memory manager are implemented in R2/R3 but specified in phase 0. | Spec: phase 0. Build: R1 (4+1 views), R2/R3 (remaining) | I-03, I-07, I-08 |
+| PRD-A.15 | Design specification for seven views — home, work item, assistant, agent run, connection setup, memory manager, permissions editor — each mapped to Papership components or a documented extension; reusable code, adaptations and departures recorded in `docs/blueprints/ui-blueprint.md`. | A specification exists per view with loading/empty/failure/permission states and component mapping. `proposal`: R1 implements home, work item, assistant, agent run and a minimal permissions editor (owner grants); connection setup and memory manager are implemented in R2/R3 but specified in phase 0. | Spec: phase 0. Build: R1 (4+1 views), R2/R3 (remaining) | I-03, I-07, I-08 |
 | PRD-A.16 | Every screen maps to authenticated contracts with real loading, empty, failure and permission states; reference fixtures, synthetic charts and simulated agent responses are isolated as labelled demo data and never counted as implemented capabilities. | No production screen reads `src/api/entities.js` localStorage or `data.jsx` fixtures; demo data is behind an explicit label/flag; registry status is never derived from a reference screen. | R1 | I-04, I-07 |
 | PRD-A.17 | Unconfigured functions remain discoverable without crowding daily work. | The registry/discovery surface lists `planned`/`unavailable` capabilities separately from the default work views. | R3 (R1 `proposal`: read-only registry view) | I-10, I-13 |
 
@@ -132,7 +132,7 @@ Column names are taken from the intake sentence "For each capability record its 
 | `data_authority` | I-02 | `native` / `source:<system>` / `shared` | Which system is authoritative. |
 | `required_grants` | I-02 | list of grant identifiers | Engine Labs grants; source scopes named separately. |
 | `dependencies` | I-02 | list of capability IDs, connections, runtime features | |
-| `interface_components` | I-02 | list of view/component names | Mapped to `docs/ui-blueprint.md`. |
+| `interface_components` | I-02 | list of view/component names | Mapped to `docs/blueprints/ui-blueprint.md`. |
 | `release_phase` | I-02 | implementation phase `07`–`12` and release `R1`–`R4` | Per §4. |
 | `implementation_status` | I-02 | `planned` / `configured` / `working` / `unavailable` | §3.2. |
 | `acceptance_evidence` | I-02 | link(s) to evidence records | Required for `working`. |
@@ -164,9 +164,9 @@ Transition rules:
 | Release | Intake implementation phases | Basis |
 |---|---|---|
 | R1 | 07 Foundation, 08 Development loop | I-06 "Set the first release around implementation phases 07–08 and their required controls." `verified` |
-| R2 | 09 Collaboration and connections | I-06 "Assign later capabilities to subsequent releases"; blueprint §4/§13 "releases 2–4". Phase-to-release numbering for 09–12 is `proposal`. |
-| R3 | 10 Company operations | `proposal` (same basis) |
-| R4 | 11 Commercial delivery, 12 Ecosystem and mobile | `proposal` (same basis). Alternative reading (R3 = 10+11, R4 = 12) recorded as open question OQ-3. |
+| R2 | 09 Collaboration and connections | `accepted` (D-28 / OQ-3, 2026-09-12). |
+| R3 | 10 Company operations | `accepted` (D-28 / OQ-3, 2026-09-12). |
+| R4 | 11 Commercial delivery, 12 Ecosystem and mobile | `accepted` (D-28 / OQ-3, 2026-09-12). Alternative R3 = 10+11 withdrawn. |
 
 Verification phases 13–18 apply to every release's enabled scope (I-06, I-13).
 
@@ -365,7 +365,7 @@ Inputs for `growth-marketing-subagent` and `project-lead-subagent`. No baseline 
 |---|---|---|---|---|
 | NFR-1 | Desktop client with cloud execution; macOS first; shared UI contracts for later Windows, Linux, iOS and Android. | Packaged macOS app passes R1-ACC-1..3; UI contracts documented for reuse. | R1 | I-04, I-12 |
 | NFR-2 | Accessibility: keyboard navigation, focus management, accessible labels, contrast, responsive layout, readable empty/error states; an operator completes routine work without technical traces or special prompting. | Accessibility checklist passes on the R1 views; routine-task walkthrough recorded. | R1 | I-16, I-03 |
-| NFR-3 | Visual fidelity to the recorded Papership `/cc-org-dash` reference: THEMES, Inter/JetBrains Mono typography, spacing, primary tabs, command rail, assistant panel and overlay behaviour preserved; Engine Labs branding replaces prototype branding; departures are recorded and material aesthetic departures are asked about before implementation. | Screenshot comparison at matching viewport and theme; `docs/ui-blueprint.md` lists departures. | R1 | I-03, I-16 |
+| NFR-3 | Visual fidelity to the recorded Papership `/cc-org-dash` reference: THEMES, Inter/JetBrains Mono typography, spacing, primary tabs, command rail, assistant panel and overlay behaviour preserved; Engine Labs branding replaces prototype branding; departures are recorded and material aesthetic departures are asked about before implementation. | Screenshot comparison at matching viewport and theme; `docs/blueprints/ui-blueprint.md` lists departures. | R1 | I-03, I-16 |
 | NFR-4 | Measurable recovery, performance and usability targets are defined from the pilot baseline before being tested; none are asserted in advance. | Targets recorded after R1 baseline, before R2 tests. | R1 (baseline), R2 (targets) | I-06 |
 | NFR-5 | Operations: structured logs, run traces, health checks, cost metrics, alerting, encrypted backups and tested restore procedures. | Each exists and is exercised; restore drill R4 (I-15). | R1 (logs, traces, health, cost), R4 (backups verified) | I-04 |
 | NFR-6 | Database, browser and worker resource consumption are measured before selecting production VPS capacity. | Measurement report precedes sizing decision. | R1→R4 | I-04, I-11 |
@@ -381,9 +381,9 @@ Recorded, not blocking (charter §5). The lead routes these at the gate where th
 | ID | Question | Why it matters | Needed by |
 |---|---|---|---|
 | OQ-1 | Confirm the founder development repository bound in phase 08 (current assumption: this repository). | PRD-B.2; phase 2 plan. | Before `phase_2_development_loop_plan.md` |
-| OQ-2 | Which domain groups should be first in R3 (phase 10 "next highest-value domain capability")? Current `proposal` in §4.3. | Sequencing of R3 modules and connectors. | Before `phase_4+` plan generation |
-| OQ-3 | Confirm phase-to-release mapping for 09–12 (proposal: R2 = 09, R3 = 10, R4 = 11 + 12; alternative R3 = 10 + 11, R4 = 12). | Bucket table §4; roadmap. | Before R2 closure |
-| OQ-4 | Confirm public tier labels (proposal: Free / Basic / Professional / Enterprise for intake Tier 1–4). | Growth tier communication (T0-10); no pricing implied. | Before growth gate T0-10 |
+| OQ-2 | Which domain groups should be first in R3 (phase 10 "next highest-value domain capability")? | Sequencing of R3 modules and connectors. | **Accepted 2026-09-12 (D-27):** §4.3 proposal — B01 strategy/governance, B03 people/capacity first; memory manager / adaptive views are R3 core. |
+| OQ-3 | Confirm phase-to-release mapping for 09–12 (proposal: R2 = 09, R3 = 10, R4 = 11 + 12; alternative R3 = 10 + 11, R4 = 12). | Bucket table §4; roadmap. | **Accepted 2026-09-12 (D-28):** R2=09, R3=10, R4=11+12. |
+| OQ-4 | Confirm public tier labels (proposal: Free / Basic / Professional / Enterprise for intake Tier 1–4). | Growth tier communication (T0-10); no pricing implied. | **Accepted 2026-09-12 (D-29):** Free / Basic / Professional / Enterprise. No prices. |
 | OQ-5 | Confirm which of the seven views are implemented in R1 (proposal: home, work item, assistant, agent run, minimal permissions editor). | UI/UX scope; phase 1/2 plans. | Before `phase_1_foundation_plan.md` |
 | OQ-6 | Confirm the assistant modes enabled in R1 (proposal: six; Automate deferred to R3). | Runtime scope. | Before `phase_2_development_loop_plan.md` |
 
@@ -395,8 +395,8 @@ Recorded, not blocking (charter §5). The lead routes these at the gate where th
 | AS-2 | Founder is the only R1 user; Project Lead and Operator seats are specified now, activated R2. | `provisional` | R2 plan |
 | AS-3 | Prices, allowance quantities, seat counts, rates and model bands are structure-only in R1–R3. | `verified` (I-05 commercial gate) | Phase 11 gate |
 | AS-4 | Release bucket rule = first release with a `working`/`configured` target row (§4.2). | `proposal` | PL reconciliation T0-12 |
-| AS-5 | R3/R4 split of business domains and R2–R4 numbering (§4.1, §4.3). | `proposal` | OQ-2, OQ-3 |
-| AS-6 | Tier labels Free/Basic/Professional/Enterprise. | `proposal` | OQ-4 |
+| AS-5 | R3/R4 split of business domains and R2–R4 numbering (§4.1, §4.3). | `accepted` (D-27, D-28) | — |
+| AS-6 | Tier labels Free/Basic/Professional/Enterprise. | `accepted` (D-29); no prices | CA-10 |
 | AS-7 | Seven-view implementation timing (PRD-A.15). | `proposal` | OQ-5 |
 | AS-8 | Registry `capability_id`, `registry_version`, `status_changed_at`, `status_evidence` columns. | `proposal` | SE registry (T0-8) |
 | AS-9 | Release-1 acceptance derived from I-06/I-07/I-08/I-13/I-18 because no "Final result" heading exists in the intake. | `verified` (heading enumeration) | PL gate |

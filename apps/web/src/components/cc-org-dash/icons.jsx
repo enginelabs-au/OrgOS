@@ -212,7 +212,7 @@ export function Edit2(p) {
     </Svg>
   );
 }
-export function Paperclip(p) {
+export function Attach(p) {
   return (
     <Svg {...p}>
       <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.38-8.38A4 4 0 1 1 18 12.69l-8.38 8.38a2 2 0 0 1-2.83-2.83l8.49-8.48" />

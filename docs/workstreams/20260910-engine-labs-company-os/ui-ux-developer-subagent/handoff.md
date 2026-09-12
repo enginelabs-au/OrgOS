@@ -14,7 +14,7 @@ downstream_role: software-engineer-subagent
 
 ## 1. Outcome
 
-Delivered the release-1 experience specification for Engine Labs derived from the Papership `/cc-org-dash` shell at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`, materialized by the lead at `docs/ui-blueprint.md` (§0–§H): a cited reference inventory (shell, 11 screens, 6 global panels/rails/hooks, 19 primitives, 63 icons, 3 themes × 40 tokens, 13 fixture exports, css/tailwind relationship); specifications for the seven views with layout mapped to reference components, actions, data, an eight-state matrix, Founder/Project Lead/Operator visibility and accessibility criteria; navigation and global-surface rules including where run progress and approvals surface and PRD-E.4 close-vs-cancel semantics; adaptive-view constraints and preview/apply/revert flow; global accessibility and macOS window behaviour; a 21-file keep/adapt/replace/drop migration map with JSX→TSX and dependency implications; a 52-state capture plan; and 11 departures plus 4 open questions. The charter §1 objective is met. Verdict is `CONDITIONAL` because bounded, non-blocking items remain (OQ-5 confirmation, contrast token D-3 and default-theme D-11 owner acknowledgements, and runtime capture/contrast verification assigned to SE).
+Delivered the release-1 experience specification for Engine Labs derived from the Papership `/cc-org-dash` shell at `8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`, materialized by the lead at `docs/blueprints/ui-blueprint.md` (§0–§H): a cited reference inventory (shell, 11 screens, 6 global panels/rails/hooks, 19 primitives, 63 icons, 3 themes × 40 tokens, 13 fixture exports, css/tailwind relationship); specifications for the seven views with layout mapped to reference components, actions, data, an eight-state matrix, Founder/Project Lead/Operator visibility and accessibility criteria; navigation and global-surface rules including where run progress and approvals surface and PRD-E.4 close-vs-cancel semantics; adaptive-view constraints and preview/apply/revert flow; global accessibility and macOS window behaviour; a 21-file keep/adapt/replace/drop migration map with JSX→TSX and dependency implications; a 52-state capture plan; and 11 departures plus 4 open questions. The charter §1 objective is met. Verdict is `CONDITIONAL` because bounded, non-blocking items remain (OQ-5 confirmation, contrast token D-3 and default-theme D-11 owner acknowledgements, and runtime capture/contrast verification assigned to SE).
 
 ## 2. Scope completed and not completed
 
@@ -31,14 +31,14 @@ Not completed / out of scope by charter: visual redesign; implementation; backen
 ## 4. Outputs, changed paths, and external changes
 
 - Changed paths by this role: none (read-only).
-- Outputs materialized by the lead: `docs/ui-blueprint.md` (§0–§H; §0 and §G index carry `[SE completes]`), `docs/workstreams/20260910-engine-labs-company-os/ui-ux-developer-subagent/evidence.md` (EV-U01–U12), this file.
+- Outputs materialized by the lead: `docs/blueprints/ui-blueprint.md` (§0–§H; §0 and §G index carry `[SE completes]`), `docs/workstreams/20260910-engine-labs-company-os/ui-ux-developer-subagent/evidence.md` (EV-U01–U12), this file.
 - External changes: none. GitHub MCP read calls only (27 `get_file_contents`).
 
 ## 5. Requirement and horizontal-checklist coverage
 
 | Requirement ID | Result | Evidence |
 |---|---|---|
-| REQ-03 (member experience: Papership-derived shell, seven-view design spec, seats, adaptive views, `docs/ui-blueprint.md`) | met (spec) — §A–§H | EV-U01, U02, U03, U05, U11 |
+| REQ-03 (member experience: Papership-derived shell, seven-view design spec, seats, adaptive views, `docs/blueprints/ui-blueprint.md`) | met (spec) — §A–§H | EV-U01, U02, U03, U05, U11 |
 | PRD-A.13 Home five regions | met — §B.1 | EV-U02, U05 |
 | PRD-A.14 no prompts/schemas/runtime config for operators | met — §B.3 footer removal, §B.4, seat rows | EV-U11 |
 | PRD-A.15 seven views mapped or documented extension | met — §B, §F | EV-U02, U03 |
@@ -109,7 +109,7 @@ None. No prior UI/UX gate exists. If the owner rejects D-3, §E contrast rule st
 ## 11. Downstream instructions
 
 - Next role: `software-engineer-subagent`
-- Required inputs: `docs/ui-blueprint.md` §A–§H, especially §F migration map and §G capture plan; `docs/product.md` PRD-A.13–A.16, B.5–B.6, E.4, G.6, NFR-2/3; this handoff §9 findings; PM handoff §11 constraints.
+- Required inputs: `docs/blueprints/ui-blueprint.md` §A–§H, especially §F migration map and §G capture plan; `docs/product.md` PRD-A.13–A.16, B.5–B.6, E.4, G.6, NFR-2/3; this handoff §9 findings; PM handoff §11 constraints.
 - Constraints that remain binding: preserve THEMES tokens (except D-3), Inter/JetBrains Mono, spacing, `PrimaryNavTabs` geometry, command rail, assistant panel geometry (420 wide, top 116/104, ATLAS_EASE) and overlay behaviour; no production screen imports `data.jsx` or reads localStorage fixtures; no prompts/schemas/runtime config in Operator/PL-facing components and none inline for Founder outside the designated technical slide-over; every view implements all eight states with plain-language copy; close never cancels; generated views get no privileged APIs; do not add views beyond the seven without a documented extension entry in §H.
 - Checks that must be repeated: none from this role; SE must (1) execute §G and fill §0/§G placeholders, (2) tool-verify contrast (EV-U08 PARTIAL → VERIFIED), (3) confirm zero Tailwind/heavy-dependency usage on the clone (EV-U09 PARTIAL for InboxScreen), (4) re-cite line numbers where used in code comments.
 
@@ -124,8 +124,8 @@ Materialized by the lead:
 - Manifest §6: REQ-03 → `in_progress` (spec complete; capture sections pending SE; authority-model review pending Security).
 - Manifest §10: AS-U1–AS-U4; §14 pending: OQ-5 (existing), D-3, D-11, OQ-U1, OQ-U2.
 - Phase 0 plan: T0-7 → complete (CONDITIONAL); T0-8 inputs ready (§G).
-- `docs/ui-blueprint.md`: created from the payload; `status: specification_draft` until SE fills `[SE completes]`.
-- `.cursor/STATE.md`: active role → `software-engineer-subagent`; current gate → T0-8; `docs/ui-blueprint.md` in active use.
+- `docs/blueprints/ui-blueprint.md`: created from the payload; `status: specification_draft` until SE fills `[SE completes]`.
+- `.cursor/STATE.md`: active role → `software-engineer-subagent`; current gate → T0-8; `docs/blueprints/ui-blueprint.md` in active use.
 - Decision candidate D-06: "R1 desktop primary tabs = Home, Work, Runs, Connections, Settings; THEMES are the single token source; Tailwind not required for shell."
 
 ## 14. Verdict

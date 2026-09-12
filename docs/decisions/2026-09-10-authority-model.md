@@ -36,7 +36,7 @@ The intake requires that "authority derives from grants, not titles", that the h
 
 ## Evidence and citations
 
-- Intake: `docs/Company_Agent_System_Blueprint.md` Phase 03 (authority model), Phase 05 (agents and sponsorship), Phase 14 (verification of authority).
+- Intake: `docs/blueprints/company_agent_system_blueprint.md` Phase 03 (authority model), Phase 05 (agents and sponsorship), Phase 14 (verification of authority).
 - `docs/product.md` PRD-D.1–D.13, PRD-E.2–E.3, R1-ACC-4, R1-ACC-6.
 - `docs/policies/authority-model.md` AUTH-01…AUTH-30 (normative text adopted by this decision).
 - Security handoff `docs/workstreams/20260910-engine-labs-company-os/security-engineer-subagent/handoff.md` §9 F-SEC-01, F-SEC-02, F-SEC-04, F-SEC-05, F-SEC-06; §8 D-S1; threats T-18, T-30; §12 H-6; §13 decision candidate.

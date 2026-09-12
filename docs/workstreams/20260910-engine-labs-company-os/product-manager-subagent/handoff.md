@@ -55,10 +55,10 @@ Not completed / out of scope by charter: UI design, architecture selection, secu
 
 Executed by the role (read-only):
 
-- `rg -n "^#" docs/Company_Agent_System_Blueprint.md` → 18 phase headings enumerated (EV-02).
-- `wc -l docs/Company_Agent_System_Blueprint.md` → 414 (EV-01).
+- `rg -n "^#" docs/blueprints/company_agent_system_blueprint.md` → 18 phase headings enumerated (EV-02).
+- `wc -l docs/blueprints/company_agent_system_blueprint.md` → 414 (EV-01).
 - `rg -n "Final result" docs/` → no match in the intake (EV-05).
-- `rg -n -i "price|\$[0-9]" docs/Company_Agent_System_Blueprint.md` → 2 policy sentences, no figures (EV-04).
+- `rg -n -i "price|\$[0-9]" docs/blueprints/company_agent_system_blueprint.md` → 2 policy sentences, no figures (EV-04).
 - `rg -n -i "analytics|bigquery|posthog|mixpanel" .cursor/TOOLS.md` → analytics tool must be treated as unavailable until authenticated (EV-10).
 - Manual counts: 24 + 19 = 43 domain rows; buckets 19/4/14/6 (EV-03); 10/10 registry columns (EV-08).
 

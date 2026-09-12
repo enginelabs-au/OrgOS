@@ -25,10 +25,10 @@ def installation_grants(permissions: dict[str, Any] | None) -> set[str]:
     return granted
 
 
-def intersect_repo_grants(orgos_grants: set[str], permissions: dict[str, Any] | None) -> set[str]:
-    repo = {g for g in orgos_grants if g.startswith("repo.")}
+def intersect_repo_grants(papership_grants: set[str], permissions: dict[str, Any] | None) -> set[str]:
+    repo = {g for g in papership_grants if g.startswith("repo.")}
     return repo & installation_grants(permissions)
 
 
-def may_open_pull(orgos_grants: set[str], permissions: dict[str, Any] | None) -> bool:
-    return "repo.change" in intersect_repo_grants(orgos_grants, permissions)
+def may_open_pull(papership_grants: set[str], permissions: dict[str, Any] | None) -> bool:
+    return "repo.change" in intersect_repo_grants(papership_grants, permissions)

@@ -31,7 +31,7 @@ Produced read-only by the role on 2026-09-10 (UTC); materialized by the orchestr
 - Evidence state: `VERIFIED`
 - Method: Manual completeness check of §B against the PRD-A.16 state list and charter §9; cross-check that every view cites ≥1 PRD ID and ≥1 reference file/line range.
 - Exact command or tool: inspection of §B (7 tables × 9 rows).
-- Artifact: `docs/ui-blueprint.md` §B.
+- Artifact: `docs/blueprints/ui-blueprint.md` §B.
 - Sanitized result and exit status: 7/7 views; 56/56 state cells; 7/7 seat rows; 7/7 a11y rows.
 - Timestamp: 2026-09-10T16:28Z
 - Environment: as above.
@@ -92,7 +92,7 @@ Produced read-only by the role on 2026-09-10 (UTC); materialized by the orchestr
 - Timestamp: 2026-09-10T16:30Z
 - Environment: read-only sandbox.
 - Limitations: none.
-- Required follow-up: Lead materialized `docs/ui-blueprint.md`, `evidence.md`, `handoff.md` on 2026-09-10.
+- Required follow-up: Lead materialized `docs/blueprints/ui-blueprint.md`, `evidence.md`, `handoff.md` on 2026-09-10.
 
 ## Evidence record EV-U07 — Simulated/demo behaviours identified for removal (PRD-A.16, PRD-B.5)
 

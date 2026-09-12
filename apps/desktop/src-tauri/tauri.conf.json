@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "identifier": "au.enginelabs.desktop",
   "build": {
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
-    "devUrl": "http://localhost:1420",
-    "frontendDist": "../dist"
+    "beforeDevCommand": "npm run dev --prefix ../.. --workspace @papership/web -- --host 127.0.0.1 --port 5173",
+    "beforeBuildCommand": "npm run build --prefix ../.. --workspace @papership/web",
+    "devUrl": "http://127.0.0.1:5173/papership",
+    "frontendDist": "../../web/dist"
   },
   "app": {
     "windows": [
@@ -21,7 +21,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:* http://localhost:* https:; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'",
+      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:* http://localhost:* https:; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'",
       "capabilities": ["default"]
     }
   },

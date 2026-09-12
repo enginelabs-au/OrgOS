@@ -5,6 +5,7 @@
   "workspaces": [
     "apps/desktop",
     "apps/web",
+    "apps/mobile",
     "packages/ui",
     "packages/contracts"
   ],

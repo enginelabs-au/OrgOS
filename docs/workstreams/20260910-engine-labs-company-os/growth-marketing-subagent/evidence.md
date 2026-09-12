@@ -55,16 +55,16 @@ Produced read-only by the role; materialized verbatim by the orchestrating lead.
 ## Evidence record EV-G04
 
 - Requirement ID: plan §6 task 1; charter §9 "positioning cites sources"
-- Claim: The positioning statement and differentiation table are grounded in blueprint §3/§5 sources (six third-party analyses plus the Paperclip repository) and one new source fetched by this role (Paperclip GitHub repository page).
+- Claim: The positioning statement is grounded in blueprint §3/§5 sources. Named-competitor comparison tables were later removed by owner request.
 - Evidence state: `PARTIAL`
-- Method: read of blueprint §3/§5 source list; read-only web fetch of one primary source
-- Exact command or tool: `WebFetch https://github.com/paperclipai/paperclip` (2026-09-10T17:56Z) → success; `WebFetch https://raw.githubusercontent.com/paperclipai/paperclip/main/README.md` → timed out
-- Artifact: blueprint §5 table (L62–70) and §3 (L42–47) source URLs; fetched page tagline "The open-source app everyone uses to manage agents at work", 80,404 stars at fetch time
-- Sanitized result and exit status: one primary source verified (tagline, star count; the blueprint's "43k+ stars" figure is superseded by the fetched 80,404); README feature list not fetched; competitor feature/positioning claims for Relevance AI, Lindy, Dust, LangGraph/CrewAI, n8n/Zapier remain secondary-source (blueprint §5) and are labelled `unverified-secondary` in the table
-- Timestamp: 2026-09-10T17:56Z–17:57Z
-- Environment: as header (network allowlist permitted github.com and raw.githubusercontent.com; README fetch timed out, not blocked)
-- Limitations: no competitor product was trialled; no pricing page fetched; competitor prices are intentionally omitted from the differentiation table (blueprint §16 warns they may be stale; PRD-G.10 spirit)
-- Required follow-up: before any external publication of a comparison, re-verify each competitor row against its primary documentation with fetch dates (owner-approved publication only)
+- Method: read of blueprint §3/§5 source list
+- Exact command or tool: document inspection (named-competitor fetch artefacts withdrawn)
+- Artifact: blueprint §5 gap statement; §3 source URLs
+- Sanitized result and exit status: competitor comparison table withdrawn; remaining claim is the Papership gap statement
+- Timestamp: 2026-09-10T17:56Z–17:57Z (original); table removal 2026-09-12
+- Environment: as header
+- Limitations: no competitor product was trialled; no pricing page fetched
+- Required follow-up: owner-approved publication only; do not restore named-competitor tables unless the owner asks
 
 ## Evidence record EV-G05
 
@@ -86,7 +86,7 @@ Produced read-only by the role; materialized verbatim by the orchestrating lead.
 - Claim: The six intake metrics plus the three PRD §10 additions (authority-violation guardrail, usability R3+, infra recovery/performance) each have a definition, unit, event source, owner, privacy class, consent note and first-baseline rule; each traces to a PRD ID.
 - Evidence state: `VERIFIED`
 - Method: derivation from PRD §10 rows and intake sentence; table in handoff §5.3 / Section C
-- Exact command or tool: `rg -n -i "task completion|cost per completed outcome" docs/Company_Agent_System_Blueprint.md`; `Read docs/product.md` §10
+- Exact command or tool: `rg -n -i "task completion|cost per completed outcome" docs/blueprints/company_agent_system_blueprint.md`; `Read docs/product.md` §10
 - Artifact: intake L112 ("Measure task completion, correctness, recovery, operator intervention, context switching and cost per completed outcome"); PRD §10 L349–359
 - Sanitized result and exit status: 6 intake terms matched; 9 taxonomy rows produced; exit 0
 - Timestamp: 2026-09-10T17:53Z (session)
@@ -110,12 +110,12 @@ Produced read-only by the role; materialized verbatim by the orchestrating lead.
 
 ## Evidence record EV-G08
 
-- Requirement ID: UI/UX handoff §5 analytics row; `docs/ui-blueprint.md` §B/§C; plan §6 task 4 catalogue
+- Requirement ID: UI/UX handoff §5 analytics row; `docs/blueprints/ui-blueprint.md` §B/§C; plan §6 task 4 catalogue
 - Claim: The initial event catalogue covers all seven §B views and the §C global surfaces (run start/complete, approvals, navigation, source-app handoffs, connection state, memory search, adaptive-view apply/revert).
 - Evidence state: `VERIFIED`
 - Method: heading enumeration and per-view read of "Primary actions", "Data", "State matrix" rows
-- Exact command or tool: `rg -n "^### B\.[1-7]" docs/ui-blueprint.md`
-- Artifact: `docs/ui-blueprint.md` L280, 294, 308, 322, 336, 350, 364 (B.1–B.7); §C L378–392; §D L394–405
+- Exact command or tool: `rg -n "^### B\.[1-7]" docs/blueprints/ui-blueprint.md`
+- Artifact: `docs/blueprints/ui-blueprint.md` L280, 294, 308, 322, 336, 350, 364 (B.1–B.7); §C L378–392; §D L394–405
 - Sanitized result and exit status: 7 headings matched; catalogue in handoff §5.4 maps ≥1 event to each; exit 0
 - Timestamp: 2026-09-10T17:56:15Z
 - Environment: as header
@@ -133,7 +133,7 @@ Produced read-only by the role; materialized verbatim by the orchestrating lead.
 - Sanitized result and exit status: no matches, `rg` exit 1 (clean); payload contains no monetary figure
 - Timestamp: 2026-09-10T17:56:15Z
 - Environment: as header
-- Limitations: the blueprint §5 table contains third-party competitor price points; they are not repeated here
+- Limitations: named-competitor comparison tables and third-party price points were withdrawn from blueprint §5 (2026-09-12); they are not repeated here
 - Required follow-up: lead re-runs the same scan on materialized `docs/roadmap.md` sections
 
 ## Evidence record EV-G10
@@ -142,7 +142,7 @@ Produced read-only by the role; materialized verbatim by the orchestrating lead.
 - Claim: OQ-4 remains unresolved; intake tier names "Tier 1–4" are used throughout; PM tier structure is consistent with intake L247–264 (no conflict to escalate).
 - Evidence state: `VERIFIED`
 - Method: comparison of `docs/product.md` §8.1 with intake L247–264
-- Exact command or tool: `Read docs/product.md` §12 L380–387; `Read docs/Company_Agent_System_Blueprint.md` L247–264
+- Exact command or tool: `Read docs/product.md` §12 L380–387; `Read docs/blueprints/company_agent_system_blueprint.md` L247–264
 - Artifact: PRD §8.1, §12 OQ-4 "Before growth gate T0-10"; manifest §14 pending
 - Sanitized result and exit status: labels Free/Basic/Professional/Enterprise remain `proposal`; entitlement models match intake table row-for-row; no Security constraint prohibits any required metric (GM-1 permits every field the six metrics need at identifier level)
 - Timestamp: 2026-09-10T17:50Z (session)

@@ -23,7 +23,7 @@ Produce the release-1 product contract for Engine Labs from the canonical intake
 - Active plan: `docs/plans/phase_0_foundations_plan.md` (task T0-6)
 - Predecessor handoff: none
 - Relevant decisions/blockers: `docs/decisions/2026-08-18-agent-role-pipeline.md`; no open blockers
-- Intake: `docs/Company_Agent_System_Blueprint.md` (all sections; the 43 domain groups B01–B24 and P01–P19; seat templates; connections; runtime; memory; lifecycle; commercial; eighteen phases)
+- Intake: `docs/blueprints/company_agent_system_blueprint.md` (all sections; the 43 domain groups B01–B24 and P01–P19; seat templates; connections; runtime; memory; lifecycle; commercial; eighteen phases)
 - Strategy: `docs/blueprints/2026-09-10_engine_labs.md`
 
 ## 3. Scope, non-goals, and ownership

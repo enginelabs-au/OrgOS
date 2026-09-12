@@ -29,7 +29,7 @@ PM metric inputs and tier structure; UI/UX event points; Security consent constr
 
 ## 4. Files, interfaces, data, and external systems
 
-Read: blueprint, `docs/product.md`, `docs/ui-blueprint.md`, Security handoff, intake. Optional read-only web research with citations.
+Read: blueprint, `docs/product.md`, `docs/blueprints/ui-blueprint.md`, Security handoff, intake. Optional read-only web research with citations.
 
 ## 5. Ownership and concurrency
 
@@ -37,7 +37,7 @@ Read-only.
 
 ## 6. Ordered tasks
 
-1. Positioning statement and differentiation table vs Paperclip, Relevance AI, Lindy (cite blueprint sources; add new sources only if fetched).
+1. Positioning statement and Papership capability table (cite blueprint sources; add new sources only if fetched).
 2. Value hypothesis and validation threshold review for V4/V5; define what "baseline" means for a single-user pilot.
 3. Metric taxonomy: task completion, correctness, recovery, operator intervention, context switching, cost per completed outcome — definition, unit, event source, owner, privacy class.
 4. Event naming convention (`domain.object.action`), required properties, prohibited properties (no PII, no prompt text), consent and retention alignment with Security.

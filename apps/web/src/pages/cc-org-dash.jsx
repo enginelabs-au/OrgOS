@@ -1,1 +1,1 @@
-export { default } from "../blueprint2/App";
+export { default } from "./papership";

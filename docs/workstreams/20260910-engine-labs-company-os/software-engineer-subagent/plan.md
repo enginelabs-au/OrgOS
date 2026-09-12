@@ -19,7 +19,7 @@ Charter complete; PM and UI/UX handoffs materialized with supported verdicts; ca
 | Requirement ID | Planned disposition | Expected evidence |
 |---|---|---|
 | REQ-02 registry file | `docs/capabilities.md`, 43 rows per PM schema | row count; columns |
-| REQ-03 capture | clone, run, capture; complete `docs/ui-blueprint.md` | SHA, exit codes, PNGs |
+| REQ-03 capture | clone, run, capture; complete `docs/blueprints/ui-blueprint.md` | SHA, exit codes, PNGs |
 | REQ-04 architecture | `docs/architecture.md` + D-01 + D-04 | document with citations |
 | REQ-06 verification index | `docs/verification.md` | mapping table |
 | Foundation checks | toolchain inventory; `.gitignore` | versions; file |
@@ -43,7 +43,7 @@ Sole writer of owned paths during T0-8. Lead does not edit them concurrently.
 3. `git clone https://github.com/enginelabs-au/OrgOS.git .reference/orgos && git -C .reference/orgos checkout 8a843bd6429faf1ace5a9eb6dcfb7440703d34c4`; record `git -C .reference/orgos rev-parse HEAD`.
 4. `npm ci` in the clone (fallback `--ignore-scripts`); `npm run build`; `npm run lint`; `npm run typecheck`; record exit codes and durations.
 5. `npm run dev` in background; confirm `http://localhost:5173/cc-org-dash` responds; capture states per UI/UX capture plan into `docs/ui-blueprint/`; stop the dev server.
-6. Complete `docs/ui-blueprint.md`: commit, file inventory with sizes, launch commands, capture index, component inventory (from source), departures noted; preserve UI/UX sections.
+6. Complete `docs/blueprints/ui-blueprint.md`: commit, file inventory with sizes, launch commands, capture index, component inventory (from source), departures noted; preserve UI/UX sections.
 7. Write `docs/capabilities.md`: header (schema, status vocabulary, transition rules from PM), 43 rows B01–B24, P01–P19, all `planned`, release bucket per PM, dependencies and interface components from intake; Hermes capability inventory placeholder table with version-pin note.
 8. Write `docs/architecture.md`: Mermaid component diagram; entity list with ownership/retention/deletion; trust boundaries; data-destination map; Hermes adapter contract expectations table (runs, idempotency, events, stop, approval, capabilities, sessions, jobs, health) with documentation URLs; DBOS usage (workflows/steps/queues, Postgres system DB); Supabase self-host boundary; Compose topology; backup/restore approach; monorepo layout (D-01).
 9. Write `docs/verification.md`: blueprint 13–18 → release-1 checks, method, evidence type, phase.

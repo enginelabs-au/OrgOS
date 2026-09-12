@@ -1,8 +1,8 @@
-# Runbook: Vercel project `orgos` only
+# Runbook: Vercel Papership project only
 
 ## Rules
 
-- The only Vercel project this repo may use is **`orgos`** (`prj_S74JOIky7KugVTrfu652NhJYOL8l`), Git-linked to `enginelabs-au/Papership`.
+- The only Vercel project this repo may use is the Papership product project (`prj_S74JOIky7KugVTrfu652NhJYOL8l`, dashboard name `papership`). Git link is `enginelabs-au/papership`. Legacy `*.vercel.app` aliases may still say `orgos-*`. Do not invent a second Vercel project.
 - **Never** edit, pause, or delete `enginelabs-au-site` or `enginelabs.com.au`. That site is a different Engine Labs product.
 - **Never** touch Shuffle, Distroclub, jinglelabs, hermes-playground, or other account projects.
 - There are no Vercel projects named `web`, `ui-blueprint`, `desktop`, `api`, or `worker`. Those are folders in this monorepo, not Vercel apps.
@@ -10,4 +10,4 @@
 
 ## Deploy
 
-Root `vercel.json` builds `@orgos/web` (`apps/web`, the `docs/ui-blueprint` `/cc-org-dash` UI).
+Root `vercel.json` builds `@papership/web` (`apps/web`, blueprint-2 at `/papership`).

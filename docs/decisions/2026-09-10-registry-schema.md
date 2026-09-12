@@ -12,7 +12,7 @@ The intake requires a versioned capability registry that records, for each capab
 
 ## Decision
 
-1. **Row schema** — as specified in `docs/product.md` §3.1: `domain_id` (`B01`–`B24`, `P01`–`P19`), `capability_id` (`<domain_id>.<nn>`), `user_outcome`, `owner` (`native` | `connector:<provider>`), `read_actions`, `write_actions` (each write routed through the action lifecycle, PRD-E.3), `data_authority` (`native` | `source:<system>` | `shared`), `required_grants` (identifiers from the versioned grant registry, AUTH-04), `dependencies`, `interface_components` (mapped to `docs/ui-blueprint.md`), `release_phase` (implementation phase `07`–`12` and release `R1`–`R4`), `implementation_status`, `acceptance_evidence`, `registry_version`, `status_changed_at`, `status_evidence`. Identifier and version columns are `proposal` additions; the remainder are intake-derived.
+1. **Row schema** — as specified in `docs/product.md` §3.1: `domain_id` (`B01`–`B24`, `P01`–`P19`), `capability_id` (`<domain_id>.<nn>`), `user_outcome`, `owner` (`native` | `connector:<provider>`), `read_actions`, `write_actions` (each write routed through the action lifecycle, PRD-E.3), `data_authority` (`native` | `source:<system>` | `shared`), `required_grants` (identifiers from the versioned grant registry, AUTH-04), `dependencies`, `interface_components` (mapped to `docs/blueprints/ui-blueprint.md`), `release_phase` (implementation phase `07`–`12` and release `R1`–`R4`), `implementation_status`, `acceptance_evidence`, `registry_version`, `status_changed_at`, `status_evidence`. Identifier and version columns are `proposal` additions; the remainder are intake-derived.
 2. **Status vocabulary** — exactly four values: `planned`, `configured`, `working`, `unavailable`, with the meanings in `docs/product.md` §3.2. No additional states (for example `beta`, `partial`, `deprecated`) are introduced in release 1; retirement is expressed as `unavailable` with a reason.
 3. **Transition rules** — the six rules in `docs/product.md` §3.2 are normative: `configured → working` requires a demonstrated end-to-end workflow, verified behaviour against the real dependency (mocks, reference screens, sample data or a visible control do not qualify) and a linked acceptance evidence record on the release revision; `working → configured` on any invalidating change; every transition records `status_changed_at` and `status_evidence`.
 4. **Storage and publication** — `docs/capabilities.md` is the phase-0 human-readable registry (43 rows, all `planned`). From phase 1 the machine-readable schema lives in `packages/contracts` (zod + JSON Schema) and the API serves the registry; the markdown file becomes a generated projection, not a second source of truth.
@@ -32,7 +32,7 @@ The intake requires a versioned capability registry that records, for each capab
 
 ## Evidence and citations
 
-- Intake: `docs/Company_Agent_System_Blueprint.md` Phase 02 (registry sentence; four statuses).
+- Intake: `docs/blueprints/company_agent_system_blueprint.md` Phase 02 (registry sentence; four statuses).
 - `docs/product.md` §3.1 (schema table), §3.2 (vocabulary and six transition rules), §4.2 (bucket rule).
 - `docs/capabilities.md` (43 rows; EV-S10 row count).
 - PM handoff `docs/workstreams/20260910-engine-labs-company-os/product-manager-subagent/handoff.md` §13 (D-02 candidate).

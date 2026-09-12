@@ -22,7 +22,7 @@ Adopt a single monorepo at the repository root with these top-level members:
 | `services/api` | FastAPI + DBOS Python API (app, migrations, tests) | Python project with lockfile |
 | `services/worker` | Hermes runtime adapter, policy hooks, pinned Hermes gateway configuration (no secrets), execution sandbox definitions | Python project with lockfile |
 | `packages/contracts` | Generated `openapi.json`, TypeScript client, zod schemas, run/notification event schemas, registry row schema (D-02) | npm workspace member |
-| `packages/ui` | Ported primitives, icons, `THEMES` tokens (TSX) — added on the recommendation of `docs/ui-blueprint.md` §F | npm workspace member |
+| `packages/ui` | Ported primitives, icons, `THEMES` tokens (TSX) — added on the recommendation of `docs/blueprints/ui-blueprint.md` §F | npm workspace member |
 | `infra/` | Compose files and overrides, `.env.example` (names only), backup/restore scripts and runbook, `digests.lock` | shell, YAML |
 
 Conventions: npm workspaces for JS/TS members; one lockfile per Python service; a root task runner (`Makefile` or `justfile`) exposing `dev`, `test`, `typecheck`, `lint`, `compose-up`; CI matrix per member with change-path filters; the `.reference/orgos/` clone stays git-ignored and is never imported by product code. Ownership boundaries for agent work are assigned per member path in phase plans (manifest §8).
@@ -43,9 +43,9 @@ Conventions: npm workspaces for JS/TS members; one lockfile per Python service; 
 
 ## Evidence and citations
 
-- Intake: `docs/Company_Agent_System_Blueprint.md` Phase 04 (stack table), Phase 07 (scaffold sentence), Phase 08 (repository binding).
+- Intake: `docs/blueprints/company_agent_system_blueprint.md` Phase 04 (stack table), Phase 07 (scaffold sentence), Phase 08 (repository binding).
 - Manifest §10 `provisional` monorepo assumption; phase 0 plan §7.
-- `docs/ui-blueprint.md` §F (dependency verdict; `packages/ui` targets), §0.5 (import scan: only `react`/`react-dom`).
+- `docs/blueprints/ui-blueprint.md` §F (dependency verdict; `packages/ui` targets), §0.5 (import scan: only `react`/`react-dom`).
 - SE evidence: `docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/evidence.md` EV-S01 (toolchain), EV-S05/EV-S06 (build/lint/typecheck), EV-S07 (className/dependency scan), EV-S02 (`.gitignore`).
 - Tauri 2 project structure (`src-tauri/`, `capabilities/`) — <https://v2.tauri.app/security/capabilities/> ("Configuration Files").
 - DBOS Python + FastAPI packaging — <https://docs.dbos.dev/python/programming-guide>.

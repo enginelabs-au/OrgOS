@@ -13,10 +13,10 @@ All records produced read-only on 2026-09-10 (UTC) in the local repository at `/
 ## Evidence record EV-01 — Required inputs present and read
 
 - Requirement ID: charter §2, §11; plan §1
-- Claim: Every required input existed and was read in full before analysis: `AGENTS.md`, `.cursor/AGENTS.md`, `.cursor/instructions/SUBAGENTS.md`, `.cursor/instructions/ROLES.md` §4 (`product-manager-subagent`), `.cursor/INSTRUCTIONS.md` registry, charter, plan, manifest, `docs/blueprints/2026-09-10_engine_labs.md`, `docs/plans/phase_0_foundations_plan.md`, `docs/Company_Agent_System_Blueprint.md` (414 lines), both templates.
+- Claim: Every required input existed and was read in full before analysis: `AGENTS.md`, `.cursor/AGENTS.md`, `.cursor/instructions/SUBAGENTS.md`, `.cursor/instructions/ROLES.md` §4 (`product-manager-subagent`), `.cursor/INSTRUCTIONS.md` registry, charter, plan, manifest, `docs/blueprints/2026-09-10_engine_labs.md`, `docs/plans/phase_0_foundations_plan.md`, `docs/blueprints/company_agent_system_blueprint.md` (414 lines), both templates.
 - Evidence state: `VERIFIED`
 - Method: Read tool on each path; `wc -l` and `ls` for the intake and workstream directory.
-- Exact command or tool: Read; `wc -l docs/Company_Agent_System_Blueprint.md`; `ls docs/workstreams/20260910-engine-labs-company-os/product-manager-subagent`
+- Exact command or tool: Read; `wc -l docs/blueprints/company_agent_system_blueprint.md`; `ls docs/workstreams/20260910-engine-labs-company-os/product-manager-subagent`
 - Artifact, path, source, or stable reference: paths above; `product-manager-subagent/` contained only `charter.md` and `plan.md` (no predecessor handoff, as declared).
 - Sanitized result and exit status: 414 lines; exit 0.
 - Timestamp: 2026-09-10T15:46Z
@@ -30,7 +30,7 @@ All records produced read-only on 2026-09-10 (UTC) in the local repository at `/
 - Claim: All 18 intake phase headings (01–18) plus the two domain sub-headings are cited by at least one PRD/NFR/acceptance row; the traceability summary (`docs/product.md` §14) maps each heading to IDs.
 - Evidence state: `VERIFIED`
 - Method: Enumerated all headings with ripgrep; built citation key table I-01…I-18, I-02B, I-02P; cross-checked that each key appears in ≥1 requirement row.
-- Exact command or tool: `rg -n "^#" docs/Company_Agent_System_Blueprint.md`
+- Exact command or tool: `rg -n "^#" docs/blueprints/company_agent_system_blueprint.md`
 - Artifact, path, source, or stable reference: intake headings; `docs/product.md` §0.1, §14.
 - Sanitized result and exit status: 21 headings found (1 title, 3 section headings, 18 phase headings — the `## First post-Build action` heading is protocol text, not a product requirement); exit 0.
 - Timestamp: 2026-09-10T15:47Z
@@ -58,7 +58,7 @@ All records produced read-only on 2026-09-10 (UTC) in the local repository at `/
 - Claim: `docs/product.md` contains no monetary amount, token quantity, seat count or rate for any tier; the intake itself contains no prices.
 - Evidence state: `VERIFIED`
 - Method: ripgrep of the intake for price/currency tokens; self-review of `docs/product.md` §8/§8.1.
-- Exact command or tool: `rg -n -i "price|\$[0-9]" docs/Company_Agent_System_Blueprint.md`
+- Exact command or tool: `rg -n -i "price|\$[0-9]" docs/blueprints/company_agent_system_blueprint.md`
 - Artifact, path, source, or stable reference: intake "Price hosted capacity ... explicitly" and "Calculate prices ... before billing" (only matches); `docs/product.md` §8.1 columns are descriptive text only.
 - Sanitized result and exit status: 2 matches, both non-numeric policy sentences; exit 0. Competitor price figures in blueprint §5 were deliberately not carried into `docs/product.md`.
 - Timestamp: 2026-09-10T15:58Z

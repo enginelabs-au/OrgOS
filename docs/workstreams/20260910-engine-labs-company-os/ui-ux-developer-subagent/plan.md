@@ -68,7 +68,7 @@ Lead checks seven views × states, 20-component map, capture plan completeness, 
 
 ## 11. Outputs and storage paths
 
-`ui-ux-developer-subagent/{evidence,handoff}.md`; `docs/ui-blueprint.md` specification sections.
+`ui-ux-developer-subagent/{evidence,handoff}.md`; `docs/blueprints/ui-blueprint.md` specification sections.
 
 ## 12. Gate criteria and downstream handoff
 

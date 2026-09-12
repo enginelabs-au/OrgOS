@@ -21,7 +21,7 @@ Reconcile the five specialist handoffs against the manifest, blueprint, phase 0 
 
 - Manifest; phase 0 plan (T0-12, §19 acceptance criteria); blueprint §17.
 - Predecessor handoffs: PM, UI/UX, SE, Security, Growth.
-- Product documents: `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, `docs/policies/*`, decisions D-01…D-05.
+- Product documents: `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/blueprints/ui-blueprint.md`, `docs/roadmap.md`, `docs/verification.md`, `docs/policies/*`, decisions D-01…D-05.
 - Validators and tests listed in phase 0 plan §19.
 
 ## 3. Scope, non-goals, and ownership

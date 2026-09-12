@@ -28,12 +28,12 @@ The Papership `/cc-org-dash` reference (pinned `8a843bd6429faf1ace5a9eb6dcfb7440
 ## Consequences
 
 - Positive: honest navigation matching D-05 scope; one token source keeps the three themes consistent and testable; smaller bundle with no styling framework.
-- Negative / costs: five-tab layout departs from the reference captures (`docs/ui-blueprint/` 122 PNGs) and must be documented as a departure in `docs/ui-blueprint.md` §H; CSS-module migration of hover styles is phase-1 work.
+- Negative / costs: five-tab layout departs from the reference captures (`docs/ui-blueprint/` 122 PNGs) and must be documented as a departure in `docs/blueprints/ui-blueprint.md` §H; CSS-module migration of hover styles is phase-1 work.
 - Follow-ups: OQ-5 confirmation; D-3/D-11 acknowledgement; F-S7 (closed assistant panel remains in tab order) fixed in the port; phase-16 re-capture targets the Engine Labs shell, not the reference.
 
 ## Evidence and citations
 
-- `docs/ui-blueprint.md` §A.4 (primitives, THEMES 40 keys), §C (tabs table L190; theme default L192), §E/§F (styling model; dependency verdict; `packages/ui` targets), §H D-1 (tab set 8 → 5), D-3 (contrast token, `[lead 2026-09-10]` annotation), D-8/D-10/D-11.
+- `docs/blueprints/ui-blueprint.md` §A.4 (primitives, THEMES 40 keys), §C (tabs table L190; theme default L192), §E/§F (styling model; dependency verdict; `packages/ui` targets), §H D-1 (tab set 8 → 5), D-3 (contrast token, `[lead 2026-09-10]` annotation), D-8/D-10/D-11.
 - UI/UX handoff `docs/workstreams/20260910-engine-labs-company-os/ui-ux-developer-subagent/handoff.md` §13 (D-06 candidate), §12 (OQ-5, D-3, D-11).
 - SE evidence `docs/workstreams/20260910-engine-labs-company-os/software-engineer-subagent/evidence.md` EV-S07 (0 `className`, imports), EV-S08 (contrast ratios), EV-S16 (captures).
 - `docs/policies/authority-model.md` AUTH-26, AUTH-27, AUTH-28.

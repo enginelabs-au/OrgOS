@@ -39,7 +39,7 @@ Any addition to R1 scope requires a decision record superseding this one and a P
 
 ## Evidence and citations
 
-- Intake: `docs/Company_Agent_System_Blueprint.md` Phase 06 (release scope), Phases 07–08.
+- Intake: `docs/blueprints/company_agent_system_blueprint.md` Phase 06 (release scope), Phases 07–08.
 - `docs/product.md` §4.1 (release definition, `verified` R1), §4.2 (bucket rule), §4.3–§4.4 (43 rows), §9 (R1-ACC-1…15), §12 (OQ-3, OQ-5), PRD-A.15, PRD-G.10.
 - `docs/capabilities.md` L121 bucket totals (R1 = 19, R2 = 4, R3 = 14, R4 = 6).
 - `docs/blueprints/2026-09-10_engine_labs.md` §9 (MVP scope and non-goals), §13, §15 (no-build criteria).

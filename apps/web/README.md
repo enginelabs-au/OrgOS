@@ -1,6 +1,6 @@
 # Papership
 
-Local-first dashboard UI (cc-org-dash shell, roster/reporting views, and related screens).
+Local-first dashboard UI (blueprint-2 Papership shell at `/papership`; leftover `/cc-org-dash` redirects).
 
 ## Prerequisites
 
