@@ -16,7 +16,7 @@ export const CONNECTOR_CATALOG = [
     status: "configured",
     destination_class: "source_control",
     scope: "Branch, change and check are granted. Release is off. Live write stays dry-run or approval-bound.",
-    verified: "Configured in Papership. Provider project may still be named OrgOS until the owner renames GitHub.",
+    verified: "Configured in Papership.",
     recovery: "",
     handoff: "Authorise the GitHub App in the browser. Papership never embeds a provider sign-in.",
   },
@@ -72,7 +72,14 @@ export const CONNECTOR_CATALOG = [
 
 function token() {
   try {
-    return localStorage.getItem("engine-os-token") || "";
+    const current = localStorage.getItem("papership-token");
+    if (current) return current;
+    const legacy = localStorage.getItem("engine-os-token");
+    if (legacy) {
+      localStorage.setItem("papership-token", legacy);
+      return legacy;
+    }
+    return "";
   } catch {
     return "";
   }
@@ -276,7 +283,7 @@ export function applyPapershipOverlay(view, overlay, setModal) {
       overlay.source === "error"
         ? overlay.error
         : overlay.source === "unauthenticated"
-          ? "No Papership API session. People stay empty until a JWT is stored as engine-os-token."
+          ? "No Papership API session. People stay empty until a JWT is stored as papership-token."
           : out.people.length
             ? ""
             : "No members yet.";
@@ -323,7 +330,7 @@ export function applyPapershipOverlay(view, overlay, setModal) {
     : [];
   out.memoryNote =
     overlay.source === "unauthenticated"
-      ? "No Papership API session. Memory stays empty until a JWT is stored as engine-os-token."
+      ? "No Papership API session. Memory stays empty until a JWT is stored as papership-token."
       : overlay.source === "error"
         ? overlay.error
         : memoryItems.length

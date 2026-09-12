@@ -17,7 +17,7 @@ import {
   Zap,
 } from "./icons";
 
-/** Documentation tree + page copy (Zep-style layout, cc-org-dash theme) */
+/** Documentation tree + page copy (leftover blueprint-1 theme) */
 const DOC_TREE = [
   {
     id: "concepts",
@@ -482,7 +482,7 @@ export default function SettingsScreen({ T, themeKey, setTheme, isMobile }) {
                   <div style={{ color: T.t1, fontSize: 16, fontWeight: 600, marginBottom: 12 }}>Changelog</div>
                   {[
                     { v: "0.2.0", date: "Sep 2026", notes: "Observatory chrome, Papership fixtures, GitHub PR plan/open (dry-run default)." },
-                    { v: "0.1.0", date: "Sep 2026", notes: "Phase 1 substrate — grants, ledger, jobs, /cc-org-dash shell." },
+                    { v: "0.1.0", date: "Sep 2026", notes: "Phase 1 substrate — grants, ledger, jobs, web shell." },
                   ].map((row) => (
                     <div key={row.v} style={{ padding: "12px 0", borderBottom: `1px solid ${T.border}` }}>
                       <div style={{ fontFamily: F.mono, fontSize: 13, fontWeight: 600, color: T.accent }}>{row.v}</div>

@@ -7,7 +7,7 @@
 ## Current Status
 
 - Phase 6 **planning** (D-33). Plan drafted. Do not implement T6-1…T6-8 until the owner asks.
-- Rename audit (Papership target): **NO-GO** for a one-pass wipe including GitHub/App/Vercel/history. **GO** for sequenced Pass A now if the owner says so; Passes B–E after the owner renames GitHub and syncs `GITHUB_APP_REPO`. File: `docs/handover/rename-audit-orgos-to-papership.md`.
+- Leftover-name Pass A done. Provider-locked files wait for the owner (GitHub / App / Vercel). List: `docs/handover/rename-owner-first-providers.md`.
 
 ## Project Phase
 
@@ -34,12 +34,12 @@
 
 - Hermes GET `/health` hang (HEAD-first probe already used).
 - Mailbox `Environment=` hygiene (owner/VPS).
-- Live provider slugs still named OrgOS until the owner renames GitHub/Vercel/App.
+- Live GitHub / Vercel / App slugs still wait for the owner rename, then the locked-file follow-up.
 - Gmail/Slack live OAuth credentials missing (names wired).
 
 ## Owner Decision
 
-- 2026-09-12: plan Phase 6 after product click-through; rename leftover `/cc-org-dash` (D-32, D-33).
+- 2026-09-12: leftover sweep to Papership in the current tree; owner will rename GitHub / App / Vercel after other names; then agent updates locked files.
 - 2026-09-12: D-22…D-33 stand.
 
 ## Active Instructions
@@ -48,16 +48,14 @@
 
 ## Active Items
 
-- Phase 6 plan drafted. Await owner request before T6 implementation.
+- Await owner GitHub / App / Vercel rename, then locked-file follow-up. Phase 6 still not implemented.
 
 ## Files in Active Use
 
 - `/STATE.md`
 - `docs/plans/phase_6_commercial_delivery_plan.md`
-- `docs/decisions/2026-09-12-papership-canonical-route.md`
-- `docs/decisions/2026-09-12-phase-6-planning-authorized.md`
+- `docs/handover/rename-owner-first-providers.md`
 - `docs/handover/outstanding-actions-and-decisions.md`
-- `docs/handover/rename-audit-orgos-to-papership.md`
 
 ## Open Blockers
 
@@ -65,8 +63,7 @@
 
 ## Attempts Performed
 
-- 2026-09-12: D-32 route rename `/papership`; leftover aliases redirect; storage keys migrated.
-- 2026-09-12: Phase 6 plan written; T6 not implemented.
+- 2026-09-12: Pass A leftover sweep (NOTICE, grants alias, token, store path). Locked files untouched.
 
 ## Decisions and Assumptions
 
@@ -74,6 +71,7 @@
 - D-32: canonical URL is `/papership`; `/cc-org-dash` is a redirect.
 - D-33: plan only; do not implement Phase 6 until asked.
 - CA-10 still blocks published rates and live charges. G9 is structure/test-mode only.
+- Provider-locked OrgOS strings stay until the owner renames those providers.
 
 ## Current Working State
 
@@ -81,12 +79,11 @@
 
 ## Next Actions
 
-1. Owner: accept Papership rename audit §1, then say go for Pass A (or finish GitHub rename first for B–E). File: `docs/handover/rename-audit-orgos-to-papership.md`.
+1. Owner: rename GitHub repo, App, and Vercel (see `docs/handover/rename-owner-first-providers.md`), then ask for the locked-file follow-up.
 2. Do not implement Phase 6 until asked.
 3. Do not generate Phase 7 until G9.
 4. Do not treat write/external Hermes tools as `accepted`.
-5. Do not start the OrgOS/cc-org sweep until the owner gives go after this audit.
 
 ## Last Updated
 
-- 2026-09-12T07:25Z — Papership leftover-name audit: sequenced GO / one-pass NO-GO. Phase 6 still draft. No strings changed.
+- 2026-09-12T07:35Z — Pass A leftover sweep. Provider-locked files wait for owner.

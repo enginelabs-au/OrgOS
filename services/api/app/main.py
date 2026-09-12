@@ -595,7 +595,6 @@ def create_app(store_path: str | None = None) -> FastAPI:
         repo_grants = sorted(g for g in papership if g.startswith("repo."))
         return {
             "papership": repo_grants,
-            "orgos": repo_grants,
             "installation": perms,
             "effective": effective,
         }

@@ -25,3 +25,9 @@ test("localStorage keys are papership-* with legacy migrate", () => {
   assert.match(shell, /const LEGACY_AUTH_KEY = "cc-org-dash-auth"/);
   assert.match(shell, /function migrateStored/);
 });
+
+test("live API client has no OrgOS product name", () => {
+  const api = readFileSync(join(root, "src/api/papership.js"), "utf8");
+  assert.doesNotMatch(api, /OrgOS|orgos|cc-org/);
+  assert.match(api, /papership-token/);
+});

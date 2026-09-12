@@ -433,7 +433,6 @@ Prefer built-in project scripts and official tooling over improvised alternative
 
 **Related files**
 
-- `/memory/runbooks/orgos-hermes-tunnel.md`
 - `scripts/hermes-tunnel.sh`
 - `scripts/dev-local.sh`
 
