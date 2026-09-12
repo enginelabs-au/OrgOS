@@ -22,7 +22,7 @@
 
 ## Active Role and Gate
 
-- G11 PASS (2026-09-12). Checklist residuals: CA-10, D-25, OQ-G2 live click, Vercel redeploy, ERA-15 real destroy.
+- G11 PASS (2026-09-12). Checklist residuals parked: CA-10, D-25 (OT-10 later), ERA-15 (OT-13 later). OQ-G2 recorded locally.
 
 ## Predecessor Handoff
 
@@ -31,15 +31,19 @@
 
 ## Pending Remediation
 
-- OQ-G2 must be recorded against a reachable API (`127.0.0.1:8000`), not the Vercel static host.
-- Gmail/Slack Papership OAuth is still missing. Hermes mailbox/Slack env is a different credential class and will not be copied.
-- Hermes GET `/health` hang (HEAD-first probe already used). Hermes units were inactive when last probed.
-- Mailbox `Environment=` hygiene (owner/VPS).
-- Push `main` after author rewrite (cursoragent@cursor.com).
+- OQ-G2 recorded on local store 2026-09-12T15:20Z. Local API is up at `127.0.0.1:8000` after the overlay segfault (OT-24). Vercel still cannot hold this flag.
+- Gmail/Slack OAuth start/callback shipped. Host secrets are loaded. Local Gmail (OT-25) and Slack (OT-26) are both connected with sealed tokens. Hermes env was not copied.
+- OT-16 done: live Hermes `GET /health` on `:8642` is 200 (~1ms); HEAD 405. Units were active. HEAD-first probe stays.
+- OT-29: droplet `active_provider` is OpenRouter; OpenRouter pool exhaustion cleared; free fallbacks restored. Local `~/.hermes/config.yaml` `model.provider` is `openrouter`.
+- OT-30: serve now has the OpenRouter key in its EnvironmentFile; `setup.runtime_check` should show ready. Desktop may need one reconnect after the serve restart.
+- OT-31: OpenRouter Settings picker now uses the live tool-capable catalog (377). Cap is 999 / uncapped, not None. Serve restarted.
+- OT-32: chat OpenRouter featured shortlist is curated (~48) plus current (`openai/gpt-5.6-luna-pro` in featured). Cheap capabilities skip per-model lookups on the long tail. Serve restarted again — Desktop needs one reconnect.
+- OT-05 done: live Hermes user systemd has no `Environment=EMAIL_*`. OT-06…OT-14 parked in `docs/handover/future-tasks.md`. OT-15 JWT is sessionStorage + memory. OT-16 GET `/health` is 200.
+- Leftover feature branches are gone from git (`main` + `origin/main` only). Cursor may still show closed-PR names. Production READY `dpl_DWrfAXJpUELC8NwwdSCTCT6pMfSW` (`63a3e3a`).
 
 ## Owner Decision
 
-- 2026-09-13: trial competitor-average rate card (D-35) Free/Pro/Max/Enterprise. Charges stay off. Desktop must load current web chrome. Extra git branches may be deleted. Hermes env must not be reused for Papership OAuth. Destroy-infra is not recommended.
+- 2026-09-13: trial competitor-average rate card (D-35) Free/Pro/Max/Enterprise. Charges stay off. Desktop must load current web chrome. Extra git branches are deleted in git. Hermes env must not be reused for Papership OAuth. Destroy-infra is not recommended.
 
 ## Active Instructions
 
@@ -47,15 +51,18 @@
 
 ## Active Items
 
+- Live outstanding list: `docs/handover/outstanding-tasks.md` (repeat every turn).
 - Owner follows `docs/plans/final_implementation_checklist.md` §6.
 
 ## Files in Active Use
 
 - `/STATE.md`
+- `docs/handover/outstanding-tasks.md`
+- `docs/handover/future-tasks.md`
+- `docs/workstreams/20260913-d25-repass/security-engineer-subagent/handoff.md`
 - `docs/plans/final_implementation_checklist.md`
-- `services/api/app/phase7.py`
+- `apps/web/src/api/papership.js`
 - `apps/web/src/blueprint2/App.jsx`
-- `scripts/era15-dry-run.mjs`
 
 ## Open Blockers
 
@@ -67,24 +74,26 @@
 
 ## Decisions and Assumptions
 
-- D-25 lift review 2026-09-12 CONDITIONAL — write/external Hermes `accepted` unauthorized (`d25-lift-handoff.md`).
+- D-25 lift review 2026-09-12 CONDITIONAL; re-pass 2026-09-13 CONDITIONAL — write/external Hermes `accepted` unauthorized (`20260913-d25-repass`).
 - D-35 trial rate card published; charges stay off.
 - Erasure records intent only; destroy stays false.
 - ERA-15 script is list-only.
 - No Phase 8. Desktop Tauri loads `@papership/web` at `/papership`. Marketing site untouched.
 - Do not copy Hermes VPS env into Papership Gmail/Slack.
+- Same Hermes Google Cloud *project* may host a new Papership OAuth client. Same Hermes Slack *app* / tokens must not be reused.
 
 ## Current Working State
 
-- Branch `main` (merge `7b1207e`). Feature branches 4/5/6 are ancestors. `origin/orgos-loop-r1-close` left unmerged (stale 5-line OrgOS loop note).
+- Branch `main` @ `63a3e3a`. No leftover local or remote feature refs. Closed PRs 1–5 still exist as GitHub history.
 - GitHub App `papership-dev` is local. VPS is Hermes only.
+- Local API sources `~/.config/papership/connectors.env`. OT-25 Gmail and OT-26 Slack are both `configured` with `has_token` on the local store. Send stays approval-then-receipt. Vercel still cannot hold these tokens.
 
 ## Next Actions
 
-1. Owner: start local API, then Settings → Data → Record measurement notice.
+1. Repeat `docs/handover/outstanding-tasks.md` open rows every turn (none open after 2026-09-13 park).
 2. Do not treat write/external Hermes tools as `accepted`.
-3. Charges stay off until a later owner flip.
+3. Charges stay off until a later owner flip (OT-08, parked).
 
 ## Last Updated
 
-- 2026-09-13T03:10Z — D-35 trial card, desktop retarget, OQ-G2 copy, branch cleanup.
+- 2026-09-12T17:00Z — Owner: Hermes WhatsApp/Telegram already live. That is gateway chat, not Papership Integrations. No further action unless they want Inbox/send inside Papership.

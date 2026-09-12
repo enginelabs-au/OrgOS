@@ -33,7 +33,7 @@ Also standing: D-12 / D-14 user-owned data; AUTH-25 / D-17 Hermes catalog; AUTH-
 | Click **Record measurement notice** on the live store (Settings → Data) | live tenant | no | yes for a real second human or guest |
 | Create Google OAuth client and Slack app; set `GMAIL_OAUTH_CLIENT_ID`, `GMAIL_OAUTH_REDIRECT_URL`, `SLACK_CLIENT_ID` on the API host | owner accounts | no | yes for live Gmail/Slack |
 | Relink/rename Vercel project `orgos` | provider dashboard | no | no |
-| Move mailbox credentials off systemd `Environment=` | VPS owner | no | hygiene, not a plan gate |
+| Move mailbox credentials off systemd `Environment=` | done 2026-09-13 — live Hermes user units have no `Environment=EMAIL_*` | no | — |
 | Hermes GET `/health` hang | Hermes ops | no | HEAD-first probe already used |
 | Apple signing, DigitalOcean, backup restore drill | accounts | no | R1 residual |
 | `execute_release` | owner | no | publication |

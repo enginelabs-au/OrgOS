@@ -26,8 +26,11 @@ API_ENV_ALLOWLIST = frozenset(
         "GITHUB_APP_OWNER",
         "GITHUB_APP_REPO",
         "GMAIL_OAUTH_CLIENT_ID",
+        "GMAIL_OAUTH_CLIENT_SECRET",
         "GMAIL_OAUTH_REDIRECT_URL",
         "SLACK_CLIENT_ID",
+        "SLACK_CLIENT_SECRET",
+        "SLACK_OAUTH_REDIRECT_URL",
         "ENGINE_BILLING_CHARGES_ENABLED",
         "ENGINE_PACK_EXECUTION_ENABLED",
         "ENGINE_API_PUBLIC_URL",
@@ -85,6 +88,7 @@ class Settings:
     gmail_oauth_client_id: str
     gmail_oauth_redirect_url: str
     slack_client_id: str
+    slack_oauth_redirect_url: str
     billing_charges_enabled: bool
     pack_execution_enabled: bool
     api_public_url: str
@@ -130,8 +134,9 @@ def load_settings() -> Settings:
         github_owner=_get("GITHUB_APP_OWNER", ""),
         github_repo=_get("GITHUB_APP_REPO", ""),
         gmail_oauth_client_id=_get("GMAIL_OAUTH_CLIENT_ID", ""),
-        gmail_oauth_redirect_url=_get("GMAIL_OAUTH_REDIRECT_URL", ""),
+        gmail_oauth_redirect_url=_get("GMAIL_OAUTH_REDIRECT_URL", "http://127.0.0.1:8000/oauth/gmail/callback"),
         slack_client_id=_get("SLACK_CLIENT_ID", ""),
+        slack_oauth_redirect_url=_get("SLACK_OAUTH_REDIRECT_URL", "http://localhost:8000/oauth/slack/callback"),
         billing_charges_enabled=_get("ENGINE_BILLING_CHARGES_ENABLED", "0").strip().lower()
         in {"1", "true", "on"},
         pack_execution_enabled=_get("ENGINE_PACK_EXECUTION_ENABLED", "0").strip().lower()
@@ -158,4 +163,15 @@ def settings_public_dict(settings: Settings) -> dict[str, object]:
         "billing_charges_enabled": settings.billing_charges_enabled,
         "pack_execution_enabled": settings.pack_execution_enabled,
         "api_public_url": settings.api_public_url,
+        "has_gmail_oauth_client_id": bool(settings.gmail_oauth_client_id),
+        "has_gmail_oauth_secret": bool(_get("GMAIL_OAUTH_CLIENT_SECRET", "")),
+        "has_slack_client_id": bool(settings.slack_client_id),
+        "has_slack_secret": bool(_get("SLACK_CLIENT_SECRET", "")),
     }
+
+
+def oauth_secret(name: str) -> str:
+    """Read an OAuth client secret. Never log or return this to callers."""
+    if name not in {"GMAIL_OAUTH_CLIENT_SECRET", "SLACK_CLIENT_SECRET"}:
+        raise RuntimeError(f"refusing to read non-oauth secret: {name}")
+    return _get(name, "")

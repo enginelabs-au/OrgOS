@@ -22,7 +22,7 @@ CONNECTORS: dict[str, dict[str, Any]] = {
         "destination_class": "mailbox",
         "status": "planned",
         "actions": {"read": "dry_run", "draft": "dry_run", "send": "approval_then_receipt"},
-        "handoff": "Create a Google OAuth client, then set GMAIL_OAUTH_CLIENT_ID and GMAIL_OAUTH_REDIRECT_URL. Send stays approval-bound.",
+        "handoff": "Continue in Google’s browser after the client ID and secret are on the API host. Send stays approval-bound.",
     },
     "slack": {
         "id": "slack",
@@ -31,7 +31,7 @@ CONNECTORS: dict[str, dict[str, Any]] = {
         "destination_class": "chat",
         "status": "planned",
         "actions": {"read": "dry_run", "send": "approval_then_receipt"},
-        "handoff": "Create a Slack app, then set SLACK_CLIENT_ID. Messages stay approval-bound.",
+        "handoff": "Continue in Slack’s browser after the client ID and secret are on the API host. Messages stay approval-bound.",
     },
     "telegram": {
         "id": "telegram",

@@ -27,10 +27,10 @@ export const CONNECTOR_CATALOG = [
     kind: "Comms channel",
     status: "planned",
     destination_class: "mailbox",
-    scope: "Read and draft stay dry-run until GMAIL_OAUTH_CLIENT_ID is set. Send needs approval then a receipt.",
+    scope: "Read and draft stay dry-run after connect. Send needs approval then a receipt.",
     verified: "Not enabled",
     recovery: "",
-    handoff: "Create a Google OAuth client, then set GMAIL_OAUTH_CLIENT_ID and GMAIL_OAUTH_REDIRECT_URL.",
+    handoff: "Continue in Google’s browser. Papership never embeds the provider sign-in.",
   },
   {
     id: "slack",
@@ -39,10 +39,10 @@ export const CONNECTOR_CATALOG = [
     kind: "Comms channel",
     status: "planned",
     destination_class: "chat",
-    scope: "Read stays dry-run until SLACK_CLIENT_ID is set. Messages need approval then a receipt.",
+    scope: "Read stays dry-run after connect. Messages need approval then a receipt.",
     verified: "Not enabled",
     recovery: "",
-    handoff: "Create a Slack app, then set SLACK_CLIENT_ID.",
+    handoff: "Continue in Slack’s browser. Papership never embeds the provider sign-in.",
   },
   {
     id: "telegram",
@@ -70,19 +70,57 @@ export const CONNECTOR_CATALOG = [
   },
 ];
 
-function token() {
+let memoryToken = "";
+
+function persistSession(value) {
+  memoryToken = value || "";
   try {
-    const current = localStorage.getItem("papership-token");
-    if (current) return current;
-    const legacy = localStorage.getItem("engine-os-token");
-    if (legacy) {
-      localStorage.setItem("papership-token", legacy);
-      return legacy;
-    }
-    return "";
+    if (value) sessionStorage.setItem("papership-token", value);
+    else sessionStorage.removeItem("papership-token");
+    localStorage.removeItem("papership-token");
+    localStorage.removeItem("engine-os-token");
   } catch {
-    return "";
+    /* */
   }
+}
+
+function token() {
+  if (memoryToken) return memoryToken;
+  try {
+    const session = sessionStorage.getItem("papership-token");
+    if (session) {
+      memoryToken = session;
+      return session;
+    }
+    const persisted = localStorage.getItem("papership-token") || localStorage.getItem("engine-os-token") || "";
+    if (persisted) {
+      persistSession(persisted);
+      return persisted;
+    }
+  } catch {
+    /* */
+  }
+  return memoryToken;
+}
+
+function sessionExpiry(raw) {
+  try {
+    const payload = (raw || "").split(".")[1];
+    if (!payload) return 0;
+    const padded = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const json = JSON.parse(atob(padded));
+    return Number(json.exp) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function sessionIsFresh(raw) {
+  return Boolean(raw) && sessionExpiry(raw) - Date.now() / 1000 > 90;
+}
+
+export function clearStoredSession() {
+  persistSession("");
 }
 
 function apiUnreachable(path, cause) {
@@ -94,20 +132,35 @@ function apiUnreachable(path, cause) {
   return err;
 }
 
-export async function postPapershipJson(path, body) {
-  const headers = { Accept: "application/json", "Content-Type": "application/json" };
-  const jwt = token();
+async function authHeaders(extra) {
+  const jwt = await ensureLocalSession();
+  const headers = { Accept: "application/json", ...extra };
   if (jwt) headers.Authorization = `Bearer ${jwt}`;
+  return headers;
+}
+
+async function papershipRequest(path, init, retried = false) {
+  const headers = await authHeaders(init.headers || {});
   let response;
   try {
-    response = await fetch(`${API_BASE}${path}`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body || {}),
-    });
+    response = await fetch(`${API_BASE}${path}`, { ...init, headers });
   } catch (cause) {
     throw apiUnreachable(path, cause);
   }
+  if (response.status === 401 && !retried) {
+    clearStoredSession();
+    await ensureLocalSession();
+    return papershipRequest(path, init, true);
+  }
+  return response;
+}
+
+export async function postPapershipJson(path, body) {
+  const response = await papershipRequest(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body || {}),
+  });
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
     const err = new Error(payload.detail || `Papership API ${path} returned ${response.status}`);
@@ -117,7 +170,28 @@ export async function postPapershipJson(path, body) {
   return payload;
 }
 
+export async function ensureLocalSession() {
+  const current = token();
+  if (sessionIsFresh(current)) return current;
+  try {
+    const response = await fetch(`${API_BASE}/auth/local-session`, {
+      method: "POST",
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) return sessionIsFresh(current) ? current : "";
+    const body = await response.json();
+    if (body.access_token) {
+      persistSession(body.access_token);
+      return body.access_token;
+    }
+  } catch {
+    /* */
+  }
+  return "";
+}
+
 export async function recordOqG2() {
+  await ensureLocalSession();
   return postPapershipJson("/settings/oq-g2", {});
 }
 
@@ -160,15 +234,7 @@ function mapHealth(health) {
 }
 
 export async function fetchPapershipJson(path) {
-  const headers = { Accept: "application/json" };
-  const jwt = token();
-  if (jwt) headers.Authorization = `Bearer ${jwt}`;
-  let response;
-  try {
-    response = await fetch(`${API_BASE}${path}`, { headers });
-  } catch (cause) {
-    throw apiUnreachable(path, cause);
-  }
+  const response = await papershipRequest(path, { method: "GET" });
   if (!response.ok) {
     const err = new Error(`Papership API ${path} returned ${response.status}`);
     err.status = response.status;
@@ -212,7 +278,7 @@ export function formatPlanTier(plan) {
 }
 
 export async function loadPapershipOverlay() {
-  const jwt = token();
+  const jwt = await ensureLocalSession();
   if (!jwt) {
     return {
       source: "unauthenticated",
@@ -435,17 +501,19 @@ function statusStyle(status) {
   return { bg: "var(--line2)", ink: "var(--t3)", dot: "var(--t3)", bd: "var(--line)", glyphBg: "var(--raised)", glyphInk: "var(--t3)" };
 }
 
-export function mapConnection(row, setModal) {
+export function mapConnection(row, ui = {}) {
   const status = row.status || "planned";
   const styles = statusStyle(status);
+  const provider = row.id;
   const actions =
     status === "configured" || status === "working"
       ? [
           { label: "Detail", bd: "var(--line)", ink: "var(--t2)", go: () => {} },
-          { label: "Revoke", bd: "var(--red)", ink: "var(--red)", go: () => setModal?.("revoke") },
+          { label: "Revoke", bd: "var(--red)", ink: "var(--red)", go: () => ui.setModal?.("revoke") },
         ]
-      : [{ label: "Set up", bd: "var(--line)", ink: "var(--t2)", go: () => setModal?.("wizard") }];
+      : [{ label: "Set up", bd: "var(--line)", ink: "var(--t2)", go: () => ui.openWizard?.(provider) }];
   return {
+    id: provider,
     initials: row.initials || (row.label || row.name || row.id || "?").slice(0, 2).toUpperCase(),
     name: row.label || row.name || row.id,
     kind: row.kind || row.destination_class || "Connector",
@@ -458,7 +526,8 @@ export function mapConnection(row, setModal) {
   };
 }
 
-export function applyPapershipOverlay(view, overlay, setModal) {
+export function applyPapershipOverlay(view, overlay, ui = {}) {
+  const controls = typeof ui === "function" ? { setModal: ui } : ui;
   const out = { ...view };
   const measurement = overlay.measurement || defaultMeasurement();
   out.apiSource = overlay.source;
@@ -484,7 +553,7 @@ export function applyPapershipOverlay(view, overlay, setModal) {
       overlay.source === "error"
         ? overlay.error
         : overlay.source === "unauthenticated"
-          ? "No Papership API session. People stay empty until a JWT is stored as papership-token."
+          ? "No Papership API session. People stay empty until a local founder session is minted."
           : out.people.length
             ? ""
             : "No members yet.";
@@ -503,7 +572,7 @@ export function applyPapershipOverlay(view, overlay, setModal) {
   }
 
   const catalog = overlay.connections?.length ? overlay.connections : CONNECTOR_CATALOG;
-  out.connections = catalog.map((row) => mapConnection(row, setModal));
+  out.connections = catalog.map((row) => mapConnection(row, controls));
   out.wizardProviders = catalog;
 
   const memoryItems = overlay.memory || [];
@@ -531,7 +600,7 @@ export function applyPapershipOverlay(view, overlay, setModal) {
     : [];
   out.memoryNote =
     overlay.source === "unauthenticated"
-      ? "No Papership API session. Memory stays empty until a JWT is stored as papership-token."
+      ? "No Papership API session. Memory stays empty until a local founder session is minted."
       : overlay.source === "error"
         ? overlay.error
         : memoryItems.length

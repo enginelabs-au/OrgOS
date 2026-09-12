@@ -4,6 +4,7 @@ Store durable user-specific instructions and preferences here. Add new durable i
 
 ## Standing directives
 
+- Keep `docs/handover/outstanding-tasks.md` current every substantive turn. Repeat every `open` / `in_progress` / `held` row at the end of the reply even if the owner did not mention those tasks. Do not drop a row because a later message ignored it.
 - The product in this repository is **Papership**. Engine Labs is the company. `www.enginelabs.com.au` is a separate Engine Labs marketing/services site and must never be replaced, redirected, or have its Vercel project (`enginelabs-au-site`) edited from this workstream.
 - Data responsibility (D-12, D-14): Papership/Engine Labs does not own user content. Keep only generic anonymous usage. Users own their data (self-host store; delete or request deletion). Integrations handle data under their own terms. Side-effect receipts stay until the user deletes them. Never paste secrets into chat.
 - The Papership product UI is `docs/ui-blueprint/blueprint-2` mounted at `/papership` (D-32). Leftover `/cc-org-dash` redirects there. Do not invent a substitute marketing landing at `/`. Do not hybridise it with blueprint-1.

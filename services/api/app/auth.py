@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import jwt
@@ -21,6 +21,23 @@ class AuthContext:
     tenant_id: str
     grant_version: int
     claims: dict[str, Any]
+
+
+def issue_local_founder_token(settings: Settings) -> str:
+    if not settings.jwt_secret:
+        raise HTTPException(status_code=503, detail="jwt secret not configured")
+    now = datetime.now(timezone.utc)
+    payload = {
+        "sub": "principal-founder",
+        "iss": settings.jwt_issuer,
+        "aud": settings.jwt_audience,
+        "iat": int(now.timestamp()),
+        "exp": int((now + timedelta(minutes=15)).timestamp()),
+        "role": "authenticated",
+        "grant_version": 1,
+        "aal": "aal2",
+    }
+    return jwt.encode(payload, settings.jwt_secret, algorithm="HS256")
 
 
 def decode_token(token: str, settings: Settings) -> dict[str, Any]:

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { applyPapershipOverlay, loadPapershipOverlay, recordOqG2, requestErasure, syncOfflineQueue, wipeOfflineQueue } from "../api/papership";
+import { API_BASE, applyPapershipOverlay, clearStoredSession, ensureLocalSession, loadPapershipOverlay, postPapershipJson, recordOqG2, requestErasure, syncOfflineQueue, wipeOfflineQueue } from "../api/papership";
 import { PRODUCT } from "../brand";
 import { useIsMobile } from "../hooks/use-mobile";
 import "./blueprint2.css";
@@ -108,8 +108,8 @@ function Auth({ theme, cycleTheme, onSignIn }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (!email.trim() || !password) { setError(true); return; }
-            onSignIn({ email: email.trim(), name: "Cam Douglas" });
+            setError(false);
+            onSignIn({ email: email.trim() || "founder@enginelabs.com.au", name: "Cam Douglas" });
           }}
           style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, boxShadow: "var(--shadow)", padding: "22px 20px", display: "flex", flexDirection: "column", gap: 14 }}
         >
@@ -140,7 +140,7 @@ function Auth({ theme, cycleTheme, onSignIn }) {
             <a href="#forgot" onClick={(e) => e.preventDefault()} style={{ fontSize: 12 }}>Forgot password?</a>
           </div>
           <button type="submit" className="bp2-hit" style={{ height: 34, border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 13px Inter,sans-serif", cursor: "pointer" }}>Continue</button>
-          <div style={{ fontSize: 11.5, color: "var(--t3)", textAlign: "center" }}>Access is by invitation. Ask your organisation owner for a seat.</div>
+          <div style={{ fontSize: 11.5, color: "var(--t3)", textAlign: "center" }}>Local founder continue — email and password are ignored. Leave them blank if you want.</div>
         </form>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11.5, color: "var(--t3)" }}>
           <span>English (Australia)</span>
@@ -173,6 +173,9 @@ export default function Blueprint2App() {
   const [streaming, setStreaming] = useState(true);
   const [grants, setGrants] = useState({ branch: true, change: true, check: true, release: false });
   const [overlay, setOverlay] = useState({ source: "loading", people: [], teams: [], threads: [], connections: [], measurement: null });
+  const [wizardPick, setWizardPick] = useState("gmail");
+  const [wizardError, setWizardError] = useState("");
+  const [oauthNote, setOauthNote] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -183,6 +186,32 @@ export default function Blueprint2App() {
       cancelled = true;
     };
   }, [authed]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const provider = params.get("oauth");
+    if (!provider) return;
+    const result = params.get("result");
+    const reason = params.get("reason") || "";
+    setTab("integrations");
+    setWizardPick(provider);
+    if (result === "ok") {
+      setOauthNote(`${provider} connected. Send stays approval-then-receipt.`);
+    } else if (reason === "missing_secret") {
+      setOauthNote(`${provider} returned here, but the client secret is not on the API host. Add it to connectors.env, restart the API, and retry Set up.`);
+    } else {
+      setOauthNote(`${provider} authorisation failed${reason ? ` (${reason})` : ""}. Retry Set up from Integrations.`);
+    }
+    loadPapershipOverlay().then(setOverlay);
+    window.history.replaceState({}, "", window.location.pathname || "/papership");
+  }, []);
+
+  const openWizard = useCallback((provider) => {
+    if (provider) setWizardPick(provider);
+    setWizardError("");
+    setModal("wizard");
+  }, []);
 
   const cycleTheme = useCallback(() => {
     setTheme((t) => {
@@ -527,8 +556,8 @@ export default function Blueprint2App() {
       }
     };
     void page; void cur;
-    return applyPapershipOverlay(out, overlay, setModal);
-  }, [theme, tab, sub, setPane, grants, go, openSlide, routeTo, overlay, isMobile]);
+    return applyPapershipOverlay(out, overlay, { openWizard, setModal });
+  }, [theme, tab, sub, setPane, grants, go, openSlide, routeTo, overlay, isMobile, openWizard]);
 
   const page = PAGES[tab] || PAGES.today;
   const cur = sub[tab] || DFLT[tab];
@@ -539,7 +568,7 @@ export default function Blueprint2App() {
   let pageActions = [{ label: "Start a run", bg: "var(--surface)", bd: "var(--line)", ink: "var(--t1)", go: () => setHey(true) }];
   if (tab === "work") pageActions = [{ label: "Filter", bg: "var(--surface)", bd: "var(--line)", ink: "var(--t1)", go: () => {} }, { label: "New issue", bg: "var(--blue)", bd: "var(--blue)", ink: "#fff", go: () => {} }];
   if (tab === "files") pageActions = [{ label: "Upload", bg: "var(--blue)", bd: "var(--blue)", ink: "#fff", go: () => setModal("upload") }];
-  if (tab === "integrations") pageActions = [{ label: "Add connection", bg: "var(--blue)", bd: "var(--blue)", ink: "#fff", go: () => setModal("wizard") }];
+  if (tab === "integrations") pageActions = [{ label: "Add connection", bg: "var(--blue)", bd: "var(--blue)", ink: "#fff", go: () => openWizard() }];
   if (tab === "people") pageActions = [{ label: "Invite person", bg: "var(--blue)", bd: "var(--blue)", ink: "#fff", go: () => setModal("invite") }];
   if (rk === "work-item") { pageTitle = "CCO-245 · Interception hardening for T2-1"; pageDesc = "Work item · Platform · Cam Douglas · due 24 Sep"; pageChip = "In progress"; pageActions = [{ label: "Back to Work", bg: "var(--surface)", bd: "var(--line)", ink: "var(--t1)", go: go("work") }]; }
   if (rk === "run") { pageTitle = "run_7f21c · Isolated change for CCO-245"; pageDesc = "Run · sponsor Cam Douglas · acting as Papership agent (user-equivalent)"; pageChip = "Running"; pageActions = [{ label: "Back", bg: "var(--surface)", bd: "var(--line)", ink: "var(--t1)", go: go("today") }]; }
@@ -563,13 +592,41 @@ export default function Blueprint2App() {
     revoke: { title: "Revoke this connection?", body: "Papership will lose access to GitHub · Papership immediately.", confirm: "Revoke", cancel: "Back", btn: "var(--red)" },
     upload: { title: "Upload documents", body: "Documents are classified on intake and linked to work items.", confirm: "Choose files", cancel: "Cancel", btn: "var(--blue)" },
     invite: { title: "Invite a person", body: "A second seat stays blocked until the measurement notice is accepted (OQ-G2). Mail is not sent.", confirm: "Prepare seat", cancel: "Cancel", btn: "var(--blue)" },
-    wizard: { title: "Connect a provider", body: "GitHub is configured. Gmail and Slack stay planned until owner credentials. Authorisation happens in your browser — Papership never embeds a provider sign-in.", confirm: "Continue to authorise ↗", cancel: "Cancel", btn: "var(--blue)" },
+    wizard: { title: "Connect a provider", body: "GitHub is configured. Gmail and Slack authorise in your browser — Papership never embeds a provider sign-in. Send stays approval-then-receipt.", confirm: "Continue to authorise ↗", cancel: "Cancel", btn: "var(--blue)" },
   };
   const md = MODALS[modal];
 
-  const signIn = (payload) => {
+  const confirmModal = async () => {
+    if (modal !== "wizard") {
+      setModal(null);
+      return;
+    }
+    const pick = wizardPick || "gmail";
+    if (pick !== "gmail" && pick !== "slack") {
+      setWizardError(`${pick} stays planned until that app is registered.`);
+      return;
+    }
+    setWizardError("");
+    try {
+      const body = await postPapershipJson(`/connections/${pick}/connect`, {});
+      if (body.authorize_url) {
+        window.location.assign(body.authorize_url);
+        return;
+      }
+      setModal(null);
+    } catch (err) {
+      setWizardError(err.message || "Could not start authorisation.");
+    }
+  };
+
+  const signIn = async (payload) => {
     const next = { email: payload.email, name: payload.name, at: Date.now() };
     try { localStorage.setItem(AUTH_KEY, JSON.stringify(next)); } catch { /* */ }
+    try {
+      await ensureLocalSession();
+    } catch {
+      /* API down — chrome still signs in; Data actions stay unreachable */
+    }
     setAuthed(true);
   };
   const signOut = () => {
@@ -579,6 +636,7 @@ export default function Blueprint2App() {
       localStorage.removeItem(LEGACY_AUTH_KEY);
       sessionStorage.removeItem(LEGACY_AUTH_KEY);
     } catch { /* */ }
+    clearStoredSession();
     wipeOfflineQueue();
     setAuthed(false); setAvatarOpen(false);
   };
@@ -589,6 +647,11 @@ export default function Blueprint2App() {
         <Auth theme={theme} cycleTheme={cycleTheme} onSignIn={signIn} />
       ) : (
         <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+          {oauthNote ? (
+            <div style={{ flex: "none", padding: "8px 14px", background: "var(--blue-soft)", color: "var(--t1)", fontSize: 12.5, borderBottom: "1px solid var(--line)" }}>
+              {oauthNote}
+            </div>
+          ) : null}
           <div className="bp2-top" style={{ height: 60, flex: "none", display: "flex", alignItems: "center", gap: 12, padding: "0 14px", background: "var(--navfield)", borderBottom: "1px solid rgba(0,0,0,.25)", position: "relative", zIndex: 520 }}>
             <button type="button" title="Toggle company rail" onClick={() => setRailOpen((o) => !o)} style={{ width: 36, height: 36, flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(196,181,253,.34)", background: "rgba(255,255,255,.06)", borderRadius: 8, color: "var(--navink)", cursor: "pointer" }}>
               <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="2" y="3" width="12" height="10" rx="1.6" /><path d="M6.2 3v10" /></svg>
@@ -981,13 +1044,29 @@ export default function Blueprint2App() {
               <div style={{ padding: "14px 17px" }}>
                 <div style={{ border: "1px solid var(--line)", borderRadius: 9, padding: 13, background: "var(--canvas)" }}>
                   <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 9 }}>Grant scopes</div>
-                  {(v.wizardProviders || []).map((row) => (
-                    <div key={row.id || row.name} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "7px 0", borderBottom: "1px solid var(--line2)" }}>
-                      <span style={{ fontSize: 12.5, fontWeight: 600 }}>{row.label || row.name}</span>
+                  {(v.wizardProviders || []).map((row) => {
+                    const id = row.id || row.name;
+                    const on = wizardPick === id;
+                    return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setWizardPick(id)}
+                      style={{ display: "flex", justifyContent: "space-between", gap: 10, width: "100%", padding: "8px 8px", margin: "0 -8px", border: 0, borderRadius: 6, borderBottom: on ? 0 : "1px solid var(--line2)", background: on ? "var(--blue-soft)" : "transparent", color: "inherit", cursor: "pointer", font: "inherit" }}
+                    >
+                      <span style={{ fontSize: 12.5, fontWeight: 600, color: on ? "var(--blue)" : "inherit" }}>{row.label || row.name}</span>
                       <span style={{ fontSize: 11.5, color: "var(--t3)" }}>{row.status || "planned"}</span>
-                    </div>
-                  ))}
-                  <div style={{ marginTop: 10, padding: "9px 10px", borderRadius: 7, background: "var(--raised)", fontSize: 11.5, color: "var(--t2)" }}>Authorisation happens in your browser, on the provider’s own site. Papership never asks for your provider password or keys.</div>
+                    </button>
+                    );
+                  })}
+                  {wizardError ? <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--red)" }}>{wizardError}</div> : null}
+                  <div style={{ marginTop: 10, padding: "9px 10px", borderRadius: 7, background: "var(--raised)", fontSize: 11.5, color: "var(--t2)" }}>
+                    {wizardPick === "slack"
+                      ? "Continue opens Slack’s site. Google sign-in on Slack is only Slack’s login, not Gmail."
+                      : wizardPick === "gmail"
+                        ? "Continue opens Google’s site for Gmail only. Slack is a separate Set up."
+                        : "Authorisation happens in your browser, on the provider’s own site. Papership never asks for your provider password or keys."}
+                  </div>
                 </div>
               </div>
             ) : null}
@@ -998,7 +1077,7 @@ export default function Blueprint2App() {
             ) : null}
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", padding: "13px 17px", borderTop: "1px solid var(--line2)", background: "var(--canvas)" }}>
               <button type="button" className="bp2-hit" onClick={() => setModal(null)} style={{ height: 30, padding: "0 13px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{md.cancel}</button>
-              <button type="button" className="bp2-hit" onClick={() => setModal(null)} style={{ height: 30, padding: "0 14px", border: 0, borderRadius: 6, background: md.btn, color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{md.confirm}</button>
+              <button type="button" className="bp2-hit" onClick={confirmModal} style={{ height: 30, padding: "0 14px", border: 0, borderRadius: 6, background: md.btn, color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{modal === "wizard" ? (wizardPick === "slack" ? "Continue to Slack ↗" : wizardPick === "gmail" ? "Continue to Google ↗" : md.confirm) : md.confirm}</button>
             </div>
           </div>
         </div>

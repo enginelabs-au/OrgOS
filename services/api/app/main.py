@@ -12,11 +12,12 @@ from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, RedirectResponse, StreamingResponse
 
-from app.auth import AuthContext, auth_dep, require_reauth
+from app.auth import AuthContext, auth_dep, issue_local_founder_token, require_reauth
 from app.config import load_settings
 from app.connectors import get_connector, list_connectors
+from app.oauth import annotate_connection, complete_oauth_callback, frontend_redirect, oauth_readiness, start_oauth_connect
 from app.github_app import GithubError, installation_permissions, list_pulls, open_pull, probe_github
 from app.github_grants import intersect_repo_grants, may_open_pull
 from app.source_grants import intersect_source_grants, may_live_write
@@ -46,6 +47,8 @@ def create_app(store_path: str | None = None) -> FastAPI:
     origins = list(settings.cors_origins) or [
         "http://127.0.0.1:5173",
         "http://localhost:5173",
+        "http://127.0.0.1:4173",
+        "http://localhost:4173",
         "http://127.0.0.1:1420",
         "http://localhost:1420",
         "http://tauri.localhost",
@@ -89,6 +92,7 @@ def create_app(store_path: str | None = None) -> FastAPI:
             "hermes_pin": settings.hermes_version_pin,
             "usage_emit": settings.usage_emit,
             "github": github,
+            "oauth": oauth_readiness(settings),
         }
 
     @app.get("/registry")
@@ -137,6 +141,15 @@ def create_app(store_path: str | None = None) -> FastAPI:
         items = store.list_inbox(ctx.principal_id)
         return {"items": items, "state": "ready" if items else "empty"}
 
+    @app.post("/auth/local-session")
+    def local_session() -> dict[str, str]:
+        if not settings.test_hooks:
+            raise HTTPException(status_code=403, detail="local session disabled")
+        return {
+            "access_token": issue_local_founder_token(settings),
+            "principal_id": "principal-founder",
+        }
+
     @app.get("/settings/measurement")
     def measurement_notice(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         return store.measurement_notice()
@@ -149,7 +162,9 @@ def create_app(store_path: str | None = None) -> FastAPI:
 
     @app.get("/connections")
     def connections(ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
-        return {"items": store.list_connections(ctx.principal_id), "catalog": list_connectors()}
+        items = [annotate_connection(row, settings) for row in store.list_connections(ctx.principal_id)]
+        catalog = [annotate_connection(dict(row), settings) for row in list_connectors()]
+        return {"items": items, "catalog": catalog}
 
     @app.get("/connections/{provider}")
     def connection_detail(provider: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
@@ -161,7 +176,26 @@ def create_app(store_path: str | None = None) -> FastAPI:
 
     @app.post("/connections/{provider}/connect")
     def connect_provider(provider: str, ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        started = start_oauth_connect(store, settings, ctx.principal_id, provider)
+        if started is not None:
+            return started
         return store.connect_provider(ctx.principal_id, provider)
+
+    @app.get("/oauth/{provider}/callback")
+    def oauth_callback(
+        provider: str,
+        code: str = "",
+        state: str = "",
+        error: str = "",
+    ) -> RedirectResponse:
+        if error:
+            outcome = {"result": "error", "reason": "provider_denied"}
+        else:
+            outcome = complete_oauth_callback(store, settings, provider, code, state)
+        return RedirectResponse(
+            frontend_redirect(settings, provider, outcome["result"], outcome.get("reason") or ""),
+            status_code=302,
+        )
 
     @app.post("/connections/{provider}/send")
     def send_via_provider(provider: str, body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:

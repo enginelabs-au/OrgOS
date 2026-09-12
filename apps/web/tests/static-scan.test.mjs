@@ -79,3 +79,36 @@ test("live API client has no OrgOS product name", () => {
   assert.doesNotMatch(api, /OrgOS|orgos|cc-org/);
   assert.match(api, /papership-token/);
 });
+
+test("founder JWT stays in memory and sessionStorage, not localStorage", () => {
+  const api = readFileSync(join(root, "src/api/papership.js"), "utf8");
+  const app = readFileSync(join(root, "src/blueprint2/App.jsx"), "utf8");
+  assert.match(api, /sessionStorage\.setItem\("papership-token"/);
+  assert.match(api, /localStorage\.removeItem\("papership-token"/);
+  assert.match(api, /export function clearStoredSession/);
+  assert.doesNotMatch(api, /localStorage\.setItem\("papership-token"/);
+  assert.doesNotMatch(app, /localStorage\.setItem\("papership-token"/);
+  assert.match(app, /clearStoredSession/);
+});
+
+test("API posts mint a local founder session when the JWT is missing", () => {
+  const api = readFileSync(join(root, "src/api/papership.js"), "utf8");
+  assert.match(api, /async function authHeaders/);
+  assert.match(api, /await ensureLocalSession\(\)/);
+  assert.match(api, /function sessionIsFresh/);
+  assert.match(api, /response.status === 401 && !retried/);
+});
+
+test("local sign-in continues without a password check", () => {
+  const app = readFileSync(join(root, "src/blueprint2/App.jsx"), "utf8");
+  assert.doesNotMatch(app, /if \(!email\.trim\(\) \|\| !password\)/);
+  assert.match(app, /email and password are ignored/);
+});
+
+test("Integrations Set up preselects the connector id", () => {
+  const api = readFileSync(join(root, "src/api/papership.js"), "utf8");
+  const app = readFileSync(join(root, "src/blueprint2/App.jsx"), "utf8");
+  assert.match(api, /ui\.openWizard\?\.\(provider\)/);
+  assert.match(app, /const openWizard = useCallback/);
+  assert.match(app, /Continue to Slack/);
+});

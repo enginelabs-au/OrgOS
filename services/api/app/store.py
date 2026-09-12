@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import threading
 import time
 import uuid
 from contextlib import contextmanager
+from functools import wraps
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -105,16 +107,84 @@ class StoreError(Exception):
         self.status_code = status_code
 
 
+class _ListCursor:
+    def __init__(self, rows: list[Any], lastrowid: int | None = None, rowcount: int = -1) -> None:
+        self._rows = list(rows)
+        self._i = 0
+        self.lastrowid = lastrowid
+        self.rowcount = rowcount
+
+    def fetchone(self):
+        if self._i >= len(self._rows):
+            return None
+        row = self._rows[self._i]
+        self._i += 1
+        return row
+
+    def fetchall(self):
+        rest = self._rows[self._i :]
+        self._i = len(self._rows)
+        return rest
+
+    def __iter__(self):
+        return iter(self.fetchall())
+
+
+class _LockedConn:
+    def __init__(self, conn: sqlite3.Connection, lock: threading.RLock) -> None:
+        self._conn = conn
+        self._lock = lock
+
+    def execute(self, *args, **kwargs):
+        with self._lock:
+            cursor = self._conn.execute(*args, **kwargs)
+            return _ListCursor(cursor.fetchall(), cursor.lastrowid, cursor.rowcount)
+
+    def executescript(self, sql: str):
+        with self._lock:
+            return self._conn.executescript(sql)
+
+    def commit(self):
+        with self._lock:
+            return self._conn.commit()
+
+    def close(self):
+        with self._lock:
+            return self._conn.close()
+
+    def __getattr__(self, name: str):
+        return getattr(self._conn, name)
+
+
+def _serialize_store(cls):
+    for name, attr in list(vars(cls).items()):
+        if name.startswith("_") or not callable(attr):
+            continue
+        fn = attr
+
+        @wraps(fn)
+        def wrapped(self, *args, __fn=fn, **kwargs):  # type: ignore[misc]
+            with self._lock:
+                return __fn(self, *args, **kwargs)
+
+        setattr(cls, name, wrapped)
+    return cls
+
+
+@_serialize_store
 class Store:
     def __init__(self, path: str) -> None:
         self.path = str(Path(path))
+        self._lock = threading.RLock()
         Path(self.path).parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(self.path, check_same_thread=False)
-        self.conn.row_factory = sqlite3.Row
-        self.conn.execute("PRAGMA journal_mode=WAL")
-        self.conn.execute("PRAGMA foreign_keys=ON")
+        raw = sqlite3.connect(self.path, check_same_thread=False, timeout=30)
+        raw.row_factory = sqlite3.Row
+        raw.execute("PRAGMA journal_mode=WAL")
+        raw.execute("PRAGMA foreign_keys=ON")
+        self.conn = _LockedConn(raw, self._lock)
         self._init_schema()
         self._migrate_phase5()
+        self._migrate_oauth()
         from app.phase7 import migrate_phase7
 
         migrate_phase7(self)
@@ -395,6 +465,24 @@ class Store:
             """
         )
         self.flush()
+
+    def _migrate_oauth(self) -> None:
+        columns = {row["name"] for row in self.conn.execute("PRAGMA table_info(connections)").fetchall()}
+        if "token_blob" not in columns:
+            self.conn.execute("ALTER TABLE connections ADD COLUMN token_blob TEXT")
+        self.conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS oauth_states (
+              nonce TEXT PRIMARY KEY,
+              provider TEXT NOT NULL,
+              principal_id TEXT NOT NULL,
+              tenant_id TEXT NOT NULL,
+              expires_at INTEGER NOT NULL,
+              used INTEGER NOT NULL DEFAULT 0,
+              created_at TEXT NOT NULL
+            )
+            """
+        )
 
     def _migrate_phase5(self) -> None:
         existing = {
@@ -1303,9 +1391,14 @@ class Store:
         out: list[dict[str, Any]] = []
         for spec in list_connectors():
             row = stored.get(spec["id"]) or {}
-            item = {**spec, **{k: row[k] for k in ("status", "enabled", "last_sync", "lineage") if row}}
+            public = {k: row[k] for k in ("status", "enabled", "last_sync", "lineage") if row and k in row}
+            item = {**spec, **public}
             if not row:
                 item["enabled"] = False
+                item["has_token"] = False
+            else:
+                item["enabled"] = bool(row.get("enabled"))
+                item["has_token"] = bool(row.get("token_blob"))
             out.append(item)
         return out
 
@@ -1342,6 +1435,80 @@ class Store:
         self.append_audit(principal_id, "connection.connect", "connection", spec["id"])
         self.flush()
         return {"id": cid, "provider": spec["id"], "status": status, "enabled": bool(enabled), "destination_class": spec["destination_class"]}
+
+    def begin_oauth(self, principal_id: str, spec: dict[str, Any]) -> None:
+        if not self.has_grant(principal_id, "org.admin"):
+            raise StoreError("denied: org.admin", 403)
+        p = self.principal(principal_id)
+        now = _now()
+        existing = self.conn.execute(
+            "SELECT * FROM connections WHERE tenant_id=? AND provider=?",
+            (p["tenant_id"], spec["id"]),
+        ).fetchone()
+        if existing:
+            self.conn.execute(
+                "UPDATE connections SET status=?, enabled=0 WHERE id=?",
+                ("pending_oauth", existing["id"]),
+            )
+        else:
+            self.conn.execute(
+                """INSERT INTO connections
+                   (id, tenant_id, provider, status, destination_class, enabled, last_sync, lineage, created_at)
+                   VALUES (?, ?, ?, ?, ?, 0, NULL, '', ?)""",
+                (_id("conn"), p["tenant_id"], spec["id"], "pending_oauth", spec["destination_class"], now),
+            )
+        self.append_audit(principal_id, "connection.oauth.start", "connection", spec["id"])
+        self.flush()
+
+    def save_oauth_state(
+        self, nonce: str, provider: str, principal_id: str, tenant_id: str, expires_at: int
+    ) -> None:
+        self.conn.execute(
+            """INSERT INTO oauth_states
+               (nonce, provider, principal_id, tenant_id, expires_at, used, created_at)
+               VALUES (?, ?, ?, ?, ?, 0, ?)""",
+            (nonce, provider, principal_id, tenant_id, expires_at, _now()),
+        )
+        self.flush()
+
+    def peek_oauth_state(self, nonce: str) -> dict[str, Any] | None:
+        row = self.conn.execute("SELECT * FROM oauth_states WHERE nonce=?", (nonce,)).fetchone()
+        if not row or row["used"] or int(row["expires_at"]) < int(time.time()):
+            return None
+        return self.row_to_dict(row)
+
+    def consume_oauth_state(self, nonce: str) -> dict[str, Any] | None:
+        row = self.peek_oauth_state(nonce)
+        if row is None:
+            return None
+        self.conn.execute("UPDATE oauth_states SET used=1 WHERE nonce=?", (nonce,))
+        self.flush()
+        return row
+
+    def store_oauth_token(self, principal_id: str, spec: dict[str, Any], token_blob: str) -> dict[str, Any]:
+        p = self.principal(principal_id)
+        now = _now()
+        existing = self.conn.execute(
+            "SELECT * FROM connections WHERE tenant_id=? AND provider=?",
+            (p["tenant_id"], spec["id"]),
+        ).fetchone()
+        if existing:
+            self.conn.execute(
+                "UPDATE connections SET status=?, enabled=1, last_sync=?, token_blob=? WHERE id=?",
+                ("configured", now, token_blob, existing["id"]),
+            )
+            cid = existing["id"]
+        else:
+            cid = _id("conn")
+            self.conn.execute(
+                """INSERT INTO connections
+                   (id, tenant_id, provider, status, destination_class, enabled, last_sync, lineage, created_at, token_blob)
+                   VALUES (?, ?, ?, 'configured', ?, 1, ?, '', ?, ?)""",
+                (cid, p["tenant_id"], spec["id"], spec["destination_class"], now, now, token_blob),
+            )
+        self.append_audit(principal_id, "connection.oauth.connected", "connection", spec["id"])
+        self.flush()
+        return {"id": cid, "provider": spec["id"], "status": "configured", "enabled": True, "has_token": True}
 
     def record_sync_checkpoint(
         self, principal_id: str, provider: str, lineage: str, label: str = "incremental"

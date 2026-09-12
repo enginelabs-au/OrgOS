@@ -1,6 +1,15 @@
 from app.source_grants import intersect_source_grants, may_live_write
 
 
+def test_local_session_can_record_oq_g2(client) -> None:
+    session = client.post("/auth/local-session")
+    assert session.status_code == 200
+    token = session.json()["access_token"]
+    recorded = client.post("/settings/oq-g2", headers={"Authorization": f"Bearer {token}"})
+    assert recorded.status_code == 200
+    assert recorded.json()["oq_g2_recorded"] is True
+
+
 def test_invite_without_oq_g2_is_forbidden(client, founder_headers) -> None:
     response = client.post(
         "/members/invites",

@@ -61,7 +61,7 @@ def probe_hermes(base_url: str | None = None, timeout: float = 3.0) -> dict[str,
     if not url:
         return {"hermes": "not_configured", "wired": False, "api_server": False}
     target = f"{url}/health"
-    # HEAD first: GET /health on the live gateway hangs for the full timeout.
+    # HEAD first: older gateway builds hung on GET /health. HEAD 405 is immediate.
     code = _probe_status(target, "HEAD", timeout)
     if code is None:
         code = _probe_status(target, "GET", timeout)

@@ -35,7 +35,7 @@ R1 owner `APPROVE` is already recorded (2026-09-11). This file replaces the old 
 | OQ-G2 on the **live** store | second human / guest | API + button exist; store flag still false until you click | Settings → Data → Record measurement notice | you |
 | Live Gmail / Slack | real mail/chat | names wired; apps not created | Google/Slack dashboards, then set the three names | you |
 | Hermes GET `/health` hang | readiness | HEAD-first probe already used | optional Hermes ops fix | you |
-| Mailbox creds in systemd `Environment=` | secret hygiene | known | move off the unit file | you |
+| Mailbox creds in systemd `Environment=` | secret hygiene | done 2026-09-13 | live Hermes user units have no `Environment=EMAIL_*` | — |
 | PWA token in web storage | mobile residual | fail-closed; no device keychain proof | accept for now, or later keychain work | residual |
 | Desktop signed update / axe gallery | V16-1/4 PARTIAL | unsigned | Apple signing when you want a signed desktop | you |
 | Compose live + backup restore | V15-5 / V17-4 | config exists, not brought up | provision backup target, then restore drill | you |
@@ -128,7 +128,7 @@ Do these in order. Skip a section if you do not want that capability yet.
 
 ### E. Hygiene and GitHub (do when convenient)
 
-1. Move mailbox credentials off systemd `Environment=`.
+1. Mailbox credentials are off systemd `Environment=` on the live Hermes host (2026-09-13).
 2. In GitHub: branch protection on `main`; pin Actions by SHA; turn on Dependabot (protected workflow files — dashboard or a later ask).
 3. Set GitHub org / App dashboard avatars if you want them (icons in-repo are already Papership).
 4. Optional: rename local folder `~/Papership` if you still have `~/OrgOS` (safe after reopen).

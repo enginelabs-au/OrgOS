@@ -32,7 +32,7 @@ def probe_hermes(base_url: str, timeout: float = 3.0) -> str:
     if not url:
         return "not_configured"
     target = f"{url}/health"
-    # HEAD first: the live gateway GET /health hangs; HEAD 405 is immediate.
+    # HEAD first: older gateway builds hung on GET /health. HEAD 405 is immediate.
     classified = _classify(_status(target, "HEAD", timeout))
     if classified is not None:
         return classified

@@ -8,7 +8,7 @@ SSH Host `hermes-vps` is in `~/.ssh/config` (user `hermes`, Tailscale). Do not c
 - `hermes-serve.service`: `hermes serve --host 0.0.0.0 --port 9119` — desktop login UI. `/health` is 302 `/login`.
 - `hermes-gateway.service`: messaging + **HTTP API** on `127.0.0.1:8642`. Do not start a second gateway.
 - API connect can take >30s on this box. User drop-in sets `HERMES_GATEWAY_PLATFORM_CONNECT_TIMEOUT=120`.
-- `GET /health` on `:8642` currently hangs. `HEAD /health` returns 405 Allow: GET (listener is up). Papership probe uses that fallback.
+- `GET /health` on `:8642` returned 200 in ~1ms on 2026-09-12 (OT-16). `HEAD /health` is 405 Allow: GET. Papership still probes HEAD first.
 
 ## Local Papership
 
@@ -23,10 +23,7 @@ SSH Host `hermes-vps` is in `~/.ssh/config` (user `hermes`, Tailscale). Do not c
 - Worker env file (not in git): `~/.config/papership/hermes-api-server.env` (`HERMES_API_SERVER_KEY`, `HERMES_API_BASE_URL`). Legacy copy may still exist under `~/.config/orgos/`. Never put the key on the API.
 - Hermes authenticates with its **secret-scoped** key. Yaml / systemd `API_SERVER_KEY` copies can diverge; do not assume they match.
 - After gateway restarts, recreate the local `-L 127.0.0.1:8642` tunnel. Stale forwards hang and can fill the VPS accept queue (GET `/health` hang).
-- Do not GET `/health` on `:8642`. HEAD only.
 - Live `accepted` is catalogued **read** `tool=` only. Example run `run_ee41560dd3ee46eb9bef3fcd6615e6ba`.
+- OT-16 closed 2026-09-12: `GET /health` on `:8642` is 200; HEAD-first probe stays.
 
-## Still open
-
-- Hermes `GET /health` readiness (hangs)
-- Mailbox `EMAIL_*` on gateway `Environment=` (move to EnvironmentFile; do not print values)
+Mailbox `EMAIL_*` is no longer on systemd `Environment=` (checked 2026-09-13 on `hermes-droplet-campbell` user units). Do not print values if they reappear.
