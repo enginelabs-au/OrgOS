@@ -43,7 +43,7 @@
 - OT-36: Desktop/OS icons are full-bleed so the system squircle fills the well. Web/tab mark stays the pre-cut plate.
 - OT-35: Hermes updates are in NousResearch PR https://github.com/NousResearch/hermes-agent/pull/109304 (`cam-douglas:fix/openrouter-picker-and-search`). Local `Hermes.app` rebuilt from `07de97ddce` and installed unsigned (duplicate Apple Development identities).
 - OT-05 done: live Hermes user systemd has no `Environment=EMAIL_*`. OT-06…OT-14 parked in `docs/handover/future-tasks.md`. OT-15 JWT is sessionStorage + memory. OT-16 GET `/health` is 200.
-- Leftover feature branches are gone from git (`main` + `origin/main` only). Cursor may still show closed-PR names. Local and origin `main` are `451a7f3`. Vercel will pick up the Git push.
+- Leftover feature branches are gone from git (`main` + `origin/main` only). Cursor may still show closed-PR names. Local and origin `main` are `551bf31`. Vercel will pick up the Git push.
 
 ## Owner Decision
 
@@ -89,7 +89,7 @@
 
 ## Current Working State
 
-- Branch `main` @ `451a7f3` (pushed). No leftover local or remote feature refs. Closed PRs 1–5 still exist as GitHub history.
+- Branch `main` @ `551bf31` (pushed). No leftover local or remote feature refs. Closed PRs 1–5 still exist as GitHub history.
 - GitHub App `papership-dev` is local. VPS is Hermes only.
 - Local API sources `~/.config/papership/connectors.env`. OT-25 Gmail and OT-26 Slack are both `configured` with `has_token` on the local store. Send stays approval-then-receipt. Vercel still cannot hold these tokens.
 
@@ -101,4 +101,4 @@
 
 ## Last Updated
 
-- 2026-09-12T17:18Z — OT-36: full-bleed Tauri/apple-touch/maskable icons so the system squircle fills the well. Local `Papership.app` icns replaced and reopened.
+- 2026-09-12T17:20Z — pushed `551bf31` (`81284b2..551bf31`): Papership desktop name + full-bleed OS icons.
