@@ -38,6 +38,10 @@ Do not store secret values here. Charges stay off until a later owner flip.
 | OT-30 | done | — | Hermes status chip “Gateway · inference unavailable” was a false negative: `setup.runtime_check` saw OpenRouter configured but the serve process had no router key. Key is now in the serve EnvironmentFile; serve restarted; runtime resolve is usable. |
 | OT-31 | done | — | OpenRouter Settings picker now lists the live tool-capable catalog (377). Cap is 999 / uncapped, not None. |
 | OT-32 | done | — | Hermes Desktop chat model selector no longer hangs on the live 377-id OpenRouter catalog. Featured is the curated shortlist (~48) plus the current pick (`openai/gpt-5.6-luna-pro` in featured). Capability lookups skip the long tail. Serve restarted; reconnect Desktop once. |
+| OT-33 | done | — | Hermes Desktop model pickers filter as you type. Chat catalog focuses its search field on open. Settings / fallback / aux / MoA / cron / bots Selects use `searchable`. |
+| OT-34 | done | — | Local Papership desktop rebuilt from current `@papership/web` and opened. Bundle is `Papership.app` (was leftover `OrgOS.app`). Window title and display name are Papership. Workspace package is `@papership/desktop`. |
+| OT-36 | done | — | Papership desktop/OS icons are full-bleed opaque squares so macOS/iOS can apply the system squircle. Pre-cut plate stays on web/tab/`brand/papership-icon.png` only. New `icon.icns` copied into the local `Papership.app` and the app reopened. |
+| OT-35 | done | — | Hermes picker fixes opened as NousResearch PR https://github.com/NousResearch/hermes-agent/pull/109304. Local `Hermes.app` rebuilt from `07de97ddce` and installed. Unsigned because two identical Apple Development identities collide. |
 
 ## Standing rules for this list
 

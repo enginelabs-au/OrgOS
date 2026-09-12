@@ -30,6 +30,14 @@ test("production src does not import fixtures or store auth in localStorage", ()
   assert.equal(hits.length, 0, hits.join("\n"));
 });
 
+test("Tauri product is Papership and loads /papership", () => {
+  const conf = readFileSync(join(srcRoot, "../src-tauri/tauri.conf.json"), "utf8");
+  assert.match(conf, /"productName": "Papership"/);
+  assert.match(conf, /"title": "Papership"/);
+  assert.match(conf, /devUrl": "http:\/\/127\.0\.0\.1:5173\/papership"/);
+  assert.doesNotMatch(conf, /OrgOS|orgos/);
+});
+
 test("index.html has no external font URLs", () => {
   const html = readFileSync(join(srcRoot, "../index.html"), "utf8");
   assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic|fonts\.google/);

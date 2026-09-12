@@ -1,6 +1,6 @@
 {
   "identifier": "default",
-  "description": "Minimal Engine Labs desktop capability",
+  "description": "Minimal Papership desktop capability",
   "windows": ["main"],
   "permissions": [
     "core:default",

@@ -40,5 +40,5 @@ pub fn run() {
             keychain_clear
         ])
         .run(tauri::generate_context!())
-        .expect("error while running Engine Labs desktop");
+        .expect("error while running Papership desktop");
 }

@@ -38,6 +38,10 @@
 - OT-30: serve now has the OpenRouter key in its EnvironmentFile; `setup.runtime_check` should show ready. Desktop may need one reconnect after the serve restart.
 - OT-31: OpenRouter Settings picker now uses the live tool-capable catalog (377). Cap is 999 / uncapped, not None. Serve restarted.
 - OT-32: chat OpenRouter featured shortlist is curated (~48) plus current (`openai/gpt-5.6-luna-pro` in featured). Cheap capabilities skip per-model lookups on the long tail. Serve restarted again — Desktop needs one reconnect.
+- OT-33: Desktop model pickers type-to-filter. Chat menu focuses search on open. Settings/cron/bots/fallback Selects are `searchable`.
+- OT-34: Local `Papership.app` rebuilt from current web dist and opened. Leftover `OrgOS.app` removed. Use rustup Cargo (`~/.cargo/bin`) — Homebrew 1.84.1 fails `edition2024`.
+- OT-36: Desktop/OS icons are full-bleed so the system squircle fills the well. Web/tab mark stays the pre-cut plate.
+- OT-35: Hermes updates are in NousResearch PR https://github.com/NousResearch/hermes-agent/pull/109304 (`cam-douglas:fix/openrouter-picker-and-search`). Local `Hermes.app` rebuilt from `07de97ddce` and installed unsigned (duplicate Apple Development identities).
 - OT-05 done: live Hermes user systemd has no `Environment=EMAIL_*`. OT-06…OT-14 parked in `docs/handover/future-tasks.md`. OT-15 JWT is sessionStorage + memory. OT-16 GET `/health` is 200.
 - Leftover feature branches are gone from git (`main` + `origin/main` only). Cursor may still show closed-PR names. Local and origin `main` are `451a7f3`. Vercel will pick up the Git push.
 
@@ -63,6 +67,7 @@
 - `docs/plans/final_implementation_checklist.md`
 - `apps/web/src/api/papership.js`
 - `apps/web/src/blueprint2/App.jsx`
+- `scripts/generate-papership-icons.py`
 
 ## Open Blockers
 
@@ -96,4 +101,4 @@
 
 ## Last Updated
 
-- 2026-09-12T17:05Z — Owner asked to push. `451a7f3` on `origin/main` as Cursor Agent after GH007 rejected `shuffle.ops@gmail.com`.
+- 2026-09-12T17:18Z — OT-36: full-bleed Tauri/apple-touch/maskable icons so the system squircle fills the well. Local `Papership.app` icns replaced and reopened.

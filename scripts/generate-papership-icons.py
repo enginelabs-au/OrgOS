@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Build Papership app/tab icons from the owner rounded-square render.
 
-Keeps the purple icon plate. Pixels outside that plate are transparent.
-A slightly inset squircle then cuts the leftover red/maroon fringe on the
-rim (boat reds stay — they are interior, not on the plate edge).
+Display marks (tab / in-page / PWA "any") keep the purple plate with
+transparent pixels outside it. An 8px-inset squircle cuts leftover
+red/maroon fringe (boat reds stay — they are interior).
+
+OS-masked slots (Tauri, apple-touch, maskable) are a full-bleed opaque
+square of that plate. macOS/iOS/Android apply their own squircle; a
+pre-cut plate on a dark square reads as an inset tile with hard edges.
 """
 
 from __future__ import annotations
@@ -168,6 +172,62 @@ def fit(im: Image.Image, size: int, *, opaque: bool = False, content: float = 1.
     return canvas
 
 
+def _plate_purple(im: Image.Image) -> tuple[int, int, int]:
+    x0, y0, x1, y1 = _opaque_bbox(im)
+    probes = (
+        ((x0 + x1) // 2, y0 + 16),
+        (x0 + 16, (y0 + y1) // 2),
+        (x1 - 16, (y0 + y1) // 2),
+        ((x0 + x1) // 2, y1 - 16),
+    )
+    acc = [0, 0, 0]
+    n = 0
+    for x, y in probes:
+        r, g, b = _sample_purple(im, x, y)
+        acc[0] += r
+        acc[1] += g
+        acc[2] += b
+        n += 1
+    return (acc[0] // n, acc[1] // n, acc[2] // n)
+
+
+def _recolor_outer_rim(im: Image.Image) -> None:
+    px = im.load()
+    w, h = im.size
+    for y in range(h):
+        for x in range(w):
+            if min(x, y, w - 1 - x, h - 1 - y) > 3:
+                continue
+            r, g, b, a = px[x, y]
+            if a < 8:
+                continue
+            if is_rim_red(r, g, b) or not is_purple(r, g, b):
+                pr, pg, pb = _sample_purple(im, x, y)
+                px[x, y] = (pr, pg, pb, 255)
+
+
+def fullbleed(im: Image.Image, size: int, *, content: float = 1.0) -> Image.Image:
+    """Opaque square the OS can mask. Artwork covers the canvas; no pre-cut corners."""
+    rgba = im.convert("RGBA")
+    x0, y0, x1, y1 = _opaque_bbox(rgba)
+    plate = rgba.crop((x0, y0, x1 + 1, y1 + 1))
+    fill = _plate_purple(rgba)
+    canvas = Image.new("RGBA", (size, size), (*fill, 255))
+    box = max(1, int(size * content))
+    pw, ph = plate.size
+    scale = max(box / pw, box / ph)
+    nw = max(1, int(round(pw * scale)))
+    nh = max(1, int(round(ph * scale)))
+    scaled = plate.resize((nw, nh), Image.Resampling.LANCZOS)
+    x = (size - nw) // 2
+    y = (size - nh) // 2
+    canvas.paste(scaled, (x, y), scaled)
+    flat = Image.new("RGBA", (size, size), (*fill, 255))
+    flat.alpha_composite(canvas)
+    _recolor_outer_rim(flat)
+    return flat
+
+
 def write_png(path: Path, im: Image.Image) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     im.save(path, "PNG", optimize=True)
@@ -186,25 +246,25 @@ def main() -> None:
     write_png(web / "papership-icon.png", master)
     write_png(desktop_pub / "papership-icon.png", master)
     write_png(blueprint / "papership-icon.png", fit(master, 1024))
-    write_png(tauri / "icon.png", fit(master, 512, opaque=True))
+    write_png(tauri / "icon.png", fullbleed(master, 512))
 
     write_png(web / "favicon-16.png", fit(master, 16))
     write_png(web / "favicon-32.png", fit(master, 32))
-    write_png(web / "icon-192.png", fit(master, 192, opaque=True))
-    write_png(web / "icon-512.png", fit(master, 512, opaque=True))
-    write_png(web / "icon-512-maskable.png", fit(master, 512, opaque=True, content=0.8))
-    write_png(web / "apple-touch-icon.png", fit(master, 180, opaque=True))
-    fit(master, 32, opaque=True).save(web / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)])
-    write_png(desktop_pub / "favicon-32.png", fit(master, 32, opaque=True))
-    fit(master, 32, opaque=True).save(
+    write_png(web / "icon-192.png", fit(master, 192))
+    write_png(web / "icon-512.png", fit(master, 512))
+    write_png(web / "icon-512-maskable.png", fullbleed(master, 512, content=0.8))
+    write_png(web / "apple-touch-icon.png", fullbleed(master, 180))
+    fit(master, 32).save(web / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)])
+    write_png(desktop_pub / "favicon-32.png", fit(master, 32))
+    fit(master, 32).save(
         desktop_pub / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)]
     )
-    write_png(desktop_pub / "apple-touch-icon.png", fit(master, 180, opaque=True))
+    write_png(desktop_pub / "apple-touch-icon.png", fullbleed(master, 180))
 
-    write_png(tauri / "32x32.png", fit(master, 32, opaque=True))
-    write_png(tauri / "128x128.png", fit(master, 128, opaque=True))
-    write_png(tauri / "128x128@2x.png", fit(master, 256, opaque=True))
-    fit(master, 256, opaque=True).save(
+    write_png(tauri / "32x32.png", fullbleed(master, 32))
+    write_png(tauri / "128x128.png", fullbleed(master, 128))
+    write_png(tauri / "128x128@2x.png", fullbleed(master, 256))
+    fullbleed(master, 256).save(
         tauri / "icon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48), (256, 256)]
     )
 
@@ -225,8 +285,18 @@ def main() -> None:
         "icon_512x512@2x.png": 1024,
     }
     for name, size in mapping.items():
-        write_png(iconset / name, fit(master, size, opaque=True))
+        write_png(iconset / name, fullbleed(master, size))
     subprocess.run(["iconutil", "-c", "icns", "-o", str(tauri / "icon.icns"), str(iconset)], check=True)
+
+    probe = Image.open(tauri / "128x128.png").convert("RGBA")
+    corners = (
+        probe.getpixel((0, 0)),
+        probe.getpixel((probe.size[0] - 1, 0)),
+        probe.getpixel((0, probe.size[1] - 1)),
+        probe.getpixel((probe.size[0] - 1, probe.size[1] - 1)),
+    )
+    if any(p[3] < 255 or p[0] + p[1] + p[2] < 40 for p in corners):
+        raise SystemExit(f"Tauri 128x128 is not full-bleed: {corners}")
 
     print("wrote", brand, "size", master.size, "transparent", sum(
         1 for p in master.getdata() if p[3] == 0
