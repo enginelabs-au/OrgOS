@@ -72,7 +72,8 @@ Phases 0–5 closed foundations, the development loop, R1 verification, R2 seats
 | Allowances / reservations | None. Usage events exist; budget reservation/reconcile events are named in the roadmap (`usage.budget.reserved/reconciled`) and not enforced. |
 | Rate card | Not present. P18 says rate card is R4. |
 | Stripe | Dependencies present, **zero source imports**. No test-mode env names wired. |
-| Settings / Plan | Blueprint-2 Settings panes exist (Permissions and others). No D-29 tier chrome. |
+| Settings / Plan | Blueprint-2 Settings panes exist (Permissions and others). Settings → Plan is still appearance/theme, not D-29 tiers. |
+| Allowance leak | Today compose strip still shows fixture **“Remaining allowance: 184640”**. That is an unpublished quantity (D-29 / CA-10). T6-3 must replace it with a band or honest unmeasured copy. Data also still shows blueprint fixture counts (Traces 128). |
 | Licensing (ERA-17) | `docs/policies/licensing.md` is `proposed`. LICENSE/NOTICE exist in repo. No in-product licensing-state hook. |
 | Usage / first-baseline | Emit off by default; `not_captured` at zero events. |
 | R4 domains | B14, B19, B20, B21, B24, P19 all `planned`. |
@@ -142,7 +143,7 @@ No Engine Labs marketing project. No live `.orgos/loop/` path change.
 
 **T6-2 Reservation and limit enforcement (test mode)** — objective: reserve before chargeable dispatch; reconcile; fail-closed when over band; pause new chargeable work only; records/export/decisions remain. Deps: T6-1. Files: store + API + usage event names `usage.budget.reserved` / `usage.budget.reconciled`. Validation: four model cases including duplicate-reserve refused; no charge side effect. State: `pending`.
 
-**T6-3 Settings / Plan tier UI** — objective: D-29 labels; remaining-allowance and action-cost **bands**; honest pause copy; no “most popular”, countdowns, or pre-selected upgrades (roadmap §4). Deps: T6-1. Files: `papership.js`, blueprint-2 Settings. Validation: browser or overlay test; price scan clean. State: `pending`.
+**T6-3 Settings / Plan tier UI** — objective: D-29 labels; remaining-allowance and action-cost **bands**; honest pause copy; no “most popular”, countdowns, or pre-selected upgrades (roadmap §4). Remove the Today compose fixture **“Remaining allowance: 184640”** (replace with a band or `not_captured`). Deps: T6-1. Files: `papership.js`, blueprint-2 Settings and Today compose. Validation: browser or overlay test; price/quantity scan clean. State: `pending`.
 
 **T6-4 Stripe test-mode wiring** — objective: carry env **names**; default `billing_charges_enabled=false`; no Elements charge, no live webhook paid-invoice. Deps: T6-2. Files: API config, optional unused client stub behind the flag. Validation: boot without Stripe secrets; charge route 403/404; no secret values in repo. State: `pending`.
 
@@ -261,7 +262,7 @@ Planning turn only (2026-09-12):
 - Plan written at this path (`draft`).
 - D-32: `apps/web/src/App.jsx` mounts `/papership`; leftover `/cc-org-dash` redirects; keys `papership-auth` / `papership-theme` with legacy migrate.
 - D-33: this file authorized; T6-1…T6-8 not started.
-- Product click-through: recorded in `.cursor/memory/memories/2026-09-12-continuation.md` and §6. Implementation evidence (pytest, registry, G9 handoff) is empty until the owner asks to implement.
+- Product click-through 2026-09-12 (computerUse on Vite `127.0.0.1:5173`): `/` and `/cc-org-dash` redirect to `/papership`; sign-in says Papership; Today/Work/Inbox/People/Data/Files/Integrations/Settings, Memory, Hey Engine, Company rail, and Light/Dark/Dimmed exercised. No leftover `cc-org-dash` chrome; no prices. Settings → Plan is still theme, not D-29 tiers. Data still shows blueprint fixture counts. Detail: `.cursor/memory/memories/2026-09-12-continuation.md`. Implementation evidence (pytest, registry, G9 handoff) is empty until the owner asks to implement.
 
 ## 21. Deviations and follow-ups
 
