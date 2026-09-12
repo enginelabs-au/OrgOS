@@ -26,6 +26,15 @@ test("localStorage keys are papership-* with legacy migrate", () => {
   assert.match(shell, /function migrateStored/);
 });
 
+test("narrow chrome uses blueprint-2 bottom tabs", () => {
+  const app = readFileSync(join(root, "src/blueprint2/App.jsx"), "utf8");
+  const css = readFileSync(join(root, "src/blueprint2/blueprint2.css"), "utf8");
+  assert.match(app, /className="bp2-bottom"/);
+  assert.match(app, /BOTTOM_TABS = \["today", "work", "inbox"\]/);
+  assert.match(css, /@media \(max-width: 767px\)/);
+  assert.match(css, /\.bp2-hey \{/);
+});
+
 test("today compose has no unpublished allowance quantity", () => {
   const screens = readFileSync(join(root, "src/blueprint2/screens.jsx"), "utf8");
   const app = readFileSync(join(root, "src/blueprint2/App.jsx"), "utf8");

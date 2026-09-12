@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { applyPapershipOverlay, loadPapershipOverlay } from "../api/papership";
 import { PRODUCT } from "../brand";
+import { useIsMobile } from "../hooks/use-mobile";
 import "./blueprint2.css";
 import { Ico, PATHS, SearchIco } from "./svg";
 import {
@@ -66,6 +67,9 @@ const TABDEF = {
   settings: { label: "Settings", d: PATHS.settings },
 };
 const TAB_KEYS = ["today", "work", "inbox", "people", "data", "files", "integrations", "settings"];
+const BOTTOM_TABS = ["today", "work", "inbox"];
+const RAIL_TABS = ["people", "data", "files", "integrations", "settings"];
+const NARROW_PX = 768;
 const PAGES = {
   today: { t: "Today", d: "What needs you now — Tuesday 15 September, 14:41 AEST", subs: ["Overview", "Decisions", "Running", "Registry"], counts: { Decisions: "2", Running: "3" } },
   work: { t: "Work", d: "Plans, assignments and the development loop — the native work ledger", subs: ["Projects", "Issues", "Board", "Roadmap", "Workflows", "Wiki"] },
@@ -92,10 +96,11 @@ function Auth({ theme, cycleTheme, onSignIn }) {
   const [email, setEmail] = useState("founder@enginelabs.com.au");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [bioNote, setBioNote] = useState(false);
   return (
     <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--wash)", position: "relative" }}>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 420px at 50% -10%,rgba(109,40,217,.16),transparent 70%)" }} />
-      <div style={{ position: "relative", width: 400, maxWidth: "calc(100% - 40px)", display: "flex", flexDirection: "column", gap: 18 }}>
+      <div className="bp2-auth-card" style={{ position: "relative", width: 400, maxWidth: "calc(100% - 40px)", display: "flex", flexDirection: "column", gap: 18 }}>
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: 17, fontWeight: 700, letterSpacing: "-.2px" }}>{PRODUCT.name}</div>
           <div style={{ fontSize: 11.5, color: "var(--t3)" }}>by {PRODUCT.company}</div>
@@ -115,6 +120,13 @@ function Auth({ theme, cycleTheme, onSignIn }) {
               That email and password don’t match. Check them and try again.
             </div>
           ) : null}
+          <div className="bp2-bio">
+            <button type="button" onClick={() => setBioNote(true)} style={{ border: "1px solid var(--line)", background: "var(--canvas)", color: "var(--t1)", borderRadius: 8, font: "600 12.5px Inter,sans-serif", cursor: "pointer" }}>Face ID</button>
+            <button type="button" onClick={() => setBioNote(true)} style={{ border: "1px solid var(--line)", background: "var(--canvas)", color: "var(--t1)", borderRadius: 8, font: "600 12.5px Inter,sans-serif", cursor: "pointer" }}>Fingerprint</button>
+          </div>
+          {bioNote ? (
+            <div style={{ fontSize: 11.5, color: "var(--t3)" }}>Use email and password in this browser. Face ID and fingerprint are for the installed app.</div>
+          ) : null}
           <label style={{ display: "flex", flexDirection: "column", gap: 5 }}>
             <span style={{ fontSize: 11, fontWeight: 600, color: "var(--t3)" }}>Email</span>
             <input value={email} onChange={(e) => setEmail(e.target.value)} style={{ height: 34, border: "1px solid var(--line)", borderRadius: 6, background: "var(--canvas)", color: "var(--t1)", padding: "0 10px", font: "400 13px Inter,sans-serif" }} />
@@ -127,7 +139,7 @@ function Auth({ theme, cycleTheme, onSignIn }) {
             <label style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, color: "var(--t3)" }}><input type="checkbox" defaultChecked style={{ accentColor: "var(--blue)" }} /> Keep me signed in</label>
             <a href="#forgot" onClick={(e) => e.preventDefault()} style={{ fontSize: 12 }}>Forgot password?</a>
           </div>
-          <button type="submit" style={{ height: 34, border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 13px Inter,sans-serif", cursor: "pointer" }}>Continue</button>
+          <button type="submit" className="bp2-hit" style={{ height: 34, border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 13px Inter,sans-serif", cursor: "pointer" }}>Continue</button>
           <div style={{ fontSize: 11.5, color: "var(--t3)", textAlign: "center" }}>Access is by invitation. Ask your organisation owner for a seat.</div>
         </form>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 11.5, color: "var(--t3)" }}>
@@ -144,7 +156,9 @@ export default function Blueprint2App() {
   const [authed, setAuthed] = useState(() => !!readAuth());
   const [tab, setTab] = useState("today");
   const [sub, setSub] = useState({});
-  const [railOpen, setRailOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [online, setOnline] = useState(() => typeof navigator === "undefined" || navigator.onLine);
+  const [railOpen, setRailOpen] = useState(() => typeof window === "undefined" || window.innerWidth >= NARROW_PX);
   const [plansOpen, setPlansOpen] = useState(true);
   const [hey, setHey] = useState(false);
   const [palette, setPalette] = useState(false);
@@ -181,13 +195,41 @@ export default function Blueprint2App() {
   useEffect(() => {
     const h = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setPalette((p) => !p); }
-      else if (e.key === "Escape") { setPalette(false); setDrawer(false); setSlide(null); setModal(null); setCreateOpen(false); setAvatarOpen(false); }
+      else if (e.key === "Escape") {
+        setPalette(false); setDrawer(false); setSlide(null); setModal(null); setCreateOpen(false); setAvatarOpen(false);
+        if (window.innerWidth < NARROW_PX) { setRailOpen(false); setHey(false); }
+      }
     };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
   }, []);
 
-  const go = useCallback((k) => () => { setTab(k); setRoute(null); setPalette(false); }, []);
+  useEffect(() => {
+    if (isMobile) setRailOpen(false);
+  }, [isMobile]);
+
+  useEffect(() => {
+    const on = () => setOnline(true);
+    const off = () => setOnline(false);
+    window.addEventListener("online", on);
+    window.addEventListener("offline", off);
+    return () => {
+      window.removeEventListener("online", on);
+      window.removeEventListener("offline", off);
+    };
+  }, []);
+
+  const closeMobileChrome = useCallback(() => {
+    if (typeof window !== "undefined" && window.innerWidth < NARROW_PX) setRailOpen(false);
+  }, []);
+
+  const go = useCallback((k) => () => {
+    setTab(k);
+    setRoute(null);
+    setPalette(false);
+    setHey(false);
+    closeMobileChrome();
+  }, [closeMobileChrome]);
   const setSubTab = useCallback((t, k) => () => { setSub((s) => ({ ...s, [t]: k })); setRoute(null); }, []);
   const openSlide = useCallback((s) => () => setSlide(s), []);
   const routeTo = useCallback((r) => () => { setRoute(r); setPalette(false); }, []);
@@ -199,6 +241,7 @@ export default function Blueprint2App() {
     const S = (label, meta, dot, body) => ({ label, meta, dot: DOTS[dot] || dot, open: openSlide({ title: label, meta, body }) });
     const out = {
       theme, heyStripBg: dark ? "#16081f" : "#2c1050",
+      narrow: isMobile,
       openHey: () => setHey(true),
       goWork: go("work"),
       modes: ["Ask", "Analyse", "Plan", "Draft", "Execute", "Review", "Automate"].map((m) => {
@@ -467,7 +510,7 @@ export default function Blueprint2App() {
     ];
     void page; void cur;
     return applyPapershipOverlay(out, overlay, setModal);
-  }, [theme, tab, sub, setPane, grants, go, openSlide, routeTo, overlay]);
+  }, [theme, tab, sub, setPane, grants, go, openSlide, routeTo, overlay, isMobile]);
 
   const page = PAGES[tab] || PAGES.today;
   const cur = sub[tab] || DFLT[tab];
@@ -484,8 +527,12 @@ export default function Blueprint2App() {
   if (rk === "run") { pageTitle = "run_7f21c · Isolated change for CCO-245"; pageDesc = "Run · sponsor Cam Douglas · acting as Papership agent (user-equivalent)"; pageChip = "Running"; pageActions = [{ label: "Back", bg: "var(--surface)", bd: "var(--line)", ink: "var(--t1)", go: go("today") }]; }
   if (rk === "account") { pageTitle = "Account"; pageDesc = "Your profile and sign-in — not an organisation setting"; pageActions = [{ label: "Back", bg: "var(--surface)", bd: "var(--line)", ink: "var(--t1)", go: go("today") }]; }
   if (rk === "memory") { pageTitle = "Memory"; pageDesc = v.memoryNote || "Governed memory with provenance"; pageChip = v.adaptedBadge || ""; pageActions = [{ label: "Back", bg: "var(--surface)", bd: "var(--line)", ink: "var(--t1)", go: go("today") }]; }
+  if (isMobile && tab === "today" && !route) {
+    pageDesc = "What needs you now · 14:41 AEST";
+    pageActions = [];
+  }
 
-  const subnav = page.subs.map((s) => {
+  const subnav = (isMobile && tab === "today" ? page.subs.filter((s) => s !== "Registry") : page.subs).map((s) => {
     const on = s === cur;
     let count = (page.counts || {})[s] || "";
     if (tab === "inbox" && s === "All") count = String((v.threads || []).length);
@@ -518,29 +565,30 @@ export default function Blueprint2App() {
   };
 
   return (
-    <div className="bp2-root" data-theme={theme}>
+    <div className="bp2-root" data-theme={theme} data-narrow={isMobile ? "1" : "0"} data-rail={railOpen ? "1" : "0"} data-hey={hey ? "1" : "0"}>
       {!authed ? (
         <Auth theme={theme} cycleTheme={cycleTheme} onSignIn={signIn} />
       ) : (
         <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
-          <div style={{ height: 60, flex: "none", display: "flex", alignItems: "center", gap: 12, padding: "0 14px", background: "var(--navfield)", borderBottom: "1px solid rgba(0,0,0,.25)", position: "relative", zIndex: 520 }}>
+          <div className="bp2-top" style={{ height: 60, flex: "none", display: "flex", alignItems: "center", gap: 12, padding: "0 14px", background: "var(--navfield)", borderBottom: "1px solid rgba(0,0,0,.25)", position: "relative", zIndex: 520 }}>
             <button type="button" title="Toggle company rail" onClick={() => setRailOpen((o) => !o)} style={{ width: 36, height: 36, flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(196,181,253,.34)", background: "rgba(255,255,255,.06)", borderRadius: 8, color: "var(--navink)", cursor: "pointer" }}>
               <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="2" y="3" width="12" height="10" rx="1.6" /><path d="M6.2 3v10" /></svg>
             </button>
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
+            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15, minWidth: 0 }}>
               <span style={{ fontSize: 15, fontWeight: 700, color: "#fff", letterSpacing: "-.2px" }}>{PRODUCT.name}</span>
               <span style={{ fontSize: 10.5, color: "var(--navink2)" }}>{PRODUCT.company}</span>
             </div>
-            <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            <div className="bp2-search-wide" style={{ flex: 1, display: "flex", justifyContent: "center" }}>
               <button type="button" onClick={() => setPalette(true)} style={{ width: "100%", maxWidth: 400, height: 32, display: "flex", alignItems: "center", gap: 8, padding: "0 10px", borderRadius: 8, border: "1px solid rgba(196,181,253,.3)", background: "rgba(0,0,0,.18)", color: "var(--navink2)", cursor: "pointer", font: "400 12.5px Inter,sans-serif" }}>
                 <SearchIco />
                 <span style={{ flex: 1, textAlign: "left" }}>Search anything</span>
                 <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, border: "1px solid rgba(196,181,253,.3)", borderRadius: 4, padding: "1px 5px" }}>⌘K</span>
               </button>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, flex: "none" }}>
-              <button type="button" title={`Theme: ${theme}`} onClick={cycleTheme} style={navBtn}><Ico d={theme === "light" ? PATHS.sun : PATHS.moon} /></button>
-              <div style={{ position: "relative" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, flex: "none", marginLeft: "auto" }}>
+              <button type="button" title="Search" className="bp2-search-narrow" onClick={() => setPalette(true)} style={navBtn}><SearchIco /></button>
+              <button type="button" className="bp2-desktop-extra" title={`Theme: ${theme}`} onClick={cycleTheme} style={navBtn}><Ico d={theme === "light" ? PATHS.sun : PATHS.moon} /></button>
+              <div className="bp2-desktop-extra" style={{ position: "relative" }}>
                 <button type="button" title="Create" onClick={() => { setCreateOpen((o) => !o); setAvatarOpen(false); }} style={navBtn}><Ico d={PATHS.plus} /></button>
                 {createOpen ? (
                   <div style={{ position: "absolute", top: 38, right: 0, width: 228, background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, boxShadow: "var(--shadow-lg)", padding: 5, zIndex: 530 }}>
@@ -566,11 +614,12 @@ export default function Blueprint2App() {
                     <div onClick={() => { setRoute({ kind: "account" }); setAvatarOpen(false); }} style={{ padding: "7px 9px", borderRadius: 6, fontSize: 12.5, cursor: "pointer" }}>Profile</div>
                     <div onClick={() => { setTab("settings"); setRoute(null); setAvatarOpen(false); }} style={{ padding: "7px 9px", borderRadius: 6, fontSize: 12.5, cursor: "pointer" }}>Settings</div>
                     <div onClick={() => { setRoute({ kind: "memory" }); setAvatarOpen(false); }} style={{ padding: "7px 9px", borderRadius: 6, fontSize: 12.5, cursor: "pointer" }}>Memory</div>
+                    <div onClick={() => { cycleTheme(); setAvatarOpen(false); }} style={{ padding: "7px 9px", borderRadius: 6, fontSize: 12.5, cursor: "pointer" }}>Theme: {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "Dimmed"}</div>
                     <div onClick={signOut} style={{ padding: "7px 9px", borderRadius: 6, fontSize: 12.5, cursor: "pointer", color: "var(--red)" }}>Sign out</div>
                   </div>
                 ) : null}
               </div>
-              <button type="button" onClick={() => setHey((o) => !o)} style={{ height: 32, padding: 3, border: 0, borderRadius: 8, background: "linear-gradient(135deg,#2563eb,#22d3ee,#4ade80,#fbbf24,#f472b6,#a78bfa)", cursor: "pointer", display: "flex", alignItems: "center" }}>
+              <button type="button" className="bp2-hey-launch" onClick={() => setHey((o) => !o)} style={{ height: 32, padding: 3, border: 0, borderRadius: 8, background: "linear-gradient(135deg,#2563eb,#22d3ee,#4ade80,#fbbf24,#f472b6,#a78bfa)", cursor: "pointer", display: "flex", alignItems: "center" }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 7, height: 26, padding: "0 11px", borderRadius: 6, background: hey ? "transparent" : (theme !== "light" ? "#16081f" : "#2c1050"), color: "#fff", font: "600 12px Inter,sans-serif" }}>
                   <Ico d={PATHS.star} size={13} /> Hey Engine
                 </span>
@@ -578,7 +627,7 @@ export default function Blueprint2App() {
             </div>
           </div>
 
-          <div style={{ flex: "none", display: "flex", alignItems: "flex-end", gap: 2, padding: "0 12px", background: "var(--navfield)", position: "relative", zIndex: 519 }}>
+          <div className="bp2-tabs-desktop" style={{ flex: "none", display: "flex", alignItems: "flex-end", gap: 2, padding: "0 12px", background: "var(--navfield)", position: "relative", zIndex: 519 }}>
             {TAB_KEYS.map((k) => {
               const active = tab === k && !route;
               const badge = k === "inbox" ? "4" : "";
@@ -591,11 +640,12 @@ export default function Blueprint2App() {
               );
             })}
             <div style={{ flex: 1 }} />
-            <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 4px 8px", fontSize: 10.5, color: "var(--navink2)", fontFamily: "'JetBrains Mono',monospace" }}>Founder · Cam Douglas</div>
+            <div className="bp2-founder-chip" style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 4px 8px", fontSize: 10.5, color: "var(--navink2)", fontFamily: "'JetBrains Mono',monospace" }}>Founder · Cam Douglas</div>
           </div>
 
-          <div style={{ flex: 1, display: "flex", minHeight: 0, background: "var(--canvas)" }}>
-            <div style={{ width: railOpen ? 264 : 54, flex: "none", borderRight: "1px solid var(--line)", background: "var(--raised)", display: "flex", flexDirection: "column", minHeight: 0, transition: "width .28s cubic-bezier(0.32,0.72,0,1)" }}>
+          <div className="bp2-body" style={{ flex: 1, display: "flex", minHeight: 0, background: "var(--canvas)", position: "relative" }}>
+            {railOpen ? <div className="bp2-rail-dim" onClick={() => setRailOpen(false)} /> : null}
+            <div className="bp2-rail" style={{ width: railOpen ? 264 : 54, flex: "none", borderRight: "1px solid var(--line)", background: "var(--raised)", display: "flex", flexDirection: "column", minHeight: 0, transition: "width .28s cubic-bezier(0.32,0.72,0,1)" }}>
               {railOpen ? (
                 <>
                   <div style={{ flex: "none", padding: "13px 14px 11px", borderBottom: "1px solid var(--line2)" }}>
@@ -651,9 +701,18 @@ export default function Blueprint2App() {
                         <div style={{ font: "400 10px 'JetBrains Mono',monospace", color: "var(--t3)", marginTop: 2 }}>{r.meta}</div>
                       </div>
                     ))}
+                    <div className="bp2-rail-more">
+                      <div style={{ padding: "13px 6px 5px", font: "600 10px Inter,sans-serif", letterSpacing: ".09em", color: "var(--t3)", textTransform: "uppercase" }}>More</div>
+                      {RAIL_TABS.map((k) => (
+                        <button key={k} type="button" onClick={go(k)} style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", height: 36, padding: "0 7px", border: 0, borderRadius: 6, background: tab === k ? "var(--surface)" : "transparent", color: "var(--t1)", font: "500 12.5px Inter,sans-serif", cursor: "pointer", textAlign: "left" }}>
+                          <Ico d={TABDEF[k].d} size={14} />
+                          {TABDEF[k].label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </>
-              ) : (
+              ) : isMobile ? null : (
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, padding: "10px 0" }}>
                   {["Signals", "Priorities", "Plans", "Blockers", "Decisions"].map((t) => (
                     <button key={t} type="button" title={t} onClick={() => setRailOpen(true)} style={{ width: 36, height: 34, border: 0, background: "transparent", color: "var(--t2)", borderRadius: 7, cursor: "pointer" }}>·</button>
@@ -664,7 +723,16 @@ export default function Blueprint2App() {
 
             <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
               <div style={{ flex: 1, minWidth: 0, overflow: "auto", background: "var(--wash)" }}>
-                <div style={{ maxWidth: 1280, minWidth: 0, margin: "0 auto", padding: "20px 28px 40px" }}>
+                <div className="bp2-page" style={{ maxWidth: 1280, minWidth: 0, margin: "0 auto", padding: "20px 28px 40px" }}>
+                  {!online ? (
+                    <div className="bp2-offline" role="status">
+                      <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--red)", marginTop: 4, flex: "none", animation: "ogblink 1.6s infinite" }} />
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 600 }}>Offline · Reconnecting…</div>
+                        <div style={{ fontSize: 11.5, color: "var(--t3)", marginTop: 2 }}>Showing last known state. Work already started continues in the cloud.</div>
+                      </div>
+                    </div>
+                  ) : null}
                   <PageHead title={pageTitle} desc={pageDesc} chip={pageChip} actions={pageActions} />
                   {!route && page.subs.length > 0 ? <SubNav items={subnav} /> : null}
                   {rk === "work-item" && <WorkItemView v={v} />}
@@ -694,8 +762,16 @@ export default function Blueprint2App() {
             </div>
 
             {hey ? (
-              <div style={{ width: 420, maxWidth: "42%", flex: "none", borderLeft: "1px solid var(--line)", background: "var(--surface)", display: "flex", flexDirection: "column", minHeight: 0, position: "relative", zIndex: 500, boxShadow: "-14px 0 40px rgba(26,18,36,.06)" }}>
-                <div style={{ flex: "none", display: "flex", alignItems: "center", gap: 4, padding: "7px 8px 0", borderBottom: "1px solid var(--line2)" }}>
+              <div className="bp2-hey" style={{ width: 420, maxWidth: "42%", flex: "none", borderLeft: "1px solid var(--line)", background: "var(--surface)", display: "flex", flexDirection: "column", minHeight: 0, position: "relative", zIndex: 500, boxShadow: "-14px 0 40px rgba(26,18,36,.06)" }}>
+                <div className="bp2-hey-mobile-bar">
+                  <div>
+                    <Ico d={PATHS.star} size={15} />
+                    <span style={{ flex: 1, font: "600 13.5px Inter,sans-serif" }}>Hey Engine</span>
+                    <span style={{ font: "400 11px 'JetBrains Mono',monospace", opacity: 0.8 }}>CCO-245</span>
+                    <button type="button" title="Close sheet" onClick={() => setHey(false)} style={{ width: 28, height: 28, border: 0, background: "transparent", color: "#fff", cursor: "pointer", fontSize: 16 }}>✕</button>
+                  </div>
+                </div>
+                <div className="bp2-hey-desktop-bar" style={{ flex: "none", display: "flex", alignItems: "center", gap: 4, padding: "7px 8px 0", borderBottom: "1px solid var(--line2)" }}>
                   {v.heySessions.map((s) => (
                     <button key={s.label} type="button" style={{ display: "flex", alignItems: "center", gap: 7, maxWidth: 150, height: 29, padding: "0 10px", border: `1px solid ${s.bd}`, borderBottom: 0, borderRadius: "7px 7px 0 0", background: s.bg, color: s.ink, fontSize: 11.5, fontWeight: s.fw, cursor: "pointer" }}>
                       <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.dot, flex: "none" }} />
@@ -728,8 +804,8 @@ export default function Blueprint2App() {
                             <span>Version · rev 8f3c1ad</span>
                           </div>
                           <div style={{ display: "flex", gap: 7, marginTop: 10 }}>
-                            <button type="button" onClick={() => setModal("approve")} style={{ height: 27, padding: "0 12px", border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 11.5px Inter,sans-serif", cursor: "pointer" }}>Approve</button>
-                            <button type="button" onClick={() => setModal("reject")} style={{ height: 27, padding: "0 12px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 11.5px Inter,sans-serif", cursor: "pointer" }}>Reject</button>
+                            <button type="button" className="bp2-hit" onClick={() => setModal("approve")} style={{ height: 27, padding: "0 12px", border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 11.5px Inter,sans-serif", cursor: "pointer" }}>Approve</button>
+                            <button type="button" className="bp2-hit" onClick={() => setModal("reject")} style={{ height: 27, padding: "0 12px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 11.5px Inter,sans-serif", cursor: "pointer" }}>Reject</button>
                           </div>
                         </div>
                       </div>
@@ -760,7 +836,7 @@ export default function Blueprint2App() {
                         <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="6" y="2.4" width="4" height="7" rx="2" /><path d="M4 8a4 4 0 0 0 8 0M8 12v1.8" strokeLinecap="round" /><path d="M3 3l10 10" strokeLinecap="round" /></svg>
                       </button>
                     </div>
-                    <button type="button" onClick={() => setStreaming((s) => !s)} style={{ height: 34, padding: "0 14px", border: 0, borderRadius: 8, background: streaming ? "var(--red)" : "var(--blue)", color: "#fff", font: "600 12.5px Inter,sans-serif", cursor: "pointer", flex: "none" }}>{streaming ? "Stop" : "Send"}</button>
+                    <button type="button" className="bp2-hit" onClick={() => setStreaming((s) => !s)} style={{ height: 34, padding: "0 14px", border: 0, borderRadius: 8, background: streaming ? "var(--red)" : "var(--blue)", color: "#fff", font: "600 12.5px Inter,sans-serif", cursor: "pointer", flex: "none" }}>{streaming ? "Stop" : "Send"}</button>
                   </div>
                   <div style={{ fontSize: 10.5, color: "var(--t3)" }}>Enter sends · Shift+Enter for a new line. Hey Engine acts with your access — never more.</div>
                 </div>
@@ -768,7 +844,7 @@ export default function Blueprint2App() {
             ) : null}
           </div>
 
-          <div style={{ flex: "none", position: "relative", zIndex: 10050, borderTop: "1px solid var(--line)", background: "var(--surface)" }}>
+          <div className="bp2-status" style={{ flex: "none", position: "relative", zIndex: 10050, borderTop: "1px solid var(--line)", background: "var(--surface)" }}>
             {statusOpen ? (
               <div style={{ maxHeight: "40vh", overflow: "auto", borderBottom: "1px solid var(--line2)" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 14px", borderBottom: "1px solid var(--line2)" }}>
@@ -785,20 +861,32 @@ export default function Blueprint2App() {
               </div>
             ) : null}
             <div onClick={() => setStatusOpen((o) => !o)} style={{ height: 32, display: "flex", alignItems: "center", gap: 10, padding: "0 14px", cursor: "pointer" }}>
-              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="var(--green)" strokeWidth="1.6" style={{ flex: "none" }}><path d="M1.6 8.4h3l2-4.6 2.8 8.4 1.8-3.8h3.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              <span style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)", flex: "none" }}>12s ago</span>
-              <span style={{ flex: 1, minWidth: 0, fontSize: 12, color: "var(--t2)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Checks passed for CCO-245 — 14 tests, 0 failures</span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, height: 20, padding: "0 9px", borderRadius: 10, background: "var(--green-soft)", color: "var(--green)", font: "600 10.5px Inter,sans-serif", flex: "none" }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--green)", animation: "ogblink 1.8s infinite" }} />Live
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: online ? "var(--green)" : "var(--red)", flex: "none", animation: "ogblink 1.8s infinite" }} />
+              <span style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)", flex: "none" }}>{online ? "12s ago" : "Offline"}</span>
+              <span style={{ flex: 1, minWidth: 0, fontSize: 12, color: "var(--t2)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{online ? "Checks passed for CCO-245 — 14 tests, 0 failures" : "Last known state · work already started continues in the cloud"}</span>
+              <span className="bp2-status-live" style={{ display: "inline-flex", alignItems: "center", gap: 6, height: 20, padding: "0 9px", borderRadius: 10, background: online ? "var(--green-soft)" : "var(--red-soft)", color: online ? "var(--green)" : "var(--red)", font: "600 10.5px Inter,sans-serif", flex: "none" }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: online ? "var(--green)" : "var(--red)", animation: "ogblink 1.8s infinite" }} />{online ? "Live" : "Offline"}
               </span>
               <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="var(--t3)" strokeWidth="1.8" style={{ flex: "none", transform: statusOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform .2s" }}><path d="m4 10 4-4 4 4" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </div>
           </div>
+          <nav className="bp2-bottom" aria-label="Primary">
+            {BOTTOM_TABS.map((k) => (
+              <button key={k} type="button" data-on={!hey && tab === k && !route ? "1" : "0"} onClick={go(k)}>
+                <Ico d={TABDEF[k].d} size={19} />
+                {TABDEF[k].label}
+              </button>
+            ))}
+            <button type="button" data-on={hey ? "1" : "0"} onClick={() => { setHey(true); setRailOpen(false); setPalette(false); setDrawer(false); }}>
+              <Ico d={PATHS.star} size={19} />
+              Hey Engine
+            </button>
+          </nav>
         </div>
       )}
 
       {palette ? (
-        <div onClick={() => setPalette(false)} style={{ position: "absolute", inset: 0, zIndex: 400, background: "rgba(12,6,24,.42)", display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: 104 }}>
+        <div className="bp2-palette" onClick={() => setPalette(false)} style={{ position: "absolute", inset: 0, zIndex: 400, background: "rgba(12,6,24,.42)", display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: 104 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ width: 520, maxWidth: "calc(100% - 32px)", background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 12, boxShadow: "var(--shadow-lg)", overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderBottom: "1px solid var(--line2)" }}>
               <SearchIco />
@@ -825,7 +913,7 @@ export default function Blueprint2App() {
 
       {drawer ? (
         <div onClick={() => setDrawer(false)} style={{ position: "absolute", inset: 0, zIndex: 440, background: "rgba(12,6,24,.28)" }}>
-          <div onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: 60, right: 0, bottom: 32, width: 360, background: "var(--surface)", borderLeft: "1px solid var(--line)", boxShadow: "var(--shadow-lg)", display: "flex", flexDirection: "column" }}>
+          <div className="bp2-drawer" onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: 60, right: 0, bottom: 32, width: 360, background: "var(--surface)", borderLeft: "1px solid var(--line)", boxShadow: "var(--shadow-lg)", display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", borderBottom: "1px solid var(--line2)" }}>
               <span style={{ fontSize: 13, fontWeight: 600 }}>Notifications</span>
               <button type="button" style={{ height: 24, padding: "0 9px", border: 0, background: "transparent", color: "var(--blue)", borderRadius: 6, font: "600 11.5px Inter,sans-serif", cursor: "pointer" }}>Mark all read</button>
@@ -847,7 +935,7 @@ export default function Blueprint2App() {
 
       {slide ? (
         <div onClick={() => setSlide(null)} style={{ position: "absolute", inset: 0, zIndex: 200, background: "rgba(12,6,24,.28)" }}>
-          <div onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: 60, right: 0, bottom: 32, width: 460, background: "var(--surface)", borderLeft: "1px solid var(--line)", boxShadow: "var(--shadow-lg)", display: "flex", flexDirection: "column" }}>
+          <div className="bp2-slide" onClick={(e) => e.stopPropagation()} style={{ position: "absolute", top: 60, right: 0, bottom: 32, width: 460, background: "var(--surface)", borderLeft: "1px solid var(--line)", boxShadow: "var(--shadow-lg)", display: "flex", flexDirection: "column" }}>
             <div style={{ padding: "14px 16px", borderBottom: "1px solid var(--line2)" }}>
               <div style={{ fontSize: 14, fontWeight: 600 }}>{slide.title}</div>
               <div style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)", marginTop: 3 }}>{slide.meta}</div>
@@ -856,15 +944,15 @@ export default function Blueprint2App() {
               <p style={{ margin: 0, fontSize: 13, color: "var(--t2)" }}>{slide.body}</p>
             </div>
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", padding: "12px 16px", borderTop: "1px solid var(--line2)" }}>
-              <button type="button" onClick={() => setSlide(null)} style={{ height: 30, padding: "0 13px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Close</button>
-              <button type="button" onClick={() => setSlide(null)} style={{ height: 30, padding: "0 13px", border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Open</button>
+              <button type="button" className="bp2-hit" onClick={() => setSlide(null)} style={{ height: 30, padding: "0 13px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Close</button>
+              <button type="button" className="bp2-hit" onClick={() => setSlide(null)} style={{ height: 30, padding: "0 13px", border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Open</button>
             </div>
           </div>
         </div>
       ) : null}
 
       {md ? (
-        <div onClick={() => setModal(null)} style={{ position: "absolute", inset: 0, zIndex: 300, background: "rgba(12,6,24,.46)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <div className="bp2-modal" onClick={() => setModal(null)} style={{ position: "absolute", inset: 0, zIndex: 300, background: "rgba(12,6,24,.46)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ width: modal === "wizard" ? 520 : 440, maxWidth: "100%", background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 12, boxShadow: "var(--shadow-lg)", overflow: "hidden" }}>
             <div style={{ padding: "15px 17px 13px", borderBottom: "1px solid var(--line2)" }}>
               <div style={{ fontSize: 14.5, fontWeight: 600 }}>{md.title}</div>
@@ -890,8 +978,8 @@ export default function Blueprint2App() {
               </div>
             ) : null}
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", padding: "13px 17px", borderTop: "1px solid var(--line2)", background: "var(--canvas)" }}>
-              <button type="button" onClick={() => setModal(null)} style={{ height: 30, padding: "0 13px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{md.cancel}</button>
-              <button type="button" onClick={() => setModal(null)} style={{ height: 30, padding: "0 14px", border: 0, borderRadius: 6, background: md.btn, color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{md.confirm}</button>
+              <button type="button" className="bp2-hit" onClick={() => setModal(null)} style={{ height: 30, padding: "0 13px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{md.cancel}</button>
+              <button type="button" className="bp2-hit" onClick={() => setModal(null)} style={{ height: 30, padding: "0 14px", border: 0, borderRadius: 6, background: md.btn, color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{md.confirm}</button>
             </div>
           </div>
         </div>

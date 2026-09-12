@@ -2,12 +2,12 @@
 
 ## Current Objective
 
-- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21 / D-22) at **`/papership`** (D-32). Prism-head mark is app/tab icon only, not in-app. Canonical file is `brand/papership-icon.png` (purple rounded plate stays).
+- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21 / D-22) at **`/papership`** (D-32). At `max-width: 767px` the live chrome is the R4 compressed layout from `OrgOS Mobile.dc.html`. Prism-head mark is app/tab icon only, not in-app.
 
 ## Current Status
 
-- Icon corrected: purple plate kept; only outside black/red fringe cleared. All web/desktop/PWA/iOS/Android/Tauri slots regenerated.
-- Phase 6 G9 PASS (residuals). Commercial structure only. CA-10 not taken. Phase 7 plan not generated until owner proceeds.
+- Web mobile chrome shipped: bottom tabs Today/Work/Inbox/Hey Engine, left rail sheet, full-screen Hey Engine sheet, 2×2 health, 44px Approve/Reject/Stop.
+- Phase 6 G9 PASS (residuals). Phase 7 native-client plan not generated until owner proceeds.
 
 ## Project Phase
 
@@ -24,6 +24,7 @@
 ## Active Role and Gate
 
 - G9 PASS (2026-09-12). Residuals: CA-10, D-25, Stripe test account, OQ-G2 live notice.
+- This turn skipped a new role matrix: implementing already-specified R4 mobile HTML (PM/Security/Growth/PL not needed; UI spec is the blueprint).
 
 ## Predecessor Handoff
 
@@ -34,7 +35,7 @@
 
 - Hermes GET `/health` hang (HEAD-first probe already used).
 - Mailbox `Environment=` hygiene (owner/VPS).
-- Vercel Git connection still lists `enginelabs-au/OrgOS` (redirects to `papership`). Dashboard project name is `papership`.
+- Vercel project `papership` Git link is `enginelabs-au/papership` (verified 2026-09-12). Latest production deploy `dpl_pZLd2HSgook6cPtmsrFPvbu4SSu6` was ERROR.
 - Local GitHub App is `papership-dev`. VPS is Hermes only.
 - Gmail/Slack live OAuth credentials missing (names wired).
 - GitHub org/App dashboard avatars are owner-only.
@@ -42,7 +43,7 @@
 ## Owner Decision
 
 - 2026-09-12: leftover sweep to Papership in the current tree; owner will rename GitHub / App / Vercel after other names; then agent updates locked files.
-- 2026-09-12: D-22…D-33 stand.
+- 2026-09-12: D-22…D-33 stand. D-21 item 5 updated: live web ships R4 compressed chrome at ≤767px.
 - 2026-09-12: purple icon plate stays; only pixels outside the rounded square may be cleared.
 
 ## Active Instructions
@@ -51,14 +52,15 @@
 
 ## Active Items
 
-- Phase 6 complete. Wait for owner before Phase 7 planning.
+- Phase 6 complete. Web mobile chrome adapted. Wait for owner before Phase 7 planning.
 
 ## Files in Active Use
 
 - `/STATE.md`
-- `docs/plans/phase_6_commercial_delivery_plan.md`
-- `docs/workstreams/20260910-engine-labs-company-os/project-lead-subagent/phase-6-handoff.md`
-- `docs/handover/outstanding-actions-and-decisions.md`
+- `apps/web/src/blueprint2/App.jsx`
+- `apps/web/src/blueprint2/screens.jsx`
+- `apps/web/src/blueprint2/blueprint2.css`
+- `docs/decisions/2026-09-12-blueprint-2-product-ui.md`
 
 ## Open Blockers
 
@@ -68,6 +70,7 @@
 
 - 2026-09-12: Restored purple plate on `papership-icon`; fringe-only transparency.
 - 2026-09-12: T6-5…T6-8 + G9 artifacts. pytest 8; static scan 5.
+- 2026-09-12: Live web R4 mobile chrome. Today verified at 390×844; desktop 1280×800 still docked. Static scan 6. MCP click-through of Work/Inbox/Hey blocked by fail-closed hook.
 
 ## Decisions and Assumptions
 
@@ -75,7 +78,8 @@
 - D-32: canonical URL is `/papership`; `/cc-org-dash` is a redirect.
 - D-33: owner asked to implement Phase 6 (2026-09-12).
 - CA-10 still blocks published rates and live charges. G9 is structure/test-mode only.
-- Local GitHub defaults are `papership` / `.papership/loop/`; published `.orgos/loop/` stays readable. Vercel project name is `papership`; Git link may still say OrgOS.
+- Local GitHub defaults are `papership` / `.papership/loop/`; published `.orgos/loop/` stays readable. Vercel project name is `papership`; Git link is `enginelabs-au/papership`.
+- Face ID / fingerprint on the auth card are offered on narrow viewports only; they do not authenticate in the browser.
 
 ## Current Working State
 
@@ -86,8 +90,9 @@
 
 1. Owner proceeds → generate `docs/plans/phase_7_ecosystem_mobile_plan.md` (do not implement until asked).
 2. Do not treat write/external Hermes tools as `accepted`.
-3. Optional: relink Vercel Git; replace GitHub org/App dashboard avatars.
+3. Optional: replace GitHub org/App dashboard avatars.
+4. Owner asked whether Phase 7 planning can start — yes (plan only; do not implement until asked).
 
 ## Last Updated
 
-- 2026-09-12T09:50Z — Purple plate restored on icons. Phase 6 G9 PASS with residuals. Phase 7 not generated.
+- 2026-09-12T10:36Z — Ready to commit/push mobile chrome + inset-squircle icon. Phase 6 remains G9 PASS; Phase 7 planning is unblocked.

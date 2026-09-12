@@ -2,7 +2,7 @@ const DOTS = { ok: "var(--green)", warn: "var(--amber)", bad: "var(--red)", idle
 
 export function PageHead({ title, desc, chip, actions }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 14 }}>
+    <div className="bp2-page-head" style={{ display: "flex", alignItems: "flex-start", gap: 16, marginBottom: 14 }}>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
           <h1 style={{ margin: 0, fontSize: 19, fontWeight: 700, letterSpacing: "-.3px" }}>{title}</h1>
@@ -12,7 +12,7 @@ export function PageHead({ title, desc, chip, actions }) {
         </div>
         <div style={{ fontSize: 12.5, color: "var(--t3)", marginTop: 2 }}>{desc}</div>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 7, flex: "none" }}>
+      <div className="bp2-page-actions" style={{ display: "flex", alignItems: "center", gap: 7, flex: "none" }}>
         {(actions || []).map((a) => (
           <button key={a.label} type="button" onClick={a.go} style={{ height: 30, padding: "0 11px", border: `1px solid ${a.bd}`, background: a.bg, color: a.ink, borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>{a.label}</button>
         ))}
@@ -24,7 +24,7 @@ export function PageHead({ title, desc, chip, actions }) {
 export function SubNav({ items }) {
   if (!items?.length) return null;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 3, padding: 4, borderRadius: 10, background: "var(--raised)", border: "1px solid var(--line2)", marginBottom: 18, overflow: "auto" }}>
+    <div className="bp2-subnav" style={{ display: "flex", alignItems: "center", gap: 3, padding: 4, borderRadius: 10, background: "var(--raised)", border: "1px solid var(--line2)", marginBottom: 18, overflow: "auto" }}>
       {items.map((s) => (
         <button key={s.label} type="button" onClick={s.go} style={{ display: "flex", alignItems: "center", gap: 6, height: 28, padding: "0 11px", border: 0, borderRadius: 7, background: s.bg, color: s.ink, fontSize: 12, fontWeight: s.fw, cursor: "pointer", whiteSpace: "nowrap", boxShadow: s.sh }}>
           {s.label}
@@ -40,7 +40,7 @@ export function SubNav({ items }) {
 export function TodayOverview({ v }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-      <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, boxShadow: "var(--shadow)", padding: "14px 16px 13px" }}>
+      <div className="bp2-composer" style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, boxShadow: "var(--shadow)", padding: "14px 16px 13px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <input placeholder="What would you like to do?" onFocus={v.openHey} style={{ flex: 1, height: 36, border: "1px solid var(--line)", borderRadius: 8, background: "var(--canvas)", color: "var(--t1)", padding: "0 12px", font: "400 13.5px Inter,sans-serif" }} />
           <button type="button" onClick={v.openHey} style={{ height: 36, padding: "0 3px", border: 0, borderRadius: 8, background: "linear-gradient(135deg,#2563eb,#22d3ee,#4ade80,#fbbf24,#f472b6,#a78bfa)", cursor: "pointer", display: "flex", alignItems: "center" }}>
@@ -57,11 +57,11 @@ export function TodayOverview({ v }) {
       </div>
 
       <div>
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 9 }}>
+        <div className="bp2-health-head" style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 9 }}>
           <h2 style={{ margin: 0, fontSize: 12, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--t3)" }}>System health</h2>
           <span style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{v.healthStamp}</span>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 12 }}>
+        <div className="bp2-kpis" style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 12 }}>
           {v.kpis.map((k) => (
             <div key={k.label} style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: "12px 13px", display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
@@ -70,7 +70,7 @@ export function TodayOverview({ v }) {
               </div>
               <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: "-.2px", color: k.dot }}>{k.state}</div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ fontSize: 11, color: "var(--t3)" }}>{k.detail}</span>
+                <span className="bp2-kpi-detail" style={{ fontSize: 11, color: "var(--t3)" }}>{k.detail}</span>
                 <span style={{ font: "400 10.5px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{k.checked}</span>
               </div>
             </div>
@@ -78,20 +78,20 @@ export function TodayOverview({ v }) {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1.25fr) minmax(0,1fr)", gap: 16 }}>
-        <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
+      <div className="bp2-split" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.25fr) minmax(0,1fr)", gap: 16 }}>
+        <div className="bp2-priorities" style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "11px 14px", borderBottom: "1px solid var(--line2)" }}>
             <span style={{ fontSize: 12.5, fontWeight: 600 }}>Active priorities</span>
             <a href="#work" onClick={(e) => { e.preventDefault(); v.goWork(); }} style={{ fontSize: 11.5 }}>Open Work</a>
           </div>
           {v.priorities.map((p) => (
-            <div key={p.title} onClick={p.open} style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
+            <div key={p.title} className="bp2-priority-row" onClick={p.open} style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: p.dot, flex: "none" }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 12.5, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.title}</div>
                 <div style={{ fontSize: 11, color: "var(--t3)", marginTop: 2 }}>{p.meta}</div>
               </div>
-              <div style={{ width: 120, flex: "none" }}>
+              <div className="bp2-priority-bar" style={{ width: 120, flex: "none" }}>
                 <div style={{ height: 6, borderRadius: 3, background: "var(--line2)", overflow: "hidden" }}><span style={{ display: "block", height: 6, width: p.pctw, background: p.dot, borderRadius: 3 }} /></div>
               </div>
               <span style={{ width: 38, textAlign: "right", font: "500 11.5px 'JetBrains Mono',monospace", color: "var(--t2)" }}>{p.pct}%</span>
@@ -103,14 +103,18 @@ export function TodayOverview({ v }) {
             <span style={{ fontSize: 12.5, fontWeight: 600 }}>Required decisions</span>
             <span style={{ display: "inline-flex", alignItems: "center", height: 20, padding: "0 8px", borderRadius: 10, background: "var(--amber-soft)", color: "var(--amber)", font: "600 10.5px Inter,sans-serif" }}>2 waiting</span>
           </div>
-          {v.decisions.map((d) => (
+          {(v.narrow ? v.decisions.slice(0, 1) : v.decisions).map((d) => (
             <div key={d.action} style={{ padding: "12px 14px", borderBottom: "1px solid var(--line2)" }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
                 <span style={{ width: 7, height: 7, borderRadius: "50%", background: d.dot, marginTop: 5, flex: "none" }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 12.5, fontWeight: 600 }}>{d.action}</div>
                   <div style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)", marginTop: 3 }}>Target {d.target} · Version {d.version}</div>
-                  <div style={{ fontSize: 11.5, color: "var(--t3)", marginTop: 4 }}>{d.why}</div>
+                  {v.narrow ? (
+                    <div style={{ fontSize: 11, color: "var(--t3)", marginTop: 8 }}>Approvals are queued while offline and sent the moment you reconnect.</div>
+                  ) : (
+                    <div style={{ fontSize: 11.5, color: "var(--t3)", marginTop: 4 }}>{d.why}</div>
+                  )}
                   {d.changed ? (
                     <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 7, padding: "3px 8px", borderRadius: 6, background: "var(--amber-soft)", color: "var(--amber)", font: "600 11px Inter,sans-serif" }}>
                       <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--amber)" }} />Changed — review again
@@ -118,10 +122,10 @@ export function TodayOverview({ v }) {
                   ) : null}
                 </div>
               </div>
-              <div style={{ display: "flex", gap: 7, marginTop: 10, paddingLeft: 15 }}>
-                <button type="button" onClick={d.approve} style={{ height: 27, padding: "0 12px", border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Approve</button>
-                <button type="button" onClick={d.reject} style={{ height: 27, padding: "0 12px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Reject</button>
-                <button type="button" onClick={d.view} style={{ height: 27, padding: "0 10px", border: 0, background: "transparent", color: "var(--t3)", borderRadius: 6, font: "500 12px Inter,sans-serif", cursor: "pointer" }}>View evidence</button>
+              <div className="bp2-actions" style={{ display: "flex", gap: 7, marginTop: 10, paddingLeft: 15 }}>
+                <button type="button" className="bp2-hit" onClick={d.approve} style={{ height: 27, padding: "0 12px", border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Approve</button>
+                <button type="button" className="bp2-hit" onClick={d.reject} style={{ height: 27, padding: "0 12px", border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12px Inter,sans-serif", cursor: "pointer" }}>Reject</button>
+                <button type="button" className="bp2-view-ev" onClick={d.view} style={{ height: 27, padding: "0 10px", border: 0, background: "transparent", color: "var(--t3)", borderRadius: 6, font: "500 12px Inter,sans-serif", cursor: "pointer" }}>View evidence</button>
               </div>
             </div>
           ))}
@@ -131,8 +135,20 @@ export function TodayOverview({ v }) {
       <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "11px 14px", borderBottom: "1px solid var(--line2)" }}>
           <span style={{ fontSize: 12.5, fontWeight: 600 }}>Running work</span>
-          <span style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Closing the app won’t stop cloud work</span>
+          <span className="bp2-run-note" style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>Closing the app won’t stop cloud work</span>
         </div>
+        <div className="bp2-runs-compact">
+          {v.runs.map((r) => (
+            <div key={`m-${r.id}`} onClick={r.open} style={{ display: "flex", alignItems: "center", gap: 9, padding: "9px 11px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: r.dot, flex: "none", animation: r.status === "Running" ? "ogblink 1.5s infinite" : "none" }} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.purpose}</div>
+                <div style={{ font: "400 10px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{r.id} · {r.elapsed}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="bp2-runs-wide">
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,2.2fr) minmax(0,1.4fr) 92px 96px 92px 110px 88px", gap: 10, padding: "8px 14px", borderBottom: "1px solid var(--line2)", font: "600 10.5px Inter,sans-serif", letterSpacing: ".06em", textTransform: "uppercase", color: "var(--t3)" }}>
           <span>Run</span><span>Work item</span><span>Mode</span><span>Status</span><span>Elapsed</span><span>Cost band</span><span />
         </div>
@@ -150,6 +166,7 @@ export function TodayOverview({ v }) {
             <button type="button" onClick={r.open} style={{ height: 25, border: "1px solid var(--line)", background: "var(--canvas)", color: "var(--t1)", borderRadius: 6, font: "600 11.5px Inter,sans-serif", cursor: "pointer" }}>Open run</button>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );
@@ -160,7 +177,7 @@ export function TodayDecisions({ v }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       {v.decisionsLong.map((d) => (
         <div key={d.action} style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: "15px 16px" }}>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <div className="bp2-dec-card" style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
             <span style={{ width: 9, height: 9, borderRadius: "50%", background: d.dot, marginTop: 5, flex: "none" }} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 14, fontWeight: 600 }}>{d.action}</div>
@@ -172,9 +189,9 @@ export function TodayDecisions({ v }) {
               </div>
               <p style={{ margin: "9px 0 0", fontSize: 12.5, color: "var(--t2)", maxWidth: "70ch" }}>{d.why}</p>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 7, width: 150, flex: "none" }}>
-              <button type="button" onClick={d.approve} style={{ height: 30, border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 12.5px Inter,sans-serif", cursor: "pointer" }}>Approve</button>
-              <button type="button" onClick={d.reject} style={{ height: 30, border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12.5px Inter,sans-serif", cursor: "pointer" }}>Reject</button>
+            <div className="bp2-dec-side" style={{ display: "flex", flexDirection: "column", gap: 7, width: 150, flex: "none" }}>
+              <button type="button" className="bp2-hit" onClick={d.approve} style={{ height: 30, border: 0, borderRadius: 6, background: "var(--blue)", color: "#fff", font: "600 12.5px Inter,sans-serif", cursor: "pointer" }}>Approve</button>
+              <button type="button" className="bp2-hit" onClick={d.reject} style={{ height: 30, border: "1px solid var(--line)", background: "var(--surface)", color: "var(--t1)", borderRadius: 6, font: "600 12.5px Inter,sans-serif", cursor: "pointer" }}>Reject</button>
             </div>
           </div>
         </div>
@@ -186,6 +203,18 @@ export function TodayDecisions({ v }) {
 export function TodayRunning({ v }) {
   return (
     <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
+      <div className="bp2-runs-compact">
+        {v.runsAll.map((r) => (
+          <div key={`m-${r.id}`} onClick={r.open} style={{ display: "flex", alignItems: "center", gap: 9, padding: "9px 11px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: r.dot, flex: "none" }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 12, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.purpose}</div>
+              <div style={{ font: "400 10px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{r.id} · {r.elapsed} · {r.status}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="bp2-runs-wide">
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0,2.2fr) 100px 92px 104px 92px 92px 120px 90px", gap: 10, padding: "9px 14px", borderBottom: "1px solid var(--line)", font: "600 12px Inter,sans-serif", color: "var(--t3)" }}>
         <span>Run</span><span>Work item</span><span>Mode</span><span>Status</span><span>Started</span><span>Elapsed</span><span>Cost band</span><span />
       </div>
@@ -204,6 +233,7 @@ export function TodayRunning({ v }) {
           <button type="button" onClick={r.open} style={{ height: 25, border: "1px solid var(--line)", background: "var(--canvas)", color: "var(--t1)", borderRadius: 6, font: "600 11.5px Inter,sans-serif", cursor: "pointer" }}>Open</button>
         </div>
       ))}
+      </div>
     </div>
   );
 }
@@ -225,7 +255,7 @@ export function Registry({ v }) {
             <span style={{ font: "400 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{sec.range}</span>
           </div>
           {sec.rows.map((g) => (
-            <div key={g.code} style={{ display: "grid", gridTemplateColumns: "52px minmax(0,1fr) 120px 96px", gap: 12, alignItems: "center", padding: "7px 14px", borderBottom: "1px solid var(--line2)" }}>
+            <div key={g.code} className="bp2-registry-row" style={{ display: "grid", gridTemplateColumns: "52px minmax(0,1fr) 120px 96px", gap: 12, alignItems: "center", padding: "7px 14px", borderBottom: "1px solid var(--line2)" }}>
               <span style={{ font: "500 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{g.code}</span>
               <span style={{ fontSize: 12.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{g.label}</span>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 6, height: 20, padding: "0 9px", borderRadius: 10, background: g.bg, color: g.ink, font: "600 10.5px Inter,sans-serif" }}>
@@ -242,12 +272,12 @@ export function Registry({ v }) {
 
 export function WorkProjects({ v }) {
   return (
-    <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
+    <div className="bp2-table-wrap" style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "auto" }}>
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0,2.4fr) 130px 150px 110px 92px 150px 92px", gap: 10, padding: "9px 14px", borderBottom: "1px solid var(--line)", font: "600 12px Inter,sans-serif", color: "var(--t3)" }}>
         <span>Plan</span><span>Department</span><span>Owner</span><span>Status</span><span>Priority</span><span>Progress</span><span>Due</span>
       </div>
       {v.projects.map((p) => (
-        <div key={p.key} onClick={p.open} style={{ display: "grid", gridTemplateColumns: "minmax(0,2.4fr) 130px 150px 110px 92px 150px 92px", gap: 10, alignItems: "center", padding: "10px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
+        <div key={p.key} className="bp2-project-row" onClick={p.open} style={{ display: "grid", gridTemplateColumns: "minmax(0,2.4fr) 130px 150px 110px 92px 150px 92px", gap: 10, alignItems: "center", padding: "10px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
           <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: 12.5, fontWeight: 500 }}>{p.name}</div>
             <div style={{ font: "400 10.5px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{p.key}</div>
@@ -275,7 +305,7 @@ export function WorkIssues({ v }) {
             <span style={{ font: "500 11px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{g.count}</span>
           </div>
           {g.rows.map((r) => (
-            <div key={r.key} onClick={r.open} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer", background: r.rowBg }}>
+            <div key={r.key} className="bp2-issue-row" onClick={r.open} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer", background: r.rowBg }}>
               <span style={{ font: "500 11.5px 'JetBrains Mono',monospace", color: "var(--t3)", width: 72 }}>{r.key}</span>
               <span style={{ flex: 1, fontSize: 12.5 }}>{r.title}</span>
               <span style={{ fontSize: 11.5, color: "var(--t3)" }}>{r.labels.join(" · ")}</span>
@@ -290,7 +320,7 @@ export function WorkIssues({ v }) {
 
 export function WorkBoard({ v }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 12 }}>
+    <div className="bp2-board" style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 12 }}>
       {v.board.map((col) => (
         <div key={col.label} style={{ background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 8, minHeight: 280 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "6px 6px 10px" }}>
@@ -314,12 +344,12 @@ export function WorkBoard({ v }) {
 export function WorkRoadmap({ v }) {
   return (
     <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 16 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "220px repeat(4,1fr)", gap: 8, marginBottom: 14, font: "600 11px Inter,sans-serif", color: "var(--t3)" }}>
+      <div className="bp2-roadmap-head" style={{ display: "grid", gridTemplateColumns: "220px repeat(4,1fr)", gap: 8, marginBottom: 14, font: "600 11px Inter,sans-serif", color: "var(--t3)" }}>
         <span />
         {v.quarters.map((q) => <span key={q}>{q}</span>)}
       </div>
       {v.roadmap.map((r) => (
-        <div key={r.name} style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 8, alignItems: "center", marginBottom: 12 }}>
+        <div key={r.name} className="bp2-roadmap-row" style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 8, alignItems: "center", marginBottom: 12 }}>
           <div>
             <div style={{ fontSize: 12.5, fontWeight: 600 }}>{r.name}</div>
             <div style={{ font: "400 10.5px 'JetBrains Mono',monospace", color: "var(--t3)" }}>{r.meta}</div>
@@ -335,14 +365,14 @@ export function WorkRoadmap({ v }) {
 
 export function WorkWorkflows({ v }) {
   return (
-    <div style={{ display: "flex", gap: 14, minHeight: 420 }}>
-      <div style={{ width: 180, flex: "none", background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 10 }}>
+    <div className="bp2-workflows" style={{ display: "flex", gap: 14, minHeight: 420 }}>
+      <div className="bp2-workflows-lib" style={{ width: 180, flex: "none", background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 10 }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--t3)", marginBottom: 8 }}>Nodes</div>
         {v.nodeLibrary.map((n) => (
           <div key={n.label} style={{ padding: "8px 9px", borderRadius: 7, background: n.bg, marginBottom: 6, fontSize: 12 }}>{n.label}</div>
         ))}
       </div>
-      <div style={{ flex: 1, background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, position: "relative", overflow: "hidden" }}>
+      <div className="bp2-workflows-canvas" style={{ flex: 1, background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, position: "relative", overflow: "hidden" }}>
         {v.wires.map((w, i) => (
           <span key={i} style={{ position: "absolute", left: w.x, top: w.y, width: w.w, height: w.h, background: "var(--line)" }} />
         ))}
@@ -373,8 +403,8 @@ export function InboxView({ v }) {
   const threads = v.threads || [];
   const thread = threads[0] || null;
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "320px minmax(0,1fr) 220px", gap: 0, background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden", minHeight: 520 }}>
-      <div style={{ borderRight: "1px solid var(--line2)" }}>
+    <div className="bp2-inbox" style={{ display: "grid", gridTemplateColumns: "320px minmax(0,1fr) 220px", gap: 0, background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden", minHeight: 520 }}>
+      <div className="bp2-inbox-col" style={{ borderRight: "1px solid var(--line2)" }}>
         {threads.length === 0 ? (
           <div style={{ padding: 16, fontSize: 12.5, color: "var(--t3)" }}>{v.inboxNote || "Inbox is empty."}</div>
         ) : null}
@@ -389,7 +419,7 @@ export function InboxView({ v }) {
           </div>
         ))}
       </div>
-      <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 10, borderRight: "1px solid var(--line2)" }}>
+      <div className="bp2-inbox-col" style={{ padding: 16, display: "flex", flexDirection: "column", gap: 10, borderRight: "1px solid var(--line2)" }}>
         {!thread ? (
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--t3)", fontSize: 13 }}>
             Inbox is empty. Papership does not show fixture mail once the live API is connected.
@@ -406,7 +436,7 @@ export function InboxView({ v }) {
           </>
         )}
       </div>
-      <div style={{ padding: 14 }}>
+      <div className="bp2-inbox-meta" style={{ padding: 14 }}>
         {(v.ticketDetails || []).map((d) => (
           <div key={d.k} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid var(--line2)", fontSize: 12 }}>
             <span style={{ color: "var(--t3)" }}>{d.k}</span><span>{d.v}</span>
@@ -429,7 +459,7 @@ export function PeopleView({ v }) {
   return (
     <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
       {v.people.map((p) => (
-        <div key={p.name} onClick={p.open} style={{ display: "grid", gridTemplateColumns: "200px 110px 1fr 140px 90px", gap: 12, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
+        <div key={p.name} className="bp2-people-row" onClick={p.open} style={{ display: "grid", gridTemplateColumns: "200px 110px 1fr 140px 90px", gap: 12, alignItems: "center", padding: "11px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
           <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ width: 26, height: 26, borderRadius: "50%", background: p.av, color: "#fff", font: "600 10px Inter,sans-serif", display: "flex", alignItems: "center", justifyContent: "center" }}>{p.initials}</span>
             {p.name}
@@ -454,7 +484,7 @@ export function TeamsView({ v }) {
     );
   }
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: 12 }}>
+    <div className="bp2-teams" style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: 12 }}>
       {v.teams.map((t) => (
         <div key={t.name} style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 14 }}>
           <div style={{ fontSize: 13, fontWeight: 600 }}>{t.name}</div>
@@ -478,7 +508,7 @@ export function InvitesView() {
 export function DataView({ v }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 12 }}>
+      <div className="bp2-trace-kpis" style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", gap: 12 }}>
         {v.traceKpis.map((k) => (
           <div key={k.label} style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 12 }}>
             <div style={{ fontSize: 11, color: "var(--t3)" }}>{k.label}</div>
@@ -489,7 +519,7 @@ export function DataView({ v }) {
       </div>
       <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
         {v.traces.map((t) => (
-          <div key={t.name + t.time} onClick={t.open} style={{ display: "grid", gridTemplateColumns: "minmax(0,1.6fr) 140px 90px 80px 90px 80px", gap: 10, padding: "10px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
+          <div key={t.name + t.time} className="bp2-trace-row" onClick={t.open} style={{ display: "grid", gridTemplateColumns: "minmax(0,1.6fr) 140px 90px 80px 90px 80px", gap: 10, padding: "10px 14px", borderBottom: "1px solid var(--line2)", cursor: "pointer" }}>
             <span style={{ fontSize: 12.5 }}>{t.name}</span>
             <span style={{ color: "var(--t3)", fontSize: 12 }}>{t.agent}</span>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: t.dot }} />{t.status}</span>
@@ -505,7 +535,7 @@ export function DataView({ v }) {
 
 export function FilesView({ v }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "200px minmax(0,1fr) 240px", gap: 12 }}>
+    <div className="bp2-files" style={{ display: "grid", gridTemplateColumns: "200px minmax(0,1fr) 240px", gap: 12 }}>
       <div style={{ background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 8 }}>
         {v.folders.map((f) => (
           <div key={f.label} style={{ padding: "7px 8px", borderRadius: 7, background: f.bg, color: f.ink, fontWeight: f.fw, display: "flex", justifyContent: "space-between" }}>
@@ -521,7 +551,7 @@ export function FilesView({ v }) {
           </div>
         ))}
       </div>
-      <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 14 }}>
+      <div className="bp2-files-meta" style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 14 }}>
         {v.fileMeta.map((m) => (
           <div key={m.k} style={{ display: "flex", justifyContent: "space-between", padding: "7px 0", borderBottom: "1px solid var(--line2)", fontSize: 12 }}>
             <span style={{ color: "var(--t3)" }}>{m.k}</span><span>{m.v}</span>
@@ -535,7 +565,7 @@ export function FilesView({ v }) {
 export function ConnectionsView({ v }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 12 }}>
+    <div className="bp2-connections" style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: 12 }}>
       {v.connections.map((c) => (
         <div key={c.name} style={{ background: "var(--surface)", border: `1px solid ${c.bd}`, borderRadius: 10, padding: 14 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -578,8 +608,8 @@ export function ConnectionsView({ v }) {
 
 export function SettingsView({ v }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "220px minmax(0,1fr)", gap: 16 }}>
-      <div style={{ background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 6 }}>
+    <div className="bp2-settings" style={{ display: "grid", gridTemplateColumns: "220px minmax(0,1fr)", gap: 16 }}>
+      <div className="bp2-settings-nav" style={{ background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 6 }}>
         {v.settingsNav.map((s) => (
           <button key={s.label} type="button" onClick={s.go} style={{ width: "100%", textAlign: "left", padding: "8px 10px", border: 0, borderRadius: 7, background: s.bg, color: s.ink, fontWeight: s.fw, cursor: "pointer", fontFamily: "inherit", display: "flex", justifyContent: "space-between" }}>
             {s.label}{s.tag ? <span style={{ font: "600 10px Inter,sans-serif", color: "var(--t3)" }}>{s.tag}</span> : null}
@@ -620,7 +650,7 @@ export function SettingsView({ v }) {
             ))}
           </div>
         ) : v.set_appearance ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginTop: 16 }}>
+          <div className="bp2-themes" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginTop: 16 }}>
             {v.themeCards.map((c) => (
               <button key={c.label} type="button" onClick={c.go} style={{ border: `2px solid ${c.bd}`, borderRadius: 10, overflow: "hidden", background: "transparent", cursor: "pointer", padding: 0, textAlign: "left" }}>
                 <div style={{ height: 72, background: c.swatch }} />
@@ -656,8 +686,8 @@ export function SettingsView({ v }) {
 
 export function AccountView({ v }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "200px minmax(0,1fr)", gap: 16 }}>
-      <div style={{ background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 6 }}>
+    <div className="bp2-account" style={{ display: "grid", gridTemplateColumns: "200px minmax(0,1fr)", gap: 16 }}>
+      <div className="bp2-account-nav" style={{ background: "var(--raised)", border: "1px solid var(--line2)", borderRadius: 10, padding: 6 }}>
         {v.accountNav.map((s) => (
           <div key={s.label} style={{ padding: "8px 10px", borderRadius: 7, background: s.bg, color: s.ink, fontWeight: s.fw }}>{s.label}</div>
         ))}
@@ -690,8 +720,8 @@ export function MemoryView({ v }) {
     );
   }
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "180px minmax(0,1fr) 240px", gap: 12 }}>
-      <div style={{ background: "var(--raised)", borderRadius: 10, padding: 8 }} role="navigation" aria-label="Memory kinds">
+    <div className="bp2-memory" style={{ display: "grid", gridTemplateColumns: "180px minmax(0,1fr) 240px", gap: 12 }}>
+      <div className="bp2-memory-nav" style={{ background: "var(--raised)", borderRadius: 10, padding: 8 }} role="navigation" aria-label="Memory kinds">
         {v.memoryNav.map((m) => (
           <div key={m.label} style={{ padding: "7px 8px", borderRadius: 7, background: m.bg, fontWeight: m.fw, display: "flex", justifyContent: "space-between" }}>{m.label}<span style={{ fontFamily: "'JetBrains Mono',monospace", color: "var(--t3)" }}>{m.n}</span></div>
         ))}
@@ -717,7 +747,7 @@ export function MemoryView({ v }) {
 
 export function WorkItemView({ v }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1.4fr) 280px", gap: 16 }}>
+    <div className="bp2-item" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.4fr) 280px", gap: 16 }}>
       <div>
         <div style={{ display: "flex", gap: 0, marginBottom: 16, overflow: "auto" }}>
           {v.loop.map((s, i) => (
@@ -755,7 +785,7 @@ export function WorkItemView({ v }) {
 
 export function RunDetailView({ v }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1.3fr) 300px", gap: 16 }}>
+    <div className="bp2-run-detail" style={{ display: "grid", gridTemplateColumns: "minmax(0,1.3fr) 300px", gap: 16 }}>
       <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, padding: 16 }}>
         {v.runSteps.map((s) => (
           <div key={s.n} style={{ display: "flex", gap: 12, padding: "10px 0", borderBottom: "1px solid var(--line2)" }}>

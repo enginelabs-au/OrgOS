@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Build Papership app/tab icons from the owner rounded-square render.
 
-Keeps the purple icon plate. Only the pixels *outside* that plate (black
-corners left after the owner cut, plus optional red fringe) become transparent.
+Keeps the purple icon plate. Pixels outside that plate are transparent.
+A slightly inset squircle then cuts the leftover red/maroon fringe on the
+rim (boat reds stay — they are interior, not on the plate edge).
 """
 
 from __future__ import annotations
@@ -13,13 +14,18 @@ import subprocess
 from collections import deque
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = Path(
     "/Users/camdouglas/.cursor/projects/Users-camdouglas-papership/assets/"
     "icon2-802a18f2-7307-41f8-9d29-230e46ba9cea.jpg"
 )
+
+# Inset in source pixels. 8px on a 1000px plate is ~0.8% and sits inside
+# the maroon rim without touching the boat.
+SQUIRCLE_INSET = 8
+SQUIRCLE_RADIUS = 0.2237  # iOS-like continuous corner
 
 
 def is_outside(r: int, g: int, b: int) -> bool:
@@ -30,6 +36,22 @@ def is_outside(r: int, g: int, b: int) -> bool:
     if (hue <= 18 or hue >= 342) and s > 0.35 and v < 0.42 and r > g + 12 and r > b:
         return True
     return False
+
+
+def is_rim_red(r: int, g: int, b: int) -> bool:
+    h, s, v = colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)
+    hue = h * 360.0
+    if (hue <= 28 or hue >= 318) and s > 0.12 and r > g + 4:
+        return True
+    if r > g + 8 and r > b and v < 0.4 and s > 0.15:
+        return True
+    return False
+
+
+def is_purple(r: int, g: int, b: int) -> bool:
+    h, s, _ = colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)
+    hue = h * 360.0
+    return 245 <= hue <= 310 and s > 0.25
 
 
 def _flood(px, w: int, h: int, seeds: list[tuple[int, int]]) -> set[tuple[int, int]]:
@@ -64,6 +86,77 @@ def clear_outside(im: Image.Image) -> Image.Image:
     return rgba
 
 
+def _opaque_bbox(im: Image.Image) -> tuple[int, int, int, int]:
+    px = im.load()
+    w, h = im.size
+    xs: list[int] = []
+    ys: list[int] = []
+    for y in range(h):
+        for x in range(w):
+            if px[x, y][3] >= 8:
+                xs.append(x)
+                ys.append(y)
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def _sample_purple(im: Image.Image, x: int, y: int, reach: int = 14) -> tuple[int, int, int]:
+    px = im.load()
+    w, h = im.size
+    acc = [0, 0, 0]
+    n = 0
+    for yy in range(max(0, y - reach), min(h, y + reach + 1), 2):
+        for xx in range(max(0, x - reach), min(w, x + reach + 1), 2):
+            r, g, b, a = px[xx, yy]
+            if a < 200:
+                continue
+            if is_purple(r, g, b) and not is_rim_red(r, g, b):
+                acc[0] += r
+                acc[1] += g
+                acc[2] += b
+                n += 1
+    if not n:
+        return (64, 11, 95)
+    return (acc[0] // n, acc[1] // n, acc[2] // n)
+
+
+def cut_squircle(im: Image.Image, inset: int = SQUIRCLE_INSET) -> Image.Image:
+    """Mask to an iOS-like rounded square inset inside the plate, then
+    recolor any leftover rim-red on the new edge to nearby purple."""
+    rgba = im.convert("RGBA")
+    w, h = rgba.size
+    x0, y0, x1, y1 = _opaque_bbox(rgba)
+    rad = max(8, int(min(x1 - x0, y1 - y0) * SQUIRCLE_RADIUS))
+    mask = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        [x0 + inset, y0 + inset, x1 - inset, y1 - inset],
+        radius=rad,
+        fill=255,
+    )
+    mask = mask.filter(ImageFilter.GaussianBlur(radius=0.85))
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    out.paste(rgba, (0, 0), mask)
+
+    px = out.load()
+    src = rgba.load()
+    for y in range(h):
+        for x in range(w):
+            r, g, b, a = px[x, y]
+            if a < 8:
+                continue
+            edge = False
+            for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                if not (0 <= nx < w and 0 <= ny < h) or px[nx, ny][3] < 8:
+                    edge = True
+                    break
+            if not edge:
+                continue
+            sr, sg, sb, _ = src[x, y]
+            if is_rim_red(sr, sg, sb) or not is_purple(sr, sg, sb):
+                pr, pg, pb = _sample_purple(out, x, y)
+                px[x, y] = (pr, pg, pb, a)
+    return out
+
+
 def fit(im: Image.Image, size: int, *, opaque: bool = False, content: float = 1.0) -> Image.Image:
     box = max(1, int(size * content))
     out = im.copy()
@@ -81,7 +174,7 @@ def write_png(path: Path, im: Image.Image) -> None:
 
 
 def main() -> None:
-    master = clear_outside(Image.open(SRC))
+    master = cut_squircle(clear_outside(Image.open(SRC)))
     brand = ROOT / "brand" / "papership-icon.png"
     write_png(brand, master)
 
