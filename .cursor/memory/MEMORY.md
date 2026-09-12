@@ -72,7 +72,7 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Phase 3 plan (complete; G3 PASS-with-residuals): `docs/plans/phase_3_release_verification_plan.md`
 - Owner handoff (V18-5 APPROVE): `docs/workstreams/20260910-engine-labs-company-os/delivery/owner-handoff.md`
 - R1 checklist: `docs/plans/final_implementation_checklist.md`
-- Phase 4 plan (written, not implemented): `docs/plans/phase_4_collaboration_connections_plan.md`
+- Phase 4 plan (implementing; T4-0/T4-1 done, T4-2 next): `docs/plans/phase_4_collaboration_connections_plan.md`
 - D-19 (R2 planning from G3 CONDITIONAL; Phase 3 later closed): `docs/decisions/2026-09-11-phase-4-planning-from-g3.md`
 
 ## Existing workflow references

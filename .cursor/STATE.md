@@ -6,11 +6,11 @@
 
 ## Current Status
 
-- Blueprint-2 port mounted at `/cc-org-dash`. Hybrid of blueprint-1 chrome withdrawn. Live slugs (`orgos` / `OrgOS` on GitHub, Vercel, `~/.config/orgos/`) left as residuals.
+- Phase 4 **implementation** (not planning). Plan exists and is `implementing`. T4-0 and T4-1 are done. Blueprint-2 port mounted at `/cc-org-dash`. Hybrid of blueprint-1 chrome withdrawn. Live slugs (`orgos` / `OrgOS` on GitHub, Vercel, `~/.config/orgos/`) left as residuals.
 
 ## Project Phase
 
-- Phase 4 active. UI/name work paused T4-2.
+- Phase 4 implementation, paused after the D-21 UI pivot. Next planned task is T4-2. Do not generate Phase 5 until G5.
 
 ## Active Plan
 
@@ -18,11 +18,11 @@
 
 ## Active Workstream
 
-- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3)
+- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3; index is stale vs Phase 4)
 
 ## Active Role and Gate
 
-- Owner-directed D-21 blueprint-2 pivot. T4-2 (OQ-G2 notice) remains next on the Phase 4 plan.
+- Owner visual review of the D-21 blueprint-2 port. T4-2 (OQ-G2 notice + `oq_g2_recorded` gate) is the next Phase 4 implementation task.
 
 ## Predecessor Handoff
 
@@ -78,9 +78,10 @@
 ## Next Actions
 
 1. Owner visual review of the blueprint-2 port (Hey dock, theme cycle, remaining tabs).
-2. Resume T4-2 OQ-G2 notice when asked.
-3. Do not treat write/external Hermes tools as `accepted`.
+2. Resume T4-2: Settings → Data measurement notice and `oq_g2_recorded` gate (legal OQ-G2 is required only before a live second seat).
+3. Continue T4-3…T4-11 after T4-2; do not generate Phase 5 until G5.
+4. Do not treat write/external Hermes tools as `accepted`.
 
 ## Last Updated
 
-- 2026-09-12T14:50Z — in-app product icon removed (D-21 item 6).
+- 2026-09-12T04:30Z — status review: Phase 4 implementation (T4-0/T4-1 done; T4-2 next).
