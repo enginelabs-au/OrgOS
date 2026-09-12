@@ -7,7 +7,7 @@
 ## Current Status
 
 - Phase 6 **planning** (D-33). Plan drafted. Do not implement T6-1…T6-8 until the owner asks.
-- Leftover-name Pass A done. Named-competitor tables withdrawn. Provider-locked files wait for the owner. Exhaustive resume pack finalized: `docs/handover/resume-after-provider-rename.md`.
+- Leftover-name Pass A done. Named-competitor tables withdrawn. Provider-locked files wait for the owner. Sole kickstart is `docs/handover/resume-after-provider-rename.md` (§0 = owner rename checklist at the top). No transcript required.
 
 ## Project Phase
 
@@ -80,11 +80,11 @@
 
 ## Next Actions
 
-1. Owner: rename GitHub / App / Vercel, then open a new chat with `docs/handover/resume-after-provider-rename.md`.
+1. Owner: follow §0 of `docs/handover/resume-after-provider-rename.md`, then open a new chat with that file only.
 2. Do not implement Phase 6 until asked.
 3. Do not generate Phase 7 until G9.
 4. Do not treat write/external Hermes tools as `accepted`.
 
 ## Last Updated
 
-- 2026-09-12T08:00Z — Exhaustive resume handover finalized. Named-competitor tables and leftover table-describing prose withdrawn. Owner may rename GitHub / App / Vercel / local folder.
+- 2026-09-12T08:05Z — Handover §0 is the owner naming-change checklist (GitHub / App / Vercel / host env / local folder). File is the sole next-chat kickstart.

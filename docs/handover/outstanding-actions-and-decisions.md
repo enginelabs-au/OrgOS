@@ -44,7 +44,7 @@ Live receipt path `.orgos/loop/` and `GITHUB_APP_REPO` stay as-is until the owne
 
 ## 3. Agent-capable next work (not started this turn)
 
-Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks. Leftover sweep Pass A is done. Named-competitor tables withdrawn. Resume pack finalized: `docs/handover/resume-after-provider-rename.md`. Owner must rename GitHub / App / Vercel before the locked-file follow-up (`docs/handover/rename-owner-first-providers.md`).
+Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks. Leftover sweep Pass A is done. Named-competitor tables withdrawn. Sole kickstart: `docs/handover/resume-after-provider-rename.md` (§0 = owner naming-change checklist). No transcript required. Owner must finish §0 before the locked-file follow-up (`docs/handover/rename-owner-first-providers.md`; §0 wins if they differ).
 
 G7 closed. One execution phase plan remains after Phase 6: Phase 7 (R4 ecosystem/mobile / intake 12). Verification phases 13–18 re-run per release and are not extra build phases.
 

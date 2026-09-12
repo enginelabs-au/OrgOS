@@ -1,34 +1,139 @@
-# Resume after provider rename — exhaustive kickstart
+# Resume after provider rename — sole kickstart
 
-Use this file as the kickstart for the next chat after the owner renames GitHub / the GitHub App / Vercel / the local folder. Pair it with the saved transcript. Do not store secrets here.
+This file is the **only** document you need for the transition and the next chat. Do not rely on the old session transcript. Do not store secrets here.
 
-This document is the durable replacement for the chat that will be lost when the GitHub remote and local folder are renamed. Read it before changing any locked file and before implementing Phase 6.
+Read **§0 first**. Do those owner steps **before** you paste this file into a new chat. The next agent reads from §1 downward.
 
 ---
 
-## 0. First message to the next agent (copy)
+## 0. Owner: naming-change checklist (do this now, before the next chat)
+
+You are renaming live providers from **OrgOS** to **Papership**. The in-repo leftover sweep is already done. **Do not edit the locked files in §7 yourself** — the next agent does that after these dashboards match.
+
+**Never touch:** `www.enginelabs.com.au` or Vercel project `enginelabs-au-site` (different Engine Labs marketing site). Also never touch Shuffle, Distroclub, jinglelabs, hermes-playground, or other Vercel projects.
+
+**Never paste** PEMs, tokens, client secrets, or `.env` values into chat or repo files.
+
+### 0.1 Current live identities (2026-09-12)
+
+| What | Current | Target |
+|---|---|---|
+| Product / company | Papership / Engine Labs | unchanged |
+| GitHub repo | `enginelabs-au/OrgOS` (id `1364169617`) | `enginelabs-au/Papership` |
+| GitHub URL | `https://github.com/enginelabs-au/OrgOS` (clone also `…/orgos`) | `https://github.com/enginelabs-au/Papership` — old URL must **redirect** |
+| GitHub homepage field | `https://orgos-ivory.vercel.app` | may stay until you change it |
+| GitHub App | `orgos-dev` (id `4908453`, installation `160851156`) | same App pointed at the renamed repo, **or** a new App if you want the bot slug gone |
+| Vercel product project | `orgos` (`prj_S74JOIky7KugVTrfu652NhJYOL8l`) | same project; rename the dashboard slug if you want `orgos` gone |
+| Vercel preview host | `orgos-ivory.vercel.app` | may persist; do not invent a second project |
+| Host env | `GITHUB_APP_REPO=OrgOS` | `GITHUB_APP_REPO=Papership` |
+| Local App PEM dir | `~/.config/orgos/` (`github-app.pem`, `github-app.paths`) | optional copy to `~/.config/papership/` |
+| Local Mac folder | historically `~/OrgOS` | `~/Papership` (this cloud VM is already `/workspace`) |
+| Draft PR on this work | https://github.com/enginelabs-au/OrgOS/pull/5 | URL redirects after the repo rename |
+| `git origin` | `https://github.com/enginelabs-au/orgos` | GitHub redirects; optionally set-url to the new name |
+
+### 0.2 Do these in this order
+
+**1. GitHub repository (first — everything else depends on the new name existing)**
+
+1. Open https://github.com/enginelabs-au/OrgOS → **Settings** → **General** → **Repository name** → rename to `Papership`.
+2. Confirm https://github.com/enginelabs-au/OrgOS redirects to https://github.com/enginelabs-au/Papership.
+3. Confirm open PRs still load (especially #5). GitHub keeps PR numbers.
+4. Do **not** delete and recreate the repo. Do **not** rewrite history.
+
+**2. GitHub App**
+
+1. Open the App `orgos-dev` (id `4908453`) → installation `160851156`.
+2. **Selected repositories** must include `enginelabs-au/Papership` (the renamed repo). If it still lists only `OrgOS`, add/reselect Papership.
+3. If you also want the bot username / slug `orgos-dev` gone: App slugs are often **immutable**. Create a **new** App, install it on Papership only, put the new PEM in `~/.config/papership/github-app.pem` (`chmod 600`), and you will give the next agent the **new IDs as names only** (`GITHUB_APP_ID`, `GITHUB_APP_INSTALLATION_ID`) — not the PEM. If you keep `orgos-dev`, skip this.
+4. Do not paste the PEM into chat.
+
+**3. Vercel (Papership product project only)**
+
+1. Open project `orgos` (`prj_S74JOIky7KugVTrfu652NhJYOL8l`).
+2. **Git** connection: if it broke after the GitHub rename, reconnect it to `enginelabs-au/Papership`. Production still tracks `main`; other branches stay Preview.
+3. Optional: **Settings → rename project** if you want the dashboard slug `orgos` gone. The `*.vercel.app` host (`orgos-ivory.vercel.app`) may stay. That is fine.
+4. **Never** edit, pause, relink, or delete `enginelabs-au-site`.
+5. Do not create a second Vercel project for `web` / `api` / `desktop` — those are monorepo folders.
+
+**4. Host / VPS env (the machine that runs `open_pull`)**
+
+1. Set `GITHUB_APP_REPO=Papership` wherever the API already reads GitHub App env (same place as `GITHUB_APP_ID` / installation / key path). Names only in docs; values stay on the host.
+2. Optional: `cp -a ~/.config/orgos ~/.config/papership` and point `github-app.paths` at the new dir. The next agent will teach `scripts/dev-local.sh` to prefer `~/.config/papership` and still read the old path once.
+3. Do not commit `~/.config/*` or `.env` files.
+
+**5. Local git remote (optional)**
+
+```bash
+git remote -v
+# if origin still says orgos, GitHub should redirect; optional:
+git remote set-url origin https://github.com/enginelabs-au/Papership.git
+```
+
+**6. Local folder (do this last, then reopen Cursor)**
+
+1. Close Cursor / this Cloud Agent on the old folder.
+2. `mv ~/OrgOS ~/Papership` (or your actual path). Safe: remotes are URL-based; committed code does not depend on that absolute path.
+3. Reopen the folder in Cursor. Start a **new** chat. The old Cloud Agent run stays as an archive only.
+
+**7. After 1–6: paste this entire file into the new chat**
+
+Use the §1 block below as the first message, then attach or paste the rest of this file. Tell the agent which of 0.2 actually finished (especially: kept `orgos-dev` vs new App; Vercel slug renamed or not; `GITHUB_APP_REPO` set or not).
+
+### 0.3 You are done with the owner rename when
+
+- [ ] `https://github.com/enginelabs-au/Papership` loads
+- [ ] old OrgOS URL redirects
+- [ ] App installation selected-repos includes Papership
+- [ ] Vercel product project Git points at Papership (`enginelabs-au-site` untouched)
+- [ ] host `GITHUB_APP_REPO=Papership`
+- [ ] local folder reopened as Papership (if you renamed it)
+- [ ] you have **not** edited `.env.example`, `scripts/dev-local.sh`, or `services/api/app/github_app.py` yourself
+
+### 0.4 Do not rename / do not edit (historical pins)
+
+Leave these. “Gone” means live product surfaces, not these pins.
+
+- Workstream folder `docs/workstreams/20260910-engine-labs-company-os/`
+- Decision filenames `docs/decisions/2026-09-11-orgos-*.md`
+- Pinned `docs/ui-blueprint/blueprint-2/OrgOS*.html` and `docs/ui-blueprint/blueprint-1/**`
+- Unused `apps/web/src/components/cc-org-dash/` (live chrome is `apps/web/src/blueprint2/`)
+- `/cc-org-dash` **redirect** (bookmark alias)
+- Git history and old PR titles
+- Published `.orgos/loop/` receipts on GitHub (next agent dual-reads; new receipts go to `.papership/loop/`)
+- Asset `orgos-icon.png` until a later explicit ask
+- Locked files in §7 until the next agent confirms §0.3
+
+### 0.5 What the next agent will do after you paste this (not you)
+
+1. Confirm providers match Papership. If any of 0.3 is still OrgOS-shaped, **stop** and say which.
+2. Update the locked files in §7. Dual-read old receipts. Do not rewrite git history.
+3. Re-run GitHub/loop tests and `apps/web/tests/static-scan.test.mjs`.
+4. **Wait.** Do not implement Phase 6 until you explicitly ask.
+
+---
+
+## 1. First message to the next agent (copy after §0)
 
 ```
-Resume Papership from docs/handover/resume-after-provider-rename.md and the saved transcript.
+Resume Papership from this handover only (docs/handover/resume-after-provider-rename.md). There is no session transcript.
 
-I have renamed the GitHub repo (and will confirm App + Vercel + GITHUB_APP_REPO + optional ~/.config/papership).
+I have finished the owner naming-change checklist in §0 (GitHub / App / Vercel / GITHUB_APP_REPO / optional local folder). I will say which of those actually completed.
 
 Do this in order:
-1. Read .cursor/AGENTS.md, .cursor/USER.md, .cursor/STATE.md, this handover, docs/handover/rename-owner-first-providers.md, docs/handover/outstanding-actions-and-decisions.md, docs/plans/phase_6_commercial_delivery_plan.md.
-2. Confirm providers now match Papership. If any of §5 is still OrgOS-shaped, stop and say which.
-3. Update the provider-locked files listed in §6 so live defaults match Papership. Dual-read old receipt files. Do not rewrite git history or published .orgos/loop/ receipts.
-4. Re-run GitHub/loop tests and apps/web/tests/static-scan.test.mjs.
+1. Read .cursor/AGENTS.md, .cursor/USER.md, .cursor/STATE.md, this entire handover, docs/handover/rename-owner-first-providers.md, docs/handover/outstanding-actions-and-decisions.md, docs/plans/phase_6_commercial_delivery_plan.md.
+2. Confirm providers now match Papership. If any of §0.3 is still OrgOS-shaped, stop and say which. Do not flip locked files early.
+3. Update the provider-locked files in §7 so live defaults match Papership. Dual-read existing .orgos/loop/*.md. Do not rewrite git history or published receipts.
+4. Re-run GitHub/loop tests and apps/web/tests/static-scan.test.mjs. Update STATE and the UTC-day continuation log.
 5. Do not implement Phase 6 until I explicitly ask. When I ask, execute docs/plans/phase_6_commercial_delivery_plan.md (T6-0…T6-8, G9). Do not generate Phase 7 until G9.
 6. Never edit www.enginelabs.com.au or Vercel enginelabs-au-site.
 7. No prices, no live Stripe charges, no write/external Hermes accepted (D-25).
 8. Do not restore named-competitor comparison tables.
+9. This handover is complete context. Do not ask me to recover the old chat.
 ```
-
-If the owner has **not** finished the provider rename yet, stop after reading and say which of §5 is still OrgOS-shaped. Do not flip locked files early.
 
 ---
 
-## 1. Identity (do not re-ask)
+## 2. Identity (do not re-ask)
 
 | Thing | Value | Never do |
 |---|---|---|
@@ -43,11 +148,11 @@ If the owner has **not** finished the provider rename yet, stop after reading an
 | Workstream folder | `docs/workstreams/20260910-engine-labs-company-os/` | Rename this folder (frozen task id) |
 | Risk tier | Tier 3 | Skip roles on Phase 6 |
 
-D-10 (`docs/decisions/2026-09-11-orgos-product-identity.md`) is historical. Display name is D-20. Route is D-32. Live provider slugs stay on the owner-first wait list until this rename.
+D-10 (`docs/decisions/2026-09-11-orgos-product-identity.md`) is historical. Display name is D-20. Route is D-32. D-20 still lists some historical slugs; this file and D-32 supersede the live route / provider-wait clauses.
 
 ---
 
-## 2. Control-plane contract the next agent must honour
+## 3. Control-plane contract the next agent must honour
 
 Paths below use the repo-root `.cursor/` prefix.
 
@@ -65,7 +170,7 @@ Ask the owner only for: credentials / account ownership; irreversible product de
 
 ---
 
-## 3. Where we are in the lifecycle
+## 4. Where we are in the lifecycle
 
 | Phase | Plan | Status |
 |---|---|---|
@@ -87,11 +192,11 @@ Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md` — `
 
 ---
 
-## 4. What the last session already did (2026-09-12, this chat)
+## 5. What the previous session already did (2026-09-12)
 
-This is the work the transcript covers. Do not redo it. Do not treat it as Phase 6 implementation.
+Do not redo this. Do not treat it as Phase 6 implementation. There is no transcript to recover; this section is the record.
 
-### 4.1 Product click-through (Vite `127.0.0.1:5173`)
+### 5.1 Product click-through (Vite `127.0.0.1:5173`)
 
 - `/` and `/cc-org-dash` both end at `/papership`.
 - Sign-in title: Papership / Engine Labs.
@@ -101,37 +206,37 @@ This is the work the transcript covers. Do not redo it. Do not treat it as Phase
 - No leftover `/cc-org-dash` chrome. No currency prices. Data cost band says “no published prices”.
 - **Fixture leak for T6-3:** Today compose still shows `Remaining allowance: 184640` (unpublished quantity; D-29). Settings → Plan is still appearance/theme, not Free / Basic / Professional / Enterprise. Data still has blueprint fixture counts (Traces 128). Those are leftover chrome, not a rename regression.
 
-### 4.2 Phase 6 planned, not implemented
+### 5.2 Phase 6 planned, not implemented
 
 - Owner authorized planning after the leftover `/cc-org-dash` click-through (D-33).
 - Plan: `docs/plans/phase_6_commercial_delivery_plan.md` (R4 / intake 11, draft).
 - Tasks T6-0…T6-8 exist as text only. No commercial schema, no Stripe wiring, no Settings/Plan tier UI, no G9.
 - Phase 7 was **not** generated.
 
-### 4.3 Canonical route (D-32)
+### 5.3 Canonical route (D-32)
 
 - `apps/web/src/App.jsx`: `/papership` mounts blueprint-2; leftover aliases redirect.
 - `apps/web/src/pages/papership.jsx` re-exports blueprint-2; `cc-org-dash.jsx` is a compatibility re-export.
 - Storage keys `papership-auth` / `papership-theme` with one-time migrate from `cc-org-dash-*`.
 - Static scan: `apps/web/tests/static-scan.test.mjs` (title, route, keys, live API client has no OrgOS / cc-org).
 
-### 4.4 Leftover-name Pass A (safe current-tree sweep)
+### 5.4 Leftover-name Pass A (safe current-tree sweep)
 
-Authorized: sweep `orgos` / `OrgOS` / `cc-org` leftovers in the **current tree** to Papership. Historical git commits stay. Owner does GitHub / App / Vercel / local folder **after** this pack is final.
+Authorized: sweep `orgos` / `OrgOS` / `cc-org` leftovers in the **current tree** to Papership. Historical git commits stay.
 
 Already changed:
 
 - `NOTICE` → Engine Labs (Papership)
 - `services/api/app/main.py` dropped extra `"orgos"` grants JSON key (kept `"papership"`)
-- `apps/web/src/api/papership.js` token key `papership-token` (copies once from `engine-os-token`); OrgOS copy removed
+- `apps/web/src/api/papership.js` token key `papership-token` (copies once from `engine-os-token`); old-product copy removed
 - `scripts/dev-local.sh` store `/tmp/papership-api-store.sqlite` (the `~/.config/orgos` GitHub App path is still locked)
-- Vercel runbook: `.cursor/memory/runbooks/vercel-papership-single-site.md` (old `vercel-orgos-single-site.md` deleted)
+- Vercel runbook: `.cursor/memory/runbooks/vercel-papership-single-site.md` (old orgos-named runbook deleted)
 
-**Mistaken leftover-name audit files were deleted** (do not recreate them). A prior audit wrongly targeted another product name. That was a mistake. The only remaining leftover-name work is the provider-locked set in §6.
+**Mistaken leftover-name audit files were deleted** (do not recreate them). A prior audit wrongly targeted another product name. That was a mistake. The only remaining leftover-name work is the provider-locked set in §7.
 
-### 4.5 Named-competitor comparison tables withdrawn
+### 5.5 Named-competitor comparison tables withdrawn
 
-Owner asked those tables gone too. Removed from:
+Owner asked those tables gone. Removed from:
 
 - `docs/blueprints/2026-09-10_engine_labs.md` §5 (gap statement only) and §16 (no longer cites competitor prices)
 - `docs/roadmap.md` GTM trust-assets line
@@ -140,37 +245,28 @@ Owner asked those tables gone too. Removed from:
 
 Attach-icon export renamed to `Attach` in `packages/ui/src/icons.tsx`, leftover `apps/web/src/components/cc-org-dash/`, and pinned `docs/ui-blueprint/blueprint-1/` copies. Working-tree grep for the withdrawn product name must stay empty. Do not restore those tables unless the owner asks.
 
-### 4.6 What this session deliberately did **not** do
+### 5.6 What that session deliberately did **not** do
 
 - Did not implement Phase 6 (T6-1…T6-8).
 - Did not generate Phase 7 or a new final checklist.
-- Did not change provider-locked files (§6).
+- Did not change provider-locked files (§7).
 - Did not rewrite git history or published `.orgos/loop/` receipts.
 - Did not rename the workstream folder, decision filenames, or pinned blueprint HTML.
 - Did not publish prices or enable Stripe charges.
 - Did not treat D-25 as write/external Hermes `accepted`.
 - Did not edit the Engine Labs marketing site.
 
-Branch before the owner rename: `cursor/phase-6-planning-cc89`. Draft PR: https://github.com/enginelabs-au/OrgOS/pull/5 (URL will redirect after the GitHub repo rename). Base branch is `main`.
+Branch before the owner rename: `cursor/phase-6-planning-cc89`. Draft PR: https://github.com/enginelabs-au/OrgOS/pull/5 (URL redirects after the GitHub repo rename). Base branch is `main`.
 
 ---
 
-## 5. Owner actions before the next agent touches locked files
+## 6. Pointer back to the owner checklist
 
-Do these on the dashboards. Then paste §0 into a new chat with this file and the saved transcript.
-
-1. **GitHub repository.** Settings → rename `enginelabs-au/OrgOS` → `enginelabs-au/Papership`. Confirm `https://github.com/enginelabs-au/OrgOS` redirects. Live record (2026-09-12): repo id `1364169617`, homepage `https://orgos-ivory.vercel.app`. `origin` is `https://github.com/enginelabs-au/orgos` (GitHub treats it as OrgOS).
-2. **GitHub App** `orgos-dev` (id `4908453`, installation `160851156`): selected repos must include the renamed repo. If the bot slug must also go, create a **new** App (slugs are often immutable), copy the PEM, update IDs. Never paste the PEM into chat or repo files.
-3. **Vercel** project `orgos` (`prj_S74JOIky7KugVTrfu652NhJYOL8l`): relink Git if the connection breaks; rename the project if you want the dashboard slug gone. Preview host `orgos-ivory.vercel.app` may persist. **Never** touch `enginelabs-au-site`.
-4. **Host / VPS env:** `GITHUB_APP_REPO=Papership`. Optional: `cp -a ~/.config/orgos ~/.config/papership` and point `github-app.paths`. Do not commit those files.
-5. **Local folder:** `~/OrgOS` → `~/Papership` is safe after reopen (this cloud VM is already `/workspace`). Git remotes are URL-based.
-6. Save this file + the transcript into the new chat.
-
-Wait-list detail: `docs/handover/rename-owner-first-providers.md`.
+The full owner naming-change steps, IDs, order, verification boxes, and do-not-touch list live in **§0**. Short wait-list copy: `docs/handover/rename-owner-first-providers.md`. If §0 and that file ever disagree, **§0 wins**.
 
 ---
 
-## 6. Files the next agent must update after §5 (locked until then)
+## 7. Files the next agent must update after §0 (locked until then)
 
 Changing these while the live repo is still `enginelabs-au/OrgOS` breaks `open_pull` and deploys. That is why they were left.
 
@@ -183,29 +279,15 @@ Changing these while the live repo is still `enginelabs-au/OrgOS` breaks `open_p
 | `services/api/tests/test_github_pulls.py` | fixtures `repo: OrgOS`, heads `orgos/…` | `repo: Papership`, heads `papership/…` |
 | `services/api/tests/test_loop.py` | same live contract | same as pulls |
 
+If the owner created a **new** GitHub App, also update `.env.example` **names** and host-side IDs (`GITHUB_APP_ID`, `GITHUB_APP_INSTALLATION_ID`, key path). Never write the PEM into the repo.
+
 Do not rewrite published receipts already on GitHub under `.orgos/loop/`. After the follow-up, new receipts go to `.papership/loop/` and old files remain readable.
 
 After those edits: re-run GitHub / loop pytest and `apps/web/tests/static-scan.test.mjs`. Update `.cursor/STATE.md` and append `.cursor/memory/memories/YYYY-MM-DD-continuation.md`.
 
 ---
 
-## 7. Historical leftovers that stay on purpose
-
-“Gone” means live product surfaces and new writing, not these pins.
-
-- Workstream folder name `20260910-engine-labs-company-os`
-- Decision filenames `docs/decisions/2026-09-11-orgos-*.md` (D-10, D-13, etc.)
-- Pinned visual source `docs/ui-blueprint/blueprint-2/OrgOS*.html` and `docs/ui-blueprint/blueprint-1/**`
-- Unused `apps/web/src/components/cc-org-dash/` (not the live mount; live chrome is `apps/web/src/blueprint2/`)
-- `/cc-org-dash` **redirect** (bookmark alias)
-- Git history and old PR titles (do not rewrite)
-- Published `.orgos/loop/` receipts
-- Asset filename `orgos-icon.png` until a later owner-asked rename
-- D-20 still lists some historical slugs; D-32 supersedes the live route clause
-
----
-
-## 8. Phase 6 when the owner asks (do not start from this file alone)
+## 8. Phase 6 when the owner asks (do not start from a rename turn)
 
 Canonical plan: `docs/plans/phase_6_commercial_delivery_plan.md` (all 22 sections). Authorization: `docs/decisions/2026-09-12-phase-6-planning-authorized.md` (D-33).
 
@@ -317,7 +399,7 @@ Canonical log: `docs/handover/outstanding-actions-and-decisions.md`. Also `docs/
 |---|---|---|
 | Live `POST /settings/oq-g2` | no | yes for a real second human or guest |
 | Gmail/Slack OAuth: `GMAIL_OAUTH_CLIENT_ID`, `GMAIL_OAUTH_REDIRECT_URL`, `SLACK_CLIENT_ID` (names wired, values missing) | no | yes for live Gmail/Slack |
-| This provider rename (§5) then locked-file follow-up (§6) | no | no (hygiene; breaks `open_pull` if half-done) |
+| This provider rename (§0) then locked-file follow-up (§7) | no | no (hygiene; breaks `open_pull` if half-done) |
 | Mailbox creds off systemd `Environment=` | no | hygiene |
 | Hermes GET `/health` hang (use HEAD first) | no | ops |
 | Apple signing, DigitalOcean, backup restore, `execute_release` | no | R1 residual / publication |
@@ -335,7 +417,7 @@ Already recorded:
 
 - Phase 5: API pytest 77 passed; worker 33; web `<title>Papership</title>`
 - Pass A sweep: `apps/web/tests/static-scan.test.mjs`; API `test_env`, `test_github_grants`, `test_phase4`, `test_authz` after the grants-alias drop
-- Click-through: continuation log 2026-09-12; screenshots historically under `/tmp/computer-use/` (ephemeral)
+- Click-through: `.cursor/memory/memories/2026-09-12-continuation.md`
 
 After the locked-file follow-up:
 
@@ -356,8 +438,8 @@ When implementing UI, verify in the browser (or closest substitute) end-to-end: 
 
 Read first:
 
-- This file
-- `docs/handover/rename-owner-first-providers.md`
+- This file (entirely)
+- `docs/handover/rename-owner-first-providers.md` (short wait list; §0 wins if they differ)
 - `docs/handover/outstanding-actions-and-decisions.md`
 - `docs/plans/phase_6_commercial_delivery_plan.md`
 - `.cursor/STATE.md`
@@ -367,20 +449,19 @@ Read first:
 Then as needed:
 
 - Decisions: `docs/decisions/2026-09-12-phase-4-closeout.md` (D-22…D-30), `2026-09-12-papership-product-name.md`, `2026-09-12-blueprint-2-product-ui.md`, `2026-09-12-papership-canonical-route.md`, `2026-09-12-phase-5-planning-authorized.md`, `2026-09-12-phase-6-planning-authorized.md`
-- Closed phase plans: `docs/plans/phase_4_collaboration_connections_plan.md`, `docs/plans/phase_5_company_operations_plan.md`
+- Closed phase plans: `docs/plans/phase_4_collaboration_connections_plan.md`, `docs/plans/phase_5_company_operations_plan.md`, `docs/plans/phase_2_development_loop_plan.md`
 - Workstream: `docs/workstreams/20260910-engine-labs-company-os/manifest.md`; Phase 5 G7 `project-lead-subagent/phase-5-handoff.md`; Security Phase 5 `security-engineer-subagent/phase-5-handoff.md`
 - Product contracts: `docs/product.md`, `docs/capabilities.md`, `docs/architecture.md`, `docs/roadmap.md`, `docs/verification.md`, `docs/blueprints/2026-09-10_engine_labs.md`
 - R1 owner handoff: `docs/workstreams/20260910-engine-labs-company-os/delivery/owner-handoff.md`
 - Vercel (Papership project only): `.cursor/memory/runbooks/vercel-papership-single-site.md`
 - Dev env: `.cursor/memory/runbooks/engine-labs-dev-environment.md`
-- GitHub App / model key (names, not values): `docs/handover/github-app-and-model-key.md`
 
 ---
 
-## 14. Common pitfalls from this session (do not repeat)
+## 14. Common pitfalls (do not repeat)
 
 1. **Wrong leftover-name target.** A prior audit treated another product name as the destination. That was a mistake. Destination is **Papership**. Deleted audit files must stay deleted.
-2. **Flipping locked files before the GitHub repo matches.** Breaks `open_pull` and deploys. Confirm §5 first.
+2. **Flipping locked files before the GitHub repo matches.** Breaks `open_pull` and deploys. Confirm §0.3 first.
 3. **Implementing Phase 6 because a plan exists.** D-33 is plan-only. Wait for an explicit implement request.
 4. **Generating Phase 7 early.** One plan at a time. Phase 7 only after G9.
 5. **Restoring competitor tables** while “researching positioning.” Owner withdrew them.
@@ -388,9 +469,10 @@ Then as needed:
 7. **Editing `enginelabs-au-site`.** Different product.
 8. **Rewriting git history** or published `.orgos/loop/` receipts to chase leftover names.
 9. **Renaming the workstream folder** to match Papership. Frozen task id.
-10. **Putting secrets in the resume chat.** Paste this file and the transcript; not PEMs, tokens, or `.env` values.
+10. **Putting secrets in the resume chat.** Paste this file; not PEMs, tokens, or `.env` values.
 11. **Treating D-25 as write/external Hermes licence.** It is not.
 12. **Inventing prices or first-baseline numbers** to make CA-10 look ready.
+13. **Asking the owner for the old transcript.** This file is complete.
 
 ---
 
@@ -405,3 +487,4 @@ Then as needed:
 - Do not edit the Engine Labs marketing site
 - Do not store secret values in agent files
 - Do not claim completion without evidence
+- Do not require the previous session transcript
