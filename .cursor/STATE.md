@@ -2,27 +2,27 @@
 
 ## Current Objective
 
-- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21 / D-22). Prism-head mark is app/tab icon only, not in-app.
+- Live Papership web UI is `docs/ui-blueprint/blueprint-2` exactly (D-21 / D-22) at **`/papership`** (D-32). Prism-head mark is app/tab icon only, not in-app.
 
 ## Current Status
 
-- Phase 5 **complete** (G7 PASS, 2026-09-12). T5-0…T5-12 done. Do not generate Phase 6 until the owner asks.
+- Phase 6 **planning** (D-33). Plan drafted. Do not implement T6-1…T6-8 until the owner asks.
 
 ## Project Phase
 
-- Phase 5 closed. Next plan name (not generated): `docs/plans/phase_6_commercial_delivery_plan.md` (R4). Two execution phase plans remain after this closeout (6, 7).
+- Phase 5 closed (G7 PASS). Active plan: `docs/plans/phase_6_commercial_delivery_plan.md` (R4 / intake 11, draft). One execution phase plan remains after Phase 6 (Phase 7).
 
 ## Active Plan
 
-- `docs/plans/phase_5_company_operations_plan.md` (status: complete)
+- `docs/plans/phase_6_commercial_delivery_plan.md` (status: draft)
 
 ## Active Workstream
 
-- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3; G7 PASS)
+- `docs/workstreams/20260910-engine-labs-company-os/manifest.md` (Tier 3; G7 PASS; Phase 6 plan drafted)
 
 ## Active Role and Gate
 
-- G7 PASS. Owner residuals in `docs/handover/outstanding-actions-and-decisions.md`.
+- G7 PASS. G9 not started. Owner residuals in `docs/handover/outstanding-actions-and-decisions.md`.
 
 ## Predecessor Handoff
 
@@ -38,8 +38,8 @@
 
 ## Owner Decision
 
-- 2026-09-12: implement Phase 5 (after D-31 plan).
-- 2026-09-12: D-22…D-31 stand.
+- 2026-09-12: plan Phase 6 after product click-through; rename leftover `/cc-org-dash` (D-32, D-33).
+- 2026-09-12: D-22…D-33 stand.
 
 ## Active Instructions
 
@@ -47,12 +47,14 @@
 
 ## Active Items
 
-- Phase 5 closed. Await owner request before Phase 6 planning.
+- Phase 6 plan drafted. Await owner request before T6 implementation.
 
 ## Files in Active Use
 
 - `/STATE.md`
-- `docs/plans/phase_5_company_operations_plan.md`
+- `docs/plans/phase_6_commercial_delivery_plan.md`
+- `docs/decisions/2026-09-12-papership-canonical-route.md`
+- `docs/decisions/2026-09-12-phase-6-planning-authorized.md`
 - `docs/handover/outstanding-actions-and-decisions.md`
 
 ## Open Blockers
@@ -61,24 +63,27 @@
 
 ## Attempts Performed
 
-- 2026-09-12: Phase 5 implementation — API 77 passed; overlay Memory/People/strategy/personalisation/shells; G7 issued.
+- 2026-09-12: D-32 route rename `/papership`; leftover aliases redirect; storage keys migrated.
+- 2026-09-12: Phase 6 plan written; T6 not implemented.
 
 ## Decisions and Assumptions
 
 - D-25 does not authorise live write/external Hermes `accepted`.
-- B03 this phase is native capacity, not live HR.
-- B01 KPIs stay `not_captured` without a source.
+- D-32: canonical URL is `/papership`; `/cc-org-dash` is a redirect.
+- D-33: plan only; do not implement Phase 6 until asked.
+- CA-10 still blocks published rates and live charges. G9 is structure/test-mode only.
 
 ## Current Working State
 
-- Branch `cursor/phase-5-planning-cc89`.
+- Branch `cursor/phase-6-planning-cc89`.
 
 ## Next Actions
 
 1. Owner: remaining human actions in `docs/handover/outstanding-actions-and-decisions.md`.
-2. Do not generate Phase 6 until asked.
-3. Do not treat write/external Hermes tools as `accepted`.
+2. Do not implement Phase 6 until asked.
+3. Do not generate Phase 7 until G9.
+4. Do not treat write/external Hermes tools as `accepted`.
 
 ## Last Updated
 
-- 2026-09-12T07:20Z — Phase 5 G7 PASS. Two execution phase plans remain (6, 7).
+- 2026-09-12T06:05Z — Phase 6 plan drafted (D-33). Route `/papership` (D-32). One execution phase plan remains after Phase 6 (7).

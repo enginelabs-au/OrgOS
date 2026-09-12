@@ -48,7 +48,7 @@ Rules that govern this document:
 | 18 | Verify release readiness and complete the owner handoff | `phase_3_release_verification_plan.md` + `docs/plans/final_implementation_checklist.md` | R1 (repeated per release) | G3 closed — V18-5 waiting owner |
 | 09 | Build collaboration and connections | `docs/plans/phase_4_collaboration_connections_plan.md` | R2 (`accepted`) | G5 PASS 2026-09-12 — seats, wizard, intersection, B12 contract, GitHub checkpoints, People/Inbox API overlay. Live Gmail/Slack OAuth owner-gated. |
 | 10 | Expand company operations | `docs/plans/phase_5_company_operations_plan.md` | R3 (`accepted`) | G7 PASS 2026-09-12 — memory ops, adaptive views, native B01/B03, R3 shells |
-| 11 | Build commercial delivery | `docs/plans/phase_6_commercial_delivery_plan.md` | R4 (`accepted`) | not started — commercial gate CA-1…CA-10 (§4) |
+| 11 | Build commercial delivery | `docs/plans/phase_6_commercial_delivery_plan.md` | R4 (`accepted`) | plan drafted 2026-09-12 (D-33) — do not implement until asked; CA-1…CA-10 (§4) still gate published rates/charges |
 | 12 | Expand the ecosystem and mobile clients | `docs/plans/phase_7_ecosystem_mobile_plan.md` | R4 (`accepted`) | not started |
 
 Verification phases 13–18 are executed for the enabled scope of every release (I-06, I-13); the R2–R4 rows above inherit their own verification and closure plans when generated.

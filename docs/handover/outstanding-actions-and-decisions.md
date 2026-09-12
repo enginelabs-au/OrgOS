@@ -1,8 +1,8 @@
 # Outstanding actions and decisions
 
-Canonical log after Phase 4 G5 PASS (2026-09-12) and owner authorization to plan Phase 5. Do not store secret values here.
+Canonical log after Phase 5 G7 PASS (2026-09-12) and owner authorization to plan Phase 6. Do not store secret values here.
 
-Related: `docs/decisions/2026-09-12-phase-4-closeout.md` (D-22…D-30), `docs/decisions/2026-09-12-phase-5-planning-authorized.md` (D-31), `docs/handover/phase-4-owner-actions.md`, `docs/plans/phase_5_company_operations_plan.md`.
+Related: `docs/decisions/2026-09-12-phase-4-closeout.md` (D-22…D-30), `docs/decisions/2026-09-12-phase-5-planning-authorized.md` (D-31), `docs/decisions/2026-09-12-papership-canonical-route.md` (D-32), `docs/decisions/2026-09-12-phase-6-planning-authorized.md` (D-33), `docs/handover/phase-4-owner-actions.md`, `docs/plans/phase_6_commercial_delivery_plan.md`.
 
 ## 1. Standing product decisions (still binding)
 
@@ -18,11 +18,13 @@ Related: `docs/decisions/2026-09-12-phase-4-closeout.md` (D-22…D-30), `docs/de
 | D-28 | R2 = intake 09, R3 = 10, R4 = 11+12 | Phase numbering locked |
 | D-29 | Public tier labels Free / Basic / Professional / Enterprise | **No prices**, allowances, seat counts, or rates until R4 CA-10 |
 | D-30 | No public build-log | Record only until a later publish decision |
-| D-31 | Owner authorized Phase 5 **planning** (this turn) | Generate `phase_5_company_operations_plan.md`; do not implement until asked |
+| D-31 | Owner authorized Phase 5 **planning** | Generate `phase_5_company_operations_plan.md`; implemented; G7 PASS |
+| D-32 | Canonical product route is `/papership` | Leftover `/cc-org-dash` redirects; storage keys `papership-*` with legacy migrate |
+| D-33 | Owner authorized Phase 6 **planning** (this turn) | Generate `phase_6_commercial_delivery_plan.md`; do not implement until asked |
 
 Also standing: D-12 / D-14 user-owned data; AUTH-25 / D-17 Hermes catalog; AUTH-29 adaptive views are schema-validated trusted components with no filesystem/shell/database/credential access.
 
-## 2. Owner-only residuals (none block Phase 5 planning)
+## 2. Owner-only residuals (none block Phase 6 planning)
 
 | Action | Why agent cannot | Blocks planning? | Blocks a live second seat / live connector? |
 |---|---|---|---|
@@ -36,14 +38,15 @@ Also standing: D-12 / D-14 user-owned data; AUTH-25 / D-17 Hermes catalog; AUTH-
 | Fire live write/external Hermes tools | needs a **new** Security PASS | no | do not treat D-25 as that licence |
 | Public build-log | D-30 | no | later explicit publish decision |
 | Local folder rename `~/OrgOS` → `~/Papership` | operator machine | no | safe after reopen |
+| CA-10 publish rates; CA-10 activate charges (two decisions) | owner commercial gate | no for G9 structure | yes for any public number or charge |
 
 Live receipt path `.orgos/loop/` and `GITHUB_APP_REPO` stay as-is until the owner renames the GitHub repository.
 
 ## 3. Agent-capable next work (not started this turn)
 
-Phase 5 implementation is **closed** (G7, 2026-09-12). Do not start Phase 6 until the owner asks.
+Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks.
 
-G7 closed. Two execution phase plans remain: Phase 6 (R4 commercial), Phase 7 (R4 ecosystem/mobile). Verification phases 13–18 re-run per release and are not extra build phases.
+G7 closed. One execution phase plan remains after Phase 6: Phase 7 (R4 ecosystem/mobile / intake 12). Verification phases 13–18 re-run per release and are not extra build phases.
 
 ## 4. Closed owner questions (do not re-ask)
 

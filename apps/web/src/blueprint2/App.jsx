@@ -30,8 +30,30 @@ import {
   WorkWorkflows,
 } from "./screens";
 
-const AUTH_KEY = "cc-org-dash-auth";
-const THEME_KEY = "cc-org-dash-theme";
+const AUTH_KEY = "papership-auth";
+const THEME_KEY = "papership-theme";
+const LEGACY_AUTH_KEY = "cc-org-dash-auth";
+const LEGACY_THEME_KEY = "cc-org-dash-theme";
+
+function migrateStored(primary, legacy) {
+  try {
+    const current = localStorage.getItem(primary) || sessionStorage.getItem(primary);
+    if (current) return current;
+    const fromLocal = localStorage.getItem(legacy);
+    if (fromLocal) {
+      localStorage.setItem(primary, fromLocal);
+      return fromLocal;
+    }
+    const fromSession = sessionStorage.getItem(legacy);
+    if (fromSession) {
+      sessionStorage.setItem(primary, fromSession);
+      return fromSession;
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
 const DOTS = { ok: "var(--green)", warn: "var(--amber)", bad: "var(--red)", idle: "var(--t3)", run: "var(--blue)" };
 const TABDEF = {
   today: { label: "Today", d: PATHS.today },
@@ -59,7 +81,7 @@ const navBtn = { width: 32, height: 32, display: "flex", alignItems: "center", j
 
 function readAuth() {
   try {
-    const raw = localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY);
+    const raw = migrateStored(AUTH_KEY, LEGACY_AUTH_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -118,9 +140,7 @@ function Auth({ theme, cycleTheme, onSignIn }) {
 }
 
 export default function Blueprint2App() {
-  const [theme, setTheme] = useState(() => {
-    try { return localStorage.getItem(THEME_KEY) || "light"; } catch { return "light"; }
-  });
+  const [theme, setTheme] = useState(() => migrateStored(THEME_KEY, LEGACY_THEME_KEY) || "light");
   const [authed, setAuthed] = useState(() => !!readAuth());
   const [tab, setTab] = useState("today");
   const [sub, setSub] = useState({});
@@ -474,7 +494,12 @@ export default function Blueprint2App() {
     setAuthed(true);
   };
   const signOut = () => {
-    try { localStorage.removeItem(AUTH_KEY); sessionStorage.removeItem(AUTH_KEY); } catch { /* */ }
+    try {
+      localStorage.removeItem(AUTH_KEY);
+      sessionStorage.removeItem(AUTH_KEY);
+      localStorage.removeItem(LEGACY_AUTH_KEY);
+      sessionStorage.removeItem(LEGACY_AUTH_KEY);
+    } catch { /* */ }
     setAuthed(false); setAvatarOpen(false);
   };
 

@@ -257,11 +257,11 @@ Disable adaptation (`personalisation.enabled=false`) and new memory-write routes
 - Registry: `docs/capabilities.md` 0.1.3-phase5.
 - Verification: `docs/verification.md` §6c.
 - Role artifacts: `docs/workstreams/20260910-engine-labs-company-os/<role>/phase-5-handoff.md`.
-- Browser click-through of `/cc-org-dash` was not run.
+- Browser click-through of `/cc-org-dash` was not run in this phase. Follow-up: Phase 6 planning turn (2026-09-12) renamed the mount to `/papership` (D-32) and recorded a product click-through there.
 
 ## 21. Deviations and follow-ups
 
-None material. Owner residuals inherited from Phase 4 remain owner-only and are not G7 blockers. Phase 6 is not generated from this file. Browser verification of the overlay was not run.
+None material. Owner residuals inherited from Phase 4 remain owner-only and are not G7 blockers. Phase 6 was generated in a later turn after the owner asked (`docs/plans/phase_6_commercial_delivery_plan.md`). Browser verification of the overlay was not run in Phase 5.
 
 ## 22. Next Plan Generation Prompt
 
