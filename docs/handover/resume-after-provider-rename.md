@@ -268,6 +268,8 @@ The full owner naming-change steps, IDs, order, verification boxes, and do-not-t
 
 ## 7. Files the next agent must update after §0 (locked until then)
 
+**Status 2026-09-12:** this follow-up is done for the GitHub App. Local `GET /health` returned `"github":"reachable"`. VPS `hermes-droplet-campbell` has no Papership API / `GITHUB_APP_*` (Hermes only). Vercel dashboard rename/relink remains an owner residual.
+
 Changing these while the live repo is still `enginelabs-au/OrgOS` breaks `open_pull` and deploys. That is why they were left.
 
 | File | Current contract | Change to |

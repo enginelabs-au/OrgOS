@@ -30,7 +30,7 @@ Also standing: D-12 / D-14 user-owned data; AUTH-25 / D-17 Hermes catalog; AUTH-
 |---|---|---|---|
 | `POST /settings/oq-g2` on the live store | live tenant | no | yes for a real second human or guest |
 | Create Google OAuth client and Slack app; set `GMAIL_OAUTH_CLIENT_ID`, `GMAIL_OAUTH_REDIRECT_URL`, `SLACK_CLIENT_ID` on the API host | owner accounts | no | yes for live Gmail/Slack |
-| Rename GitHub `enginelabs-au/OrgOS`, App `orgos-dev`, Vercel `orgos`, then keep `GITHUB_APP_REPO` in sync | provider dashboards | no | no |
+| Relink/rename Vercel project `orgos` | provider dashboard | no | no |
 | Move mailbox credentials off systemd `Environment=` | VPS owner | no | hygiene, not a plan gate |
 | Hermes GET `/health` hang | Hermes ops | no | HEAD-first probe already used |
 | Apple signing, DigitalOcean, backup restore drill | accounts | no | R1 residual |
@@ -40,11 +40,11 @@ Also standing: D-12 / D-14 user-owned data; AUTH-25 / D-17 Hermes catalog; AUTH-
 | Local folder rename `~/OrgOS` → `~/Papership` | operator machine | no | safe after reopen |
 | CA-10 publish rates; CA-10 activate charges (two decisions) | owner commercial gate | no for G9 structure | yes for any public number or charge |
 
-Live receipt path `.orgos/loop/` and `GITHUB_APP_REPO` stay as-is until the owner renames the GitHub repository.
+Local GitHub App follow-up is done (`papership-dev`, `GITHUB_APP_REPO=papership`, new receipts `.papership/loop/`, dual-read `.orgos/loop/`). VPS has no host GitHub App env to change. Vercel slug remains an owner residual.
 
 ## 3. Agent-capable next work (not started this turn)
 
-Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks. Leftover sweep Pass A is done. Named-competitor tables withdrawn. Sole kickstart: `docs/handover/resume-after-provider-rename.md` (§0 = owner naming-change checklist). No transcript required. Owner must finish §0 before the locked-file follow-up (`docs/handover/rename-owner-first-providers.md`; §0 wins if they differ).
+Phase 6 plan is **drafted** (D-33, 2026-09-12). Do not start T6-1…T6-8 until the owner asks. Leftover sweep Pass A is done. Named-competitor tables withdrawn. Sole kickstart: `docs/handover/resume-after-provider-rename.md` (§0 = owner naming-change checklist). No transcript required. GitHub App locked-file follow-up is done. VPS inspected: no `GITHUB_APP_*`. Vercel project slug remains an owner residual (`docs/handover/rename-owner-first-providers.md`).
 
 G7 closed. One execution phase plan remains after Phase 6: Phase 7 (R4 ecosystem/mobile / intake 12). Verification phases 13–18 re-run per release and are not extra build phases.
 

@@ -56,7 +56,7 @@ def plan_pull(
     head: str,
     base: str = "main",
 ) -> dict[str, str]:
-    slug = "".join(ch if ch.isalnum() or ch in "-_" else "-" for ch in head).strip("-") or "orgos-loop"
+    slug = "".join(ch if ch.isalnum() or ch in "-_" else "-" for ch in head).strip("-") or "papership-loop"
     return {
         "owner": owner,
         "repo": repo,
@@ -64,8 +64,16 @@ def plan_pull(
         "body": body,
         "head": head,
         "base": base,
-        "file_path": f".orgos/loop/{slug}.md",
+        "file_path": f".papership/loop/{slug}.md",
+        "legacy_file_path": f".orgos/loop/{slug}.md",
     }
+
+
+def receipt_read_paths(planned: dict[str, str]) -> tuple[str, ...]:
+    """New receipts first; published .orgos/loop files stay readable."""
+    current = planned.get("file_path") or ""
+    legacy = planned.get("legacy_file_path") or ""
+    return tuple(path for path in (current, legacy) if path)
 
 
 def open_pull(
@@ -304,7 +312,7 @@ def _put_receipt(http: RequestFn, token: str, planned: dict[str, str], timeout: 
         f"https://api.github.com/repos/{planned['owner']}/{planned['repo']}/contents/{planned['file_path']}",
         token=token,
         payload={
-            "message": f"orgos: {planned['title']}",
+            "message": f"papership: {planned['title']}",
             "content": content,
             "branch": planned["head"],
         },

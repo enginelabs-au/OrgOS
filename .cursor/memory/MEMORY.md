@@ -12,10 +12,10 @@
 - Treat prompts and role identities as guidance, not production authorization; deterministic policy and external access controls govern sensitive actions.
 - Never store passwords, tokens, private keys, or secret values in agent markdown, plans, memories, logs, or templates.
 - Capability registry status discipline (D-02 item 5): a `docs/capabilities.md` row moves from `planned` only when its evidence column cites a verified artifact; the lead, not an implementing role, changes status.
-- Product identity (D-20, D-26): Papership is the product (in-repo slug `papership`, UI **Papership**); Engine Labs is the company; `www.enginelabs.com.au` is a separate site and must not be changed from this repo. Live GitHub / Vercel / App slugs stay on the owner-first wait list until those providers are renamed (`docs/handover/rename-owner-first-providers.md`).
+- Product identity (D-20, D-26): Papership is the product (in-repo slug `papership`, UI **Papership**); Engine Labs is the company; `www.enginelabs.com.au` is a separate site and must not be changed from this repo. Local GitHub App is `papership-dev` (`GITHUB_APP_REPO=papership`). VPS `hermes-droplet-campbell` is Hermes only (no host `GITHUB_APP_*`). Vercel project name is `papership` (`prj_S74JOIky7KugVTrfu652NhJYOL8l`); Git link may still show `enginelabs-au/OrgOS`.
 - Product UI (D-21, D-32): live web chrome is `docs/ui-blueprint/blueprint-2` exactly (cream canvas, purple field, light/dark/dimmed, docked Hey Engine) at `/papership`. Leftover `/cc-org-dash` redirects. Prism-head mark is app/tab icon only — never inside the product UI. D-15 is historical for the prior hybrid/overlay shell. Fixtures are Papership/blueprint only (no invented revenue or prices).
 - Agent tool boundary (AUTH-25, D-03, D-S1, D-17): Owner authorized the documented Hermes catalog. Unknown tools denied. Write = receipt; external = Papership approval. Private/metadata egress denied. Worker may hold `HERMES_API_SERVER_KEY` (transport only; Hermes secret-scoped key, not yaml/EnvironmentFile copy). AUTH-25 startup verified 2026-09-11. Hermes HTTP API listens on VPS `127.0.0.1:8642`. Worker `api_server` is proven by capabilities 401/`run_submission`, never HEAD 405. Live `accepted` is allowed only for catalogued **read** `tool=` after intercept (Security live-tools CONDITIONAL 2026-09-11). Live `start_run` without `tool=` is refused. D-16 “keep disabled” is superseded for catalog enablement.
-- R1 V18-5 **APPROVE** recorded 2026-09-11 (`delivery/owner-handoff.md`). Live PR https://github.com/enginelabs-au/OrgOS/pull/1. Phase 4 G5 PASS 2026-09-12. Phase 5 G7 PASS 2026-09-12. Phase 6 plan drafted (D-33); do not implement until asked. Canonical web route is `/papership` (D-32); leftover `/cc-org-dash` redirects.
+- R1 V18-5 **APPROVE** recorded 2026-09-11 (`delivery/owner-handoff.md`). Live PR https://github.com/enginelabs-au/papership/pull/1. Phase 4 G5 PASS 2026-09-12. Phase 5 G7 PASS 2026-09-12. Phase 6 implementation authorized 2026-09-12. Canonical web route is `/papership` (D-32); leftover `/cc-org-dash` redirects.
 - Usage measurement (Growth GM-1…12): first-party, in-tenant, identifier/enum payloads only; every threshold without data is labelled `first-baseline`; no prices in any UI or document before the R4 owner decisions (CA-10).
 
 ## Memory role
@@ -53,7 +53,7 @@ Operational history belongs in `/memory/memories/YYYY-MM-DD-continuation.md` or 
 - Worker data access (D-08): `docs/decisions/2026-09-11-worker-data-access.md`
 - Owner H-6 ratification (D-09): `docs/decisions/2026-09-11-owner-ratification-h6.md`
 - Cloud launch (fixed): `/memory/blockers-fixed/cursor-cloud-launch.md`
-- Hermes tunnel: `scripts/hermes-tunnel.sh`
+- Hermes tunnel: `scripts/hermes-tunnel.sh` and `/memory/runbooks/papership-hermes-tunnel.md`
 - GitHub App / model key: `docs/handover/github-app-and-model-key.md`
 - Dev environment: `/memory/runbooks/engine-labs-dev-environment.md`
 - Single Vercel site (Papership product project only; never Engine Labs marketing): `/memory/runbooks/vercel-papership-single-site.md`

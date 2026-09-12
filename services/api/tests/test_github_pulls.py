@@ -20,9 +20,9 @@ def test_plan_pull_founder(client: TestClient, founder_headers: dict[str, str]) 
         json={
             "title": "Papership loop receipt",
             "body": "Planned only",
-            "head": "orgos/loop-demo",
+            "head": "papership/loop-demo",
             "owner": "enginelabs-au",
-            "repo": "OrgOS",
+            "repo": "papership",
             "dry_run": True,
         },
     )
@@ -30,7 +30,7 @@ def test_plan_pull_founder(client: TestClient, founder_headers: dict[str, str]) 
     body = response.json()
     assert body["status"] == "planned"
     assert body["dry_run"] is True
-    assert body["planned"]["head"] == "orgos/loop-demo"
+    assert body["planned"]["head"] == "papership/loop-demo"
 
 
 def test_plan_pull_unpriv_denied(client: TestClient, unpriv_headers: dict[str, str]) -> None:
@@ -48,9 +48,9 @@ def test_live_open_requires_reauth(client: TestClient, founder_headers: dict[str
         headers=founder_headers,
         json={
             "title": "live",
-            "head": "orgos/live",
+            "head": "papership/live",
             "owner": "enginelabs-au",
-            "repo": "OrgOS",
+            "repo": "papership",
             "dry_run": False,
         },
     )
@@ -76,9 +76,9 @@ def test_live_open_refuses_empty_installation_perms(env_jwt: None, tmp_path, mon
         headers=headers,
         json={
             "title": "live",
-            "head": "orgos/live",
+            "head": "papership/live",
             "owner": "enginelabs-au",
-            "repo": "OrgOS",
+            "repo": "papership",
             "dry_run": False,
         },
     )
@@ -97,9 +97,9 @@ def test_live_open_with_reauth_still_needs_app(client: TestClient) -> None:
         headers=headers,
         json={
             "title": "live",
-            "head": "orgos/live",
+            "head": "papership/live",
             "owner": "enginelabs-au",
-            "repo": "OrgOS",
+            "repo": "papership",
             "dry_run": False,
         },
     )

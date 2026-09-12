@@ -6,8 +6,8 @@
 
 ## Current Status
 
-- Phase 6 **planning** (D-33). Plan drafted. Do not implement T6-1…T6-8 until the owner asks.
-- Leftover-name Pass A done. Named-competitor tables withdrawn. Provider-locked files wait for the owner. Sole kickstart is `docs/handover/resume-after-provider-rename.md` (§0 = owner rename checklist at the top). No transcript required.
+- Owner asked to finish rename leftovers, push, then implement Phase 6 (D-33 implement request).
+- Provider rename closeout: GitHub `enginelabs-au/papership`, App `papership-dev`, local folder `/Users/camdouglas/papership`, local secrets copied to `~/.config/papership/`. Vercel dashboard name is already `papership`; Git link still shows `enginelabs-au/OrgOS` (redirects).
 
 ## Project Phase
 
@@ -34,7 +34,8 @@
 
 - Hermes GET `/health` hang (HEAD-first probe already used).
 - Mailbox `Environment=` hygiene (owner/VPS).
-- Live GitHub / Vercel / App slugs still wait for the owner rename, then the locked-file follow-up.
+- Vercel Git connection still lists `enginelabs-au/OrgOS` (redirects to `papership`). Dashboard project name is `papership`.
+- Local GitHub App is `papership-dev`. VPS is Hermes only.
 - Gmail/Slack live OAuth credentials missing (names wired).
 
 ## Owner Decision
@@ -48,7 +49,7 @@
 
 ## Active Items
 
-- Await owner GitHub / App / Vercel rename, then locked-file follow-up. Phase 6 still not implemented.
+- Rename closeout + Phase 6 implementation authorized. G9 not started.
 
 ## Files in Active Use
 
@@ -65,26 +66,28 @@
 ## Attempts Performed
 
 - 2026-09-12: Pass A leftover sweep (NOTICE, grants alias, token, store path). Locked files untouched.
+- 2026-09-12: GitHub App locked-file follow-up. Local `/health` `"github":"reachable"`.
+- 2026-09-12: SSH `hermes-vps` (user `hermes`) and `droplet-campbell` (user `root`) on `hermes-droplet-campbell`. No `~/.config/orgos`, no `~/.config/papership`, no `GITHUB_APP_*` files, no listener on `:8000`. Did not copy the App PEM onto Hermes (API-only credential).
 
 ## Decisions and Assumptions
 
 - D-25 does not authorise live write/external Hermes `accepted`.
 - D-32: canonical URL is `/papership`; `/cc-org-dash` is a redirect.
-- D-33: plan only; do not implement Phase 6 until asked.
+- D-33: owner asked to implement Phase 6 this turn (2026-09-12).
 - CA-10 still blocks published rates and live charges. G9 is structure/test-mode only.
-- Provider-locked OrgOS strings stay until the owner renames those providers.
+- Local GitHub defaults are `papership` / `.papership/loop/`; published `.orgos/loop/` stays readable. Vercel project name is `papership`; Git link may still say OrgOS.
 
 ## Current Working State
 
 - Branch `cursor/phase-6-planning-cc89`.
+- GitHub App `papership-dev` (App ID `4918983`, installation `161090499`) is live-reachable locally. Product API does not use the App OAuth client pair.
 
 ## Next Actions
 
-1. Owner: follow §0 of `docs/handover/resume-after-provider-rename.md`, then open a new chat with that file only.
-2. Do not implement Phase 6 until asked.
-3. Do not generate Phase 7 until G9.
-4. Do not treat write/external Hermes tools as `accepted`.
+1. Implement Phase 6 (T6-0…T6-8, all six roles, G9). Do not generate Phase 7 until G9.
+2. Do not treat write/external Hermes tools as `accepted`.
+3. Optional residual: relink Vercel Git from `OrgOS` to `papership` (redirect works today).
 
 ## Last Updated
 
-- 2026-09-12T08:05Z — Handover §0 is the owner naming-change checklist (GitHub / App / Vercel / host env / local folder). File is the sole next-chat kickstart.
+- 2026-09-12T09:20Z — Local secrets copied into `~/.config/papership/`. Vercel project name is `papership`. Owner authorized Phase 6 implementation.
