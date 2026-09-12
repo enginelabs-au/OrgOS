@@ -83,3 +83,23 @@ def test_charge_route_stays_disabled(client: TestClient, founder_headers: dict[s
     mine = client.get("/allowances/me", headers=founder_headers)
     assert mine.status_code == 200
     assert mine.json()["charges_enabled"] is False
+
+
+def test_rate_card_is_unpublished(client: TestClient, founder_headers: dict[str, str]) -> None:
+    response = client.get("/billing/rate-card", headers=founder_headers)
+    assert response.status_code == 200
+    body = response.json()
+    assert body["published"] is False
+    assert body["entries"] == []
+    assert "$" not in str(body)
+
+
+def test_licenses_hook_identifiers_only(client: TestClient, founder_headers: dict[str, str]) -> None:
+    response = client.get("/licenses", headers=founder_headers)
+    assert response.status_code == 200
+    body = response.json()
+    assert body["license_present"] is True
+    assert body["notice_present"] is True
+    assert body["charges_enabled"] is False
+    assert "LICENSE" in body["identifiers"]
+    assert "$" not in str(body)

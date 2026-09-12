@@ -3,14 +3,14 @@ schema_version: 1
 task_id: 20260910-engine-labs-company-os
 title: Engine Labs — company operating system, first release lifecycle
 source_request: docs/Company_Agent_System_Blueprint.md (complete product intake) via /launch-pipeline
-status: phase_6_plan_draft
+status: phase_6_g9_pass
 risk_tier: tier_3
 created_at: 2026-09-10T15:35:00Z
-updated_at: 2026-09-12T06:05:00Z
-revision: 8
+updated_at: 2026-09-12T09:50:00Z
+revision: 9
 owner: user-operator (founder)
 active_role: orchestrating-lead
-current_gate: G7 PASS (2026-09-12); Phase 6 plan drafted (D-33); G9 not started
+current_gate: G9 PASS (2026-09-12); residuals CA-10 / D-25; Phase 7 not generated until owner proceeds
 ---
 
 # Workstream Manifest: Engine Labs — company operating system

@@ -83,6 +83,10 @@ All first-party code in the monorepo (D-01: `apps/desktop`, `services/api`, `ser
 
 Decision record with named component, reason, compensating control and expiry ≤ 30 days for advisories or ≤ 90 days for licence questions. No exception may ship strong-copyleft linked code under the proprietary licence (LIC-04) or place signing keys outside the protected CI environment (LIC-16).
 
-## 7. Related decisions and requirements
+## 7. In-product licensing-state hook (ERA-17 / Phase 6)
+
+`GET /licenses` returns identifiers and presence flags only (LICENSE, NOTICE, policy path). It does not return secret values, pin strings, or prices. Settings → Docs shows the same identifiers. Policy status remains `proposed` until an owner decision adopts it. After erasure, retain only those identifiers and dates (ERA-17).
+
+## 8. Related decisions and requirements
 
 D-01, D-04; PRD-G.7, G.9; phase plan §15, §16, §17; V17-6; SE F-S3, EV-S04; findings F-SEC-10, F-SEC-11, F-SEC-12; threats T-43…T-47, T-50…T-52.

@@ -1,6 +1,6 @@
 ---
 plan: phase_6_commercial_delivery
-status: draft
+status: complete
 created: 2026-09-12
 updated: 2026-09-12
 owner: lead-agent
@@ -137,23 +137,23 @@ No Engine Labs marketing project. No live `.orgos/loop/` path change.
 
 ## 12. Ordered implementation tasks
 
-**T6-0 Carry owner residuals and D-32 evidence** — objective: confirm residuals do not block G9 structure; keep D-32 route tests green. Deps: none. Files: handover log, `apps/web/tests/static-scan.test.mjs`. Validation: no secret values; scan still asserts `/papership`. State: `pending` (route rename already landed in the planning turn).
+**T6-0 Carry owner residuals and D-32 evidence** — objective: confirm residuals do not block G9 structure; keep D-32 route tests green. Deps: none. Files: handover log, `apps/web/tests/static-scan.test.mjs`. Validation: no secret values; scan still asserts `/papership`. State: `done`.
 
-**T6-1 Entitlement / allowance schema** — objective: versioned entitlement + allowance records; feature flag still ≠ grant; no published numeric rates in API responses consumed by UI. Deps: T6-0. Files: `store.py`, `main.py`, `test_phase6.py`. Validation: pytest for create/list/deny; existing `test_entitlement_is_not_permission` still passes; response fixtures contain no currency amounts. State: `pending`.
+**T6-1 Entitlement / allowance schema** — objective: versioned entitlement + allowance records; feature flag still ≠ grant; no published numeric rates in API responses consumed by UI. Deps: T6-0. Files: `store.py`, `main.py`, `test_phase6.py`. Validation: pytest for create/list/deny; existing `test_entitlement_is_not_permission` still passes; response fixtures contain no currency amounts. State: `done`.
 
-**T6-2 Reservation and limit enforcement (test mode)** — objective: reserve before chargeable dispatch; reconcile; fail-closed when over band; pause new chargeable work only; records/export/decisions remain. Deps: T6-1. Files: store + API + usage event names `usage.budget.reserved` / `usage.budget.reconciled`. Validation: four model cases including duplicate-reserve refused; no charge side effect. State: `pending`.
+**T6-2 Reservation and limit enforcement (test mode)** — objective: reserve before chargeable dispatch; reconcile; fail-closed when over band; pause new chargeable work only; records/export/decisions remain. Deps: T6-1. Files: store + API + usage event names `usage.budget.reserved` / `usage.budget.reconciled`. Validation: four model cases including duplicate-reserve refused; no charge side effect. State: `done`.
 
-**T6-3 Settings / Plan tier UI** — objective: D-29 labels; remaining-allowance and action-cost **bands**; honest pause copy; no “most popular”, countdowns, or pre-selected upgrades (roadmap §4). Remove the Today compose fixture **“Remaining allowance: 184640”** (replace with a band or `not_captured`). Deps: T6-1. Files: `papership.js`, blueprint-2 Settings and Today compose. Validation: browser or overlay test; price/quantity scan clean. State: `pending`.
+**T6-3 Settings / Plan tier UI** — objective: D-29 labels; remaining-allowance and action-cost **bands**; honest pause copy; no “most popular”, countdowns, or pre-selected upgrades (roadmap §4). Remove the Today compose fixture **“Remaining allowance: 184640”** (replace with a band or `not_captured`). Deps: T6-1. Files: `papership.js`, blueprint-2 Settings and Today compose. Validation: browser or overlay test; price/quantity scan clean. State: `done`.
 
-**T6-4 Stripe test-mode wiring** — objective: carry env **names**; default `billing_charges_enabled=false`; no Elements charge, no live webhook paid-invoice. Deps: T6-2. Files: API config, optional unused client stub behind the flag. Validation: boot without Stripe secrets; charge route 403/404; no secret values in repo. State: `pending`.
+**T6-4 Stripe test-mode wiring** — objective: carry env **names**; default `billing_charges_enabled=false`; no Elements charge, no live webhook paid-invoice. Deps: T6-2. Files: API config, optional unused client stub behind the flag. Validation: boot without Stripe secrets; charge route 403/404; no secret values in repo. State: `done`.
 
-**T6-5 Licensing-state / ERA-17** — objective: in-product hook reading existing LICENSE/NOTICE/inventory/Hermes pin evidence; `configured` only with citations. Deps: T6-0. Files: Settings row + registry. Validation: D-02 evidence column filled or row stays `planned`. State: `pending`.
+**T6-5 Licensing-state / ERA-17** — objective: in-product hook reading existing LICENSE/NOTICE/inventory/Hermes pin evidence; `configured` only with citations. Deps: T6-0. Files: Settings row + registry. Validation: D-02 evidence column filled or row stays `planned`. State: `done` (`GET /licenses` + Settings → Docs identifiers).
 
-**T6-6 Security** — objective: CA-4 reconciliation review; tenant isolation of billing rows; no secret material; D-25 residual unchanged. Deps: T6-2, T6-4. Files: `security-engineer-subagent/phase-6-*`. Validation: PASS or CONDITIONAL with residuals; no write/external Hermes lift. State: `pending`.
+**T6-6 Security** — objective: CA-4 reconciliation review; tenant isolation of billing rows; no secret material; D-25 residual unchanged. Deps: T6-2, T6-4. Files: `security-engineer-subagent/phase-6-*`. Validation: PASS or CONDITIONAL with residuals; no write/external Hermes lift. State: `done` (PASS with residuals).
 
-**T6-7 Growth** — objective: CA-1…CA-10 evidence checklist; first-baseline still `not_captured` if zero events; price scan of UI/docs. Deps: T6-3, T6-6. Files: `growth-marketing-subagent/phase-6-*`. Validation: no invented baselines; CA-10 remains owner-only. State: `pending`.
+**T6-7 Growth** — objective: CA-1…CA-10 evidence checklist; first-baseline still `not_captured` if zero events; price scan of UI/docs. Deps: T6-3, T6-6. Files: `growth-marketing-subagent/phase-6-*`. Validation: no invented baselines; CA-10 remains owner-only. State: `done`.
 
-**T6-8 PL G9** — objective: reconcile roles; issue G9; do **not** generate Phase 7 until G9 and this plan’s §22. Deps: T6-6, T6-7. Files: `project-lead-subagent/phase-6-handoff.md`. Validation: G9 verdict + skipped-role reasons (none expected). State: `pending`.
+**T6-8 PL G9** — objective: reconcile roles; issue G9; do **not** generate Phase 7 until G9 and this plan’s §22. Deps: T6-6, T6-7. Files: `project-lead-subagent/phase-6-handoff.md`. Validation: G9 verdict + skipped-role reasons (none expected). State: `done` (G9 PASS with residuals).
 
 ## 13. Adaptive role and delegation map
 

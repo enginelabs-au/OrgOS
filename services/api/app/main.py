@@ -7,6 +7,7 @@ import hmac
 import json
 import os
 import time
+from pathlib import Path
 from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
@@ -279,6 +280,23 @@ def create_app(store_path: str | None = None) -> FastAPI:
     @app.post("/billing/charge")
     def billing_charge(_body: dict[str, Any], _ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
         raise HTTPException(status_code=403, detail="billing charges disabled")
+
+    @app.get("/billing/rate-card")
+    def billing_rate_card(_ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        return {"version": 1, "published": False, "entries": []}
+
+    @app.get("/licenses")
+    def licenses(_ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
+        root = Path(__file__).resolve().parents[3]
+        return {
+            "product_license": "SEE LICENSE IN LICENSE",
+            "notice_present": (root / "NOTICE").is_file(),
+            "license_present": (root / "LICENSE").is_file(),
+            "policy": "proposed",
+            "identifiers": ["LICENSE", "NOTICE", "docs/policies/licensing.md"],
+            "hermes_pin_configured": bool(settings.hermes_version_pin),
+            "charges_enabled": settings.billing_charges_enabled,
+        }
 
     @app.post("/approvals")
     def create_approval(body: dict[str, Any], ctx: AuthContext = Depends(auth_dep)) -> dict[str, Any]:
